@@ -8,7 +8,6 @@
   "factorio_version": "0.17",
   "description": "ModMash add many new things loot chests, including Air purification Recycling and Droids",
   "dependencies": [
-    "base >= 0.17.0",
-    "! DragonIndustries >= 0.1.0"
+    "base >= 0.17.0"
   ]
 }
