@@ -1,4 +1,11 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.17.45
+  Bugfixes:
+    - Recyling machine fix. Freedback from PyroFire,Mugiwaxar 
+  Changes:
+    - Cleaned out old files Commit to Git
+
+---------------------------------------------------------------------------------------------------
 Version: 0.17.44
   Changes:
     - Discharge Pump Icon was pointing to Offshore Pump.
