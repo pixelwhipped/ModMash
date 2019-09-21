@@ -1,0 +1,8 @@
+﻿/c game.player.force.technologies['automation'].researched=true
+/c game.player.force.technologies['electronics'].researched=true
+/c game.player.force.technologies['fluid-handling-3'].researched=true
+/c game.player.force.technologies['fluid-handling'].researched=true
+/c game.player.force.technologies['fluid-handling-1'].researched=true
+/c game.player.force.technologies['fluid-handling-2'].researched=true
+
+/c game.player.insert{name="iron-plate", count=100}
