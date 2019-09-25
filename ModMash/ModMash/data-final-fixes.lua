@@ -39,6 +39,7 @@ local local_create_entity_loot = function()
 
 local_create_entity_loot()
 
+--[[
 local create_technology = function(level)
 	log("Creating Technology fluid-handling-"..level)
 	return  
@@ -148,11 +149,8 @@ local local_create_pipe_levels = function()
 	end
 end
 
-local_create_pipe_levels()
+--local_create_pipe_levels()
+]]
+
 
 data.raw["capsule"]["raw-fish"].capsule_action.attack_parameters.ammo_type.action.action_delivery.target_effects.damage = {type = "physical", amount = -20}
-
-
---data.raw["assembling-machine"]["assembling-machine-4"].circuit_wire_connection_points = data.raw["storage-tank"]["storage-tank"].circuit_wire_connection_points
---data.raw["assembling-machine"]["assembling-machine-4"].circuit_connector_sprites = data.raw["storage-tank"]["storage-tank"].circuit_connector_sprites
---data.raw["assembling-machine"]["assembling-machine-4"].circuit_wire_max_distance = data.raw["storage-tank"]["storage-tank"].circuit_wire_max_distance

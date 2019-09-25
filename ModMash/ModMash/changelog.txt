@@ -1,8 +1,17 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.17.46
+  Changes:
+    - Updates to Name and Descriptions in Recipes
+    - Recycle recipes need not show in crafting menu 
+    - Items showing as made in valves removed
+    - Removed Pipe Enhancements to prone to introducing problems
+    - UPS fix for Valves converted mostly to recipe and more efficent scripts
+
+---------------------------------------------------------------------------------------------------
 Version: 0.17.45
   Bugfixes:
     - Recyling machine fix. Freedback from PyroFire,Mugiwaxar 
-	- Compatibility issues fixed
+    - Compatibility issues fixed
   Changes:
     - Cleaned out old files Commit to Git
 

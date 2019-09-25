@@ -293,7 +293,7 @@ local local_transfer_fluid_and_convert = function(from,findex,to,tindex,amount,m
 		to_boxes[tindex] = from_box
 	end end
 
-local local_get_connected_input_fluid = function(entity, box)	
+--[[local local_get_connected_input_fluid = function(entity, box)	
 	if box > #entity.fluidbox then return nil end	
 	local inpipe = entity.fluidbox.get_connections(box)	
 	if inpipe == nil then return nil end
@@ -309,7 +309,34 @@ local local_get_connected_input_fluid = function(entity, box)
 			end				
 		end
 	end
+end]]
+
+local local_get_connected_input_fluid = function(entity, box)	
+	if not entity.fluidbox or box > #entity.fluidbox then return nil end	
+	--util.print(entity.neighbours)
+	local inpipe = entity.fluidbox.get_connections(box)	
+	if inpipe == nil then return nil end
+	--util.print(entity.fluidbox.get_prototype(box).entity.name)
+	for i = 1, #inpipe do local ip = inpipe[i]	
+		if ip ~= nil then			
+			for j = 1, #ip do local jp = ip[j]
+				if jp ~= nil and ip.owner.fluidbox then
+					for m = 1, #ip.owner.fluidbox do mp = ip.owner.fluidbox.get_connections(m)	
+						if mp ~= nil then
+							for mx = 1, #mp do mpx = mp[mx]
+								if mpx.owner == entity then
+									return {entity = ip.owner, box = m} 
+									--util.print(ip.owner.name)
+								end
+							end
+						end
+					end
+				end
+			end
+		end
+	end
 end
+
 
 local local_addable_fluid = function(entity, amount, index)
 	local cap = 100

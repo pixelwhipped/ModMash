@@ -3,6 +3,8 @@
   {
     type = "recipe",
     name = "assembling-machine-5",
+	localised_name = "Assembling Machine 5",
+	localised_description = "Assembling Machine 5",
     enabled = "false",
     ingredients =
     {

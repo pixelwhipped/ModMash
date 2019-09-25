@@ -1,4 +1,5 @@
-﻿if not util then require("prototypes.scripts.util") end
+﻿--[[
+if not util then require("prototypes.scripts.util") end
 
 local fluid_research_level = nil
 
@@ -70,11 +71,11 @@ local local_pipes_pick_up = function(event)
 		end
 	end
 end
-
-
+]]
+--[[
 if modmash.ticks ~= nil then	
 	if script ~= nil then
 		table.insert(modmash.on_research,local_pipes_research)
 		table.insert(modmash.on_player_cursor_stack_changed,local_pipes_pick_up)		
 	end
-end
+end]]

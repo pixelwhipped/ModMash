@@ -896,12 +896,10 @@ if modmash.ticks ~= nil then
 
 	local local_droid_tick = function()
 		if init ~= nil then init = init() end
-		if game.tick % 30 == 0 then	
-			
+		if game.tick % 30 == 0 then				
 			local droids = global.modmash.droids
 			local index = global.modmash.droids_update_index
 			if not index then index = 1 end
-
 			local numiter = 0
 			local updates = math.min(#droids,droids_per_tick)
 
