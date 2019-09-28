@@ -1,7 +1,6 @@
 ﻿if not util then require("prototypes.scripts.util") end
 
 log("Creating Types")
-local local_ends_with = function(str, ending) return str ~=nil and ending ~=nil and (ending == "" or str:sub(-#ending) == ending) end
 
 local local_set_types_biome = function() 
   util.types.biome_types = {
@@ -12,50 +11,142 @@ local local_set_types_biome = function()
     {name = "snow", factor = 0.75},
     {name = "ice", factor = 0.75},
     {name = "volcanic", factor = 0.25}
-  } end
+  } 
+end
  
 local local_set_types_non_pollutant = function ()
   util.types.non_pollutant = {
     { name= "water", polutant = true},
     { name= "fish-oil", polutant = true},
     { name= "steam", polutant = true}
-  } end
+  } 
+end
  
 local local_is_polutant = function(surface)
   for _, v in ipairs(util.types.non_pollutant) do  
     if v.name == surface then return not v.polutant end
   end
-  return true end
- 
+  return true 
+end 
 
 local local_create_biome_recipies = function()
-  local create_recipe_for_biome = function(name, factor)
-      local smooth = 25
-	  log("Creating Biome Recipe: wind-trap-action-" .. name)
-      return {
-        type = "recipe",        
-        name = "wind-trap-action-" .. name,
-        energy_required = 1/smooth,
-        enabled = true,
-		category = "wind-trap",
-        ingredients = {},
-        results = {
-			{type = "fluid", name = "water", amount = math.floor(100/smooth*factor+0.5)},
-			--{type = "fluid", name = "sludge", amount = math.floor(math.max((1-math.min(factor,1))*2,1))},
-		},
-        hidden = true
-      }
+	local create_recipe_for_biome = function(name, factor)
+		local smooth = 25
+		log("Creating Biome Recipe: wind-trap-action-" .. name)
+		return {
+			type = "recipe",        
+			name = "wind-trap-action-" .. name,
+			energy_required = 1/smooth,
+			enabled = true,
+			category = "wind-trap",
+			ingredients = {},
+			results = {
+				{type = "fluid", name = "water", amount = math.floor(100/smooth*factor+0.5)},			
+			},
+			hidden = true
+		}
     end  
-  for _,biome in pairs(util.types.biome_types) do
-    data:extend({create_recipe_for_biome(biome.name, biome.factor)})
-  end end
+	for _,biome in pairs(util.types.biome_types) do
+		data:extend({create_recipe_for_biome(biome.name, biome.factor)})
+	end 
+end
+--stored in multiple names accumulator ammo etc
+local raw_items = {"accumulator","active-defense-equipment","ammo","ammo-turret","arithmetic-combinator","armor","artillery-turret","artillery-wagon","assembling-machine","battery-equipment","beacon","belt-immunity-equipment","boiler","capsule","car","cargo-wagon","combat-robot","constant-combinator","construction-robot","container","decider-combinator","electric-pole","electric-turret","energy-shield-equipment","fluid-wagon","furnace","gate","generator","generator-equipment","gun","heat-pipe","inserter","item","locomotive","logistic-container","logistic-robot","market","mining-drill","module","night-vision-equipment","offshore-pump","pipe","pipe-to-ground","power-switch","programmable-speaker","projectile","pump","radar","rail-chain-signal","rail-planner","rail-signal","reactor","repair-tool","resource","roboport","roboport-equipment","rocket-silo","solar-panel","solar-panel-equipment","splitter","storage-tank","straight-rail","tool","train-stop","transport-belt","underground-belt","wall"}
+local item_list = nil
 
 local local_get_item = function(name)
-  local items = data.raw["item"]
-  if items then
-    return items[name]
-  end
-  return nil end
+	if item_list == nil then
+		item_list = {}
+		for r = 1, #raw_items do local raw = raw_items[r]	
+			for name,item in pairs(data.raw[raw]) do			
+				if item ~= nil and item.name ~= nil then				
+					item_list[item.name] = item
+				end
+			end
+		end
+	end
+	return item_list[name]
+end
+
+local local_create_super_material_conversions = function()
+	for name,item in pairs(data.raw["resource"]) do			
+		
+		if item ~= nil and item.name ~= nil and item.icon ~= false and util.starts_with(item.name,"creative-mod") == false and data.raw["fluid"][item.name] == nil and data.raw["item"][item.name] ~= nil then					
+			local m = data.raw["item"][item.name].stack_size
+			if m == nil then m = 50 end
+			local recipe = {
+				type = "recipe",
+				name = "modmash-supermaterial-to-"..item.name,
+				localised_name = "Super Material to " .. item.name:gsub("-", ""),
+				localised_description = "Super Material to " .. item.name:gsub("-", ""),
+				category = "crafting-with-fluid",
+				
+				icon = false,
+				icons =
+				{
+				  {
+					icon = "__modmash__/graphics/icons/super-material.png",
+				  },
+				  {
+					icon = item.icon,
+					scale = 0.5,
+					shift = {7, 8 }
+				  }
+				},
+				icon_size = 32,
+				subgroup = "intermediate-product",
+				order = "zzz[super-material]["..item.name.."]",
+				main_product = "",
+
+				ingredients = {{name = "super-material",amount = 4}},
+				energy_required = 1.5,
+				enabled = false,				
+				results =
+				{			
+					{
+					name = item.name,
+					amount = m,
+					}			
+				},
+				allow_decomposition = false}
+
+			local tech = {
+				type = "technology",
+				name = recipe.name .. "-tech",
+				localised_name = recipe.localised_name,
+				localised_description = recipe.localised_description,
+				icon = "__base__/graphics/technology/fluid-handling.png",
+				icon_size = 128,
+				effects =
+				{
+				  {
+					type = "unlock-recipe",
+					recipe = recipe.name
+				  }
+				},
+				prerequisites =
+				{
+				  "fluid-handling-3"
+				},
+				unit =
+				{
+				  count = 200,
+				  ingredients =
+				  {
+					{"automation-science-pack", 1},
+					{"logistic-science-pack", 1},
+					{"chemical-science-pack", 1},
+					{"production-science-pack", 1}
+				  },
+				  time = 60
+				},
+				upgrade = true,
+				order = "a-b-d",
+			  }
+			data:extend({recipe,tech})
+		end
+	end
+end
 
 local local_create_fluid_item = function(name, fluid)
   log("Discharge and valve Fluid: dump-" .. fluid.name)
@@ -65,8 +156,7 @@ local local_create_fluid_item = function(name, fluid)
     name = "dump-" .. fluid.name,
 	localised_name = "Discharge " .. fluid.name,
 	localised_description = "Discharge " .. fluid.name,
-    category = "recycling",
-	--subgroup = "recyclable",	
+    category = "discharge-fluids",
     energy_required = fluid.energy_required,    
 	hide_from_player_crafting = true,
 	hidden = true,
@@ -87,10 +177,8 @@ local local_create_fluid_item = function(name, fluid)
     name = "valve-" .. fluid.name,
 	localised_name = "Valve fluid " .. fluid.name,
 	localised_description = "Valve fluid " .. fluid.name,
-    category = "recycling",
-	--category = "crafting-with-fluid",
-	--subgroup = "intermediate-product",
-	subgroup = "recyclable",
+    category = "discharge-fluids",
+	--subgroup = "recyclable",
     energy_required = fluid.energy_required,    
 	hide_from_player_crafting = true,
 	hidden = false,
@@ -105,73 +193,62 @@ local local_create_fluid_item = function(name, fluid)
       {type = "fluid", name = fluid.name, amount = 100}
     },
   }
-
-  local mini_boiler_recipe =
-  {
-    type = "recipe",
-    name = "valve-water-steam",
-	localised_name = "Valve fluid Water To Steam",
-	localised_description = "Valve fluid Water To Steam",
-    category = "recycling",
-	subgroup = "recyclable",
-    energy_required = 1.5,    
-	hide_from_player_crafting = true,
-	hidden = false,
-    order = "z[valve-water-steam]",
-    enabled = true,
-    icon = fluid.icon,	
-    icon_size = 32,
-	hide_from_stats = true,
-    ingredients = {{type = "fluid", name = "water", amount = 100}},
-    results = 
-    {
-      {type = "fluid", name = "steam", amount = 100}
-    },
-  }
-
-  local mini_condenser_recipe =
-  {
-    type = "recipe",
-    name = "valve-steam-water",
-	localised_name = "Valve fluid Steam To Water",
-	localised_description = "Valve fluid Steam To Water",
-    category = "recycling",
-	subgroup = "recyclable",
-    energy_required = 1.5,    
-	hide_from_player_crafting = true,
-	hidden = false,
-    order = "z[valve-steam-water]",
-    enabled = true,
-    icon = fluid.icon,	
-    icon_size = 32,
-	hide_from_stats = true,
-    ingredients = {{type = "fluid", name = "steam", amount = 100}},
-    results = 
-    {
-      {type = "fluid", name = "water", amount = 100}
-    },
-  }
-
-  data:extend({discharge_recipe,valve_recipe,mini_boiler_recipe,mini_condenser_recipe})
-  end
-
---[[local local_get_or_create_fluid_item = function(name, fluid)
-  local existing_item = local_get_item(name)
-  return local_create_fluid_item(name, fluid) end]]
-
-local local_process_fluids = function(fluids)
-  for name,fluid in pairs(fluids) do
-	 -- if fluid_name == nil then
-	--	local_create_fluid_item(fluid_name, fluid, 6)
-	 -- elseif string.find(fluid_name, "water") then
-	--	local_create_fluid_item(fluid_name, fluid, 6)
-	 -- else
-		local_create_fluid_item(fluid_name, fluid)
-	 -- end
-  end end
+  data:extend({discharge_recipe,valve_recipe})
+end
 
 local local_create_fluid_recipies = function()
-	local_process_fluids(data.raw["fluid"]) end
+	local fluids = data.raw["fluid"] 
+	for name,fluid in pairs(fluids) do
+		local_create_fluid_item(fluid_name, fluid)
+	end 
+
+	local mini_boiler_recipe =
+	{
+		type = "recipe",
+		name = "valve-water-steam",
+		localised_name = "Valve fluid Water To Steam",
+		localised_description = "Valve fluid Water To Steam",
+		category = "discharge-fluids",--recycling",
+		--subgroup = "recyclable",
+		energy_required = 1.5,    
+		hide_from_player_crafting = true,
+		hidden = false,
+		order = "z[valve-water-steam]",
+		enabled = true,
+		icon = "__base__/graphics/icons/fluid/steam.png",	
+		icon_size = 32,
+		hide_from_stats = true,
+		ingredients = {{type = "fluid", name = "water", amount = 100}},
+		results = 
+		{
+			{type = "fluid", name = "steam", amount = 100}
+		}
+	}
+
+	local mini_condenser_recipe =
+	{
+		type = "recipe",
+		name = "valve-steam-water",
+		localised_name = "Valve fluid Steam To Water",
+		localised_description = "Valve fluid Steam To Water",
+		category = "discharge-fluids",---"recycling",
+		--subgroup = "recyclable",
+		energy_required = 1.5,    
+		hide_from_player_crafting = true,
+		hidden = false,
+		order = "z[valve-steam-water]",
+		enabled = true,
+		icon = "__base__/graphics/icons/fluid/water.png",	
+		icon_size = 32,
+		hide_from_stats = true,
+		ingredients = {{type = "fluid", name = "steam", amount = 100}},
+		results = 
+		{
+			{type = "fluid", name = "water", amount = 100}
+		}
+	}
+	data:extend({mini_boiler_recipe,mini_condenser_recipe})
+end
 
 local local_get_results_from_ingredients = function(r)
 	local ingredients = {}		
@@ -208,7 +285,9 @@ local local_create_recylce_item = function(r)
 				results = {{name = r.normal.result, amount = math.max(r.normal.result_count,1)}}
 			else
 				results = {{name = r.normal.result, amount = 1}}
-			end		
+			end	
+		else
+			results = {{name = r.result, amount = 1}}	
 		end
 	else
 		results = r.results;
@@ -218,8 +297,13 @@ local local_create_recylce_item = function(r)
 			else
 				results = {{name = r.result, amount = 1}}
 			end
-		end
+		else
+			results = {{name = r.result, amount = 1}}
+		end		
 	end	
+	if #results == 0 then
+		results = {{name = r.result, amount = 1}}
+	end
 	if #results > 1 then
 		return
 	end
@@ -229,13 +313,16 @@ local local_create_recylce_item = function(r)
 	if ingds == nil then
 		return 
 	end 
- 	
+
 	local item = local_get_item(results[1].name)	
 
-
-	if item == nil then return end
+	if item == nil then
+		return
+	end
 	if (item.icon == nil or item.icon == false) and item.icons == nil then return end
-	if item.subgroup == "raw-resource" then return end
+	if item.subgroup == "raw-resource" or (item.flags ~= nil and item.flags[1] == "hidden")  then 
+		return
+	end
 	local recipe = nil
 
 	----------------- Dexy Edit ---------------------
@@ -298,7 +385,9 @@ local local_create_recylce_item = function(r)
 		}
 	else
 		local res = local_get_results_from_ingredients(r.ingredients)
-		if #res<1 then return end
+		if #res<1 then 
+			return 
+		end
 		recipe =
 		{
 		type = "recipe",
@@ -329,40 +418,10 @@ local local_create_recylce_item = function(r)
 	recipe.hidden_from_char_screen = true
 	recipe.localised_name = "Recyle Item"
 	recipe.localised_description = "Recyle Item"
+	log("Creating recycle recipe "..recipe.name)
 	--if item.subgroup ~= nil then recipe.subgroup = item.subgroup end  
 	data:extend({recipe})
 	table.insert(data.raw["technology"]["recycling-machine"].effects, {type = "unlock-recipe",recipe = "craft-" .. results[1].name})
-end
-
-local local_is_locked_technology = function(tech)
-	if tech.enabled == true then return tech.hidden end
-	return false
-
-end
-
-local local_is_locked_recipe = function(recipe)
-	if recipe.enabled == true then return false end
-	local technologies = data.raw["technology"]
-	for k=1, #technologies do local tech = technologies[k] 
-		if local_is_locked_technology(tech) then return true end
-		local effects = tech.effects
-		for k=1, #effects do local effect = effects[k];	
-			if effect.name == recipe.name then return false end
-		end
-	end
-	return true
-end
-
-local local_hide_all_recipies = function(source)
-	for name, recipe in pairs(source) do	
-		log("Checking " .. recipe.name)
-		if recipe.category == "recycling" then
-			--log(recipe.name.." was not hidden")
-			recipe.hide_from_player_crafting = true
-			recipe.hidden_from_char_screen = true
-			data.raw.recipe[recipe.name] = recipe
-		end	
-	end
 end
 
 local local_create_recycle_recipies = function(source)
@@ -371,22 +430,13 @@ local local_create_recycle_recipies = function(source)
 		recipies[#recipies+1] = recipe
 	end
 	for k=1, #recipies do local recipe = recipies[k];	
-	    if recipe.hidden or recipe.hide_from_player_crafting then
+	    if recipe.hidden or recipe.hide_from_player_crafting or util.starts_with(recipe.name,"creative-mod") then
 			log("Skipping recyling " .. recipe.name)
-		elseif recipe.enabled == false then
-			if local_is_locked_recipe(recipe) == true then
-				local_create_recylce_item(recipe)
-			else
-				log("Skipping recyling " .. recipe.name)
-			end
 		else
-			log("Enabled Recipe "..recipe.name)
 			local_create_recylce_item(recipe)
 		end
 	end			
 end
-
-
 
 local local_update_recipies = function()
 	data.raw.recipe["red-wire"].ingredients =
@@ -576,13 +626,10 @@ local local_update_recipies = function()
 	remove_ingredient_from_recipie("inserter","iron-plate")
 
 	for name, recipe in pairs(data.raw.recipe) do
-		if recipe ~= nil and recipe.name ~= nil and local_ends_with(recipe.name,"science-pack") then
+		if recipe ~= nil and recipe.name ~= nil and util.ends_with(recipe.name,"science-pack") then
 			add_ingredient_to_recipe(recipe.name,{name = "glass", amount = 1})	
 		end
 	end
-	
-	
-	
 end
 
 if not util.types then   
@@ -600,9 +647,7 @@ if data ~= nil and data_final_fixes == true then
     local_set_types_non_pollutant() --Dexy Edit
     local_create_biome_recipies()
     local_create_fluid_recipies()
-    local_update_recipies()
-	log("--------------------STARTED RECYCEL RECIPED------------")
+    local_update_recipies()	
     local_create_recycle_recipies(data.raw.recipe)
-	log("--------------------DONE RECYCLE RECIPES---------------")
-	--local_hide_all_recipies(data.raw.recipe)
+	local_create_super_material_conversions()
 end

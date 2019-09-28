@@ -48,7 +48,7 @@ local valve_levels = {
 }
 data:extend({valve_levels})
 
-local local_create_valve = function(name,localised_name,localised_description,order,ingredients,technology, source, usage,fixed_recipe)
+local local_create_valve = function(name,localised_name,localised_description,order,ingredients,technology, source, usage,fixed_recipe,light)
 	local icon = "__modmash__/graphics/icons/" .. name .. ".png"
 	if source == nil then
 		source = {type = "burner", effectivity = 1, fuel_inventory_size = 0, render_no_power_icon = false}
@@ -71,6 +71,7 @@ local local_create_valve = function(name,localised_name,localised_description,or
 		corpse = "small-remnants",
 		fast_replaceable_group = "pipe",
 		always_draw_idle_animation = true,
+		light = light,
 		collision_box = {{-0.29, -0.29}, {0.29, 0.29}},
 		selection_box = {{-0.5, -0.5}, {0.5, 0.5}},
 		vehicle_impact_sound = {filename = "__base__/sound/car-metal-impact.ogg", volume = 0.65},
@@ -138,10 +139,11 @@ local local_create_valve = function(name,localised_name,localised_description,or
 		},
 		energy_source = source,--{type = "burner", effectivity = 1, fuel_inventory_size = 0, render_no_power_icon = false},
 		energy_usage = usage,--"1W", -- Need to be at least 1W or the no energy signal will keep blinking
-		crafting_speed = 1,
+		crafting_speed = 3,
+		crafting_speed = 3,
 		ingredient_count = 1,
 		always_draw_idle_animation = false,
-		crafting_categories = {"discharge-fluids","recycling"}, --,"wind-trap","recycling"},
+		crafting_categories = {"discharge-fluids"},--,"recycling"}, --,"wind-trap","recycling"},
 		module_specification = {module_slots = 0},
 		allowed_effects = {"pollution"}
 		}
@@ -180,6 +182,7 @@ local local_valves = {
 		order = "a",
 		technology = "fluid-handling",
 		fixed_recipe = nil,
+		light = nil,
 		ingredients = {
 				{"steel-plate", 1},
 				{"iron-gear-wheel", 1},
@@ -192,6 +195,7 @@ local local_valves = {
 		localised_description = "Allows flow when input is over 75% or a set % full. CTRL+A to Adjust",
 		order = "b",
 		technology = "fluid-handling-2",
+		light = nil,
 		fixed_recipe = nil,
 		ingredients = {
 				{"electronic-circuit", 1},
@@ -207,6 +211,7 @@ local local_valves = {
 		order = "c",
 		technology = "fluid-handling-2",
 		fixed_recipe = nil,
+		light = nil,
 		ingredients = {
 				{"electronic-circuit", 1},
 				{"steel-plate", 1},
@@ -234,6 +239,31 @@ local local_valves = {
 			  emissions = 0,
 			  drain = "25kW",
 		},
+		light = nil,
+		energy_usage = "50kW",
+		--crafting_speed = 0.8,
+	},
+	{		
+		name = "modmash-super-boiler-valve",		
+		localised_name = "Super Boiler",		
+		localised_description = "Converts Water into high temp steam",
+		order = "d",
+		technology = "fluid-handling-3",
+		fixed_recipe = "valve-water-steam",
+		ingredients = {
+				{"electronic-circuit", 1},
+				{"alien-plate", 1},
+				{"iron-gear-wheel", 1},
+				{"pipe", 1},
+		},
+		energy_source =
+		{
+		  type = "burner",
+		  fuel_category = "advanced-alien",
+		  effectivity = 1,
+		  fuel_inventory_size = 1,
+		},
+		light = {intensity = 0.6, size = 3.3, shift = {0.0, 0.0}, color = {r = 1.0, g = 0.0, b = 0.0}},
 		energy_usage = "50kW",
 		--crafting_speed = 0.8,
 	},
@@ -257,53 +287,11 @@ local local_valves = {
 			  emissions = 0,
 			  drain = "25kW",
 		},
+		light = nil,
 		energy_usage = "50kW",
-		--crafting_speed = 0.8,
 	}	}
 
-data:extend({
-	{
-		type = "item",
-		name = "void-item",
-		icon = "__modmash__/graphics/stickers/blank-icon.png",
-		localised_name = "Void Item",
-		localised_description = "Void Item",
-		icon_size = 32,
-		subgroup = "logistic-network",
-		order = "z[void]",
-		enabled = false,
-
-		stack_size = 50
-	},
-	{
-		type = "recipe",
-		name = "void-recipe",
-		localised_name = "Void Recipe",
-		localised_description = "Void Recipe",
-		category = "discharge-fluids",
-		--subgroup = "recyclable",	
-		energy_required = 0.01,    
-		order = "z",
-		enabled = true,
-		hidden = true,
-		icon = "__modmash__/graphics/stickers/blank-icon.png",	
-		icon_size = 32,
-		hide_from_stats = true,
-		hide_from_player_crafting = true,
-		ingredients = {{name = "void-item", amount = 1}},
-		results = 
-		{
-		  {name = "void-item", amount = 1}
-		},
-	}
-})
-
 for index=1, #local_valves do local valve = local_valves[index]
-	--if valve.name == "modmash-check-valve" and mods["underground-pipe-pack"] then
-	--	util.log("Skipping check-valve Confict with Advanced Underground Piping")
-	--else
-		util.log("Creating Valve " .. valve.name)
-		local_create_valve(valve.name,valve.localised_name,valve.localised_description,valve.order,valve.ingredients,valve.technology, valve.energy_source, valve.energy_usage, valve.fixed_recipe)
-		
-	--end
+	util.log("Creating Valve " .. valve.name)
+	local_create_valve(valve.name,valve.localised_name,valve.localised_description,valve.order,valve.ingredients,valve.technology, valve.energy_source, valve.energy_usage, valve.fixed_recipe,valve.light)
 end

@@ -23,8 +23,8 @@ local destroy_command = 6
 local get_stock_command = 7
 local drop_stock_command = 8
 
-local beam_dist = 6
-local beam_time = 4
+local beam_dist = 8
+local beam_time = 6
 
 local local_add_ghost = function(ent)
 	if ent ~= nil and ent.valid then
@@ -196,7 +196,7 @@ local local_droid_select_dropoff = function(droid)
 	if droid.target == nil then
 		local_droid_select_player(droid)
 	end
-	if droid.target ~= nil then 
+	if util.is_valid(droid.target) then 
 		droid.command = goto_command	
 		droid.goto_pos = droid.target.position
 		droid.entity.set_command({type=defines.command.go_to_location, destination=droid.goto_pos, distraction=defines.distraction.none})
@@ -209,7 +209,7 @@ end
 
 local local_droid_select_pickup = function(droid)
 	local_droid_select_target(droid,"item-on-ground")
-	if droid.target ~= nil then 
+	if util.is_valid(droid.target) then 
 		droid.command = goto_command	
 		droid.goto_pos = droid.target.position
 		droid.entity.set_command({type=defines.command.go_to_location, destination=droid.goto_pos, distraction=defines.distraction.none})
@@ -219,7 +219,7 @@ local local_droid_select_pickup = function(droid)
 end
 
 local local_dropoff = function(droid) 	
-	if droid.target ~= nil and droid.target.valid then	
+	if util.is_valid(droid.target) and droid.target.valid then	
 		if droid.stack ~= nil and droid.stack.name ~= nil and droid.stack.count > 0 then
 			local_create_beam(droid.entity,droid.target,"droid_standard_beam",beam_time)
 			if droid.target.can_insert(droid.stack) then				
@@ -234,7 +234,7 @@ local local_dropoff = function(droid)
 end
 
 local local_pickup = function(droid) 
-	if droid.target ~= nil and droid.target.valid and droid.target.name == "item-on-ground" then		
+	if util.is_valid(droid.target) and droid.target.valid and droid.target.name == "item-on-ground" then		
 		local_create_beam(droid.entity,droid.target,"droid_standard_beam",beam_time)
 		droid.stack = {name = droid.target.stack.name, count = droid.stack.count + droid.target.stack.count}
 		droid.target.stack.clear()			
@@ -269,16 +269,6 @@ local local_remove_from_proxy = function(proxy,target,what)
 		else
 			proxy.destroy()
 		end
-	--local entities = proxy.surface.find_entities({{proxy.position.x-0.1, proxy.position.y-0.1}, {proxy.position.x+0.1, proxy.position.y+0.1}})
-	--	for k=1, #entities do local ent = entities[k]
-	--	if ent.name=="item-request-proxy" then
-	--		ent.destroy()
-	--	end
-		---	util.print(ent.name)
-		--	for _,e in pairs(ent.surface.find_entities_filtered{type="sticker", area=ent.bounding_box}) do 
-		--		e.destroy() 
-		--	end
-	--	end
 	end
 end
 
@@ -346,20 +336,38 @@ local local_is_tile = function(name)
 end
 
 local local_select_ghost = function(droid,name)	
-	if droid.target ~= nil and droid.target.name.ghost_name ~= nil then		
+	if util.is_valid(droid.target) and droid.target.name.ghost_name ~= nil then		
 		droid.stack.name = droid.target.ghost_name
 	end
 	local rad = (droid_scan_radius + global.modmash.droids.research_modifier)
-	local entities = local_get_ghost(droid.entity,rad)
-	
+	local entities = local_get_ghost(droid.entity,rad)	
 	if #entities == 0  then 		
 		local m = local_select_module_target(droid,name)
-		if droid.target ~= nil then
+		if util.is_valid(droid.target) then
 			droid.stack.name = m 
 			return m
 		end
 		return nil
 	end
+	local ex = {}
+	local droids = global.modmash.droids	
+	for e=1, #entities do ent = entities[e]
+		local add = true
+		local aleady_targeted = false
+		for k=1, #droids do local d = droids[k];				
+			if add ~= false and d.entity.valid and not d.entity.to_be_deconstructed(d.entity.force) and d.target ~= nil then	
+				if ent == d.target then 
+					aleady_targeted = aleady_targeted or d.entity==droid.entity
+					add = aleady_targeted
+				end
+			end
+		end
+		if add then		
+			table.insert(ex,ent) 
+		end
+	end
+	entities = ex	
+	if #entities == 0  then return nil end
 	table.sort (entities, function (k1, k2) return util.distance(droid.entity.position.x,droid.entity.position.y,k2.position.x,k2.position.y) < util.distance(droid.entity.position.x,droid.entity.position.y,k1.position.x,k1.position.y) end)
 	if name == nil then		
 		droid.target = entities[1]
@@ -558,11 +566,11 @@ local local_droid_process_build_no_command = function(droid)
 	end	
 	local name = nil
 	if droid.stack ~= nil and droid.stack.name ~=nil then
-		name =droid.stack.name
+		name = droid.stack.name
 	end
 
 	local require = local_select_ghost(droid,name)
-	if droid.target ~= nil then	
+	if util.is_valid(droid.target) then	
 		droid.goto_pos = droid.target.position
 		if droid.stack.count == 0 then
 			droid.stack.name = require
@@ -581,20 +589,19 @@ local local_droid_process_build_no_command = function(droid)
 		droid.entity.set_command({type=defines.command.go_to_location, destination=droid.goto_pos, distraction=defines.distraction.none})
 		return
 	end		
-	--else
+
 	local_droid_select_dropoff(droid)
-	if droid.target ~= nil then
+	if util.is_valid(droid.target) then
 		droid.command = drop_stock_command
 		droid.goto_pos = droid.target.position
 		droid.entity.set_command({type=defines.command.go_to_location, destination=droid.goto_pos, distraction=defines.distraction.none})
 		return
 	end
 	local_clear_droid_command(droid)	
---	end
---	return
-	if droid.target == nil then							
+
+	if droid.target == nil then
 		local_select_ghost(droid)				
-		if droid.target ~= nil then		
+		if util.is_valid(droid.target) then		
 			if droid.target.name == "tile-ghost" then
 				
 				local mp = game.tile_prototypes[droid.target.ghost_name].items_to_place_this
@@ -616,7 +623,7 @@ local local_droid_process_build_no_command = function(droid)
 			end
 		elseif droid.stack ~= nil and droid.stack.name ~= nil then
 			local_droid_select_dropoff(droid)
-			if droid.target ~= nil then
+			if util.is_valid(droid.target) then
 				droid.command = drop_stock_command
 				droid.goto_pos = droid.target.position
 				droid.entity.set_command({type=defines.command.go_to_location, destination=droid.goto_pos, distraction=defines.distraction.none})					
@@ -664,7 +671,7 @@ end
 
 
 local local_droid_process_build_build_command = function(droid)
-	if not (droid.target ~= nil and droid.target.valid) then
+	if not (util.is_valid(droid.target) and droid.target.valid) then
 		local_clear_droid_command(droid)
 	elseif (util.distance(droid.goto_pos.x,droid.goto_pos.y,droid.entity.position.x,droid.entity.position.y)<beam_dist) then
 		if local_is_entity(droid.stack.name) and droid.entity.surface.can_place_entity{name=droid.stack.name, position=droid.target.position, direction=droid.target.direction, force=droid.target.force} then
@@ -706,7 +713,7 @@ local local_droid_process_build_build_command = function(droid)
 end
 
 local local_droid_process_build_destroy_command = function(droid)
-	if droid.target ~= nil and droid.target.valid and droid.target.to_be_deconstructed(droid.entity.force) then
+	if util.is_valid(droid.target) and droid.target.valid and droid.target.to_be_deconstructed(droid.entity.force) then
 		if util.distance(droid.goto_pos.x,droid.goto_pos.y,droid.entity.position.x,droid.entity.position.y)<beam_dist then							
 			if droid.target.name == "item-on-ground" then		
 				local_create_beam(droid.entity,droid.target,"droid_standard_beam",beam_time)
@@ -775,7 +782,7 @@ local local_droid_process_collection = function(droid)
 		else
 			local_droid_select_dropoff(droid)
 		end
-	elseif droid.goto_pos ~= nil and droid.target ~= nil and droid.target.valid then		
+	elseif droid.goto_pos ~= nil and util.is_valid(droid.target) and droid.target.valid then		
 		if (util.distance(droid.goto_pos.x,droid.goto_pos.y,droid.entity.position.x,droid.entity.position.y)<beam_dist) then
 			if droid.target.name == "droid-chest" or local_is_player(droid.target) then				
 				local_dropoff(droid)
@@ -799,7 +806,7 @@ local local_droid_process_attack = function(droid)
 	local rad = droid_scan_radius + global.modmash.droids.research_modifier
 	if droid.command == no_command then
 		local_droid_select_enemy(droid)
-		if droid.target ~= nil then	
+		if util.is_valid(droid.target) then	
 			droid.command = attack_command
 			droid.goto_pos = droid.target.position
 			droid.entity.set_command({type=defines.command.go_to_location, destination=droid.goto_pos, distraction=defines.distraction.none})	
@@ -847,7 +854,7 @@ end
 local local_droid_process_repair = function(droid) 
 	local local_droid_select_repair = function(droid)
 		if not droid.entity.valid then return end
-		if droid.target ~= nil and droid.target.valid and droid.target.health ~= nil and not(droid.target.health < droid.target.prototype.max_health) then return end	
+		if util.is_valid(droid.target) and droid.target.valid and droid.target.health ~= nil and not(droid.target.health < droid.target.prototype.max_health) then return end	
 		local rad = (droid_scan_radius + global.modmash.droids.research_modifier)
 		local entities = droid.entity.surface.find_entities({{droid.entity.position.x-rad, droid.entity.position.y-rad},{droid.entity.position.x+rad, droid.entity.position.y+rad}})	
 		for k=1, #entities do local ent = entities[k]
@@ -861,12 +868,12 @@ local local_droid_process_repair = function(droid)
 	local rad = droid_scan_radius + global.modmash.droids.research_modifier
 	if droid.command == no_command then
 		local_droid_select_repair(droid)
-		if droid.target ~= nil then 			
+		if util.is_valid(droid.target) then 			
 			droid.command = repair_command
 			droid.goto_pos = droid.target.position
 			droid.entity.set_command({type=defines.command.go_to_location, destination=droid.goto_pos, distraction=defines.distraction.none})
 		end
-	elseif droid.goto_pos ~= nil and droid.target ~= nil and droid.target.valid and droid.target.health ~= nil then		
+	elseif droid.goto_pos ~= nil and util.is_valid(droid.target) and droid.target.valid and droid.target.health ~= nil then		
 		if (util.distance(droid.goto_pos.x,droid.goto_pos.y,droid.entity.position.x,droid.entity.position.y)<beam_dist) then
 			local need = math.min(droid.target.prototype.max_health - droid.target.health,1)
 			droid.target.health = droid.target.health + need
@@ -896,28 +903,27 @@ if modmash.ticks ~= nil then
 
 	local local_droid_tick = function()
 		if init ~= nil then init = init() end
-		if game.tick % 30 == 0 then				
+		if game.tick % 30 == 0 then							
 			local droids = global.modmash.droids
 			local index = global.modmash.droids_update_index
 			if not index then index = 1 end
 			local numiter = 0
 			local updates = math.min(#droids,droids_per_tick)
 
-			for k=index, #droids do local droid = droids[k];				
-				if droid.entity.valid then		
-					if not droid.entity.to_be_deconstructed(droid.entity.force) and droid.entity.valid then				
-						if droid.stack == nil then droid.stack = {name = nil, count = 0} end
-						if droid.mode == collection_mode then
-							local_droid_process_collection(droid)
-						elseif droid.mode == scout_mode then				
-							local_droid_process_scout(droid)
-						elseif droid.mode == attack_mode then	
-							local_droid_process_attack(droid)
-						elseif droid.mode == repair_mode then	
-							local_droid_process_repair(droid)
-						elseif droid.mode == build_mode then	
-							local_droid_process_build(droid)
-						end
+			for k=index, #droids do local droid = droids[k];					
+				if droid.entity.valid and not droid.entity.to_be_deconstructed(droid.entity.force) then				
+					if droid.stack == nil then droid.stack = {name = nil, count = 0} end
+					
+					if droid.mode == collection_mode then
+						local_droid_process_collection(droid)
+					elseif droid.mode == scout_mode then				
+						local_droid_process_scout(droid)
+					elseif droid.mode == attack_mode then	
+						local_droid_process_attack(droid)
+					elseif droid.mode == repair_mode then	
+						local_droid_process_repair(droid)
+					elseif droid.mode == build_mode then	
+						local_droid_process_build(droid)
 					end
 				end
 				if k >= #droids then k = k + 1 end
@@ -998,7 +1004,7 @@ if modmash.ticks ~= nil then
 			local str = ""
 			for _, droid in ipairs(global.modmash.droids) do
 				if droid ~= nil and droid.entity == entity then
-					if droid.target ~= nil and droid.target.valid then
+					if util.is_valid(droid.target) and droid.target.valid then
 						if droid.target.name =="item-on-ground" then
 							str = str .. "target item: " .. droid.target.stack.name .. "," .. droid.target.stack.count
 						else

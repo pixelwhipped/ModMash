@@ -3,7 +3,7 @@
 local local_wind_trap_pump_added = function(entity)
 	if entity.name == "wind-trap" then
 		local biome = util.get_biome(entity)
-		entity.set_recipe("wind-trap-action-" .. biome)
+		util.try_set_recipe(entity,"wind-trap-action-" .. biome)
 		entity.operable = false
 	end
 end

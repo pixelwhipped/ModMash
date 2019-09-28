@@ -20,6 +20,18 @@
       },{
         type = "unlock-recipe",
         recipe = "steam-engine-mk2"
+      },{
+        type = "unlock-recipe",
+        recipe = "modmash-super-boiler-valve"
+      },{
+        type = "unlock-recipe",
+        recipe = "super-material"
+      },{
+        type = "unlock-recipe",
+        recipe = "super-material-235"
+      },{
+        type = "unlock-recipe",
+        recipe = "super-material-crude"
       }
     },
     unit =

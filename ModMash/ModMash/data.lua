@@ -21,7 +21,7 @@ require("prototypes.item.pipes")
 require("prototypes.item.juice")
 require("prototypes.item.droid")
 require("prototypes.item.steam-engine-mk2")
-
+require("prototypes.item.super-material")
 
 require("prototypes.recipe.enrichment")
 require("prototypes.recipe.assembling-machine-4")

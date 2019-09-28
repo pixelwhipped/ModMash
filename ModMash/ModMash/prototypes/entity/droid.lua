@@ -1,93 +1,93 @@
 ﻿function compilatron_animations(tint1)
-return
-{
-  layers =
-  {
-  { --layer
-    width = 40,
-    height = 52,
-    frame_count = 2,
-    axially_symmetrical = false,
-    direction_count = 32,
-    shift = util.by_pixel(0.0, -14.0),
-	tint = tint1,
-    stripes =
-    {
-      {
-        filename = "__base__/graphics/entity/compilatron/compilatron-walk-1.png",
-        width_in_frames = 2,
-        height_in_frames = 16
-      },
-      {
-        filename = "__base__/graphics/entity/compilatron/compilatron-walk-2.png",
-        width_in_frames = 2,
-        height_in_frames = 16
-      }
-    },
+	return
+	{
+	  layers =
+	  {
+	  { --layer
+		width = 40,
+		height = 52,
+		frame_count = 2,
+		axially_symmetrical = false,
+		direction_count = 32,
+		shift = util.by_pixel(0.0, -14.0),
+		tint = tint1,
+		stripes =
+		{
+		  {
+			filename = "__base__/graphics/entity/compilatron/compilatron-walk-1.png",
+			width_in_frames = 2,
+			height_in_frames = 16
+		  },
+		  {
+			filename = "__base__/graphics/entity/compilatron/compilatron-walk-2.png",
+			width_in_frames = 2,
+			height_in_frames = 16
+		  }
+		},
 
-    hr_version =
-    {
-      width = 78,
-      height = 104,
-      frame_count = 2,
-      axially_symmetrical = false,
-      direction_count = 32,
-      shift = util.by_pixel(0.0, -14),
-      scale = 0.5,
-	  tint = tint1,
-      stripes =
-      {
-        {
-          filename = "__base__/graphics/entity/compilatron/hr-compilatron-walk-1.png",
-          width_in_frames = 2,
-          height_in_frames = 16
-        },
-        {
-          filename = "__base__/graphics/entity/compilatron/hr-compilatron-walk-2.png",
-          width_in_frames = 2,
-          height_in_frames = 16
-        }
-      },
-    }
-  },
+		hr_version =
+		{
+		  width = 78,
+		  height = 104,
+		  frame_count = 2,
+		  axially_symmetrical = false,
+		  direction_count = 32,
+		  shift = util.by_pixel(0.0, -14),
+		  scale = 0.5,
+		  tint = tint1,
+		  stripes =
+		  {
+			{
+			  filename = "__base__/graphics/entity/compilatron/hr-compilatron-walk-1.png",
+			  width_in_frames = 2,
+			  height_in_frames = 16
+			},
+			{
+			  filename = "__base__/graphics/entity/compilatron/hr-compilatron-walk-2.png",
+			  width_in_frames = 2,
+			  height_in_frames = 16
+			}
+		  },
+		}
+	  },
 
-  { -- shadow
-    width = 72,
-    height = 30,
-    frame_count = 2,
-    direction_count = 32,
-    shift = util.by_pixel(19, 0.0),
-    draw_as_shadow = true,
-    stripes = util.multiplystripes(2,
-    {
-      {
-        filename = "__base__/graphics/entity/compilatron/compilatron-walk-shadow.png",
-        width_in_frames = 1,
-        height_in_frames = 32
-      }
-    }),
-    hr_version =
-    {
-      width = 142,
-      height = 56,
-      frame_count = 2,
-      axially_symmetrical = false,
-      direction_count = 32,
-      shift = util.by_pixel(15.5, -0.5),
-      draw_as_shadow = true,
-      scale = 0.5,
-      stripes = util.multiplystripes(2,
-      {
-        {
-          filename = "__base__/graphics/entity/compilatron/hr-compilatron-walk-shadow.png",
-          width_in_frames = 1,
-          height_in_frames = 32
-        }
-      })
-    }
-  }
-  }
-}
+	  { -- shadow
+		width = 72,
+		height = 30,
+		frame_count = 2,
+		direction_count = 32,
+		shift = util.by_pixel(19, 0.0),
+		draw_as_shadow = true,
+		stripes = util.multiplystripes(2,
+		{
+		  {
+			filename = "__base__/graphics/entity/compilatron/compilatron-walk-shadow.png",
+			width_in_frames = 1,
+			height_in_frames = 32
+		  }
+		}),
+		hr_version =
+		{
+		  width = 142,
+		  height = 56,
+		  frame_count = 2,
+		  axially_symmetrical = false,
+		  direction_count = 32,
+		  shift = util.by_pixel(15.5, -0.5),
+		  draw_as_shadow = true,
+		  scale = 0.5,
+		  stripes = util.multiplystripes(2,
+		  {
+			{
+			  filename = "__base__/graphics/entity/compilatron/hr-compilatron-walk-shadow.png",
+			  width_in_frames = 1,
+			  height_in_frames = 32
+			}
+		  })
+		}
+	  }
+	  }
+	}
 end
 
 local tint1 = {r=1, g=0.4, b=0.4, a=1} -- red
@@ -211,13 +211,14 @@ data:extend(
 		name = "droid",
 		localised_name = "Droid",
 		localised_description = "Droid",
+	--	ai_settings = { path_resolution_modifier = -8, allow_try_return_to_spawner = true },
 		icon_size = 64,
 		icon = "__modmash__/graphics/icons/construction_drone_icon.png",
 		flags = {"placeable-player", "player-creation", "placeable-off-grid"},
 		max_health = 450,
 		subgroup="creatures",
 		order="e-a-b-d",
-		
+		map_color = {r = 0, g = 0.5, b = 1, a = 1},
 		has_belt_immunity = true,		
 		alert_when_damaged = true,
 		can_open_gates = true,
@@ -225,12 +226,12 @@ data:extend(
 		enabled = false,
 		healing_per_tick = 0.01,
 
-		collision_box = {{-0.4*0.2, -0.4*0.2}, {0.4*0.2, 0.4*0.2}},
+		collision_box = {{-0.4*0.3, -0.4*0.3}, {0.4*0.3, 0.4*0.3}},
 		selection_box = {{-0.8*0.8, -0.8*0.8}, {0.8, 0.8*0.8}},
 		sticker_box = {{-0.5, -0.5}, {0.5, 0.5}},
-
+		collision_mask =  {"item-layer", "water-tile"}, --"object-layer"
 		vision_distance = 30,
-		movement_speed = 0.09,
+		movement_speed = 0.15,
 		minable = {hardness = 0.1, mining_time = 0.1, result = "droid"},
 		pollution_to_join_attack = 0.0,
 		distraction_cooldown = 0,

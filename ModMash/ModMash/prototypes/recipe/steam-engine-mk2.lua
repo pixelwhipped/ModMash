@@ -3,8 +3,10 @@
 	{
 		type = "recipe",
 		name = "steam-engine-mk2",
+		enabled = false,
 		normal =
 		{
+		  enabled = false,
 		  ingredients =
 		  {
 			{"iron-gear-wheel", 8},
@@ -15,6 +17,7 @@
 		},
 		expensive =
 		{
+		  enabled = false,
 		  ingredients =
 		  {
 			{"iron-gear-wheel", 10},

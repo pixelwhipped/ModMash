@@ -11,7 +11,7 @@ local local_get_recyle_recipe = function(name)
 	return nil
 end
 
-local local_recycling_machine_process = function(entity)    	
+local local_recycling_machine_process = function(entity)
 	local loaders = util.get_entities_around(entity,1)
 	local storage = {}
 	local entities = {}
@@ -111,37 +111,15 @@ local local_recycling_machine_process = function(entity)
 	return nil
 end
 
-
-local function get_signal_position_from(entity)
-    local left_top = entity.prototype.selection_box.left_top
-    local right_bottom = entity.prototype.selection_box.right_bottom
-    --Calculating center of the selection box
-    local center = (left_top.x + right_bottom.x) / 2
-    local width = math.abs(left_top.x) + right_bottom.x
-    -- Set Shift here if needed, The offset looks better as it doesn't cover up fluid input information
-    -- Ignore shift for 1 tile entities
-    local x = (width > 1.25 and center - 0.5) or center
-    local y = right_bottom.y
-    --Calculating bottom center of the selection box
-    return {x = entity.position.x + x, y = entity.position.y + y}
-end
-
-local function new_signal(entity, sticker)
-    local signal = entity.surface.create_entity{name = "recycling-machine-indicator", position = get_signal_position_from(entity), force = entity.force}
-    signal.graphics_variation = sticker
-    signal.destructible = false
-    return signal
-end
-
 local local_set_sticker = function(recycling_machine, automated,keep)
 	if recycling_machine.signal ~= nil then
 		recycling_machine.signal.destroy() 
 	end
 	if keep then
 		if automated then
-			recycling_machine.signal = new_signal(recycling_machine.entity,1)
+			recycling_machine.signal = util.signal.set_new_signal(recycling_machine.entity,"recycling-machine-indicator",1)
 		else
-			recycling_machine.signal = new_signal(recycling_machine.entity,2)
+			recycling_machine.signal = util.signal.set_new_signal(recycling_machine.entity,"recycling-machine-indicator",2)
 		end
 	end
 end
@@ -183,7 +161,7 @@ local local_recycling_tick = function()
 					if recycling_machine.automated == true then
 						local recipe = local_recycling_machine_process(recycling_machine.entity)
 						if recipe ~= nil then								
-							recycling_machine.entity.set_recipe(recipe)
+							util.try_set_recipe(recycling_machine.entity,recipe)
 						end
 					end
 				end
@@ -222,11 +200,9 @@ local local_recycling_adjust = function(entity)
 		for index=1, #recycling_machines do local recycling_machine = recycling_machines[index]
 			if entity == recycling_machine.entity then
 				if recycling_machine.automated == false then
-					--util.print("Automation ON")
 					recycling_machine.automated = true
 					entity.operable = false
 				else
-					--util.print("Automation OFF")
 					recycling_machine.automated = false
 					entity.operable = true
 				end

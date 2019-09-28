@@ -1,4 +1,29 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.17.49
+  Changes:
+    - Added welcome screen as per suggestion by lamarias
+    - Generate raw material recipes for Super Material, will generate non vanilla resources
+
+---------------------------------------------------------------------------------------------------
+Version: 0.17.48
+  Features:
+    - Loot now can work with other mod entities and generates groups of loot based on groupings of item types
+    - Recycling machine can now recyle most things	
+  Changes:
+    - Code cleanup
+    - Fixing names and recipe categories
+    - More work on bots
+
+---------------------------------------------------------------------------------------------------
+Version: 0.17.47
+  Features:
+    - Added Super Material
+    - Added Super Boiler
+    - Added Super Material to Uranium 235 and crude oil recipes
+  Changes:
+    - Made droids visible on map
+
+---------------------------------------------------------------------------------------------------
 Version: 0.17.46
   Changes:
     - Updates to Name and Descriptions in Recipes

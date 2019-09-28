@@ -1,9 +1,8 @@
 ﻿if not util then util = {} end
 if not util.raw then util.raw = {} end
 if not util.table then util.table = {} end
+if not util.signal then util.signal = {} end
 if not util.types then require ("prototypes.scripts.types") end
-
-
 
 local local_convert_to_string = function (arg)
 	ToString = function(arg)
@@ -19,7 +18,8 @@ local local_convert_to_string = function (arg)
 		end
 		return res
 	end
-	return ToString(arg, "  ") end
+	return ToString(arg, "  ") 
+end
 
 local local_log = function(arg) log(local_convert_to_string(arg)) end
 
@@ -36,7 +36,8 @@ local local_print = function(arg,index)
 		end
 	else
 		local_log(arg)
-	end end
+	end 
+end
 
 local local_is_valid = function(entity) return (entity ~= nil and entity.valid) end
 
@@ -49,7 +50,8 @@ local local_ends_with = function(str, ending) return str ~=nil and ending ~=nil 
 local local_index_of = function(str,f_str)
 	local i = 0
 	i = string.find(str, f_str, 1, true)
-	return i end
+	return i 
+end
 
 local local_aggrigate_content = function(cx1,cx2)
 	local function add_from(tble, name)
@@ -96,9 +98,10 @@ local local_find_raw_entity_prototypes = function(proto_type)
 			end
 		end
 	end
-	return nil end
+	return nil 
+end
 
-	local local_find_raw_entity = function(name)
+local local_find_raw_entity = function(name)
 	for i,category in pairs (data.raw) do
 		if category ~= nil and type(category)=="table" then
 			for j,prototype in pairs (category) do					
@@ -106,7 +109,8 @@ local local_find_raw_entity_prototypes = function(proto_type)
 			end
 		end
 	end
-	return nil end
+	return nil 
+end
 
 local local_find_recipies_for = function(name)
 	local recipies = {}
@@ -142,19 +146,24 @@ local local_find_recipies_for = function(name)
 			end
 		end
 	end
-	return recipies end
+	return recipies
+end
 
 local local_table_length = function(table)
 	local count = 0
 	for k, v in next, table do count = count + 1 end
-	return count end
+	return count 
+end
 
 local local_table_index_of = function(table,value)
 	for k, v in pairs(table) do 
 		if v == value then 
 			return k 
 		end
-	end return nil end
+	end return nil 
+end
+
+local local_table_contains = function(table, value) return local_table_index_of(table,value) ~= nil end
 
 local local_table_remove = function(tble,value)
 	local new_table = {}
@@ -177,7 +186,8 @@ local local_table_remove_all = function(tbl,remove)
 	for i,j in pairs(remove) do
 		tbl = local_table_remove(tbl,j)
 	end
-	return tbl end
+	return tbl
+end
 
 local local_table_clone = function(t) -- deep-copy a table
     if type(t) ~= "table" then return t end
@@ -191,7 +201,8 @@ local local_table_clone = function(t) -- deep-copy a table
         end
     end
     setmetatable(target, meta)
-    return target end
+    return target 
+end
 
 local local_aggrigate_content = function(cx1,cx2)
 	local function add_from(tble, name)
@@ -227,7 +238,8 @@ local local_aggrigate_content = function(cx1,cx2)
 	end
 	local cret = {}
 	for _, x in pairs(ret) do cret[x.name]= x.count end
-	return cret end
+	return cret 
+end
 
 local local_distance = function( x1, y1, x2, y2 ) return math.sqrt( (x2-x1)^2 + (y2-y1)^2 ) end
 
@@ -256,7 +268,8 @@ local local_transfer_fluid = function(from,findex,to,tindex,amount,max)
 		from_boxes[1] = from_box
 		from_box.amount = to_box.amount + tfer
 		to_boxes[tindex] = from_box				
-	end end
+	end 
+end
 
 local local_transfer_fluid_and_convert = function(from,findex,to,tindex,amount,max,totype,temp)
 	if from == nil or to == nil then return end
@@ -291,42 +304,24 @@ local local_transfer_fluid_and_convert = function(from,findex,to,tindex,amount,m
 		if local_is_int(temp) then from_box.temperature = temp end
 		from_box.name = totype
 		to_boxes[tindex] = from_box
-	end end
+	end 
+end
 
---[[local local_get_connected_input_fluid = function(entity, box)	
-	if box > #entity.fluidbox then return nil end	
-	local inpipe = entity.fluidbox.get_connections(box)	
-	if inpipe == nil then return nil end
-	for i = 1, #inpipe do			
-		for j = 1, #inpipe[i] do
-			local isme = inpipe[i].get_connections(j)
-			if isme ~= nil then
-				for k = 1, #isme do
-					if isme[k].owner == entity then 						
-						return {entity = inpipe[i].owner, box = j} 
-					end
-				end
-			end				
-		end
-	end
-end]]
-
-local local_get_connected_input_fluid = function(entity, box)	
-	if not entity.fluidbox or box > #entity.fluidbox then return nil end	
-	--util.print(entity.neighbours)
-	local inpipe = entity.fluidbox.get_connections(box)	
-	if inpipe == nil then return nil end
-	--util.print(entity.fluidbox.get_prototype(box).entity.name)
-	for i = 1, #inpipe do local ip = inpipe[i]	
-		if ip ~= nil then			
-			for j = 1, #ip do local jp = ip[j]
-				if jp ~= nil and ip.owner.fluidbox then
-					for m = 1, #ip.owner.fluidbox do mp = ip.owner.fluidbox.get_connections(m)	
-						if mp ~= nil then
-							for mx = 1, #mp do mpx = mp[mx]
-								if mpx.owner == entity then
-									return {entity = ip.owner, box = m} 
-									--util.print(ip.owner.name)
+local local_get_connected_input_fluid = function(entity, box)
+	local call = function(e,b)
+		if not e.fluidbox or b > #e.fluidbox then return nil end	
+		local inpipe = e.fluidbox.get_connections(b)	
+		if inpipe == nil then return nil end
+		for i = 1, #inpipe do local ip = inpipe[i]	
+			if ip ~= nil then			
+				for j = 1, #ip do local jp = ip[j]
+					if jp ~= nil and ip.owner.fluidbox then
+						for m = 1, #ip.owner.fluidbox do mp = ip.owner.fluidbox.get_connections(m)	
+							if mp ~= nil then
+								for mx = 1, #mp do mpx = mp[mx]
+									if mpx.owner == e then
+										return {entity = ip.owner, box = m} 
+									end
 								end
 							end
 						end
@@ -335,8 +330,9 @@ local local_get_connected_input_fluid = function(entity, box)
 			end
 		end
 	end
+	local status, retval = pcall(call,entity,box)
+	if status == true then return retval end
 end
-
 
 local local_addable_fluid = function(entity, amount, index)
 	local cap = 100
@@ -344,7 +340,8 @@ local local_addable_fluid = function(entity, amount, index)
 		cap = entity.fluidbox[index].get_capacity(index) 
 	end
 	local avail = cap - entity.fluidbox[index].amount
-	return math.min(avail,math.abs(amount)) end
+	return math.min(avail,math.abs(amount)) 
+end
 
 local local_removeable_fluid = function(fluid, amount) return math.min(fluid.amount,math.abs(amount)) end
 
@@ -378,7 +375,6 @@ local local_change_fluidbox_fluid = function(entity,amount, pollution_source)
 				end
 				used = used + innerDelta 
 				if pollution_source ~= nil then
-					--player_print(current_fluid)
 					if util.types.is_polutant(current_fluid) == true then
 						pollution_source.surface.pollute(pollution_source.position,0.01)
 					end
@@ -429,11 +425,11 @@ local local_patch_technology = function(technology, recipe)
 			type="unlock-recipe",
 			recipe=recipe
 		})
-	end end
+	end 
+end
 
 local local_get_entity_size = function(entity)
-	if entity == nil then return {1,1} end
-	--util.print(entity.direction .. " " .. entity.prototype.selection_box["right_bottom"]["x"] .. " " .. entity.prototype.selection_box["right_bottom"]["y"])
+	if entity == nil then return {1,1} end	
 	if entity.prototype.selection_box ~= nil then				
 		local size = {
 				entity.prototype.selection_box["right_bottom"]["x"] - entity.prototype.selection_box["left_top"]["x"],
@@ -441,7 +437,8 @@ local local_get_entity_size = function(entity)
 		if entity.direction == 0 or entity.direction == 4 then return size end
 		return {size[2],size[1]}
 	end
-	return {1,1} end
+	return {1,1} 
+end
 
 local local_opposite_direction = function(direction)
 	if direction == defines.direction.north then return defines.direction.south end
@@ -452,8 +449,8 @@ local local_opposite_direction = function(direction)
 	if direction == defines.direction.southwest then return defines.direction.northeast end
 	if direction == defines.direction.west then return defines.direction.east end
 	if direction == defines.direction.northwest then return defines.direction.southeast end
-	return direction end
-
+	return direction 
+end
 
 local local_get_entities_to_northwest = function(entity,type)
 	local wh = local_get_entity_size(entity)
@@ -461,7 +458,8 @@ local local_get_entities_to_northwest = function(entity,type)
 	local w = 0.5*wh[1] --wh[1]/2
 	local h = 0.5*wh[2] --wh[2]/2
 	if type ~= nil then return entity.surface.find_entities_filtered{area = {{entity.position.x-w, entity.position.y-(h+0.5)}, {entity.position.x-(w+0.5), entity.position.y-h}}, type = type} end
-	return entity.surface.find_entities({{entity.position.x-w, entity.position.y-(h+0.5)}, {entity.position.x-(w+0.5), entity.position.y-h}}) end
+	return entity.surface.find_entities({{entity.position.x-w, entity.position.y-(h+0.5)}, {entity.position.x-(w+0.5), entity.position.y-h}}) 
+end
 
 local local_get_entities_to_northeast = function(entity,type)
 	local wh = local_get_entity_size(entity)
@@ -469,49 +467,56 @@ local local_get_entities_to_northeast = function(entity,type)
 	local w = 0.5*wh[1] --wh[1]/2
 	local h = 0.5*wh[2] --wh[2]/2
 	if type ~= nil then return entity.surface.find_entities_filtered{area = {{entity.position.x+w, entity.position.y-(h+0.5)}, {entity.position.x+(w+0.5), entity.position.y-h}}, type = type} end
-	return entity.surface.find_entities({{entity.position.x+w, entity.position.y-(h+0.5)}, {entity.position.x+(w+0.5), entity.position.y-h}}) end
+	return entity.surface.find_entities({{entity.position.x+w, entity.position.y-(h+0.5)}, {entity.position.x+(w+0.5), entity.position.y-h}}) 
+end
 
-local local_get_entities_to_north = function(entity,type)		
+local local_get_entities_to_north = function(entity,type)
 	local wh = local_get_entity_size(entity)	
 	local w = 0.5*wh[1] --wh[1]/2
 	local h = 0.5*wh[2] --wh[2]/2
 	if type ~= nil then return entity.surface.find_entities_filtered{area = {{entity.position.x-w, entity.position.y-(h+0.5)}, {entity.position.x+w, entity.position.y-h}}, type = type} end
-	return entity.surface.find_entities({{entity.position.x-w, entity.position.y-(h+0.5)}, {entity.position.x+w, entity.position.y-h}})	end
+	return entity.surface.find_entities({{entity.position.x-w, entity.position.y-(h+0.5)}, {entity.position.x+w, entity.position.y-h}})
+end
 
 local local_get_entities_to_south = function(entity,type)
 	local wh = local_get_entity_size(entity)
 	local w = 0.5*wh[1] --wh[1]/2
 	local h = 0.5*wh[2] --wh[2]/2
 	if type ~= nil then return entity.surface.find_entities_filtered{area = {{entity.position.x-w, entity.position.y+h}, {entity.position.x+w, entity.position.y+h+(0.5)}}, type = type} end
-	return entity.surface.find_entities({{entity.position.x-w, entity.position.y+h}, {entity.position.x+w, entity.position.y+h+(0.5)}}) end
+	return entity.surface.find_entities({{entity.position.x-w, entity.position.y+h}, {entity.position.x+w, entity.position.y+h+(0.5)}}) 
+end
 
 local local_get_entities_to_east = function(entity,type)
 	local wh = local_get_entity_size(entity)
 	local w = 0.5*wh[1] --wh[1]/2
 	local h = 0.5*wh[2] --wh[2]/2
 	if type ~= nil then return entity.surface.find_entities_filtered{area = {{entity.position.x+w, entity.position.y-h}, {entity.position.x+(w+0.5), entity.position.y+h}}, type = type} end
-	return entity.surface.find_entities({{entity.position.x+w, entity.position.y-h}, {entity.position.x+(w+0.5), entity.position.y+h}}) end
+	return entity.surface.find_entities({{entity.position.x+w, entity.position.y-h}, {entity.position.x+(w+0.5), entity.position.y+h}}) 
+end
 
 local local_get_entities_to_west = function(entity,type) 
 	local wh = local_get_entity_size(entity)
 	local w = 0.5*wh[1] --wh[1]/2
 	local h = 0.5*wh[2] --wh[2]/2
 	if type ~= nil then return entity.surface.find_entities_filtered{area = {{entity.position.x-(w+0.5), entity.position.y-h}, {entity.position.x-w, entity.position.y+h}}, type = type} end
-	return entity.surface.find_entities({{entity.position.x-(w+0.5), entity.position.y-h}, {entity.position.x-w, entity.position.y+h}}) end
+	return entity.surface.find_entities({{entity.position.x-(w+0.5), entity.position.y-h}, {entity.position.x-w, entity.position.y+h}}) 
+end
 
 local local_get_entities_to_southeast = function(entity,type)
 	local wh = local_get_entity_size(entity)
 	local w = 0.5*wh[1] --wh[1]/2
 	local h = 0.5*wh[2] --wh[2]/2
 	if type ~= nil then return entity.surface.find_entities_filtered{area = {{entity.position.x+w, entity.position.y-h}, {entity.position.x+(w+0.5), entity.position.y+(h+0.5)}}, type = type} end
-	return entity.surface.find_entities({{entity.position.x+w, entity.position.y-h}, {entity.position.x+(w+0.5), entity.position.y+(h+0.5)}}) end
+	return entity.surface.find_entities({{entity.position.x+w, entity.position.y-h}, {entity.position.x+(w+0.5), entity.position.y+(h+0.5)}}) 
+end
 
 local local_get_entities_to_southwest = function(entity,type)
 	local wh = local_get_entity_size(entity)
 	local w = 0.5*wh[1] --wh[1]/2
 	local h = 0.5*wh[2] --wh[2]/2
 	if type ~= nil then return entity.surface.find_entities_filtered{area = {{entity.position.x-w, entity.position.y-h}, {entity.position.x-(w+0.5), entity.position.y+(h+0.5)}}, type = type} end
-	return entity.surface.find_entities({{entity.position.x-w, entity.position.y-h}, {entity.position.x-(w+0.5), entity.position.y+(h+0.5)}}) end
+	return entity.surface.find_entities({{entity.position.x-w, entity.position.y-h}, {entity.position.x-(w+0.5), entity.position.y+(h+0.5)}})
+end
 
 local local_get_entities_to = function(direction, entity, type)
     local d = local_opposite_direction(direction)
@@ -523,7 +528,8 @@ local local_get_entities_to = function(direction, entity, type)
 	if d == defines.direction.southwest then return local_get_entities_to_southwest(entity,type) end
 	if d == defines.direction.west then return local_get_entities_to_west(entity,type) end
 	if d == defines.direction.northwest then return local_get_entities_to_northwest(entity,type) end
-	return {} end
+	return {} 
+end
 
 local local_get_entity_size = function(entity)
 	if entity == nil then return {1,1} end
@@ -532,7 +538,8 @@ local local_get_entity_size = function(entity)
 				entity.prototype.selection_box["right_bottom"]["x"] - entity.prototype.selection_box["left_top"]["x"],
 				entity.prototype.selection_box["right_bottom"]["y"] - entity.prototype.selection_box["left_top"]["y"]}
 	end
-	return {1,1} end
+	return {1,1} 
+end
 
 local local_get_entities_around = function(entity, tiles,type,name)	
 	local wh = local_get_entity_size(entity)
@@ -558,8 +565,42 @@ local local_get_entities_around = function(entity, tiles,type,name)
 			break
 		end	
 	end
-	return entities	end
+	return entities	
+end
 
+local local_try_set_recipe = function(entity,recipe)
+	local call = function(e,f)
+		e.set_recipe(f)
+	end
+	local status, retval = pcall(call,entity,recipe)
+	if status == true then return end
+end
+
+local local_get_signal_position_from = function(entity)
+    local left_top = entity.prototype.selection_box.left_top
+    local right_bottom = entity.prototype.selection_box.right_bottom
+    --Calculating center of the selection box
+    local center = (left_top.x + right_bottom.x) / 2
+    local width = math.abs(left_top.x) + right_bottom.x
+    -- Set Shift here if needed, The offset looks better as it doesn't cover up fluid input information
+    -- Ignore shift for 1 tile entities
+    local x = (width > 1.25 and center - 0.5) or center
+    local y = right_bottom.y
+    --Calculating bottom center of the selection box
+    return {x = entity.position.x + x, y = entity.position.y + y}
+end
+
+local local_set_new_signal = function(entity, name, variation)
+    local signal = entity.surface.create_entity{name = name, position = local_get_signal_position_from(entity), force = entity.force}
+    signal.graphics_variation = variation
+    signal.destructible = false
+    return signal
+end
+
+util.signal.get_posistion_from = local_get_signal_position_from
+util.signal.set_new_signal = local_set_new_signal
+
+util.try_set_recipe = local_try_set_recipe
 util.convert_to_string = local_convert_to_string
 util.log = local_log
 util.print = local_print
@@ -574,6 +615,7 @@ util.raw.find_recipies_for = local_find_recipies_for
 util.table.length = local_table_length
 util.table.index_of = local_table_index_of
 util.table.remove = local_table_remove
+util.table.contains = local_table_contains
 util.table.clone = local_table_clone
 util.table.remove_all = local_table_remove_all
 util.table.aggrigate = local_aggrigate_content
