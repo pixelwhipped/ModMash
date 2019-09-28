@@ -1,4 +1,17 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.17.51
+  Changes:
+    - Utils moved to modmash.util and used functions made local in each file using it
+    - Welcome message only shows once
+  Bugfixes:
+    - Found few places where code was calling something I had re-named
+
+---------------------------------------------------------------------------------------------------
+Version: 0.17.50
+  Bugfix:
+    - droid modifier nil bug
+
+---------------------------------------------------------------------------------------------------
 Version: 0.17.49
   Changes:
     - Added welcome screen as per suggestion by lamarias

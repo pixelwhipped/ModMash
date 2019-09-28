@@ -1,4 +1,7 @@
-﻿if not util then require("prototypes.scripts.util") end
+﻿if not modmash or not modmash.util then require("prototypes.scripts.util") end
+
+local patch_technology  = modmash.util.patch_technology
+
 
 local local_create_belt_animation_set = function(name)
 	local belt_animation_set = 
@@ -129,7 +132,7 @@ local local_create_mini_loader = function(name,max_health,filter_count,localised
 			}
 		  }
 		}}
-	--entity =util.table.deepcopy(data.raw["loader"]["loader"])
+
 	local item = {
 		type = "item",
 		name = name,
@@ -153,7 +156,7 @@ local local_create_mini_loader = function(name,max_health,filter_count,localised
 	data:extend({item})
 	data:extend({entity})
 	data:extend({recipe})	
-	util.patch_technology(technology,name)
+	patch_technology(technology,name)
 end
 
 local local_create_loader = function(name,max_health,filter_count,localised_name,localised_description,speed,belt_animation_set,order,ingredients,technology,next_upgrade,category)
@@ -255,7 +258,7 @@ local local_create_loader = function(name,max_health,filter_count,localised_name
 			}
 		  }
 		}}
-	--entity =util.table.deepcopy(data.raw["loader"]["loader"])
+
 	local item = {
 		type = "item",
 		name = name,
@@ -279,7 +282,7 @@ local local_create_loader = function(name,max_health,filter_count,localised_name
 	data:extend({item})
 	data:extend({entity})
 	data:extend({recipe})	
-	util.patch_technology(technology,name)
+	patch_technology(technology,name)
 end
 
 local local_create_splitter = function(name,max_health,localised_name,localised_description,next_upgrade,speed,belt_animation_set,order,ingredients,technology)
@@ -420,7 +423,7 @@ local local_create_splitter = function(name,max_health,localised_name,localised_
 	data:extend({item})
 	data:extend({entity})
 	data:extend({recipe})	
-	util.patch_technology(technology,name)
+	patch_technology(technology,name)
 end
 
 local local_create_belt_underground = function(name,max_health,max_distance,speed,localised_name,localised_description,next_upgrade,belt_animation_set,order,ingredients,technology)
@@ -611,7 +614,7 @@ local local_create_belt_underground = function(name,max_health,max_distance,spee
 	data:extend({item})
 	data:extend({entity})
 	data:extend({recipe})	
-	util.patch_technology(technology,name)
+	patch_technology(technology,name)
 	end
 
 local local_create_belt = function(name,max_health,speed,localised_name,localised_description,order,ingredients,technology,next_upgrade)
@@ -676,7 +679,7 @@ local local_create_belt = function(name,max_health,speed,localised_name,localise
 	data:extend({item})
 	data:extend({entity})
 	data:extend({recipe})	
-	util.patch_technology(technology,name)
+	patch_technology(technology,name)
 	end
 
 local local_underground_belts = {
@@ -955,24 +958,24 @@ if data_final_fixes then
 	data.raw["splitter"]["express-splitter"].next_upgrade = "high-speed-splitter"
 else
 	for index=1, #local_belts do local belt = local_belts[index]
-		util.log("Creating Belt " .. belt.name)
+		modmash.util.log("Creating Belt " .. belt.name)
 		local_create_belt(belt.name,belt.max_health,belt.speed,belt.localised_name,belt.localised_description,belt.order,belt.ingredients,belt.technology,belt.next_upgrade)
 	end
 	for index=1, #local_underground_belts do local belt = local_underground_belts[index]
-		util.log("Creating Underground Belt " .. belt.name)
+		modmash.util.log("Creating Underground Belt " .. belt.name)
 		local_create_belt_underground(belt.name,belt.max_health,belt.max_distance,belt.speed,belt.localised_name,belt.localised_description,belt.next_upgrade,belt.belt_animation_set,belt.order,belt.ingredients,belt.technology)
 	end
 	for index=1, #local_splitters do local splitter = local_splitters[index]
-		util.log("Creating Splitter " .. splitter.name)
+		modmash.util.log("Creating Splitter " .. splitter.name)
 		local_create_splitter(splitter.name,splitter.max_health,splitter.localised_name,splitter.localised_description,splitter.next_upgrade,splitter.speed,splitter.belt_animation_set,splitter.order,splitter.ingredients,splitter.technology)
 	end
 	
 	for index=1, #local_loaders do local loader = local_loaders[index]
-		util.log("Creating Loader " .. loader.name)		
+		modmash.util.log("Creating Loader " .. loader.name)		
 		local_create_loader(loader.name,loader.max_health,loader.filter_count,loader.localised_name,loader.localised_description,loader.speed,loader.belt_animation_set, loader.order,loader.ingredients,loader.technology,loader.next_upgrade,loader.category)
 	end
 	for index=1, #local_mini_loaders do local loader = local_mini_loaders[index]
-		util.log("Creating Loader " .. loader.name)		
+		modmash.util.log("Creating Loader " .. loader.name)		
 		local_create_mini_loader(loader.name,loader.max_health,loader.filter_count,loader.localised_name,loader.localised_description,loader.speed,loader.belt_animation_set, loader.order,loader.ingredients,loader.technology,loader.next_upgrade,loader.category)
 	end
 end

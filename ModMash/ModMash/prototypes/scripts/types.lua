@@ -1,9 +1,15 @@
-﻿if not util then require("prototypes.scripts.util") end
+﻿if not modmash or not modmash.util then require("prototypes.scripts.util") end
+
+local starts_with  = modmash.util.starts_with
+local ends_with  = modmash.util.ends_with
+
+local biome_types = nil
+local non_pollutant = nil
 
 log("Creating Types")
 
 local local_set_types_biome = function() 
-  util.types.biome_types = {
+  biome_types = {
     {name = "basic", factor = 1},
     {name = "water", factor = 1.5},
     {name = "desert", factor = 0.5},
@@ -12,18 +18,20 @@ local local_set_types_biome = function()
     {name = "ice", factor = 0.75},
     {name = "volcanic", factor = 0.25}
   } 
+  modmash.util.types.biome_types = biome_types
 end
  
 local local_set_types_non_pollutant = function ()
-  util.types.non_pollutant = {
+  non_pollutant = {
     { name= "water", polutant = true},
     { name= "fish-oil", polutant = true},
     { name= "steam", polutant = true}
   } 
+  modmash.util.types.non_pollutant = non_pollutant
 end
  
 local local_is_polutant = function(surface)
-  for _, v in ipairs(util.types.non_pollutant) do  
+  for _, v in ipairs(non_pollutant) do  
     if v.name == surface then return not v.polutant end
   end
   return true 
@@ -46,7 +54,7 @@ local local_create_biome_recipies = function()
 			hidden = true
 		}
     end  
-	for _,biome in pairs(util.types.biome_types) do
+	for _,biome in pairs(biome_types) do
 		data:extend({create_recipe_for_biome(biome.name, biome.factor)})
 	end 
 end
@@ -71,7 +79,7 @@ end
 local local_create_super_material_conversions = function()
 	for name,item in pairs(data.raw["resource"]) do			
 		
-		if item ~= nil and item.name ~= nil and item.icon ~= false and util.starts_with(item.name,"creative-mod") == false and data.raw["fluid"][item.name] == nil and data.raw["item"][item.name] ~= nil then					
+		if item ~= nil and item.name ~= nil and item.icon ~= false and starts_with(item.name,"creative-mod") == false and data.raw["fluid"][item.name] == nil and data.raw["item"][item.name] ~= nil then					
 			local m = data.raw["item"][item.name].stack_size
 			if m == nil then m = 50 end
 			local recipe = {
@@ -430,7 +438,7 @@ local local_create_recycle_recipies = function(source)
 		recipies[#recipies+1] = recipe
 	end
 	for k=1, #recipies do local recipe = recipies[k];	
-	    if recipe.hidden or recipe.hide_from_player_crafting or util.starts_with(recipe.name,"creative-mod") then
+	    if recipe.hidden or recipe.hide_from_player_crafting or starts_with(recipe.name,"creative-mod") then
 			log("Skipping recyling " .. recipe.name)
 		else
 			local_create_recylce_item(recipe)
@@ -626,17 +634,17 @@ local local_update_recipies = function()
 	remove_ingredient_from_recipie("inserter","iron-plate")
 
 	for name, recipe in pairs(data.raw.recipe) do
-		if recipe ~= nil and recipe.name ~= nil and util.ends_with(recipe.name,"science-pack") then
+		if recipe ~= nil and recipe.name ~= nil and ends_with(recipe.name,"science-pack") then
 			add_ingredient_to_recipe(recipe.name,{name = "glass", amount = 1})	
 		end
 	end
 end
 
-if not util.types then   
-    util.types = {}
-    util.types.is_polutant = local_is_polutant
-    util.types.set_types_biome = local_set_types_biome
-    util.types.set_types_non_pollutant = local_set_types_non_pollutant
+if not modmash.util.types then   
+    modmash.util.types = {}
+    modmash.util.types.is_polutant = local_is_polutant
+    --modmash.util.types.set_types_biome = local_set_types_biome
+    --modmash.util.types.set_types_non_pollutant = local_set_types_non_pollutant
     local_set_types_biome()
     local_set_types_non_pollutant() 
 end

@@ -1,4 +1,6 @@
-﻿if not util then require("prototypes.scripts.util") end
+﻿if not modmash or not modmash.util then require("prototypes.scripts.util") end
+
+local patch_technology  = modmash.util.patch_technology
 
 local valve_levels = {
     type = "simple-entity-with-force",
@@ -170,7 +172,7 @@ local local_create_valve = function(name,localised_name,localised_description,or
 	data:extend({item})
 	data:extend({entity})
 	data:extend({recipe})	
-	util.patch_technology(technology,name)
+	patch_technology(technology,name)
 	return entity
 end
 
@@ -292,6 +294,5 @@ local local_valves = {
 	}	}
 
 for index=1, #local_valves do local valve = local_valves[index]
-	util.log("Creating Valve " .. valve.name)
 	local_create_valve(valve.name,valve.localised_name,valve.localised_description,valve.order,valve.ingredients,valve.technology, valve.energy_source, valve.energy_usage, valve.fixed_recipe,valve.light)
 end

@@ -1,4 +1,10 @@
-﻿if not util then require("prototypes.scripts.util") end
+﻿if not modmash or not modmash.util then require("prototypes.scripts.util") end
+
+local get_entities_around  = modmash.util.get_entities_around
+local aggrigate_content  = modmash.util.aggrigate_content
+local set_new_signal  = modmash.util.signal.set_new_signal
+local try_set_recipe  = modmash.util.try_set_recipe
+local starts_with  = modmash.util.starts_with
 
 local local_get_recyle_recipe = function(name)
 	for _, player in pairs (game.players) do
@@ -12,7 +18,7 @@ local local_get_recyle_recipe = function(name)
 end
 
 local local_recycling_machine_process = function(entity)
-	local loaders = util.get_entities_around(entity,1)
+	local loaders = get_entities_around(entity,1)
 	local storage = {}
 	local entities = {}
 	local filters = {}
@@ -43,7 +49,7 @@ local local_recycling_machine_process = function(entity)
 		end		
 		for index, sto in pairs(storage) do			
 			if (sto.prototype.type == "transport-belt" or entity.prototype.type == "underground-belt")  then				
-				local contents = util.aggrigate_content(sto.get_transport_line(1),sto.get_transport_line(2))																			
+				local contents = aggrigate_content(sto.get_transport_line(1),sto.get_transport_line(2))																			
 				for name, count in pairs(contents) do	--for _, x in pairs(contents) do			
 					local rc = local_get_recyle_recipe(name)					
 					if rc ~= nil then
@@ -117,9 +123,9 @@ local local_set_sticker = function(recycling_machine, automated,keep)
 	end
 	if keep then
 		if automated then
-			recycling_machine.signal = util.signal.set_new_signal(recycling_machine.entity,"recycling-machine-indicator",1)
+			recycling_machine.signal = set_new_signal(recycling_machine.entity,"recycling-machine-indicator",1)
 		else
-			recycling_machine.signal = util.signal.set_new_signal(recycling_machine.entity,"recycling-machine-indicator",2)
+			recycling_machine.signal = set_new_signal(recycling_machine.entity,"recycling-machine-indicator",2)
 		end
 	end
 end
@@ -143,7 +149,7 @@ local init = function()
 	if game.players[1] == nil then return init end
 	if global.modmash.recycling_machines == nil then global.modmash.recycling_machines = {} end	
 	for name, recipe in pairs(game.players[1].force.recipes) do 
-		if util.starts_with(recipe.name,"craft-") then
+		if starts_with(recipe.name,"craft-") then
 			recipe.enabled = true
 		end
 	end
@@ -161,7 +167,7 @@ local local_recycling_tick = function()
 					if recycling_machine.automated == true then
 						local recipe = local_recycling_machine_process(recycling_machine.entity)
 						if recipe ~= nil then								
-							util.try_set_recipe(recycling_machine.entity,recipe)
+							try_set_recipe(recycling_machine.entity,recipe)
 						end
 					end
 				end

@@ -1,14 +1,17 @@
-﻿if not util then require("prototypes.scripts.util") end
+﻿if not modmash or not modmash.util then require("prototypes.scripts.util") end
+
+local get_entities_to  = modmash.util.get_entities_to
+local change_fluidbox_fluid  = modmash.util.change_fluidbox_fluid
 
 local init = function()	
 	if global.modmash.discharge_pumps == nil then global.modmash.discharge_pumps = {} end	
 	return nil end
 
 local local_discharge_pump_process = function(entity)
-	local pumps = util.get_entities_to(entity.direction,entity)
+	local pumps = get_entities_to(entity.direction,entity)
 	if #pumps > 0 then	
 		for index=1, #pumps do local connection = pumps[index]
-			util.change_fluidbox_fluid(connection,entity.prototype.pumping_speed,entity)
+			change_fluidbox_fluid(connection,entity.prototype.pumping_speed,entity)
 		end
 		local fluid =  entity.fluidbox[1]
 		if fluid ~= nil then

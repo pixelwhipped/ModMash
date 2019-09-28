@@ -1,8 +1,12 @@
-﻿if not util then util = {} end
-if not util.raw then util.raw = {} end
-if not util.table then util.table = {} end
-if not util.signal then util.signal = {} end
-if not util.types then require ("prototypes.scripts.types") end
+﻿if not modmash then modmash = {} end
+if not modmash.util then modmash.util = {} end
+if not modmash.util.raw then modmash.util.raw = {} end
+if not modmash.util.table then modmash.util.table = {} end
+if not modmash.util.signal then modmash.util.signal = {} end
+if not modmash.util.types then require ("prototypes.scripts.types") end
+
+local is_polutant = modmash.util.types.is_polutant
+local biome_types = modmash.util.types.biome_types
 
 local local_convert_to_string = function (arg)
 	ToString = function(arg)
@@ -195,7 +199,7 @@ local local_table_clone = function(t) -- deep-copy a table
     local target = {}
     for k, v in pairs(t) do
         if type(v) == "table" then
-            target[k] = util.table.clone(v)
+            target[k] = local_table_clone(v)
         else
             target[k] = v
         end
@@ -375,7 +379,7 @@ local local_change_fluidbox_fluid = function(entity,amount, pollution_source)
 				end
 				used = used + innerDelta 
 				if pollution_source ~= nil then
-					if util.types.is_polutant(current_fluid) == true then
+					if is_polutant(current_fluid) == true then
 						pollution_source.surface.pollute(pollution_source.position,0.01)
 					end
 				end
@@ -398,7 +402,7 @@ local local_get_biome = function(entity)
 	local counts = {}
 	counts["basic"] = #tiles
 	for _,tile in pairs(tiles) do
-		for type,fac in pairs(util.types.biome_types) do
+		for type,fac in pairs(biome_types) do
 			if type ~= "basic" and string.find(tile.name, type) then
 				counts["basic"] = counts["basic"]-1
 				counts[type] = counts[type] and counts[type]+1 or 1
@@ -597,47 +601,47 @@ local local_set_new_signal = function(entity, name, variation)
     return signal
 end
 
-util.signal.get_posistion_from = local_get_signal_position_from
-util.signal.set_new_signal = local_set_new_signal
+modmash.util.signal.get_posistion_from = local_get_signal_position_from
+modmash.util.signal.set_new_signal = local_set_new_signal
 
-util.try_set_recipe = local_try_set_recipe
-util.convert_to_string = local_convert_to_string
-util.log = local_log
-util.print = local_print
-util.is_valid = local_is_valid
-util.is_int = local_is_int
-util.starts_with = local_starts_with
-util.ends_with = local_ends_with
-util.index_of = local_index_of
-util.aggrigate_content = local_aggrigate_content
-util.raw.find_raw_entity = local_find_raw_entity
-util.raw.find_recipies_for = local_find_recipies_for
-util.table.length = local_table_length
-util.table.index_of = local_table_index_of
-util.table.remove = local_table_remove
-util.table.contains = local_table_contains
-util.table.clone = local_table_clone
-util.table.remove_all = local_table_remove_all
-util.table.aggrigate = local_aggrigate_content
-util.distance = local_distance
-util.patch_technology = local_patch_technology
-util.transfer_fluid = local_transfer_fluid
-util.transfer_fluid_and_convert = local_transfer_fluid_and_convert
-util.get_connected_input_fluid = local_get_connected_input_fluid
-util.get_biome = local_get_biome
-util.get_entity_size = local_get_entity_size
+modmash.util.try_set_recipe = local_try_set_recipe
+modmash.util.convert_to_string = local_convert_to_string
+modmash.util.log = local_log
+modmash.util.print = local_print
+modmash.util.is_valid = local_is_valid
+modmash.util.is_int = local_is_int
+modmash.util.starts_with = local_starts_with
+modmash.util.ends_with = local_ends_with
+modmash.util.index_of = local_index_of
+modmash.util.aggrigate_content = local_aggrigate_content
+modmash.util.raw.find_raw_entity = local_find_raw_entity
+modmash.util.raw.find_recipies_for = local_find_recipies_for
+modmash.util.table.length = local_table_length
+modmash.util.table.index_of = local_table_index_of
+modmash.util.table.remove = local_table_remove
+modmash.util.table.contains = local_table_contains
+modmash.util.table.clone = local_table_clone
+modmash.util.table.remove_all = local_table_remove_all
+modmash.util.table.aggrigate = local_aggrigate_content
+modmash.util.distance = local_distance
+modmash.util.patch_technology = local_patch_technology
+modmash.util.transfer_fluid = local_transfer_fluid
+modmash.util.transfer_fluid_and_convert = local_transfer_fluid_and_convert
+modmash.util.get_connected_input_fluid = local_get_connected_input_fluid
+modmash.util.get_biome = local_get_biome
+modmash.util.get_entity_size = local_get_entity_size
 
-util.change_fluidbox_fluid = local_change_fluidbox_fluid
+modmash.util.change_fluidbox_fluid = local_change_fluidbox_fluid
 
-util.opposite_direction = local_opposite_direction
-util.get_entities_to = local_get_entities_to
-util.get_entities_to_northwest = local_get_entities_to_northwest
-util.get_entities_to_norteast = local_get_entities_to_norteast
-util.get_entities_to_north = local_get_entities_to_north
-util.get_entities_to_east = local_get_entities_to_east
-util.get_entities_to_south = local_get_entities_to_south
-util.get_entities_to_west = local_get_entities_to_west
-util.get_entities_to_southeast = local_get_entities_to_southeast
-util.get_entities_to_southwest = local_get_entities_to_southwest
-util.get_entities_around = local_get_entities_around
-util.get_entity_size = local_get_entity_size
+modmash.util.opposite_direction = local_opposite_direction
+modmash.util.get_entities_to = local_get_entities_to
+modmash.util.get_entities_to_northwest = local_get_entities_to_northwest
+modmash.util.get_entities_to_norteast = local_get_entities_to_norteast
+modmash.util.get_entities_to_north = local_get_entities_to_north
+modmash.util.get_entities_to_east = local_get_entities_to_east
+modmash.util.get_entities_to_south = local_get_entities_to_south
+modmash.util.get_entities_to_west = local_get_entities_to_west
+modmash.util.get_entities_to_southeast = local_get_entities_to_southeast
+modmash.util.get_entities_to_southwest = local_get_entities_to_southwest
+modmash.util.get_entities_around = local_get_entities_around
+modmash.util.get_entity_size = local_get_entity_size

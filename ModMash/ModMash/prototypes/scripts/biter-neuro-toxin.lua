@@ -1,4 +1,7 @@
-﻿if not util then require("prototypes.scripts.util") end
+﻿if not modmash or not modmash.util then require("prototypes.scripts.util") end
+
+local starts_with  = modmash.util.starts_with
+
 if global.modmash.biter_nero_toxin_research_modifier == nil then global.modmash.biter_nero_toxin_research_modifier = 25 end
 
 
@@ -16,7 +19,7 @@ local local_toxin_added = function(ent)
 end
 
 local local_toxin_research = function(event)		
-	if util.starts_with(event.research.name,"enhance-biter-neuro-toxin-range") then
+	if starts_with(event.research.name,"enhance-biter-neuro-toxin-range") then
 		if global.modmash.biter_nero_toxin_research_modifier == nil then global.modmash.biter_nero_toxin_research_modifier = 26 end
 		global.modmash.biter_nero_toxin_research_modifier =  global.modmash.biter_nero_toxin_research_modifier * 1.25
     end	

@@ -1,4 +1,6 @@
-﻿if not util then require("prototypes.scripts.util") end
+﻿if not modmash or not modmash.util then require("prototypes.scripts.util") end
+
+local is_valid  = modmash.util.is_valid
 
 local init = function()	
 	if global.modmash.grenade_targets == nil then global.modmash.grenade_targets = {} end	
@@ -15,7 +17,7 @@ local local_check_resource = function()
 			local entities = v.target.surface.find_entities_filtered{area = {{v.target.position.x-0.5, v.target.position.y-0.5}, {v.target.position.x-1, v.target.position.y+1}}}
 			for i, ent in pairs(entities) do
 				if ent.name == "small-scorchmark" then
-					if util.is_valid(v.target) then
+					if is_valid(v.target) then
 						v.target.surface.spill_item_stack(ent.position, {name=v.target.name, count=50})
 						local r = v.target.amount - math.min(50,v.target.amount);
 						if r == 0 then

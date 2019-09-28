@@ -1,16 +1,21 @@
-﻿if not util then require("prototypes.scripts.util") end
+﻿if not modmash or not modmash.util then require("prototypes.scripts.util") end
 
+local is_valid  = modmash.util.is_valid
+local get_connected_input_fluid  = modmash.util.get_connected_input_fluid
+local set_new_signal  = modmash.util.signal.set_new_signal
+local try_set_recipe  = modmash.util.try_set_recipe
+local table_contains = modmash.util.table.contains
 local valve_types = {"modmash-super-boiler-valve", "mini-boiler", "modmash-check-valve", "modmash-overflow-valve", "condenser-valve", "modmash-underflow-valve"}		
 
 local local_get_connected_input_fluid_for_valve = function(valve,box)
 	if box == 1 then
-		if valve.box1 ~= nil and util.is_valid(valve.box1.entity) then return valve.box1
-		else valve.box1 = util.get_connected_input_fluid(valve.entity,box) end
+		if valve.box1 ~= nil and is_valid(valve.box1.entity) then return valve.box1
+		else valve.box1 = get_connected_input_fluid(valve.entity,box) end
 	elseif box == 2 then
-		if valve.box2 ~= nil and util.is_valid(valve.box2.entity) then return valve.box2
-		else valve.box2 = util.get_connected_input_fluid(valve.entity,box) end
+		if valve.box2 ~= nil and is_valid(valve.box2.entity) then return valve.box2
+		else valve.box2 = get_connected_input_fluid(valve.entity,box) end
 	else
-		return util.get_connected_input_fluid(valve.entity,box)
+		return get_connected_input_fluid(valve.entity,box)
 	end
 end
 
@@ -19,7 +24,7 @@ local local_set_sticker = function(valve, variation)
 		valve.signal.destroy() 
 	end
 	if variation > 0 then
-		valve.signal = util.signal.set_new_signal(valve.entity,"valve-indicator",variation)
+		valve.signal = set_new_signal(valve.entity,"valve-indicator",variation)
 	end
 end
 
@@ -91,7 +96,7 @@ local local_check_valve_process = function(valve)
 		local current = entity.get_recipe()		
 		if current == nil then
 		--	log("Phase F")
-			util.try_set_recipe(entity,valve_fluid)
+			try_set_recipe(entity,valve_fluid)
 		elseif valve_fluid ~= current.name then
 		--	log("Phase G")
 			local_clear_fluid_recipe(entity)
@@ -124,7 +129,7 @@ local local_overflow_valve_process = function(valve)
 			if fluid.amount == 0 then
 				local_clear_fluid_recipe(entity)
 			elseif current == nil then
-				util.try_set_recipe(entity,valve_fluid)
+				try_set_recipe(entity,valve_fluid)
 			elseif current.name ~= valve_fluid then
 				local_clear_fluid_recipe(entity)
 			end	
@@ -156,7 +161,7 @@ local local_undeflow_valve_process = function(valve)
 			if fluid.amount == 0 then
 				local_clear_fluid_recipe(entity)
 			elseif current == nil then
-				util.try_set_recipe(entity,valve_fluid)
+				try_set_recipe(entity,valve_fluid)
 			elseif current.name ~= valve_fluid then
 				local_clear_fluid_recipe(entity)
 			end	
@@ -171,7 +176,7 @@ end
 local local_mini_boiler_process = function(valve)
 	local entity = valve.entity
 	if not entity.is_crafting() then return end
-	local outpipe = util.get_connected_input_fluid(entity,2)
+	local outpipe = get_connected_input_fluid(entity,2)
 	if outpipe ~= nil then
 		if entity.fluidbox[2] ~= nil then
 			local t = entity.fluidbox[2]
@@ -188,7 +193,7 @@ local local_super_boiler_process = function(valve)
 	local entity = valve.entity
 	if not entity.is_crafting() then return end
 	
-	local outpipe = util.get_connected_input_fluid(entity,2)
+	local outpipe = get_connected_input_fluid(entity,2)
 	if outpipe ~= nil then
 		if entity.fluidbox[2] ~= nil then
 			local t = entity.fluidbox[2]
@@ -218,7 +223,7 @@ local local_remove = function(entity)
 end
 
 local local_valve_removed = function(entity)
-	if util.table.contains(valve_types,entity.name) then	
+	if table_contains(valve_types,entity.name) then	
 		local_remove(entity)
 	end
 end
@@ -243,7 +248,7 @@ local local_valves_tick = function()
 end
 
 local local_valve_added = function(entity)
-	if util.table.contains(valve_types,entity.name) then		
+	if table_contains(valve_types,entity.name) then		
 		detail = {
 			entity = entity,
 			value = 0.75,

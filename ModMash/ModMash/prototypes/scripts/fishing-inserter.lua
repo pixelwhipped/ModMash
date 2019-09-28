@@ -1,24 +1,27 @@
-﻿if not util then require("prototypes.scripts.util") end
+﻿if not modmash or not modmash.util then require("prototypes.scripts.util") end
+
+local distance  = modmash.util.distance
+local get_entities_around  = modmash.util.get_entities_around
 
 local init = function()	
 	if global.modmash.fishing_inserters == nil then global.modmash.fishing_inserters = {} end	
 	return nil end
 
 local local_try_pickup_fish_at_position = function(inserter,entity)	
-	if #inserter.held_stack == 0 and util.distance(inserter.position.x,inserter.position.y,entity.position.x,entity.position.y) <= 2 then
+	if #inserter.held_stack == 0 and distance(inserter.position.x,inserter.position.y,entity.position.x,entity.position.y) <= 2 then
 		inserter.pickup_position = {
 			x = entity.position.x,
 			y = entity.position.y
 		}
 		inserter.direction = inserter.direction
-		if util.distance(inserter.held_stack_position.x,inserter.held_stack_position.y,entity.position.x,entity.position.y) <= 0.2 then
+		if distance(inserter.held_stack_position.x,inserter.held_stack_position.y,entity.position.x,entity.position.y) <= 0.2 then
 			entity.destroy()
 			inserter.held_stack.set_stack({name="raw-fish", count=1})
 		end
 	end end
 
 local local_fishing_inserter_process = function(entity)    	
-	local fish = util.get_entities_around(entity,8)
+	local fish = get_entities_around(entity,8)
 	local fish_count = 0
 	local spawner = nil
 	local target = nil
@@ -28,7 +31,7 @@ local local_fishing_inserter_process = function(entity)
 		for i, ent in pairs(fish) do					
 			if ent.prototype.name == "fish" then	
 				fish_count = fish_count + 1	
-				local dist = util.distance(entity.held_stack_position.x,entity.held_stack_position.y,ent.position.x,ent.position.y)
+				local dist = distance(entity.held_stack_position.x,entity.held_stack_position.y,ent.position.x,ent.position.y)
 				if dist > current_dist then
 					current_dist = dist
 					spawner = ent
@@ -103,5 +106,5 @@ if modmash.ticks ~= nil then
 		table.insert(modmash.on_remove,local_fishing_inserter_removed)	
 end
 
-fishing_inserter_removed = local_fishing_inserter_removed
-fishing_inserter_added = local_fishing_inserter_added
+--fishing_inserter_removed = local_fishing_inserter_removed
+--fishing_inserter_added = local_fishing_inserter_added
