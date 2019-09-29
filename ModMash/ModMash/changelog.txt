@@ -1,4 +1,9 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.17.53
+  Bugfixes:
+    - nill alert returned, detected by BX442
+
+---------------------------------------------------------------------------------------------------
 Version: 0.17.52
   Changes:
     - Added a start with assembly machine for creating silicates needed for glas without the need to hand craft

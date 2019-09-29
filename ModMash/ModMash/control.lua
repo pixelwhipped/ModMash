@@ -211,11 +211,13 @@ script.on_event(defines.events.on_tick, function()
 		local alerts = game.players[1].get_alerts{}
 		if #alerts>0 then
 			for k=1, #alerts do local v = alerts[k] 
-				for j=1, #v do local w = v[j] 
-					for l=1, #w do local x = w[l] 
-						if  x~= nil and x.target~=nil then
-							if (x.target.name ~= nil and starts_with(x.target.name,"biter")) or x.target.prototype.subgroup.name=="enemies" then
-								game.players[1].remove_alert{entity = x.target}
+				if v ~= nil then
+					for j=1, #v do local w = v[j] 
+						for l=1, #w do local x = w[l] 
+							if  x~= nil and x.target~=nil then
+								if (x.target.name ~= nil and starts_with(x.target.name,"biter")) or x.target.prototype.subgroup.name=="enemies" then
+									game.players[1].remove_alert{entity = x.target}
+								end
 							end
 						end
 					end
