@@ -38,7 +38,7 @@ local build_events = {defines.events.on_built_entity, defines.events.on_robot_bu
 local remove_events = {defines.events.on_entity_died,defines.events.on_robot_pre_mined,defines.events.on_robot_mined_entity,defines.events.on_pre_player_mined_entity,defines.events.on_player_mined_entity} --,defines.events.on_player_mined_tile, defines.events.on_robot_mined_tile}
 local item_pick_up_events = {defines.events.on_picked_up_item,defines.events.on_player_mined_item,defines.events.on_robot_mined}
 
-local loot_probability = 12	
+local loot_probability = 12
 local local_on_added = function(event)	
 	
 	local entity = event.created_entity
@@ -114,12 +114,71 @@ local local_on_gui_click = function(event)
   end
 end
 
---[[local local_check_pollution = function()
-	if game.forces["enemy"].evolution_factor == 0 then return end
-	for _, surface in pairs(game.surfaces) do
+local chunks_per_tick = 10
+local check_chunks = nil
 
-	end	
-end]]
+local local_check_pollution = function()
+	if game.forces["enemy"].evolution_factor < 0.025 then return end	
+	--if global.modmash.pollution_evolution_factor == nil then
+	--	global.modmash.pollution_evolution_factor = game.forces["enemy"].evolution_factor
+	--end	
+	if global.modmash.pollution_update_index == nil then 
+		global.modmash.pollution_update_index = 1 
+	end
+	if global.modmash.pollution_can_reduce == nil then
+		global.modmash.pollution_can_reduce = true
+	end
+	
+	local index = global.modmash.pollution_update_index
+	local numiter = 1	
+	
+	if check_chunks == nil then
+		check_chunks = {}
+		global.modmash.pollution_evolution_factor = game.forces["enemy"].evolution_factor
+		for _, surface in pairs(game.surfaces) do
+			for c in surface.get_chunks() do
+				table.insert(check_chunks,{chunk = c, surface = surface})
+			end
+		end
+	end
+
+	if global.modmash.pollution_check_done == true then 		
+		if global.modmash.pollution_can_reduce == true then
+			if game.forces["enemy"].evolution_factor > 0.025 then
+				game.forces["enemy"].evolution_factor = game.forces["enemy"].evolution_factor - 0.0001
+			end
+			--modmash.util.print(game.forces["enemy"].evolution_factor - global.modmash.pollution_evolution_factor)
+		else
+			--modmash.util.print(game.forces["enemy"].evolution_factor - global.modmash.pollution_evolution_factor)
+			--modmash.util.print("Can't reduce")			
+		end
+		global.modmash.pollution_can_reduce = nil
+		global.modmash.pollution_update_index = nil
+		global.modmash.pollution_check_done = false
+		check_chunks = nil -- rebuild
+		return
+	end
+
+	for k=index, #check_chunks do local chunk = check_chunks[k]
+		local x = chunk.chunk.x * 32
+		local y = chunk.chunk.y * 32
+		if chunk.surface.get_pollution({x,y}) > 0 then 
+			if chunk.surface.count_entities_filtered{force="enemy",area = {{x,y},{x+32,y+32}}} > 0 then
+				global.modmash.pollution_can_reduce = false
+				global.modmash.pollution_update_index = 1
+				check_chunks = nil
+				global.modmash.pollution_check_done = true
+				break
+			end
+		end
+		numiter = numiter + 1
+		if numiter >= chunks_per_tick then			
+			global.modmash.pollution_update_index = k+1
+			return
+		end		
+	end
+	global.modmash.pollution_check_done = true
+end
 
 local run_init = false
 script.on_event(defines.events.on_tick, function()
@@ -145,8 +204,8 @@ script.on_event(defines.events.on_tick, function()
 		return true
 	end
 	if game.tick > 1 and run_init == false then run_init = init() end
-
-	--if game.tick % 60 then local_check_pollution() end
+	
+	local_check_pollution()
 	for k=1, #modmash.ticks do local v = modmash.ticks[k]	
 		v()
 		local alerts = game.players[1].get_alerts{}
@@ -173,6 +232,17 @@ local local_on_trigger_created_entity = function(event)
 		end
 	end end
 
+
+local local_on_player_spawned = function(event)
+	local player = game.get_player(event.player_index)
+	if global.modmash.players == nil then global.modmash.players = {} end
+	if table_contains(global.modmash.players,player) then return end
+	local stack = {name  = "assembling-machine-1", count = 1}
+	local inv = player.get_inventory(defines.inventory.character_main)
+	if inv.can_insert(stack) then inv.insert(stack) end
+end	
+
+script.on_event({on_player_joined_game,defines.events.on_player_created},local_on_player_spawned)
 
 script.on_event(build_events, local_on_added)
 script.on_event(remove_events, local_on_removed)
@@ -301,14 +371,17 @@ local loot_groups = {
 	{"energy","energy-pipe-distribution","circuit-network"},
 	{"transport","circuit-network"},
 	{"tool","extraction-machine","energy-pipe-distribution"},
-	{"furnace","smelting-machine","module","production-machine","circuit-network","tool","storage"},
+	{"smelting-machine","module","production-machine","circuit-network","tool","storage"},
+	{"smelting-machine","module","production-machine","circuit-network","tool","storage"},
+	{"smelting-machine","module","production-machine","circuit-network","tool","storage"},
+	{"smelting-machine","module","production-machine","circuit-network","tool","storage"},
 	{"inserter","belt","storage"},
 	{"logistic-network","tool"},
 	{"raw-material"},
 	{"raw-resource"},
 	{"terrain"},
 	{"science-pack"}}
-
+	
 local loot_fill_item_groups = {"raw-material","raw-resource","terrain","science-pack"}
 
 local local_is_loot_fill_item = function(group) 
@@ -407,7 +480,7 @@ local local_on_post_entity_died = function(event)
 	end
 end
 
-if modmash.ticks ~= nil then	
+if modmash.ticks ~= nil then		
 	local_chunks  = modmash.chunks
 	script.on_event(defines.events.on_gui_click, local_on_gui_click)
 	table.insert(modmash.on_research,local_allow_pickup_rotations_research)

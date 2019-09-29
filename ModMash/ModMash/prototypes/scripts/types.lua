@@ -80,18 +80,19 @@ local local_create_super_material_conversions = function()
 	for name,item in pairs(data.raw["resource"]) do			
 		
 		if item ~= nil and item.name ~= nil and item.icon ~= false and starts_with(item.name,"creative-mod") == false and data.raw["fluid"][item.name] == nil and data.raw["item"][item.name] ~= nil then					
-			local m = data.raw["item"][item.name].stack_size
-			if m == nil then m = 50 end
-			local recipe = {
-				type = "recipe",
-				name = "modmash-supermaterial-to-"..item.name,
-				localised_name = "Super Material to " .. item.name:gsub("-", ""),
-				localised_description = "Super Material to " .. item.name:gsub("-", ""),
-				category = "crafting-with-fluid",
-				
-				icon = false,
-				icons =
+			local icons = nil
+			if item.icons ~= nil then
+				icons = {
 				{
+					icon = "__modmash__/graphics/icons/super-material.png",
+				}}
+				for k = 1, #item.icons do local i = item.icons[k]
+					i.scale = 0.5
+					i.shift = {7, 8}
+					table.insert(icons,i)
+				end
+			elseif item.icon ~= nil then
+				icons =	{
 				  {
 					icon = "__modmash__/graphics/icons/super-material.png",
 				  },
@@ -99,59 +100,72 @@ local local_create_super_material_conversions = function()
 					icon = item.icon,
 					scale = 0.5,
 					shift = {7, 8 }
-				  }
-				},
-				icon_size = 32,
-				subgroup = "intermediate-product",
-				order = "zzz[super-material]["..item.name.."]",
-				main_product = "",
+				  }}
+			end
+			if icons ~= nil then
+				local m = data.raw["item"][item.name].stack_size
+				if m == nil then m = 50 end
+				local recipe = {
+					type = "recipe",
+					name = "modmash-supermaterial-to-"..item.name,
+					localised_name = "Super Material to " .. item.name:gsub("-", ""),
+					localised_description = "Super Material to " .. item.name:gsub("-", ""),
+					category = "crafting-with-fluid",
+				
+					icon = false,
+					icons = icons,
+					icon_size = 32,
+					subgroup = "intermediate-product",
+					order = "zzz[super-material]["..item.name.."]",
+					main_product = "",
 
-				ingredients = {{name = "super-material",amount = 4}},
-				energy_required = 1.5,
-				enabled = false,				
-				results =
-				{			
+					ingredients = {{name = "super-material",amount = 4}},
+					energy_required = 1.5,
+					enabled = false,				
+					results =
+					{			
+						{
+						name = item.name,
+						amount = m,
+						}			
+					},
+					allow_decomposition = false}
+
+				local tech = {
+					type = "technology",
+					name = recipe.name .. "-tech",
+					localised_name = recipe.localised_name,
+					localised_description = recipe.localised_description,
+					icon = "__base__/graphics/technology/fluid-handling.png",
+					icon_size = 128,
+					effects =
 					{
-					name = item.name,
-					amount = m,
-					}			
-				},
-				allow_decomposition = false}
-
-			local tech = {
-				type = "technology",
-				name = recipe.name .. "-tech",
-				localised_name = recipe.localised_name,
-				localised_description = recipe.localised_description,
-				icon = "__base__/graphics/technology/fluid-handling.png",
-				icon_size = 128,
-				effects =
-				{
-				  {
-					type = "unlock-recipe",
-					recipe = recipe.name
+					  {
+						type = "unlock-recipe",
+						recipe = recipe.name
+					  }
+					},
+					prerequisites =
+					{
+					  "fluid-handling-3"
+					},
+					unit =
+					{
+					  count = 200,
+					  ingredients =
+					  {
+						{"automation-science-pack", 1},
+						{"logistic-science-pack", 1},
+						{"chemical-science-pack", 1},
+						{"production-science-pack", 1}
+					  },
+					  time = 60
+					},
+					upgrade = true,
+					order = "a-b-d",
 				  }
-				},
-				prerequisites =
-				{
-				  "fluid-handling-3"
-				},
-				unit =
-				{
-				  count = 200,
-				  ingredients =
-				  {
-					{"automation-science-pack", 1},
-					{"logistic-science-pack", 1},
-					{"chemical-science-pack", 1},
-					{"production-science-pack", 1}
-				  },
-				  time = 60
-				},
-				upgrade = true,
-				order = "a-b-d",
-			  }
-			data:extend({recipe,tech})
+				data:extend({recipe,tech})
+			end
 		end
 	end
 end

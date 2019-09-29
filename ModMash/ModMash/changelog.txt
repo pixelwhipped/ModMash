@@ -1,10 +1,19 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.17.52
+  Changes:
+    - Added a start with assembly machine for creating silicates needed for glas without the need to hand craft
+  Bugfixes:
+    - Fixes to work Angels and subsequently others 
+
+---------------------------------------------------------------------------------------------------
 Version: 0.17.51
   Changes:
     - Utils moved to modmash.util and used functions made local in each file using it
     - Welcome message only shows once
+    - Added a start with assembly for creating silicates needed for glas without the need to hand craft
   Bugfixes:
     - Found few places where code was calling something I had re-named
+    - Fixes to work Angels and subsequently others 
 
 ---------------------------------------------------------------------------------------------------
 Version: 0.17.50

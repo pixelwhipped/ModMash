@@ -1,6 +1,6 @@
 {
   "name": "modmash",
-  "version": "0.17.51",
+  "version": "0.17.52",
   "title": "ModMash",  
   "author": "PixelWhipped",
   "contact": "",
@@ -8,6 +8,7 @@
   "factorio_version": "0.17",
   "description": "ModMash add many new things loot chests, including Air purification Recycling and Droids",
   "dependencies": [
-    "base >= 0.17.0"
+    "base >= 0.17.0",
+    "? Rampant >= 0.17.28"
   ]
 }
