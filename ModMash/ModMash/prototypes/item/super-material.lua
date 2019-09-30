@@ -12,10 +12,10 @@
 		icon = "__modmash__/graphics/icons/super-material.png",
 		icon_size = 32,
 		fuel_category = "advanced-alien",
-		fuel_value = "2GJ",
+		fuel_value = "1GJ",
 		fuel_acceleration_multiplier = 2.5,
 		fuel_top_speed_multiplier = 1.15,
-		-- fuel_glow_color = {r = 0.1, g = 1, b = 0.1},
+		--fuel_glow_color = {r = 0.1, g = 1, b = 0.1},
 		subgroup = "intermediate-product",
 		order = "z[super-material]",
 		stack_size = 100

@@ -39,6 +39,9 @@ local remove_events = {defines.events.on_entity_died,defines.events.on_robot_pre
 local item_pick_up_events = {defines.events.on_picked_up_item,defines.events.on_player_mined_item,defines.events.on_robot_mined}
 
 local loot_probability = 12
+local exclude_loot = {"player-port","spawner","spitter-spawner"}
+
+
 local local_on_added = function(event)	
 	
 	local entity = event.created_entity
@@ -357,7 +360,6 @@ local local_on_selected = function(event)
 local loot_table = nil
 local last_chunk = nil
 local local_chunks = nil
-local exclude_loot = {"player-port","spawner","spitter-spawner"}
 
 local local_get_stack_restriction = function(item)
 	if item.type == "item-with-entity-data" then return 2 end
@@ -369,18 +371,27 @@ end
 local loot_groups = {
 	{"intermediate-product"},
 	{"armor","gun","equipment","ammo"},
+	{"armor","gun","equipment","ammo"},
 	{"defensive-structure"},
 	{"energy","energy-pipe-distribution","circuit-network"},
+	{"energy","energy-pipe-distribution","circuit-network"},
 	{"transport","circuit-network"},
+	{"tool","extraction-machine","energy-pipe-distribution"},
+	{"tool","extraction-machine","energy-pipe-distribution"},
 	{"tool","extraction-machine","energy-pipe-distribution"},
 	{"smelting-machine","module","production-machine","circuit-network","tool","storage"},
 	{"smelting-machine","module","production-machine","circuit-network","tool","storage"},
 	{"smelting-machine","module","production-machine","circuit-network","tool","storage"},
-	{"smelting-machine","module","production-machine","circuit-network","tool","storage"},
+	{"inserter","belt","storage"},
+	{"inserter","belt","storage"},
 	{"inserter","belt","storage"},
 	{"logistic-network","tool"},
+	{"logistic-network","tool"},
+	{"raw-material"},
 	{"raw-material"},
 	{"raw-resource"},
+	{"raw-resource"},
+	{"terrain"},
 	{"terrain"},
 	{"science-pack"}}
 	

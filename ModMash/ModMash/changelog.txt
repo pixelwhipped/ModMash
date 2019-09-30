@@ -1,4 +1,17 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.17.55
+  Features:
+    - Added huge Super Containers, stack everything in hight tech sub dimensional containment units
+  Changes:
+    - Balancing some internals
+    - Created Tech icons for Super Material
+
+---------------------------------------------------------------------------------------------------
+Version: 0.17.54
+  Bugfixes:
+    - nill check for nil icon_size
+
+---------------------------------------------------------------------------------------------------
 Version: 0.17.53
   Bugfixes:
     - nill alert returned, detected by BX442

@@ -6,7 +6,16 @@
 		localised_name = "Fluid Handling 3",
 	localised_description = "Fluid Handling 3",
     icon_size = 128,
-    icon = "__base__/graphics/technology/fluid-handling.png",
+    icon = false,
+	icons = {
+		{
+			icon = "__base__/graphics/technology/fluid-handling.png"
+		},
+		{
+			icon = "__modmash__/graphics/technology/super-material.png",
+			scale = 0.5,
+			shift = {48,48}
+		}},
     prerequisites = {"fluid-handling-2"},
     effects =
     {

@@ -69,7 +69,7 @@
       idle_sound = { filename = "__base__/sound/idle1.ogg", volume = 0.6 },
       apparent_volume = 1.5,
     },
-    crafting_categories = {"crafting", "advanced-crafting", "crafting-with-fluid"},
+    crafting_categories = {"crafting", "advanced-crafting", "crafting-with-fluid","containment"},
     crafting_speed = 2.5,
     energy_source =
     {

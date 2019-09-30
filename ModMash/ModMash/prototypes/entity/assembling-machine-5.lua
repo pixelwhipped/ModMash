@@ -69,7 +69,7 @@
           line_length = 8,
           shift = {0.84, -0.09},
     },
-    crafting_categories = {"crafting", "advanced-crafting", "crafting-with-fluid"},
+    crafting_categories = {"crafting", "advanced-crafting", "crafting-with-fluid","containment"},
     crafting_speed = 4,
     energy_source =
     {
