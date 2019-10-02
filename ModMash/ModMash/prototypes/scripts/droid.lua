@@ -834,7 +834,7 @@ local local_droid_process_scout = function(droid)
 	local rad = droid_scan_radius + global.modmash.droids.research_modifier		
 	for i = 1, #game.players do local p = game.players[i]
 			p.force.chart(p.surface, {{droid.entity.position.x-rad, droid.entity.position.y-rad}, {droid.entity.position.x+rad, droid.entity.position.y+rad}})
-			local chests = p.surface.find_entities_filtered	{area = {{droid.entity.position.x-rad, droid.entity.position.y-rad}, {droid.entity.position.x+rad, droid.entity.position.y+rad}},name={"crash-site-chest-1","crash-site-chest-2"}}
+			local chests = p.surface.find_entities_filtered	{area = {{droid.entity.position.x-rad, droid.entity.position.y-rad}, {droid.entity.position.x+rad, droid.entity.position.y+rad}},name={"crash-site-chest-1","crash-site-chest-2","loot_science_a"}}
 			for k=1, #chests do local v = chests[k] 
 				local id = v.position.x.."_"..v.position.y
 				if table_index_of(local_loot_boxes,id) == nil then

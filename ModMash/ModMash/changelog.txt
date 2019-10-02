@@ -1,7 +1,19 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.17.57
+  Features:
+    - Tech loot,  Find broken sciences labs to unlock new technologies
+
+---------------------------------------------------------------------------------------------------
+Version: 0.17.56
+  Changes:
+    - Worked on super container tech contain and uncontain icons
+    - Allowed raw resources as conatainable
+    - Hige updates to enrichment and conversion recipes allowing for other mods
+
+---------------------------------------------------------------------------------------------------
 Version: 0.17.55
   Features:
-    - Added huge Super Containers, stack everything in hight tech sub dimensional containment units
+    - Added huge extension, Super Containers. Stack everything in hight tech sub dimensional containment units
   Changes:
     - Balancing some internals
     - Created Tech icons for Super Material

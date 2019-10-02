@@ -1,12 +1,12 @@
 {
   "name": "modmash",
-  "version": "0.17.55",
-  "title": "ModMash",  
+  "version": "0.17.57",
+  "title": "ModMash",
   "author": "PixelWhipped",
   "contact": "",
   "homepage": "",
   "factorio_version": "0.17",
-  "description": "ModMash add many new things loot chests, including Air purification Recycling and Droids",
+  "description": "Mod Mash, Crash Site Loot, Sub-Dimensional Stacking, Biter harvesting, Droids and more. Placeable spawners, Alien Ooze, Ore Enrichments, conversions, Explosive Mining, Regenerative Walls and Belts, Recycler, Fluid controls(animated), Mini Boiler, Fishing Machine, Mini And Normal Loaders. Titanium Walls and Belts, Biter Neural Toxin and various entities can be automated or adjusted, Fish and Ooze juice now included.",
   "dependencies": [
     "base >= 0.17.0",
     "? Rampant >= 0.17.28"

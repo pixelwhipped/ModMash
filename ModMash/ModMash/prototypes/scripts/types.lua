@@ -61,7 +61,7 @@ local local_create_biome_recipies = function()
 	end 
 end
 --stored in multiple names accumulator ammo etc
-local raw_items = {"accumulator","active-defense-equipment","ammo","ammo-turret","arithmetic-combinator","armor","artillery-turret","artillery-wagon","assembling-machine","battery-equipment","beacon","belt-immunity-equipment","boiler","capsule","car","cargo-wagon","combat-robot","constant-combinator","construction-robot","container","decider-combinator","electric-pole","electric-turret","energy-shield-equipment","fluid-wagon","furnace","gate","generator","generator-equipment","gun","heat-pipe","inserter","item","locomotive","logistic-container","logistic-robot","market","mining-drill","module","night-vision-equipment","offshore-pump","pipe","pipe-to-ground","power-switch","programmable-speaker","projectile","pump","radar","rail-chain-signal","rail-planner","rail-signal","reactor","repair-tool","resource","roboport","roboport-equipment","rocket-silo","solar-panel","solar-panel-equipment","splitter","storage-tank","straight-rail","tool","train-stop","transport-belt","underground-belt","wall"}
+local raw_items = {"item","accumulator","active-defense-equipment","ammo","ammo-turret","arithmetic-combinator","armor","artillery-turret","artillery-wagon","assembling-machine","battery-equipment","beacon","belt-immunity-equipment","boiler","capsule","car","cargo-wagon","combat-robot","constant-combinator","construction-robot","container","decider-combinator","electric-pole","electric-turret","energy-shield-equipment","fluid-wagon","furnace","gate","generator","generator-equipment","gun","heat-pipe","inserter","item","locomotive","logistic-container","logistic-robot","market","mining-drill","module","night-vision-equipment","offshore-pump","pipe","pipe-to-ground","power-switch","programmable-speaker","projectile","pump","radar","rail-chain-signal","rail-planner","rail-signal","reactor","repair-tool","resource","roboport","roboport-equipment","rocket-silo","solar-panel","solar-panel-equipment","splitter","storage-tank","straight-rail","tool","train-stop","transport-belt","underground-belt","wall"}
 local item_list = nil
 
 local local_get_item = function(name)
@@ -84,10 +84,12 @@ local local_get_item = function(name)
 	return item_list[name]
 end
 
-local exclude_containers = {"player-port","spawner","spitter-spawner"}
+local exclude_containers = {"player-port","spawner","spitter-spawner","electric-energy-interface"}
 
 local local_create_container = function(item,x)
-	local clean_name = item.name:gsub("-", "")
+	local clean_name = item.name:gsub("-", " ")
+	clean_name = clean_name:gsub("ore", " ore") --fix weird names
+	clean_name = clean_name:gsub("  ", " ")
 	local contain_icons = nil
 	local uncontain_icons = nil
 	local tech_icons = nil
@@ -107,12 +109,13 @@ local local_create_container = function(item,x)
 		for k = 1, #item.icons do 
 			local i = item.icons[k]
 			local x = item.icons[k]
-			local size = x.icon_size
+			local size = x.icon_size			
 			if size == nil then size = 32 end
-			i.scale = 0.5
-			i.shift = {7, 8}
+			i.scale = 0.5 * (32/size)
+			i.shift = {0, 2}
 			x.shift = {24, 24}
 			x.icon_size = size
+			i.icon_size = size
 			table.insert(uncontain_icons,item.icons[k])
 			table.insert(contain_icons,i)
 			table.insert(tech_icons,x)
@@ -124,6 +127,7 @@ local local_create_container = function(item,x)
 				shift = {7,8}})
 	elseif item.icon ~= nil then
 		local size = item.icon_size
+		
 		if size == nil then size = 32 end
 		contain_icons =	{
 			{
@@ -132,29 +136,32 @@ local local_create_container = function(item,x)
 			},
 			{
 				icon = item.icon,
-				scale = 0.5,
-				shift = {7, 8 }
+				scale = 0.5 * (32/size),
+				icon_size = size,
+				shift = {0, 2 }
 			}}
 		uncontain_icons = {
 			{
 				icon = item.icon,
+				icon_size = size
 			},
 			{
 				icon = "__modmash__/graphics/icons/super-container.png",
 				scale = 0.5,
 				icon_size = 32,
-				shift = {7, 8 }
+				shift = {5, 5 }
 			}}
 		tech_icons ={
 			{icon = "__modmash__/graphics/technology/super-material.png"},
 			{
 				icon = "__modmash__/graphics/icons/super-container.png",
 				icon_size = 32,
-				shift = {0,24}
+				shift = {-16,24}
 			},
 			{
 				icon = item.icon,					
 				icon_size = size,
+				scale = (32/size),
 				shift = {24,24}
 			}}
 	end
@@ -180,6 +187,7 @@ local local_create_container = function(item,x)
 		icons = contain_icons,
 		icon_size = 32,
 		enabled = false,
+		energy = 2,
 		category = "containment",
 		subgroup = "containers",
 		hide_from_player_crafting = true,
@@ -198,6 +206,7 @@ local local_create_container = function(item,x)
 		icons = uncontain_icons,
 		icon_size = 32,
 		enabled = false,
+		energy = 2,
 		category = "containment",
 		subgroup = "containers",
 		hide_from_player_crafting = true,
@@ -312,23 +321,30 @@ local local_create_super_containers = function()
 
 	data:extend({base_container,base_recipe,tech})
 	local z = 1
+	local added = {}
 	for rx = 1, #raw_items do local raw = raw_items[rx]	
-		for name,item in pairs(data.raw[raw]) do			
-			if item ~= nil and item.name ~= nil and item.icon_size ~= nil then	
-				if item.stack_size ~= nil and item.stack_size > 1 and item.icon_size ~= nil
-					and table_contains(exclude_containers,item.name) == false and starts_with(item.name,"creative-mod") == false and starts_with(item.name,"crash") == false then
-					local r = data.raw["recipe"][item.name]
-					if (r~= nil and r.hide_from_player_crafting ~= true) or item.type == "raw-resource" then
-						if item.name ~= "empty-super-container" then
-							local_create_container(item,z)
-							z = z + 1
-						end
+		for name,item in pairs(data.raw[raw]) do		
+			if added[name] == nil then added[name] = item end
+		end
+	end
+	--for rx = 1, #added do local raw = added[rx]	
+	for name,item in pairs(added) do	
+		if item ~= nil and item.name ~= nil and item.icon_size ~= nil then	
+			if item.stack_size ~= nil and item.stack_size > 1 and item.icon_size ~= nil
+				and table_contains(exclude_containers,item.name) == false and starts_with(item.name,"creative-mod") == false and starts_with(item.name,"crash") == false then
+				local r = data.raw["recipe"][item.name]
+				if (r~= nil and r.hide_from_player_crafting ~= true) or item.subgroup == "raw-material" then
+					if item.name ~= "empty-super-container" then
+						--table.insert(added,item.name)
+						local_create_container(item,z)
+						z = z + 1
 					end
+				else 
+					log("Skipping containers for " .. item.name)
 				end
 			end
 		end
 	end
-
 end
 
 local local_create_super_material_conversions = function()
@@ -942,6 +958,153 @@ if not modmash.util.types then
     local_set_types_non_pollutant() 
 end
 
+local add_missing_ooze = function()
+	local added = {}
+	local exclude_ooze = {"coal","titanium-ore","copper-ore","stone","iron-ore","uranium-ore"}
+	for name,item in pairs(data.raw["resource"]) do	
+		if data.raw["fluid"][item.name] == nil then
+			if added[item.name] == nil and starts_with(item.name,"creative") == false then 
+				if data.raw["item"][item.name] ~= nil and table_contains(exclude_ooze,item.name) == false then
+					added[item.name] = item 
+				end
+			end
+		end
+	end
+	local tech = {
+			type = "technology",
+			name = "enrichment-e",
+			localised_name = "Enrichment Extended",
+			localised_description = "Refines Etended materials to obtain more usefull components",
+			icon = "__modmash__/graphics/technology/advanced-chemistry.png",
+			icon_size = 128,
+			effects =
+			{
+     
+			},
+			prerequisites =
+			{
+			  "enrichment-3"
+			},
+			unit =
+			{
+			  count = 400,
+			  ingredients =
+			  {
+				{"automation-science-pack", 1},
+				{"logistic-science-pack", 1},
+			  },
+			  time = 45
+			},
+			upgrade = true,
+			order = "a-b-d",}
+	for name,item in pairs(added) do
+		local clean_name = item.name:gsub("-", " ")
+		clean_name = clean_name:gsub("ore", " ore") --fix weird names
+		clean_name = clean_name:gsub("  ", " ")
+		local icons = nil
+		if item.icons ~= nil then
+			contain_icons = {
+			{
+				icon = "__modmash__/graphics/icons/alien-ooze.png",
+				icon_size = 32}}
+			for k = 1, #item.icons do 
+				local i = item.icons[k]
+				local x = item.icons[k]
+				local size = x.icon_size			
+				if size == nil then size = 32 end
+				i.scale = 0.5 * (32/size)
+				i.shift = {0, 2}
+				table.insert(contain_icons,i)
+			end
+		else
+			if size == nil then size = 32 end
+			icons =	{
+				{
+					icon = "__modmash__/graphics/icons/alien-ooze.png",
+					icon_size = 32,
+				},
+				{
+					icon = item.icon,
+					scale = 0.5 * (32/size),
+					icon_size = size,
+					shift = {0, 2 }
+				}}
+		end
+		local r = 	{
+			type = "recipe",
+			name = "alien-enrichment-process-to-"..item.name,
+			localised_name = "Alien ooze to "..clean_name,
+			localised_description = "Alien ooze to "..clean_name,
+			energy_required = 1.5,
+			enabled = false,
+			category = "crafting-with-fluid",
+			ingredients = {{type="fluid",name = "alien-ooze",amount = 25}},
+			icon = false,
+			icons = icons, -- "__modmash__/graphics/icons/alien-conversion-uranium.png",
+			icon_size = 32,
+			subgroup = "intermediate-product",
+			order = "c[alien-enrichment-process-to-"..item.name.."]-e[alien-enrichment-process-to-"..item.name.."]",
+			main_product = "",
+			results =
+			{			
+				{
+				name = item.name,
+				amount = 10
+				}
+			},
+			allow_decomposition = false}
+		table.insert(tech.effects,{
+			type = "unlock-recipe",
+			recipe = r.name})
+		data:extend({r})
+	end
+	if #tech.effects > 0 then data:extend({tech}) end
+end
+
+local add_missing_materials_to_stone_and_uranium = function()
+	local ingredients_missing_in = function(recipe,material)
+		for rz = 1, #recipe.results do local res = recipe.results[rz]	
+			if res.name == material then return false end
+		end
+		return true
+	end
+	local stone = data.raw["recipe"]["stone-enrichment-process"]
+	local uranium = data.raw["recipe"]["uranium-enrichment-process"]
+	local alien = data.raw["recipe"]["alien-enrichment-process"]
+	local added = {}	
+	for name,item in pairs(data.raw["resource"]) do	
+		if data.raw["fluid"][item.name] == nil then
+			if added[item.name] == nil and starts_with(item.name,"creative") == false then 
+				if data.raw["item"][item.name] ~= nil then
+					added[item.name] = item 
+				end
+			end
+		end
+	end
+	for name,item in pairs(added) do
+		if ingredients_missing_in(stone,item.name) then
+			table.insert(stone.results,{
+				name = item.name,
+				probability = 0.25,
+				amount = 1,
+			}) 
+		end
+		if ingredients_missing_in(uranium,item.name) then
+			table.insert(uranium.results,{
+				name = item.name,
+				probability = 0.25,
+				amount = 1,
+			})
+		end
+		if ingredients_missing_in(alien,item.name) then
+			table.insert(alien.results,{
+				name = item.name,
+				probability = 0.25,
+				amount = 1,
+			})	
+		end
+	end
+end
 
 if data ~= nil and data_final_fixes == true then
     local_set_types_biome() --Dexy Edit
@@ -952,4 +1115,16 @@ if data ~= nil and data_final_fixes == true then
     local_create_recycle_recipies(data.raw.recipe)
 	local_create_super_material_conversions()
 	local_create_super_containers()
+	add_missing_materials_to_stone_and_uranium()
+	add_missing_ooze()
+
+	local loot_science_a = table.deepcopy(data.raw["simple-entity"]["crash-site-lab-broken"])
+	loot_science_a.name = "loot_science_a"
+	loot_science_a.order = "zzzzz"
+	loot_science_a.localised_name ="Crashed science lab"
+	local loot_science_b = table.deepcopy(data.raw["simple-entity"]["crash-site-lab-broken"])
+	loot_science_b.name = "loot_science_b"
+	loot_science_b.order = "zzzzz"
+	loot_science_b.localised_name ="Crashed science lab"
+	data:extend({loot_science_a,loot_science_b})
 end

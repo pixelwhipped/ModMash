@@ -38,7 +38,11 @@ local build_events = {defines.events.on_built_entity, defines.events.on_robot_bu
 local remove_events = {defines.events.on_entity_died,defines.events.on_robot_pre_mined,defines.events.on_robot_mined_entity,defines.events.on_pre_player_mined_entity,defines.events.on_player_mined_entity} --,defines.events.on_player_mined_tile, defines.events.on_robot_mined_tile}
 local item_pick_up_events = {defines.events.on_picked_up_item,defines.events.on_player_mined_item,defines.events.on_robot_mined}
 
-local loot_probability = 12
+local loot_probability = 13
+local loot_tech_probability = 26
+
+
+
 local exclude_loot = {"player-port","spawner","spitter-spawner"}
 
 
@@ -196,6 +200,7 @@ script.on_event(defines.events.on_tick, function()
 			string = string .. "Press ".. settings.startup["modmash-setting-adjust-binding"].value .. " to adjust entites\n"
 			string = string .. "Place inserters by water to start fishing\n"
 			string = string .. "Throw a grenade at some raw resources\n\n"
+			string = string .. "Now with Tech Loot, find a crashed lab to unlock new technologies. Move mouse over to activate.\n\n"
 			local text = welcome.add{type = "label", caption = string}
 			text.style.width = 300
 			text.style.single_line = false
@@ -344,17 +349,85 @@ local local_allow_pickup_rotations_research = function(event)
     end
 	end
 
+local can_research = function(tech)
+    if not tech or tech.researched or not tech.enabled then
+        return false
+    end
+    for _, pretech in pairs(tech.prerequisites) do
+        if not pretech.researched then
+            return false
+        end
+    end
+    return true
+end
+
+local local_check_loot_science = function(player,entity)
+	local surface = entity.surface
+	local position = entity.position
+	entity.destroy()
+	surface.create_entity{
+			  name = "loot_science_b",
+			  position = position,
+			  force = "neutral"}
+	local current_research = player.force.current_research
+	local researchable = {}
+	for _,t in pairs(player.force.technologies) do
+		if t.researched == false then		
+			if current_research ~= nil and current_research.name ~= t.name and can_research(t) then
+				table.insert(researchable,t)
+			elseif can_research(t) then
+				table.insert(researchable,t)
+			end
+		end
+	end
+	if #researchable > 0 then
+		current_research = researchable[math.random(1, #researchable)]
+	end
+	if current_research ~= nil then 
+		current_research.researched = true
+		if current_research.localised_name ~= nil and type(current_research.localised_name)~="table" then
+			modmash.util.print("Unlocked "..current_research.localised_name)
+		else
+			modmash.util.print("Unlocked "..current_research.name:gsub("-", " "))
+		end
+	else
+		
+		if player.force.technologies["automation"].researched == false then			
+			player.force.technologies["automation"].researched = true
+			modmash.util.print("Unlocked "..player.force.technologies["automation"].localised_name)
+		end
+	end
+end
+
+local local_add_tech_loot = function(surface_index, area)
+	local surface = game.surfaces[surface_index]
+	local position = {x=area.left_top.x+math.random(0, 30),y=area.left_top.y+math.random(0, 30)}
+	local name = "loot_science_a"
+	if surface.can_place_entity{name=name,position=position} then
+		local ent = surface.create_entity{
+			  name = name,
+			  position = position,
+			  force = "neutral"}
+	end
+end
+
 local local_on_selected = function(event)
 	player = game.players[event.player_index]
 	entity = player.selected
-	if entity ~= nil and (entity.name == "recycling-machine" or (global.modmash.allow_pickup_rotations and (entity.type == "inserter" or (entity.type == "entity-ghost" and entity.ghost_type == "inserter")))) then
-		if settings.startup["modmash-setting-show-adjustable"].value == true then
-			entity.surface.create_entity{name="flying-text", position = entity.position, text="Press CTRL + A to adjust", color={r=1,g=1,b=1}}
+	if entity ~= nil then
+		if (entity.name == "recycling-machine" or (global.modmash.allow_pickup_rotations and (entity.type == "inserter" or (entity.type == "entity-ghost" and entity.ghost_type == "inserter")))) then
+			if settings.startup["modmash-setting-show-adjustable"].value == true then
+				entity.surface.create_entity{name="flying-text", position = entity.position, text="Press CTRL + A to adjust", color={r=1,g=1,b=1}}
+			end
+		elseif entity.name == "loot_science_a" then
+			local_check_loot_science(player,entity)
 		end
+
 	end
 	for k=1, #modmash.on_selected do local v = modmash.on_selected[k]
 		v(entity)
 	end
+	
 	end
 
 local loot_table = nil
@@ -411,6 +484,7 @@ end
 
 local local_add_loot = function(surface_index, area )
 	if distance(0,0,area.left_top.x,area.left_top.y) < 224 then return end
+	if math.random(1, loot_tech_probability) == 1 then local_add_tech_loot(surface_index, area) end
 	if math.random(1, loot_probability) ~= 1 then return end
 	local stack = nil
 
@@ -500,4 +574,5 @@ if modmash.ticks ~= nil then
 	script.on_event(defines.events.on_selected_entity_changed,local_on_selected)	
 	script.on_event(defines.events.on_chunk_charted,local_on_chunk_charted)	
 	script.on_event(defines.events.on_post_entity_died,local_on_post_entity_died)	
+	
 end
