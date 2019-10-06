@@ -10,7 +10,7 @@ namespace ModMash
     {
         static void Main(string[] args)
         {
-            System.Diagnostics.Process.Start("steam://rungameid/427520");
+            //System.Diagnostics.Process.Start("steam://rungameid/427520");
         }
     }
 }

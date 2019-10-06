@@ -3,7 +3,9 @@
 local starts_with  = modmash.util.starts_with
 local ends_with  = modmash.util.ends_with
 local ends_with  = modmash.util.ends_with
+local get_name_for = modmash.util.get_name_for
 local table_contains = modmash.util.table.contains
+local create_icon = modmash.util.create_icon
 
 local biome_types = nil
 local non_pollutant = nil
@@ -87,7 +89,7 @@ end
 local exclude_containers = {"player-port","spawner","spitter-spawner","electric-energy-interface"}
 
 local local_create_container = function(item,x)
-	local clean_name = item.name:gsub("-", " ")
+	--[[local clean_name = item.name:gsub("-", " ")
 	clean_name = clean_name:gsub("ore", " ore") --fix weird names
 	clean_name = clean_name:gsub("  ", " ")
 	local contain_icons = nil
@@ -164,13 +166,47 @@ local local_create_container = function(item,x)
 				scale = (32/size),
 				shift = {24,24}
 			}}
+	end]]
+
+	local base_contain_icons = {
+		{
+			icon = "__modmash__/graphics/icons/super-container.png",
+			icon_size = 32
+		}}
+	local base_tech_icons = {
+		{
+			icon = "__modmash__/graphics/technology/super-material.png",
+			icon_size = 128,
+			scale = 0.5,
+			shift = {-48,-48}
+		},{
+			icon = "__modmash__/graphics/icons/super-container.png",
+			icon_size = 32,
+			scale = 0.5,
+			shift = {-24,12}
+		}}
+	
+	local base_uncontain_icons = nil
+	if item.icon == nil or item.icon == false then
+		base_uncontain_icons = item.icons
+	else
+		base_uncontain_icons = {
+			{
+				icon=item.icon,
+				icon_size = item.icon_size
+			}}		
 	end
+
+
+	local contain_icons = create_icon(base_contain_icons,item.icon,item.icon_size,item.icons,0.5,{0,2})		
+	local tech_icons = create_icon(base_tech_icons,item.icon,item.icon_size,item.icons,0.5,{24,24})	
+	local uncontain_icons = create_icon(base_uncontain_icons,"__modmash__/graphics/icons/super-container.png",32,nil,0.5,{5,5})	
 
 	local container = {
 		type = "item",
 		name = "super-container-for-"..item.name,
-		localised_name = "Super Container For "..clean_name,
-		localised_description = "Super Container For "..clean_name,
+		localised_name = get_name_for(item,"Super Container to "),
+		localised_description = get_name_for(item,"Super Container to "),
 		icon = false,
 		icons = contain_icons,
 		icon_size = 32,
@@ -181,8 +217,8 @@ local local_create_container = function(item,x)
 	local contain = {
 		type = "recipe",
 		name = "super-container-for-"..item.name,
-		localised_name = "Super Container For "..clean_name,
-		localised_description = "Super Container For "..clean_name,
+		localised_name = get_name_for(item,"Super Container for "),
+		localised_description = get_name_for(item,"Super Container for "),
 		icon = false,
 		icons = contain_icons,
 		icon_size = 32,
@@ -193,15 +229,15 @@ local local_create_container = function(item,x)
 		hide_from_player_crafting = true,
 		ingredients =
 		{
-		  {"empty-super-container", 1},
-		  {item.name, item.stack_size}
+			{"empty-super-container", 1},
+			{item.name, item.stack_size}
 		},
 		result = "super-container-for-"..item.name}
 	local uncontain = {	
 		type = "recipe",
 		name = "empty-super-container-of-"..item.name,
-		localised_name = "Empty Super Container of "..clean_name,
-		localised_description = "Empty Super Container of "..clean_name,
+		localised_name = get_name_for(item,"Empty Super Container of "), -- "Empty Super Container of "..clean_name,
+		localised_description = get_name_for(item,"Empty Super Container of "), --"Empty Super Container of "..clean_name,
 		icon = false,
 		icons = uncontain_icons,
 		icon_size = 32,
@@ -212,42 +248,42 @@ local local_create_container = function(item,x)
 		hide_from_player_crafting = true,
 		ingredients =
 		{
-		  {"super-container-for-"..item.name,1},
+			{"super-container-for-"..item.name,1},
 		},
 		results = {
 			{name = "empty-super-container", amount = 1},
 			{name = item.name, amount = item.stack_size}
 		}}	
 	local tech = {
-	    type = "technology",
+		type = "technology",
 		name = "super-containment-"..x,
-		localised_name = "Super Containment of "..clean_name,
-		localised_description = "Super Containment of "..clean_name,
+		localised_name = get_name_for(item,"Super Containment of "), --"Super Containment of "..clean_name,
+		localised_description = get_name_for(item,"Super Containment of "),
 		icon_size = 128,
 		icon = false,
 		icons = tech_icons,
 		prerequisites = {"super-containers"},
 		effects =
 		{
-		  {
+			{
 			type = "unlock-recipe",
 			recipe = contain.name
-		  },
-		  {
+			},
+			{
 			type = "unlock-recipe",
 			recipe = uncontain.name
-		  },
+			},
 		},
 		unit =
 		{
-		  count = 75,	  
-		  ingredients = {
+			count = 75,	  
+			ingredients = {
 			{"automation-science-pack", 1},
 			{"logistic-science-pack", 1},
 			{"chemical-science-pack", 1},
 			{"production-science-pack", 1}
 			},
-		  time = 30
+			time = 30
 		},
 		order = "d-a-a"}
 	data:extend({container,contain,uncontain,tech})
@@ -283,11 +319,15 @@ local local_create_super_containers = function()
 		result = "empty-super-container"}
 
 	local tech_icons = {
-		{icon = "__modmash__/graphics/technology/super-material.png"},
+		{
+			icon = "__modmash__/graphics/technology/super-material.png",
+			icon_size = 128,
+			scale = 0.5,
+			},
 		{
 			icon = "__modmash__/graphics/icons/super-container.png",
 			icon_size = 32,
-			shift = {24,24}
+			shift = {16,16}
 		}}
 	local tech = {
 	    type = "technology",
@@ -318,7 +358,7 @@ local local_create_super_containers = function()
 		},
 		order = "d-a-a"
 	}
-
+	
 	data:extend({base_container,base_recipe,tech})
 	local z = 1
 	local added = {}
@@ -350,88 +390,57 @@ end
 local local_create_super_material_conversions = function()
 	for name,item in pairs(data.raw["resource"]) do			
 		
-		if item ~= nil and item.name ~= nil and item.icon ~= false and starts_with(item.name,"creative-mod") == false and data.raw["fluid"][item.name] == nil and data.raw["item"][item.name] ~= nil then					
-			local icons = nil
-			local tech_icons = nil
-			if item.icons ~= nil then
-				tech_icons = {
-					{icon = "__modmash__/graphics/technology/super-material.png"}
-				}
-				icons = {
-				{
-					icon = "__modmash__/graphics/icons/super-material.png"}
-				}
-				for k = 1, #item.icons do 
-					
-					local i = item.icons[k]
-					local x = item.icons[k]
-					local size = x.icon_size
-					if size == nil then size = 32 end
-					i.scale = 0.5
-					i.shift = {7, 8}
-					x.shift = {24, 24}
-					x.icon_size = size
-					table.insert(icons,i)
-					table.insert(tech_icons,x)
-				end
-			elseif item.icon ~= nil then
-				local size = item.icon_size
-				if size == nil then size = 32 end
-				icons =	{
-				  {
-					icon = "__modmash__/graphics/icons/super-material.png",
-				  },
-				  {
-					icon = item.icon,
-					scale = 0.5,
-					shift = {7, 8 }
-				  }}
-				tech_icons =	{
-				  {
-					icon = "__modmash__/graphics/technology/super-material.png",
-				  },
-				  {
-					icon = item.icon,					
-					icon_size = size,
-					shift = {24,24}
-				  }}
-			end
-			if icons ~= nil then
-				local m = data.raw["item"][item.name].stack_size
-				if m == nil then m = 50 end
-				local recipe = {
-					type = "recipe",
-					name = "modmash-supermaterial-to-"..item.name,
-					localised_name = "Super Material to " .. item.name:gsub("-", ""),
-					localised_description = "Super Material to " .. item.name:gsub("-", ""),
-					category = "crafting-with-fluid",
+		--if item ~= nil and item.name ~= nil and item.icon ~= false and starts_with(item.name,"creative-mod") == false and data.raw["fluid"][item.name] == nil and data.raw["item"][item.name] ~= nil then					
+		if item ~= nil and item.name ~= nil and starts_with(item.name,"creative-mod") == false and data.raw["fluid"][item.name] == nil and data.raw["item"][item.name] ~= nil then					
+			local base_icons = {
+			{
+				icon = "__modmash__/graphics/icons/super-material.png",
+				icon_size = 32,
+				shift = {-1,0}
+			}}
+			local base_tech_icons = {
+			{
+				icon = "__modmash__/graphics/technology/super-material.png",
+				icon_size = 128,
+				shift = {-32,-32},
+				scale = 0.5
+			}}
+			local icons = create_icon(base_icons,item.icon,item.icon_size,item.icons,0.5,{4,4})		
+			local tech_icons = create_icon(base_tech_icons,item.icon,item.icon_size,item.icons,1,{16,16})		
+			local m = data.raw["item"][item.name].stack_size
+			if m == nil then m = 50 end
+			local recipe = {
+				type = "recipe",
+				name = "modmash-supermaterial-to-"..item.name,
+				localised_name = get_name_for(item,"Super Material to "),
+				localised_description = get_name_for(item,"Super Material to "),
+				category = "crafting-with-fluid",
 				
-					icon = false,
-					icons = icons,
-					icon_size = 32,
-					subgroup = "intermediate-product",
-					order = "zzz[super-material]["..item.name.."]",
-					main_product = "",
+				icon = false,
+				icons = icons,
+				icon_size = 32,
+				subgroup = "intermediate-product",
+				order = "zzz[super-material]["..item.name.."]",
+				main_product = "",
 
-					ingredients = {{name = "super-material",amount = 4}},
-					energy_required = 1.5,
-					enabled = false,				
-					results =
-					{			
-						{
-						name = item.name,
-						amount = m,
-						}			
-					},
-					allow_decomposition = false}
-
-				local tech = {
+				ingredients = {{name = "super-material",amount = 4}},
+				energy_required = 1.5,
+				enabled = false,				
+				results =
+				{			
+					{
+					name = item.name,
+					amount = m,
+					}			
+				},
+				allow_decomposition = false}
+			local tech = {
 					type = "technology",
 					name = recipe.name .. "-tech",
 					localised_name = recipe.localised_name,
 					localised_description = recipe.localised_description,
 					icon = false,
-					icons = tech_icons, --"__base__/graphics/technology/fluid-handling.png",
+					icons = tech_icons,
 					icon_size = 128,
 					effects =
 					{
@@ -460,7 +469,118 @@ local local_create_super_material_conversions = function()
 					order = "a-b-d",
 				  }
 				data:extend({recipe,tech})
-			end
+			--[[
+				local icons = nil
+				local tech_icons = nil
+				if item.icons ~= nil then
+					tech_icons = {
+						{icon = "__modmash__/graphics/technology/super-material.png"}
+					}
+					icons = {
+					{
+						icon = "__modmash__/graphics/icons/super-material.png"}
+					}
+					for k = 1, #item.icons do 
+					
+						local i = item.icons[k]
+						local x = item.icons[k]
+						local size = x.icon_size
+						if size == nil then size = 32 end
+						i.scale = 0.5
+						i.shift = {7, 8}
+						x.shift = {24, 24}
+						x.icon_size = size
+						table.insert(icons,i)
+						table.insert(tech_icons,x)
+					end
+				elseif item.icon ~= nil then
+					local size = item.icon_size
+					if size == nil then size = 32 end
+					icons =	{
+					  {
+						icon = "__modmash__/graphics/icons/super-material.png",
+					  },
+					  {
+						icon = item.icon,
+						scale = 0.5,
+						shift = {7, 8 }
+					  }}
+					tech_icons =	{
+					  {
+						icon = "__modmash__/graphics/technology/super-material.png",
+					  },
+					  {
+						icon = item.icon,					
+						icon_size = size,
+						shift = {24,24}
+					  }}
+				end
+				if icons ~= nil then
+					local m = data.raw["item"][item.name].stack_size
+					if m == nil then m = 50 end
+					local recipe = {
+						type = "recipe",
+						name = "modmash-supermaterial-to-"..item.name,
+						localised_name = "Super Material to " .. item.name:gsub("-", ""),
+						localised_description = "Super Material to " .. item.name:gsub("-", ""),
+						category = "crafting-with-fluid",
+				
+						icon = false,
+						icons = icons,
+						icon_size = 32,
+						subgroup = "intermediate-product",
+						order = "zzz[super-material]["..item.name.."]",
+						main_product = "",
+
+						ingredients = {{name = "super-material",amount = 4}},
+						energy_required = 1.5,
+						enabled = false,				
+						results =
+						{			
+							{
+							name = item.name,
+							amount = m,
+							}			
+						},
+						allow_decomposition = false}
+
+					local tech = {
+						type = "technology",
+						name = recipe.name .. "-tech",
+						localised_name = recipe.localised_name,
+						localised_description = recipe.localised_description,
+						icon = false,
+						icons = tech_icons, --"__base__/graphics/technology/fluid-handling.png",
+						icon_size = 128,
+						effects =
+						{
+						  {
+							type = "unlock-recipe",
+							recipe = recipe.name
+						  }
+						},
+						prerequisites =
+						{
+						  "fluid-handling-3"
+						},
+						unit =
+						{
+						  count = 200,
+						  ingredients =
+						  {
+							{"automation-science-pack", 1},
+							{"logistic-science-pack", 1},
+							{"chemical-science-pack", 1},
+							{"production-science-pack", 1}
+						  },
+						  time = 60
+						},
+						upgrade = true,
+						order = "a-b-d",
+					  }
+					data:extend({recipe,tech})
+				end
+			]]
 		end
 	end
 end
@@ -733,9 +853,9 @@ local local_create_recylce_item = function(r)
 	recipe.allow_as_intermediate = false
 	recipe.allow_intermediates = false
 	recipe.hidden_from_char_screen = true
-	recipe.localised_name = "Recyle Item"
-	recipe.localised_description = "Recyle Item"
-	log("Creating recycle recipe "..recipe.name)
+	recipe.localised_name = get_name_for(item,"Recyle Item ")
+	recipe.localised_description = get_name_for(item,"Recyle Item ")
+	--log("Creating recycle recipe "..recipe.name)
 	--if item.subgroup ~= nil then recipe.subgroup = item.subgroup end  
 	data:extend({recipe})
 	table.insert(data.raw["technology"]["recycling-machine"].effects, {type = "unlock-recipe",recipe = "craft-" .. results[1].name})
@@ -952,15 +1072,15 @@ end
 if not modmash.util.types then   
     modmash.util.types = {}
     modmash.util.types.is_polutant = local_is_polutant
-    --modmash.util.types.set_types_biome = local_set_types_biome
-    --modmash.util.types.set_types_non_pollutant = local_set_types_non_pollutant
     local_set_types_biome()
     local_set_types_non_pollutant() 
 end
 
+
+
 local add_missing_ooze = function()
 	local added = {}
-	local exclude_ooze = {"coal","titanium-ore","copper-ore","stone","iron-ore","uranium-ore"}
+	local exclude_ooze = {"coal","titanium-ore","copper-ore","stone","iron-ore","uranium-ore"}	
 	for name,item in pairs(data.raw["resource"]) do	
 		if data.raw["fluid"][item.name] == nil then
 			if added[item.name] == nil and starts_with(item.name,"creative") == false then 
@@ -998,50 +1118,27 @@ local add_missing_ooze = function()
 			upgrade = true,
 			order = "a-b-d",}
 	for name,item in pairs(added) do
-		local clean_name = item.name:gsub("-", " ")
-		clean_name = clean_name:gsub("ore", " ore") --fix weird names
-		clean_name = clean_name:gsub("  ", " ")
-		local icons = nil
-		if item.icons ~= nil then
-			contain_icons = {
-			{
-				icon = "__modmash__/graphics/icons/alien-ooze.png",
-				icon_size = 32}}
-			for k = 1, #item.icons do 
-				local i = item.icons[k]
-				local x = item.icons[k]
-				local size = x.icon_size			
-				if size == nil then size = 32 end
-				i.scale = 0.5 * (32/size)
-				i.shift = {0, 2}
-				table.insert(contain_icons,i)
-			end
-		else
-			if size == nil then size = 32 end
-			icons =	{
-				{
-					icon = "__modmash__/graphics/icons/alien-ooze.png",
-					icon_size = 32,
-				},
-				{
-					icon = item.icon,
-					scale = 0.5 * (32/size),
-					icon_size = size,
-					shift = {0, 2 }
-				}}
-		end
+		local base_icons = {
+		{
+			icon = "__modmash__/graphics/icons/alien-ooze.png",
+			icon_size = 32,
+			scale = 0.75,
+			shift = {-8,-8}
+		}}
+		local icons = create_icon(base_icons,item.icon,item.icon_size,item.icons,0.5,{8,8})		
 		local r = 	{
 			type = "recipe",
 			name = "alien-enrichment-process-to-"..item.name,
-			localised_name = "Alien ooze to "..clean_name,
-			localised_description = "Alien ooze to "..clean_name,
+			localised_name = get_name_for(item,"Alien ooze to "),
+			localised_description = get_name_for(item,"Alien ooze to" ),
 			energy_required = 1.5,
 			enabled = false,
 			category = "crafting-with-fluid",
 			ingredients = {{type="fluid",name = "alien-ooze",amount = 25}},
+			hide_from_player_crafting = true,
 			icon = false,
-			icons = icons, -- "__modmash__/graphics/icons/alien-conversion-uranium.png",
-			icon_size = 32,
+			icons = icons,
+			icon_size = 64,
 			subgroup = "intermediate-product",
 			order = "c[alien-enrichment-process-to-"..item.name.."]-e[alien-enrichment-process-to-"..item.name.."]",
 			main_product = "",

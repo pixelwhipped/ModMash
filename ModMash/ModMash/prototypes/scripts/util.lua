@@ -319,7 +319,7 @@ local local_get_connected_input_fluid = function(entity, box)
 		for i = 1, #inpipe do local ip = inpipe[i]	
 			if ip ~= nil then			
 				for j = 1, #ip do local jp = ip[j]
-					if jp ~= nil and ip.owner.fluidbox then
+					if jp ~= nil and local_is_valid(ip.owner) and ip.owner.fluidbox ~= nil then
 						for m = 1, #ip.owner.fluidbox do mp = ip.owner.fluidbox.get_connections(m)	
 							if mp ~= nil then
 								for mx = 1, #mp do mpx = mp[mx]
@@ -601,11 +601,113 @@ local local_set_new_signal = function(entity, name, variation)
     return signal
 end
 
+local local_get_name_for = function(item, prefix, suffix)
+        local result
+		if item.localised_name then
+			if type(item.localised_name) == "table" then
+				result = item.localised_name[1]
+			else
+				result = item.localised_name
+				if prefix ~= nil then
+					if suffix ~= nil then
+						return {"recipe-name.concatenationstrings",prefix,result,suffix} 	
+					else
+						return {"recipe-name.concatenationstring",prefix,result} 
+					end
+				elseif suffix ~= nil then
+					return {"recipe-name.concatenationstring",result,suffix} 				
+				else
+					return {"recipe-name.defaultstring",result} 
+				end
+            end
+		elseif item.place_result then
+            result = 'entity-name.'..item.place_result
+        elseif item.placed_as_equipment_result then
+            result = 'equipment-name.'..item.placed_as_equipment_result
+        else
+            result = 'item-name.'..item.name
+        end
+		if prefix ~= nil then
+			if suffix ~= nil then
+				return {"recipe-name.concatenationstrings",prefix,{result},suffix} 	
+			else
+				return {"recipe-name.concatenationstring",prefix,{result}} 
+			end
+		elseif suffix ~= nil then
+			return {"recipe-name.concatenationstring",{result},suffix} 				
+		else
+			return {"recipe-name.defaultstring",{result}} 
+		end
+	end
+
+local local_check_icon_size = function(size,fallback)
+	if size ~= nil then return size end
+	if fallback ~= nil then return fallback end
+	return 32
+end
+local local_create_icon = function(base_icons, add_icon, add_size, add_icons, add_scale, add_shift)	
+	local icons =  nil
+	
+	local base_size = base_icons[1].icon_size
+	base_size = local_check_icon_size(base_size,add_size)
+	local base_scale = 64/base_size
+
+	icons = {
+		{
+			icon = "__modmash__/graphics/blank64.png",
+			icon_size = 64
+			}
+		}
+	for k = 1, #base_icons do 		
+			local i = base_icons[k]		
+			local s = local_check_icon_size(i.icon_size,add_size)/64
+			local off = {0,0}
+			if i.shift ~= nil then off = i.shift end
+			local add = {
+				icon = i.icon,
+				icon_size = local_check_icon_size(i.icon_size,add_size),
+				scale = i.scale,
+				tint = i.tint,
+				shift = {off[1]+(add_shift[1]*s),off[2]+(add_shift[2]*s)},
+			}
+			table.insert(icons,add)
+		end
+
+	if add_icons == nil or #add_icons == 0 then
+		table.insert(icons,
+			{
+				icon = add_icon,
+				icon_size = add_size,
+				scale = add_scale,
+				shift = add_shift
+			})
+	else
+		for k = 1, #add_icons do 		
+			local i = add_icons[k]		
+			local s = 1
+			local off = {0,0}
+			if i.shift ~= nil then off = i.shift end
+			if i.scale ~= nil then s = i.scale end
+			local add = {
+				icon = i.icon,
+				icon_size = local_check_icon_size(i.icon_size,add_size),
+				scale = add_scale,
+				shift = add_shift,
+				tint = i.tint
+			}
+			table.insert(icons,add)
+		end
+	end
+	return icons
+end
+
+modmash.util.create_icon = local_create_icon
 modmash.util.signal.get_posistion_from = local_get_signal_position_from
 modmash.util.signal.set_new_signal = local_set_new_signal
 
 modmash.util.try_set_recipe = local_try_set_recipe
 modmash.util.convert_to_string = local_convert_to_string
+modmash.util.get_name_for = local_get_name_for
 modmash.util.log = local_log
 modmash.util.print = local_print
 modmash.util.is_valid = local_is_valid

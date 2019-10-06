@@ -484,7 +484,7 @@ end
 
 local local_add_loot = function(surface_index, area )
 	if distance(0,0,area.left_top.x,area.left_top.y) < 224 then return end
-	if math.random(1, loot_tech_probability) == 1 then local_add_tech_loot(surface_index, area) end
+	if math.random(1, loot_tech_probability) == 2 then local_add_tech_loot(surface_index, area) end
 	if math.random(1, loot_probability) ~= 1 then return end
 	local stack = nil
 
@@ -535,7 +535,6 @@ local local_create_loot_table = function()
 		if starts_with(r.name,"craft-") and table_contains(exclude_loot,r.name) == false then
 			local i = local_get_item(r.ingredients[1].name)
 			if i ~= nil and starts_with(i.name,"creative-mod") == false then
-			log(i.name)
 				table.insert(loot_table,i)
 			end
 		end

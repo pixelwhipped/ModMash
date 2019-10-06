@@ -1,4 +1,21 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.17.60
+  Bugfixes:
+    - Generating correct names for generated items, recipes and technology
+    - Added check for fluid boxes that can be invalid
+    - Improved icon generation
+
+---------------------------------------------------------------------------------------------------
+Version: 0.17.59
+  Bugfixes:
+    - Alien ooze generation fix
+
+---------------------------------------------------------------------------------------------------
+Version: 0.17.58
+  Bugfixes:
+    - Tech loot,  and loot in general being added at same time
+
+---------------------------------------------------------------------------------------------------
 Version: 0.17.57
   Features:
     - Tech loot,  Find broken sciences labs to unlock new technologies
@@ -47,7 +64,7 @@ Version: 0.17.51
 
 ---------------------------------------------------------------------------------------------------
 Version: 0.17.50
-  Bugfix:
+  Bugfixes:
     - droid modifier nil bug
 
 ---------------------------------------------------------------------------------------------------

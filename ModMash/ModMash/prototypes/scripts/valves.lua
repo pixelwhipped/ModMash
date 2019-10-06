@@ -66,43 +66,44 @@ local local_clear_fluid_recipe = function(entity)
 		end
 		if sum == 0 then e.set_recipe(nil) end
 	end
+	if entity.get_recipe() == nil then return true end
 	local status, retval = pcall(call,entity)
 	if status == true then return end
 end
 
 local local_check_valve_process = function(valve)
-	--log("Start Check Valve")
 	local entity = valve.entity
 	entity.energy = 100000
 	if valve.entity.is_crafting() then return end
 	local fluid = nil
-	--log("Phase A")
 	local pipe = local_get_connected_input_fluid_for_valve(valve,1)
 	if pipe ~= nil then
-		--log("Phase B")
 		fluid = pipe.entity.fluidbox[pipe.box]	
 	end
-	if fluid == nil then
-		--log("Phase C")
-		pipe = local_get_connected_input_fluid_for_valve(valve,2)
-		if pipe ~= nil then
-			--log("Phase D")
-			fluid = pipe.entity.fluidbox[pipe.box]	
-		end
+
+	local pipe2 = local_get_connected_input_fluid_for_valve(valve,2)
+	if pipe ~= nil then
+		local fluid2 = pipe.entity.fluidbox[pipe.box]	
+	--[[	if fluid2 ~= nil and fluid2~= fluid then
+			local name1 = nil
+			local name2 = nil
+			if fluid ~= nil and fluid.name ~= nil then name1 = fluid.name else name1 = "nil" end
+			if fluid2 ~= nil and fluid2.name ~= nil then name2 = fluid2.name else name2 = "nil" end
+			modmash.util.print("1="..name1.." 2="..name2)
+		end]]
 	end
+
 	if fluid ~= nil then		
 		local valve_fluid = "valve-"..fluid.name
-		--log("Phase E")
 		local current = entity.get_recipe()		
 		if current == nil then
-		--	log("Phase F")
 			try_set_recipe(entity,valve_fluid)
 		elseif valve_fluid ~= current.name then
-		--	log("Phase G")
 			local_clear_fluid_recipe(entity)
 		end	
+	else
+		local_clear_fluid_recipe(entity)
 	end	
-	--log("End Check Valve")
 	end
 
 
@@ -207,12 +208,6 @@ local local_super_boiler_process = function(valve)
 end
 
 local local_remove = function(entity)
-	if entity~=nil and entity.valid then
-		local inventory = entity.get_inventory(defines.inventory.assembling_machine_input)
-		if inventory ~= nil then inventory.clear() end
-		inventory = entity.get_inventory(defines.inventory.assembling_machine_output)
-		if inventory ~= nil then inventory.clear() end
-	end
 	for index, valve in ipairs(global.modmash.valves) do
 		if valve.entity == entity then
 			valve.value = 0
@@ -232,16 +227,14 @@ local local_valves_tick = function()
 	if init ~= nil then init = init() end		
 	local valves = global.modmash.valves	
 	for k=1, #valves do local valve = valves[k];			
-		if valve ~= nil and valve.entity ~= nil and valve.entity.valid then	
-			if not valve.entity.to_be_deconstructed(valve.entity.force) then							
+		if valve ~= nil and is_valid(valve.entity) and valve.entity.to_be_deconstructed(valve.entity.force) ~= true then							
 				if valve.entity.name == "modmash-check-valve" then local_check_valve_process(valve)					
 				elseif valve.entity.name == "modmash-check-valve" then local_check_valve_process(valve) 
 				elseif valve.entity.name == "modmash-overflow-valve" then local_overflow_valve_process(valve) 
 				elseif valve.entity.name == "mini-boiler" then local_mini_boiler_process(valve) 
 				elseif valve.entity.name == "modmash-underflow-valve" then local_undeflow_valve_process(valve) 				
 				elseif valve.entity.name == "modmash-super-boiler-valve" then local_super_boiler_process(valve) end
-			end
-		elseif valve ~= nil then
+		else
 			local_remove(valve.entity)
 		end
 	end
