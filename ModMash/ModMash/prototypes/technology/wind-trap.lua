@@ -35,8 +35,3 @@
   }
 }
 )
-
---[[table.insert(
-data.raw["technology"]["automation-3"].effects,
-{type = "unlock-recipe",recipe = "wind-trap"}
-)]]

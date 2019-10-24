@@ -89,85 +89,6 @@ end
 local exclude_containers = {"player-port","spawner","spitter-spawner","electric-energy-interface"}
 
 local local_create_container = function(item,x)
-	--[[local clean_name = item.name:gsub("-", " ")
-	clean_name = clean_name:gsub("ore", " ore") --fix weird names
-	clean_name = clean_name:gsub("  ", " ")
-	local contain_icons = nil
-	local uncontain_icons = nil
-	local tech_icons = nil
-	if item.icons ~= nil then
-		tech_icons = {
-			{icon = "__modmash__/graphics/technology/super-material.png"},
-			{
-				icon = "__modmash__/graphics/icons/super-container.png",
-				icon_size = 32,
-				shift = {0,24}
-			}}
-		contain_icons = {
-			{
-				icon = "__modmash__/graphics/icons/super-container.png",
-				icon_size = 32}}
-		uncontain_icons = {}
-		for k = 1, #item.icons do 
-			local i = item.icons[k]
-			local x = item.icons[k]
-			local size = x.icon_size			
-			if size == nil then size = 32 end
-			i.scale = 0.5 * (32/size)
-			i.shift = {0, 2}
-			x.shift = {24, 24}
-			x.icon_size = size
-			i.icon_size = size
-			table.insert(uncontain_icons,item.icons[k])
-			table.insert(contain_icons,i)
-			table.insert(tech_icons,x)
-		end
-		table.insert(uncontain_icons,{
-				icon = "__modmash__/graphics/icons/super-container.png",
-				scale = 0.5,
-				icon_size = 32,
-				shift = {7,8}})
-	elseif item.icon ~= nil then
-		local size = item.icon_size
-		
-		if size == nil then size = 32 end
-		contain_icons =	{
-			{
-				icon = "__modmash__/graphics/icons/super-container.png",
-				icon_size = 32,
-			},
-			{
-				icon = item.icon,
-				scale = 0.5 * (32/size),
-				icon_size = size,
-				shift = {0, 2 }
-			}}
-		uncontain_icons = {
-			{
-				icon = item.icon,
-				icon_size = size
-			},
-			{
-				icon = "__modmash__/graphics/icons/super-container.png",
-				scale = 0.5,
-				icon_size = 32,
-				shift = {5, 5 }
-			}}
-		tech_icons ={
-			{icon = "__modmash__/graphics/technology/super-material.png"},
-			{
-				icon = "__modmash__/graphics/icons/super-container.png",
-				icon_size = 32,
-				shift = {-16,24}
-			},
-			{
-				icon = item.icon,					
-				icon_size = size,
-				scale = (32/size),
-				shift = {24,24}
-			}}
-	end]]
-
 	local base_contain_icons = {
 		{
 			icon = "__modmash__/graphics/icons/super-container.png",
@@ -750,10 +671,9 @@ local local_create_recylce_item = function(r)
 	if ingds == nil then
 		return 
 	end 
-
 	local item = local_get_item(results[1].name)	
 
-	if item == nil or item.icon_size == nil then
+	if item == nil or item.icon_size == nil or item.name == "warptorio-armor" then
 		return
 	end
 	if (item.icon == nil or item.icon == false) and item.icons == nil then return end
@@ -867,6 +787,7 @@ local local_create_recycle_recipies = function(source)
 		recipies[#recipies+1] = recipe
 	end
 	for k=1, #recipies do local recipe = recipies[k];	
+		
 	    if recipe.hidden or recipe.hide_from_player_crafting or starts_with(recipe.name,"creative-mod") then
 			log("Skipping recyling " .. recipe.name)
 		else

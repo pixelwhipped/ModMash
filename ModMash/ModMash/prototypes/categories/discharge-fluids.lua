@@ -1,4 +1,5 @@
-﻿data:extend(
+﻿--[[Uses by valves]]
+data:extend(
 {
 	{
 		type = "recipe-category",

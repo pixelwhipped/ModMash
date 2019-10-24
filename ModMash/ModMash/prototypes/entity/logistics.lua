@@ -181,7 +181,7 @@ local local_create_loader = function(name,max_health,filter_count,localised_name
 		  }
 		},
 		collision_box = {{-0.4, -0.9}, {0.4, 0.9}},
-		selection_box = {{-0.5, -1}, {0.5, 1}},
+		selection_box = {{-0.8, -1.2}, {0.8, 1.2}},
 		animation_speed_coefficient = 32,
 		belt_animation_set = belt_animation_set,
 		fast_replaceable_group = "loader",
@@ -306,7 +306,7 @@ local local_create_splitter = function(name,max_health,localised_name,localised_
 		  }
 		},
 		collision_box = {{-0.9, -0.4}, {0.9, 0.4}},
-		selection_box = {{-0.9, -0.5}, {0.9, 0.5}},
+		selection_box = {{-1.2, -0.8}, {1.2, 0.8}},
 		animation_speed_coefficient = 32,
 		structure_animation_speed_coefficient = 0.7,
 		structure_animation_movement_cooldown = 10,
@@ -470,7 +470,7 @@ local local_create_belt_underground = function(name,max_health,max_distance,spee
 		  }
 		},
 		collision_box = {{-0.4, -0.4}, {0.4, 0.4}},
-		selection_box = {{-0.5, -0.5}, {0.5, 0.5}},
+		selection_box = {{-0.8, -0.8}, {0.8, 0.8}},
 		animation_speed_coefficient = 32,
 		belt_animation_set = belt_animation_set,
 		fast_replaceable_group = "transport-belt",
@@ -638,7 +638,7 @@ local local_create_belt = function(name,max_health,speed,localised_name,localise
 			}
 		},
 		collision_box = {{-0.4, -0.4}, {0.4, 0.4}},
-		selection_box = {{-0.5, -0.5}, {0.5, 0.5}},
+		selection_box = {{-0.8, -0.8}, {0.8, 0.8}},
 		working_sound =
 		{
 			sound =

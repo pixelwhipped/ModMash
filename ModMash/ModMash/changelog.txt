@@ -1,4 +1,22 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.17.62
+  Bugfixes:
+    - Loader bug fix
+
+---------------------------------------------------------------------------------------------------
+Version: 0.17.61
+  Bugfixes:
+    - Updated all control scripts. Massive overhaul
+  Changes:
+    - Balanced biter neural toxin research range modifier
+    - Balanced regenerative technology and entites
+    - fishing inserters slightly optimized and can put fish back in water
+    - recycle machine now works with loaders
+    - better loader rotation
+    - loaders can now load/unload cargo wagon	
+    - much better UPS
+
+---------------------------------------------------------------------------------------------------
 Version: 0.17.60
   Bugfixes:
     - Generating correct names for generated items, recipes and technology

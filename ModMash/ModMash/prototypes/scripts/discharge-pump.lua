@@ -1,16 +1,40 @@
-﻿if not modmash or not modmash.util then require("prototypes.scripts.util") end
+﻿--[[code reviewed 6.10.19
+	Used defines for enitity name references
+	use is valid]]
+log("discharge-pump.lua")
+--[[check and import utils]]
+if modmash == nil or modmash.util == nil then require("prototypes.scripts.util") end
+if not modmash.defines then require ("prototypes.scripts.defines") end
 
+--[[defines]]
+local discharge_water_pump  = modmash.defines.names.discharge_water_pump 
+	
+--[[create local references]]
+--[[util]]
 local get_entities_to  = modmash.util.get_entities_to
-local change_fluidbox_fluid  = modmash.util.change_fluidbox_fluid
+local change_fluidbox_fluid = modmash.util.change_fluidbox_fluid
+local is_valid = modmash.util.is_valid
+local is_valid_and_persistant = modmash.util.is_valid_and_persistant
+local table_index_of = modmash.util.table.index_of
 
-local init = function()	
-	if global.modmash.discharge_pumps == nil then global.modmash.discharge_pumps = {} end	
-	return nil end
+--[[unitialized globals]]
+local pumps = nil
+
+--[[ensure globals]]
+local local_init = function() 
+	log("discharge-pump.local_init")
+	if global.modmash.discharge_pumps == nil then global.modmash.discharge_pumps = {} end
+	pumps = global.modmash.discharge_pumps
+	end
+local local_load = function() 
+	log("discharge-pump.local_load")
+	pumps = global.modmash.discharge_pumps
+	end
 
 local local_discharge_pump_process = function(entity)
-	local pumps = get_entities_to(entity.direction,entity)
-	if #pumps > 0 then	
-		for index=1, #pumps do local connection = pumps[index]
+	local connected_pumps = get_entities_to(entity.direction,entity)
+	if #connected_pumps > 0 then	
+		for index=1, #connected_pumps do local connection = connected_pumps[index]
 			change_fluidbox_fluid(connection,entity.prototype.pumping_speed,entity)
 		end
 		local fluid =  entity.fluidbox[1]
@@ -21,40 +45,22 @@ local local_discharge_pump_process = function(entity)
 	end
 end
 
-local local_discharge_pump_tick = function()
-	if init ~= nil then init = init() end	
-	local pumps = global.modmash.discharge_pumps
-	if pumps ~= nil then	
-		for index=1, #pumps do local discharge_pump = pumps[index]
-			if discharge_pump.valid then
-				if not discharge_pump.to_be_deconstructed(discharge_pump.force) then
-					local_discharge_pump_process(discharge_pump)
-				end
-			end
+local local_discharge_pump_tick = function()		
+	--if true then return end
+	for index=1, #pumps do local discharge_pump = pumps[index]
+		if is_valid_and_persistant(discharge_pump) then
+			local_discharge_pump_process(discharge_pump)
 		end
 	end
 end
 
-local local_discharge_pump_added = function(entity)
-	if entity.name == "mm-discharge-water-pump" then		
-		table.insert(global.modmash.discharge_pumps, entity)
-	end
-end
-
-local local_discharge_pump_removed = function(entity)
-	if entity.name == "mm-discharge-water-pump" then		
-		local pumps = global.modmash.discharge_pumps
-		for index=1, #pumps do local pump = pumps[index]
-			if pump.valid and pump == entity then
-				table.remove(global.modmash.discharge_pumps, index)
-				return
-			end
-		end
-	end
-end
-
-if modmash.ticks ~= nil then
-	table.insert(modmash.ticks,local_discharge_pump_tick)
-	table.insert(modmash.on_added,local_discharge_pump_added)
-	table.insert(modmash.on_remove,local_discharge_pump_removed)
-end
+modmash.register_script({
+	names = {discharge_water_pump},
+	on_init = local_init,
+	on_load = local_load,
+	on_tick = {
+		tick = local_discharge_pump_tick,		
+		table = function() return pumps end,
+		auto_add_remove = {discharge_water_pump}
+		}
+})

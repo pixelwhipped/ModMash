@@ -38,4 +38,5 @@ local local_create_entity_loot = function()
 
 local_create_entity_loot()
 
+--adjusting healing properties of fish as superseded by juice
 data.raw["capsule"]["raw-fish"].capsule_action.attack_parameters.ammo_type.action.action_delivery.target_effects.damage = {type = "physical", amount = -20}

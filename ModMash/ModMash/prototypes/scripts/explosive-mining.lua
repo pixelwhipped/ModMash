@@ -1,14 +1,17 @@
-﻿if not modmash or not modmash.util then require("prototypes.scripts.util") end
+﻿--[[code reviewed 15.10.19]]
+log("explosive-mining.lua")
+--[[check and import utils]]
+if modmash == nil or modmash.util == nil then require("prototypes.scripts.util") end
 
 local is_valid  = modmash.util.is_valid
 
-local init = function()	
+local local_init = function()	
 	if global.modmash.grenade_targets == nil then global.modmash.grenade_targets = {} end	
 	if not global.modmash.grenade then global.modmash.grenade = nil end	
-	return nil end
+	end
 
 local local_check_resource = function()
-	if init ~= nil then init = init() end	
+	--if true then return end
 	for i, v in ipairs(global.modmash.grenade_targets) do
 		if v.ticks > 400 then
 			table.remove(global.modmash.grenade_targets, i)
@@ -34,8 +37,7 @@ local local_check_resource = function()
 end
 
 local local_action_mining =function (event)
-	if init ~= nil then init = init() end	
-	player = game.players[event.player_index];
+	player = game.players[event.player_index]
 	if player ~= nil and player.cursor_stack.valid_for_read then
 		if player.cursor_stack.name == "grenade" or player.cursor_stack.name == "cluster-grenade" then
 			if grenade ~= nil and player.cursor_stack.count < grenade.count and player.selected ~= nil then
@@ -56,8 +58,8 @@ local local_action_mining =function (event)
 	end
 end
 
-if modmash.ticks ~= nil then
-
-	table.insert(modmash.on_player_cursor_stack_changed,local_action_mining)
-	table.insert(modmash.ticks,local_check_resource)
-end
+modmash.register_script({
+	on_init = local_init,
+	on_player_cursor_stack_changed = local_action_mining,
+	on_tick = local_check_resource
+})

@@ -53,12 +53,15 @@ local local_rebuild_lables = function()
 	end
 end
 
-local init = function()	
+local local_init = function()	
 	if global.modmash.valves == nil then global.modmash.valves = {} end	
-	local_rebuild_lables()
-	return nil end
+	end
 
-local local_clear_fluid_recipe = function(entity)		
+local local_start = function()	
+	local_rebuild_lables()
+	end
+
+local local_clear_fluid_recipe = function(entity)
 	local call = function(e)
 		local sum = 0
 		for i = 1, #e.fluidbox do local f = e.fluidbox[i]
@@ -69,12 +72,12 @@ local local_clear_fluid_recipe = function(entity)
 	if entity.get_recipe() == nil then return true end
 	local status, retval = pcall(call,entity)
 	if status == true then return end
-end
+	end
 
 local local_check_valve_process = function(valve)
 	local entity = valve.entity
 	entity.energy = 100000
-	if valve.entity.is_crafting() then return end
+	
 	local fluid = nil
 	local pipe = local_get_connected_input_fluid_for_valve(valve,1)
 	if pipe ~= nil then
@@ -84,13 +87,6 @@ local local_check_valve_process = function(valve)
 	local pipe2 = local_get_connected_input_fluid_for_valve(valve,2)
 	if pipe ~= nil then
 		local fluid2 = pipe.entity.fluidbox[pipe.box]	
-	--[[	if fluid2 ~= nil and fluid2~= fluid then
-			local name1 = nil
-			local name2 = nil
-			if fluid ~= nil and fluid.name ~= nil then name1 = fluid.name else name1 = "nil" end
-			if fluid2 ~= nil and fluid2.name ~= nil then name2 = fluid2.name else name2 = "nil" end
-			modmash.util.print("1="..name1.." 2="..name2)
-		end]]
 	end
 
 	if fluid ~= nil then		
@@ -106,11 +102,12 @@ local local_check_valve_process = function(valve)
 	end	
 	end
 
-
-local local_overflow_valve_process = function(valve)	
+--Allows flow when input is over x
+local local_overflow_valve_process = function(valve)
 	local entity = valve.entity
 	entity.energy = 100000
-	if valve.entity.is_crafting() then return end
+	entity.active = false
+
 	local fluid = nil
 	local pipe = local_get_connected_input_fluid_for_valve(valve,1)
 	if pipe ~= nil then
@@ -123,24 +120,82 @@ local local_overflow_valve_process = function(valve)
 		end
 
 	end
+
+	pipe = local_get_connected_input_fluid_for_valve(valve,1)
+
 	if fluid ~= nil then
-		if fluid.amount/pipe.entity.fluidbox.get_capacity(pipe.box) > valve.value then
+		if pipe ~= nil and pipe.entity ~= nil and pipe.entity.fluidbox ~= nil and fluid.amount/pipe.entity.fluidbox.get_capacity(pipe.box) > valve.value then			
 			local valve_fluid = "valve-"..fluid.name		
 			local current = entity.get_recipe()			
 			if fluid.amount == 0 then
 				local_clear_fluid_recipe(entity)
+				entity.active = false
 			elseif current == nil then
 				try_set_recipe(entity,valve_fluid)
-			elseif current.name ~= valve_fluid then
+				entity.active = false
+			elseif current.name ~= valve_fluid then				
 				local_clear_fluid_recipe(entity)
+				entity.active = false
+			else
+				entity.active = true
 			end	
+		else
+			local_clear_fluid_recipe(entity)
+			entity.active = false
 		end
 	else
 		local_clear_fluid_recipe(entity)
+		entity.active = false
 	end	
-end
+	end
 
+--Allows flow when output is under
 local local_undeflow_valve_process = function(valve)
+	local entity = valve.entity
+	entity.energy = 100000
+	entity.active = false
+
+	local fluid = nil
+	local pipe = local_get_connected_input_fluid_for_valve(valve,2)
+	if pipe ~= nil then
+		fluid = pipe.entity.fluidbox[pipe.box]	
+	end
+	if fluid == nil then
+		pipe = local_get_connected_input_fluid_for_valve(valve,1)
+		if pipe ~= nil then
+			fluid = pipe.entity.fluidbox[pipe.box]	
+		end
+
+	end
+
+	pipe = local_get_connected_input_fluid_for_valve(valve,2)
+	if fluid ~= nil then
+		if pipe == nil or fluid.amount/pipe.entity.fluidbox.get_capacity(pipe.box) < valve.value then			
+			local valve_fluid = "valve-"..fluid.name		
+			local current = entity.get_recipe()			
+			if fluid.amount == 0 then
+				local_clear_fluid_recipe(entity)
+				entity.active = false
+			elseif current == nil then
+				try_set_recipe(entity,valve_fluid)
+				entity.active = false
+			elseif current.name ~= valve_fluid then				
+				local_clear_fluid_recipe(entity)
+				entity.active = false
+			else
+				entity.active = true
+			end	
+		else
+			local_clear_fluid_recipe(entity)
+			entity.active = false
+		end
+	else
+		local_clear_fluid_recipe(entity)
+		entity.active = false
+	end	
+	end
+
+local oldlocal_undeflow_valve_process = function(valve)
 	local entity = valve.entity
 	entity.energy = 100000
 	local fluid = nil
@@ -172,7 +227,7 @@ local local_undeflow_valve_process = function(valve)
 	else
 		local_clear_fluid_recipe(entity)
 	end	
-end
+	end
 
 local local_mini_boiler_process = function(valve)
 	local entity = valve.entity
@@ -188,7 +243,7 @@ local local_mini_boiler_process = function(valve)
 		t.temperature = 90
 		outpipe.entity.fluidbox[outpipe.box] = t
 	end
-end
+	end
 
 local local_super_boiler_process = function(valve)
 	local entity = valve.entity
@@ -205,7 +260,7 @@ local local_super_boiler_process = function(valve)
 		t.temperature = 400
 		outpipe.entity.fluidbox[outpipe.box] = t
 	end
-end
+	end
 
 local local_remove = function(entity)
 	for index, valve in ipairs(global.modmash.valves) do
@@ -215,16 +270,16 @@ local local_remove = function(entity)
 			table.remove(global.modmash.valves, index)
 		end
 	end
-end
+	end
 
 local local_valve_removed = function(entity)
 	if table_contains(valve_types,entity.name) then	
 		local_remove(entity)
 	end
-end
+	end
 
-local local_valves_tick = function()
-	if init ~= nil then init = init() end		
+local local_valves_tick = function()	
+	--if true then return end
 	local valves = global.modmash.valves	
 	for k=1, #valves do local valve = valves[k];			
 		if valve ~= nil and is_valid(valve.entity) and valve.entity.to_be_deconstructed(valve.entity.force) ~= true then							
@@ -238,9 +293,9 @@ local local_valves_tick = function()
 			local_remove(valve.entity)
 		end
 	end
-end
+	end
 
-local local_valve_added = function(entity)
+local local_valve_added = function(entity)	
 	if table_contains(valve_types,entity.name) then		
 		detail = {
 			entity = entity,
@@ -250,10 +305,13 @@ local local_valve_added = function(entity)
 		if entity.name ~= "modmash-super-boiler-valve" then
 			entity.operable = false
 		end
+		if entity.name == "modmash-overflow-valve" or entity.name == "modmash-underflow-valve" then
+		local_refresh_sticker(detail)
+		end
 	end
 end
 
-local local_valve_adjust = function(entity)		
+local local_valve_adjust = function(entity)	
 	if entity.name == "modmash-overflow-valve" or entity.name == "modmash-underflow-valve" then
 		for _, valve in ipairs(global.modmash.valves) do
 			if valve.entity.valid then
@@ -271,9 +329,11 @@ local local_valve_adjust = function(entity)
 	end
 end
 
-if modmash.ticks ~= nil then	
-	table.insert(modmash.ticks,local_valves_tick)
-	table.insert(modmash.on_added,local_valve_added)
-	table.insert(modmash.on_remove,local_valve_removed)
-	table.insert(modmash.on_adjust,local_valve_adjust)
-end
+modmash.register_script({
+	on_tick = local_valves_tick,
+	on_init = local_init,
+	on_start = local_start,
+	on_added = local_valve_added,
+	on_removed = local_valve_removed,
+	on_adjust = local_valve_adjust
+})

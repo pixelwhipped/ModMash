@@ -3,7 +3,9 @@ if not modmash.util then modmash.util = {} end
 if not modmash.util.raw then modmash.util.raw = {} end
 if not modmash.util.table then modmash.util.table = {} end
 if not modmash.util.signal then modmash.util.signal = {} end
+if not modmash.util.defines then require ("prototypes.scripts.defines") end
 if not modmash.util.types then require ("prototypes.scripts.types") end
+
 
 local is_polutant = modmash.util.types.is_polutant
 local biome_types = modmash.util.types.biome_types
@@ -44,6 +46,7 @@ local local_print = function(arg,index)
 end
 
 local local_is_valid = function(entity) return (entity ~= nil and entity.valid) end
+local local_is_valid_and_persistant = function(entity)  return local_is_valid(entity) and not entity.to_be_deconstructed(entity.force) end
 
 local local_is_int = function(n) return (type(n) == "number") and (math.floor(n) == n) end
 
@@ -711,6 +714,8 @@ modmash.util.get_name_for = local_get_name_for
 modmash.util.log = local_log
 modmash.util.print = local_print
 modmash.util.is_valid = local_is_valid
+modmash.util.is_valid_and_persistant = local_is_valid_and_persistant
+
 modmash.util.is_int = local_is_int
 modmash.util.starts_with = local_starts_with
 modmash.util.ends_with = local_ends_with

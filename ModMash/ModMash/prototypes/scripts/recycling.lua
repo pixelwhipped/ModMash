@@ -1,4 +1,13 @@
-﻿if not modmash or not modmash.util then require("prototypes.scripts.util") end
+﻿--[[code reviewed 13.10.19]]
+log("recycling.lua")
+--[[check and import utils]]
+if modmash == nil or modmash.util == nil then require("prototypes.scripts.util") end
+if not modmash.defines then require ("prototypes.scripts.defines") end
+--[[defines]]
+local recycling_machine = modmash.defines.names.recycling_machine
+local low_priority = modmash.events.low_priority
+local medium_priority = modmash.events.medium_priority
+local high_priority = modmash.events.high_priority
 
 local get_entities_around  = modmash.util.get_entities_around
 local aggrigate_content  = modmash.util.aggrigate_content
@@ -6,16 +15,11 @@ local set_new_signal  = modmash.util.signal.set_new_signal
 local try_set_recipe  = modmash.util.try_set_recipe
 local starts_with  = modmash.util.starts_with
 
+local recycling_machines_per_tick = 10
+
 local local_get_recyle_recipe = function(name)
-	for _, player in pairs (game.players) do
-		for _, recipe in pairs (player.force.recipes) do
-			if recipe.name == "craft-"..name then
-				return recipe
-			end
-		end
+	return game.players[1].force.recipes["craft-"..name]
 	end
-	return nil
-end
 
 local local_recycling_machine_process = function(entity)
 	local loaders = get_entities_around(entity,1)
@@ -44,7 +48,34 @@ local local_recycling_machine_process = function(entity)
 					table.insert(storage,ent.pickup_target)					
 				end
 			elseif ent.prototype.type == "loader" then
-
+				local filtered = false
+				if ent.filter_slot_count > 0 then
+					for fi = 1, ent.filter_slot_count do	
+						local f = ent.get_filter(fi)
+						if f ~= nil then 
+							local rc = local_get_recyle_recipe(f)					
+							if rc ~= nil then
+								if rc == current then return nil end
+								filtered = true
+								result = f
+								max = 1
+							end							
+						end
+					end
+				end
+				if filtered == false then
+					local contents = aggrigate_content(ent.get_transport_line(1),ent.get_transport_line(2))	
+					for name, count in pairs(contents) do
+						local rc = local_get_recyle_recipe(name)					
+						if rc ~= nil then
+							if rc == current then return nil end
+							if count > max then 
+								result = name
+								max = count
+							end	
+						end
+					end
+				end
 			end
 		end		
 		for index, sto in pairs(storage) do			
@@ -115,7 +146,7 @@ local local_recycling_machine_process = function(entity)
 		if result ~= nil then return local_get_recyle_recipe(result) end
 	end			
 	return nil
-end
+	end
 
 local local_set_sticker = function(recycling_machine, automated,keep)
 	if recycling_machine.signal ~= nil then
@@ -128,11 +159,11 @@ local local_set_sticker = function(recycling_machine, automated,keep)
 			recycling_machine.signal = set_new_signal(recycling_machine.entity,"recycling-machine-indicator",2)
 		end
 	end
-end
+	end
 
 local local_refresh_sticker = function(recycling_machine,keep)
 	local_set_sticker(recycling_machine,recycling_machine.automated,keep)
-end
+	end
 
 local local_rebuild_lables = function()
 	local recycling_machines = global.modmash.recycling_machines
@@ -143,27 +174,28 @@ local local_rebuild_lables = function()
 			end
 		end
 	end
-end
-
-local init = function()	
-	if game.players[1] == nil then return init end
-	if global.modmash.recycling_machines == nil then global.modmash.recycling_machines = {} end	
-	for name, recipe in pairs(game.players[1].force.recipes) do 
-		if starts_with(recipe.name,"craft-") then
-			recipe.enabled = true
-		end
 	end
+
+local local_init = function()	
+	if global.modmash.recycling_machines == nil then global.modmash.recycling_machines = {} end	
+	end
+
+local local_start = function()	
 	local_rebuild_lables()
-	return nil
-end
+	end
 
 local local_recycling_tick = function()
-	if init ~= nil then init = init() end	
-	if game.tick % 20 == 0 then
-		local recycling_machines = global.modmash.recycling_machines
-		for index=1, #recycling_machines do local recycling_machine = recycling_machines[index]		
-			if recycling_machine.entity.valid then
-				if not recycling_machine.entity.to_be_deconstructed(recycling_machine.entity.force) then
+	--if true then return end
+	local recycling_machines = global.modmash.recycling_machines
+	local index = global.modmash.recycling_machines_index
+	if not index then index = 1 end
+	local numiter = 0
+	local updates = math.min(#recycling_machines,recycling_machines_per_tick)
+
+	for index=1, #recycling_machines do local recycling_machine = recycling_machines[index]		
+		if recycling_machine.entity.valid then
+			if not recycling_machine.entity.to_be_deconstructed(recycling_machine.entity.force) then
+				if recycling_machine.entity.is_crafting() == false then 
 					if recycling_machine.automated == true then
 						local recipe = local_recycling_machine_process(recycling_machine.entity)
 						if recipe ~= nil then								
@@ -173,55 +205,85 @@ local local_recycling_tick = function()
 				end
 			end
 		end
+		if index >= #recycling_machines then index = 1 end
+		numiter = numiter + 1
+		if numiter >= updates then 
+			global.modmash.recycling_machines_index	= index
+			return
+		end	
 	end
 end
 
-local local_recycling_added = function(ent)
-	if ent.name == "recycling-machine" then
-		detail = {
-			entity = ent,
-			automated = true,
-		}
-		ent.operable = false
-		table.insert(global.modmash.recycling_machines, detail)
-		local_refresh_sticker(detail,true)
+local local_recycling_added = function(entity)
+	detail = {
+		entity = entity,
+		automated = true,
+	}
+	entity.operable = false
+	table.insert(global.modmash.recycling_machines, detail)
+	local_refresh_sticker(detail,true)
 	end
-end
 
-local local_recycling_removed = function(entity)
-	if entity.name == "recycling-machine" then		
-		for index, recycling_machine in ipairs(global.modmash.recycling_machines) do
-			if recycling_machine.entity.valid and recycling_machine.entity == entity then
-				table.remove(global.modmash.recycling_machines, index)
-				local_refresh_sticker(recycling_machine,false)
-				return
-			end
+local local_recycling_removed = function(entity)	
+	for index, recycling_machine in ipairs(global.modmash.recycling_machines) do
+		if recycling_machine.entity.valid and recycling_machine.entity == entity then
+			table.remove(global.modmash.recycling_machines, index)
+			local_refresh_sticker(recycling_machine,false)
+			return
 		end
 	end
-end
+	end
 
 local local_recycling_adjust = function(entity)
-	if entity.name == "recycling-machine" then
-		local recycling_machines = global.modmash.recycling_machines
-		for index=1, #recycling_machines do local recycling_machine = recycling_machines[index]
-			if entity == recycling_machine.entity then
-				if recycling_machine.automated == false then
-					recycling_machine.automated = true
-					entity.operable = false
-				else
-					recycling_machine.automated = false
-					entity.operable = true
-				end
-				local_refresh_sticker(recycling_machine,true)
-				return
+	local recycling_machines = global.modmash.recycling_machines
+	for index=1, #recycling_machines do local recycling_machine = recycling_machines[index]
+		if entity == recycling_machine.entity then
+			if recycling_machine.automated == false then
+				recycling_machine.automated = true
+				entity.operable = false
+			else
+				recycling_machine.automated = false
+				entity.operable = true
+			end
+			local_refresh_sticker(recycling_machine,true)
+			return
+		end
+	end
+	end
+
+local local_on_selected = function(player,entity)
+	if entity ~= nil then
+		if (entity.name == "recycling-machine" or (global.modmash.allow_pickup_rotations and (entity.type == "inserter" or (entity.type == "entity-ghost" and entity.ghost_type == "inserter")))) then
+			if settings.startup["modmash-setting-show-adjustable"].value == true then
+				entity.surface.create_entity{name="flying-text", position = entity.position, text="Press CTRL + A to adjust", color={r=1,g=1,b=1}}
+			end
+		end
+
+	end
+	end
+
+local local_on_configuration_changed = function(f)
+	if f.mod_changes["modmash"].old_version < "0.17.61" then	
+		--fix recipes
+		for name, recipe in pairs(game.players[1].force.recipes) do 
+			if starts_with(recipe.name,"craft-") then
+				recipe.enabled = true
 			end
 		end
 	end
-end
+	end
 
-if modmash.ticks ~= nil then			
-	table.insert(modmash.ticks,local_recycling_tick)
-	table.insert(modmash.on_added,local_recycling_added)
-	table.insert(modmash.on_remove,local_recycling_removed)
-	table.insert(modmash.on_adjust,local_recycling_adjust)
-end
+modmash.register_script({
+	names = {recycling_machine},
+	on_init = local_init,
+	on_start = local_start,
+	on_tick = {
+		tick = local_recycling_tick,
+		priority = low_priority,
+		},
+	on_added_by_name = local_recycling_added,
+	on_removed_by_name = local_recycling_removed,
+	on_selected_by_name = local_on_selected,
+	on_adjust_by_name = local_recycling_adjust,
+	on_configuration_changed = local_on_configuration_changed
+})
