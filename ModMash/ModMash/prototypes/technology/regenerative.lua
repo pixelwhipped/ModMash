@@ -1,4 +1,9 @@
-﻿local create_regenerative_technology = function(level,count)
+﻿if not modmash or not modmash.util then require("prototypes.scripts.util") end
+
+local get_name_for = modmash.util.get_name_for
+
+
+local create_regenerative_technology = function(level,count)
 	return  
 	{
 		{
@@ -6,8 +11,10 @@
 			name = "enhance-regenerative-speed-"..level,
 			icon = "__base__/graphics/technology/demo/analyse-ship.png",
 			icon_size = 128,
-			localised_name = "Advanced Regenerative Technology "..level,
-			localised_description = "Increases regenerative items healing factor",
+			localised_name = {"",{"technology-name.enhance-regenerative-speed-1"}," ",level},
+			localised_description =  {"technology-description.enhance-regenerative-speed-1"},
+			--localised_name = "Advanced Regenerative Technology "..level,
+			--localised_description = "Increases regenerative items healing factor",
 			effects =
 			{
 			},
@@ -39,8 +46,8 @@ data:extend(
 			name = "enhance-regenerative-speed-1",
 			icon = "__base__/graphics/technology/demo/analyse-ship.png",
 			icon_size = 128,
-			localised_name = "Advanced Regenerative Technology ",
-			localised_description = "Increases regenerative items healing factor",
+			localised_name = {"technology-name.enhance-regenerative-speed-1"},
+			localised_description =  {"technology-description.enhance-regenerative-speed-1"},
 			effects =
 			{
 			},

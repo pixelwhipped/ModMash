@@ -1,4 +1,9 @@
-﻿if data.raw["technology"]["electronics"].effects == nil then
+﻿if not modmash or not modmash.util then require("prototypes.scripts.util") end
+
+local get_name_for = modmash.util.get_name_for
+
+
+if data.raw["technology"]["electronics"].effects == nil then
 	data.raw["technology"]["electronics"].effects = {}
 end
 
@@ -16,8 +21,8 @@ data:extend(
   {
     type = "technology",
     name = "enhance-drone-targeting-1",
-	localised_name = "Drone Targeting Enhancement 1",
-	localised_description = "Increases the droid search range",
+	localised_name = {"technology-description.enhance-drone-targeting-1"},
+	localised_description =  {"technology-description.enhance-drone-targeting-1"},
 	icon = "__modmash__/graphics/icons/construction_drone_icon.png",
     icon_size = 64,
     effects =
@@ -51,8 +56,10 @@ local create_technology = function(level)
 			name = "enhance-drone-targeting-"..level,
 			icon = "__modmash__/graphics/icons/construction_drone_icon.png",
 			icon_size = 64,
-			localised_name = "Drone Targeting Enhancement "..level,
-			localised_description = "Increases the droid search range",
+			localised_name = {"",{"technology-description.enhance-drone-targeting-1"}," ",level},-- get_name_for("enhance-drone-targeting-1",nil,(" "..level)),
+			localised_description =  {"technology-description.enhance-drone-targeting-1"},
+			--localised_name = "Drone Targeting Enhancement "..level,
+			--localised_description = "Increases the droid search range",
 			effects =
 			{
 			},
@@ -62,7 +69,7 @@ local create_technology = function(level)
 			},
 			unit =
 			{
-				count = 200,
+				count = (200+(level*25)),
 				ingredients =
 				{
 					{"automation-science-pack", 1},

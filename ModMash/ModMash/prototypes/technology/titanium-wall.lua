@@ -3,8 +3,8 @@
  {
     type = "technology",
     name = "titanium-walls",
-	localised_name = "Titanium wall",		
-	localised_description = "Titanium wall",
+	--localised_name = "Titanium wall",		
+	-- = "Titanium wall",
     icon_size = 128,
     icon = "__base__/graphics/technology/stone-walls.png",
     effects =

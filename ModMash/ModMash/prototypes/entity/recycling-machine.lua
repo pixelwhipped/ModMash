@@ -41,11 +41,11 @@ data:extend(
 {
   {
     type = "assembling-machine",
-	--type = "furnace",	
 	stack_size = 50,
     name = "recycling-machine",
-	localised_name = "Recycling machine",		
-	localised_description = "Recycles items into their component items, encurs wastage. CTRL+A to enable/disable automation.",
+	localised_description = {"item-description.recycling-machine",settings.startup["modmash-setting-adjust-binding"].value},
+	--localised_name = "Recycling machine",		
+	--localised_description = "Recycles items into their component items, encurs wastage. CTRL+A to enable/disable automation.",
     icon = "__modmash__/graphics/icons/recycling-machine.png",
     icon_size = 32,	
     flags = {"placeable-neutral","placeable-player", "player-creation"},

@@ -1,4 +1,5 @@
-﻿local force_configuration_change = true
+﻿
+local force_configuration_change = false
 --[[code reviewed 8.10.19
 	next going to have to move all global data to per player]]
 log("Entering control.lua")
@@ -249,7 +250,7 @@ script.on_load(function()
 	end)
 
 script.on_configuration_changed(function(f) 
-	if f.mod_changes["modmash"] == nil then
+	if f.mod_changes["modmash"] == nil or f.mod_changes["modmash"].old_version == nil then
 		if force_configuration_change == true then
 			log("Forcing update to " .. game.active_mods["modmash"])
 			f.mod_changes["modmash"] = 
@@ -294,6 +295,7 @@ require("prototypes.scripts.biter-neuro-toxin")
 require("prototypes.scripts.pollution")
 require("prototypes.scripts.biter-spawner")
 require("prototypes.scripts.new-game")
+require("prototypes.scripts.subspace-transport")
 
 local local_on_standard_entity_event = function(entity, table, table_by_name)	
 	if is_valid(entity) then			
@@ -468,5 +470,4 @@ script.on_event(defines.events.on_gui_click, local_on_gui_click)
 script.on_event(defines.events.on_selected_entity_changed,local_on_selected)	
 script.on_event(defines.events.on_post_entity_died,local_on_post_entity_died)
 script.on_event(defines.events.on_player_rotated_entity,local_on_player_rotated_entity) 
-script.on_event("automate-target",local_on_adjust)
 script.on_event("automate-target",local_on_adjust)

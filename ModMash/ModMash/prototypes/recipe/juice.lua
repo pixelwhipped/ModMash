@@ -3,8 +3,8 @@
 	{
 		type = "recipe",
 		name = "fish-juice",
-		localised_name = "Fish juice",
-		localised_description = "Fish juice",
+		--localised_name = "Fish juice",
+		--localised_description = "Fish juice",
 		energy_required = 1.5,
 		enabled = false,
 		category = "crafting-with-fluid",
@@ -31,8 +31,8 @@
 	{
 		type = "recipe",
 		name = "ooze-juice",
-		localised_name = "Ooze juice",
-		localised_description = "Ooze juice",
+		--localised_name = "Ooze juice",
+		--localised_description = "Ooze juice",
 		energy_required = 1.5,
 		enabled = false,
 		category = "crafting-with-fluid",

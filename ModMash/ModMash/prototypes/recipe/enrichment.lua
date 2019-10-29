@@ -3,8 +3,8 @@
 	{
 		type = "recipe",
 		name = "titanium-plate",
-		localised_name = "Titanium plate",
-		localised_description = "Titanium plate",
+		--localised_name = "Titanium plate",
+		--localised_description = "Titanium plate",
 		category = "smelting",
 		normal =
 		{
@@ -17,8 +17,8 @@
 	{
 		type = "recipe",
 		name = "alien-plate",
-		localised_name = "Alien plate",
-		localised_description = "Alien plate",
+		--localised_name = "Alien plate",
+		--localised_description = "Alien plate",
 		category = "smelting",
 		normal =
 		{
@@ -31,8 +31,8 @@
 	{
 		type = "recipe",
 		name = "copper-enrichment-process",
-		localised_name = "Copper enrichment",
-		localised_description = "Copper enrichment",
+		--localised_name = "Copper enrichment",
+		--localised_description = "Copper enrichment",
 		energy_required = 1.5,
 		enabled = false,
 		category = "crafting-with-fluid",
@@ -63,8 +63,8 @@
 	{
 		type = "recipe",
 		name = "stone-enrichment-process",
-		localised_name = "Stone enrichment",
-		localised_description = "Stone enrichment",
+		--localised_name = "Stone enrichment",
+		--localised_description = "Stone enrichment",
 		energy_required = 1.5,
 		enabled = false,
 		category = "crafting-with-fluid",
@@ -101,8 +101,8 @@
 	{
 		type = "recipe",
 		name = "uranium-enrichment-process",
-		localised_name = "Uranium enrichment",
-		localised_description = "Uranium enrichment",
+		--localised_name = "Uranium enrichment",
+		--localised_description = "Uranium enrichment",
 		energy_required = 1.5,
 		enabled = false,
 		category = "crafting-with-fluid",
@@ -140,8 +140,8 @@
 	{
 		type = "recipe",
 		name = "coal-enrichment-process",
-		localised_name = "Coal enrichment",
-		localised_description = "Coal enrichment",
+		--localised_name = "Coal enrichment",
+		--localised_description = "Coal enrichment",
 		energy_required = 1.5,
 		enabled = false,
 		category = "crafting-with-fluid",
@@ -160,8 +160,8 @@
 	{
 		type = "recipe",
 		name = "iron-enrichment-process",
-		localised_name = "Iron ore enrichment",
-		localised_description = "Iron ore enrichment",
+		--localised_name = "Iron ore enrichment",
+		--localised_description = "Iron ore enrichment",
 		energy_required = 1.5,
 		enabled = false,
 		category = "crafting-with-fluid",
@@ -193,8 +193,8 @@
 	{
 		type = "recipe",
 		name = "alien-enrichment-process",
-		localised_name = "Alien ore enrichment",
-		localised_description = "Alien ore enrichment",
+		--localised_name = "Alien ore enrichment",
+		--localised_description = "Alien ore enrichment",
 		energy_required = 1.5,
 		enabled = false,
 		category = "crafting-with-fluid",
@@ -237,8 +237,8 @@
 	},{
 		type = "recipe",
 		name = "titanium-extraction-process",
-		localised_name = "Titanium extraction",
-		localised_description = "Titanium extraction",
+		--localised_name = "Titanium extraction",
+		--localised_description = "Titanium extraction",
 		energy_required = 1.5,
 		enabled = false,
 		category = "crafting-with-fluid",
@@ -260,8 +260,8 @@
 	{
 		type = "recipe",
 		name = "alien-ooze",
-		localised_name = "Alien ooze",
-		localised_description = "Alien ooze",
+		--localised_name = "Alien ooze",
+		--localised_description = "Alien ooze",
 		energy_required = 1.5,
 		enabled = false,
 		category = "crafting-with-fluid",
@@ -293,8 +293,8 @@
 	{
 		type = "recipe",
 		name = "alien-enrichment-process-to-ore",
-		localised_name = "Alien ooze to alien ore",
-		localised_description = "Alien ooze to alien ore",
+		--localised_name = "Alien ooze to alien ore",
+		--localised_description = "Alien ooze to alien ore",
 		energy_required = 1.5,
 		enabled = false,
 		category = "crafting-with-fluid",
@@ -316,8 +316,8 @@
 	{
 		type = "recipe",
 		name = "alien-artifact-enrichment-process-to-ore",
-		localised_name = "Alien artifact to alien ore",
-		localised_description = "Alien artifact to alien ore",
+		--localised_name = "Alien artifact to alien ore",
+		--localised_description = "Alien artifact to alien ore",
 		energy_required = 1.5,
 		enabled = false,
 		category = "crafting-with-fluid",
@@ -339,8 +339,8 @@
 	{
 		type = "recipe",
 		name = "alien-enrichment-process-to-iron",
-		localised_name = "Alien ooze to iron",
-		localised_description = "Alien ooze to iron",
+		--localised_name = "Alien ooze to iron",
+		--localised_description = "Alien ooze to iron",
 		energy_required = 1.5,
 		enabled = false,
 		category = "crafting-with-fluid",
@@ -362,8 +362,8 @@
 	{
 		type = "recipe",
 		name = "alien-enrichment-process-to-stone",
-		localised_name = "Alien ooze to stone",
-		localised_description = "Alien ooze to stone",
+		--localised_name = "Alien ooze to stone",
+		--localised_description = "Alien ooze to stone",
 		energy_required = 1.5,
 		enabled = false,
 		category = "crafting-with-fluid",
@@ -385,8 +385,8 @@
 	{
 		type = "recipe",
 		name = "alien-enrichment-process-to-copper",
-		localised_name = "Alien ooze to copper",
-		localised_description = "Alien ooze to copper",
+		--localised_name = "Alien ooze to copper",
+		--localised_description = "Alien ooze to copper",
 		energy_required = 1.5,
 		enabled = false,
 		category = "crafting-with-fluid",
@@ -408,8 +408,8 @@
 	{
 		type = "recipe",
 		name = "alien-enrichment-process-to-titanium",
-		localised_name = "Alien ooze to titanium",
-		localised_description = "Alien ooze to titanium",
+		--localised_name = "Alien ooze to titanium",
+		--localised_description = "Alien ooze to titanium",
 		energy_required = 1.5,
 		enabled = false,
 		category = "crafting-with-fluid",
@@ -431,8 +431,8 @@
 	{
 		type = "recipe",
 		name = "alien-enrichment-process-to-coal",
-		localised_name = "Alien ooze to coal",
-		localised_description = "Alien ooze to coal",
+		--localised_name = "Alien ooze to coal",
+		--localised_description = "Alien ooze to coal",
 		energy_required = 1.5,
 		enabled = false,
 		category = "crafting-with-fluid",
@@ -454,8 +454,8 @@
 	{
 		type = "recipe",
 		name = "alien-enrichment-process-to-uranium",
-		localised_name = "Alien ooze to uranium",
-		localised_description = "Alien ooze to uranium",
+		--localised_name = "Alien ooze to uranium",
+		--localised_description = "Alien ooze to uranium",
 		energy_required = 1.5,
 		enabled = false,
 		category = "crafting-with-fluid",
@@ -478,8 +478,8 @@
 	{
 		type = "recipe",
 		name = "alien-enrichment-process-to-artifact",
-		localised_name = "Alien artifact gestation",
-		localised_description = "Alien artifact gestation",
+		--localised_name = "Alien artifact gestation",
+		--localised_description = "Alien artifact gestation",
 		energy_required = 1.5,
 		enabled = false,
 		category = "crafting-with-fluid",
@@ -504,8 +504,8 @@
 	{
 		type = "recipe",
 		name = "spawner",
-		localised_name = "Spawner",
-		localised_description = "Spawner",
+		--localised_name = "Spawner",
+		--localised_description = "Spawner",
 		energy_required = 1.5,
 		enabled = false,
 		category = "crafting-with-fluid",
@@ -527,8 +527,8 @@
 	{
     type = "recipe",
     name = "petroleum-gas-from-solid-fuel",
-	localised_name = "Petroleum gas from solid fuel",
-	localised_description = "Petroleum gas from solid fuel",
+	--localised_name = "Petroleum gas from solid fuel",
+	--localised_description = "Petroleum gas from solid fuel",
     category = "chemistry",
     energy_required = 2,
     ingredients =

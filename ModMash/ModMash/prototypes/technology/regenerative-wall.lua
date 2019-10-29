@@ -3,8 +3,8 @@
  {
     type = "technology",
     name = "regenerative-wall",
-	localised_name = "Regenerative wall",		
-	localised_description = "Regenerative wall",
+	--localised_name = "Regenerative wall",		
+	--localised_description = "Regenerative wall",
     icon_size = 128,
     icon = "__base__/graphics/technology/stone-walls.png",
     effects =

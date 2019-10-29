@@ -3,8 +3,8 @@
 	{
 		type = "recipe",
 		name = "wind-trap",
-		localised_name = "Air Purifier",
-		localised_description = "Reduces polution and produces water and sludge as byproducts.",
+		--localised_name = "Air Purifier",
+		--localised_description = "Reduces polution and produces water and sludge as byproducts.",
 		energy_required = 10,
 		enabled = false,
 		ingredients =

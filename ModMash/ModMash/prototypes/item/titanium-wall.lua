@@ -3,8 +3,8 @@
   {
     type = "item",
     name = "titanium-wall",
-	localised_name = "Titanium wall",		
-	localised_description = "Titanium wall",
+	--localised_name = "Titanium wall",		
+	--localised_description = "Titanium wall",
     icon = "__modmash__/graphics/icons/titanium-wall.png",
     icon_size = 32,
     subgroup = "defensive-structure",

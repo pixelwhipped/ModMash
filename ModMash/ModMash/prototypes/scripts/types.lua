@@ -1,4 +1,8 @@
 ﻿if not modmash or not modmash.util then require("prototypes.scripts.util") end
+if not modmash.defines then require ("prototypes.scripts.defines") end
+
+local super_container_stack_size = modmash.defines.defaults.super_container_stack_size
+
 
 local starts_with  = modmash.util.starts_with
 local ends_with  = modmash.util.ends_with
@@ -6,6 +10,7 @@ local ends_with  = modmash.util.ends_with
 local get_name_for = modmash.util.get_name_for
 local table_contains = modmash.util.table.contains
 local create_icon = modmash.util.create_icon
+local convert_to_string = modmash.util.convert_to_string
 
 local biome_types = nil
 local non_pollutant = nil
@@ -87,6 +92,7 @@ local local_get_item = function(name)
 end
 
 local exclude_containers = {"player-port","spawner","spitter-spawner","electric-energy-interface"}
+local containers = {}
 
 local local_create_container = function(item,x)
 	local base_contain_icons = {
@@ -134,7 +140,7 @@ local local_create_container = function(item,x)
 		hide_from_player_crafting = true,
 		subgroup = "intermediate-product",
 		order = "zz[super-container-for-".. item.name .."]",
-		stack_size = 5}
+		stack_size = super_container_stack_size}
 	local contain = {
 		type = "recipe",
 		name = "super-container-for-"..item.name,
@@ -207,7 +213,173 @@ local local_create_container = function(item,x)
 			time = 30
 		},
 		order = "d-a-a"}
+	table.insert(containers,container.name)
 	data:extend({container,contain,uncontain,tech})
+end
+
+local local_create_subspace_transport = function()
+	local animation = 
+	{
+		layers =
+		{
+			{
+				filename = "__modmash__/graphics/entity/subspace-transport/lab.png",
+				width = 98,
+				height = 87,
+				frame_count = 33,
+				line_length = 11,
+				animation_speed = 1 / 3,
+				shift = util.by_pixel(0, 1.5),
+				hr_version =
+				{
+					filename = "__modmash__/graphics/entity/subspace-transport/hr-lab.png",
+					width = 194,
+					height = 174,
+					frame_count = 33,
+					line_length = 11,
+					animation_speed = 1 / 3,
+					shift = util.by_pixel(0, 1.5),
+					scale = 0.5
+				}
+			},
+			{
+				filename = "__base__/graphics/entity/lab/lab-integration.png",
+				width = 122,
+				height = 81,
+				frame_count = 1,
+				line_length = 1,
+				repeat_count = 33,
+				animation_speed = 1 / 3,
+				shift = util.by_pixel(0, 15.5),
+				hr_version =
+				{
+					filename = "__base__/graphics/entity/lab/hr-lab-integration.png",
+					width = 242,
+					height = 162,
+					frame_count = 1,
+					line_length = 1,
+					repeat_count = 33,
+					animation_speed = 1 / 3,
+					shift = util.by_pixel(0, 15.5),
+					scale = 0.5
+				}
+			},
+			{
+				filename = "__base__/graphics/entity/lab/lab-shadow.png",
+				width = 122,
+				height = 68,
+				frame_count = 1,
+				line_length = 1,
+				repeat_count = 33,
+				animation_speed = 1 / 3,
+				shift = util.by_pixel(13, 11),
+				draw_as_shadow = true,
+				hr_version =
+				{
+					filename = "__base__/graphics/entity/lab/hr-lab-shadow.png",
+					width = 242,
+					height = 136,
+					frame_count = 1,
+					line_length = 1,
+					repeat_count = 33,
+					animation_speed = 1 / 3,
+					shift = util.by_pixel(13, 11),
+					scale = 0.5,
+					draw_as_shadow = true
+				}
+			}
+		}
+	}
+	data:extend({
+		{
+			type = "item",
+			name = "subspace-transport",
+			icon = "__modmash__/graphics/icons/lab.png",
+			icon_size = 32,
+			subgroup = "production-machine",
+			order = "g[subspace-lab]",
+			place_result = "subspace-transport",
+			stack_size = 10
+		},
+		{
+			type = "recipe",
+			name = "subspace-transport",	
+			enabled = "false",
+			ingredients =
+			{
+			  {"assembling-machine-4", 1},
+			  {"processing-unit", 10},
+			  {"advanced-circuit", 10},
+			  {"titanium-plate",10},
+			  {"alien-plate",10},
+			  {"concrete",50},
+			  {"super-material", 20},
+			},
+			result = "subspace-transport"
+		},
+		{
+			type = "technology",
+			name = "subspace-transport",
+			icon_size = 128,
+			icon = "__modmash__/graphics/technology/subspace-transport.png",
+			prerequisites = {"fluid-handling-3","automation-4"},
+			effects =
+			{
+			  {
+				type = "unlock-recipe",
+				recipe = "subspace-transport"
+			  },
+			},
+			unit =
+			{
+			  count = 400,	  
+			  ingredients = {
+				{"automation-science-pack", 1},
+				{"logistic-science-pack", 1},
+				{"chemical-science-pack", 1},
+				{"production-science-pack", 1}
+			  },
+			  time = 60,
+			},
+			order = "d-a-a"
+		},
+		{
+			type = "lab",
+			name = "subspace-transport",
+			icon = "__modmash__/graphics/icons/lab.png",
+			icon_size = 32,
+			flags = {"placeable-player", "player-creation"},
+			minable = {mining_time = 0.2, result = "subspace-transport"},
+			max_health = 150,
+			corpse = "big-remnants",
+			dying_explosion = "medium-explosion",
+			collision_box = {{-1.2, -1.2}, {1.2, 1.2}},
+			selection_box = {{-1.5, -1.5}, {1.5, 1.5}},
+			on_animation = animation,
+			off_animation = animation,
+			working_sound =
+			{
+			  sound =
+			  {
+				filename = "__base__/sound/lab.ogg",
+				volume = 0.7
+			  },
+			  apparent_volume = 1
+			},
+			vehicle_impact_sound =  { filename = "__base__/sound/car-metal-impact.ogg", volume = 0.65 },
+			energy_source =
+			{
+			  type = "burner",
+			  fuel_category = "advanced-alien",
+			  effectivity = 1,
+			  fuel_inventory_size = 2,
+			},
+			light = {intensity = 0.6, size = 8, shift = {0.0, 0.0}, color = {r = 1.0, g = 0.0, b = 1.0}},
+			energy_usage = "200MW",
+			researching_speed = 1,
+			inputs = containers
+		}
+	})
 end
 
 local local_create_super_containers = function()
@@ -235,7 +407,7 @@ local local_create_super_containers = function()
 		{
 		  {"super-material", 1},
 		  {"titanium-plate", 2},
-		  {"blank-circuit", 1},
+		  {"blank-circuit", 1}
 		},
 		result = "empty-super-container"}
 
@@ -273,7 +445,7 @@ local local_create_super_containers = function()
 			{"automation-science-pack", 1},
 			{"logistic-science-pack", 1},
 			{"chemical-science-pack", 1},
-			{"production-science-pack", 1},
+			{"production-science-pack", 1}
 		  },
 		  time = 45,
 		},
@@ -294,7 +466,7 @@ local local_create_super_containers = function()
 			if item.stack_size ~= nil and item.stack_size > 1 and item.icon_size ~= nil
 				and table_contains(exclude_containers,item.name) == false and starts_with(item.name,"creative-mod") == false and starts_with(item.name,"crash") == false then
 				local r = data.raw["recipe"][item.name]
-				if (r~= nil and r.hide_from_player_crafting ~= true) or item.subgroup == "raw-material" then
+				if (r~= nil and r.hide_from_player_crafting ~= true) or item.subgroup == "raw-material" or ends_with(item.name,"barrel") then
 					if item.name ~= "empty-super-container" then
 						--table.insert(added,item.name)
 						local_create_container(item,z)
@@ -390,118 +562,6 @@ local local_create_super_material_conversions = function()
 					order = "a-b-d",
 				  }
 				data:extend({recipe,tech})
-			--[[
-				local icons = nil
-				local tech_icons = nil
-				if item.icons ~= nil then
-					tech_icons = {
-						{icon = "__modmash__/graphics/technology/super-material.png"}
-					}
-					icons = {
-					{
-						icon = "__modmash__/graphics/icons/super-material.png"}
-					}
-					for k = 1, #item.icons do 
-					
-						local i = item.icons[k]
-						local x = item.icons[k]
-						local size = x.icon_size
-						if size == nil then size = 32 end
-						i.scale = 0.5
-						i.shift = {7, 8}
-						x.shift = {24, 24}
-						x.icon_size = size
-						table.insert(icons,i)
-						table.insert(tech_icons,x)
-					end
-				elseif item.icon ~= nil then
-					local size = item.icon_size
-					if size == nil then size = 32 end
-					icons =	{
-					  {
-						icon = "__modmash__/graphics/icons/super-material.png",
-					  },
-					  {
-						icon = item.icon,
-						scale = 0.5,
-						shift = {7, 8 }
-					  }}
-					tech_icons =	{
-					  {
-						icon = "__modmash__/graphics/technology/super-material.png",
-					  },
-					  {
-						icon = item.icon,					
-						icon_size = size,
-						shift = {24,24}
-					  }}
-				end
-				if icons ~= nil then
-					local m = data.raw["item"][item.name].stack_size
-					if m == nil then m = 50 end
-					local recipe = {
-						type = "recipe",
-						name = "modmash-supermaterial-to-"..item.name,
-						localised_name = "Super Material to " .. item.name:gsub("-", ""),
-						localised_description = "Super Material to " .. item.name:gsub("-", ""),
-						category = "crafting-with-fluid",
-				
-						icon = false,
-						icons = icons,
-						icon_size = 32,
-						subgroup = "intermediate-product",
-						order = "zzz[super-material]["..item.name.."]",
-						main_product = "",
-
-						ingredients = {{name = "super-material",amount = 4}},
-						energy_required = 1.5,
-						enabled = false,				
-						results =
-						{			
-							{
-							name = item.name,
-							amount = m,
-							}			
-						},
-						allow_decomposition = false}
-
-					local tech = {
-						type = "technology",
-						name = recipe.name .. "-tech",
-						localised_name = recipe.localised_name,
-						localised_description = recipe.localised_description,
-						icon = false,
-						icons = tech_icons, --"__base__/graphics/technology/fluid-handling.png",
-						icon_size = 128,
-						effects =
-						{
-						  {
-							type = "unlock-recipe",
-							recipe = recipe.name
-						  }
-						},
-						prerequisites =
-						{
-						  "fluid-handling-3"
-						},
-						unit =
-						{
-						  count = 200,
-						  ingredients =
-						  {
-							{"automation-science-pack", 1},
-							{"logistic-science-pack", 1},
-							{"chemical-science-pack", 1},
-							{"production-science-pack", 1}
-						  },
-						  time = 60
-						},
-						upgrade = true,
-						order = "a-b-d",
-					  }
-					data:extend({recipe,tech})
-				end
-			]]
 		end
 	end
 end
@@ -611,26 +671,30 @@ end
 local local_get_results_from_ingredients = function(r)
 	local ingredients = {}		
 	for k=1, #r do local i = r[k];	
-		local name = nil
-		local amount = nil
-		if i.type ~= nil then			
-			amount = i.amount
-			name = i.name
-		else
-			name = i[1]
-			amount = i[2]			
-		end
-		if amount == nil then amount = 1 end
-		if i.type ~= "fluid" then
-			if name == nil then name = i.name end
-			ingredients[#ingredients+1] = {
-				name = name,
-				probability = 1,
-				amount = math.max(1, math.floor(amount * 0.8))
-				}
+		if i ~= nil then 
+			local name = nil
+			local amount = nil
+			if i.type ~= nil then			
+				amount = i.amount
+				name = i.name
+			else
+				name = i[1]
+				amount = i[2]			
+			end
+			if amount == nil then amount = 1 end
+			if i.type ~= "fluid" then
+				if name == nil then name = i.name end
+				ingredients[#ingredients+1] = {
+					name = name,
+					probability = 1,
+					amount = math.max(1, math.floor(amount * 0.8))
+					}
+			end
 		end
 	end
-	ingredients[#ingredients+1] = {type="fluid",name = "sludge",amount = 25}
+	if #ingredients ~= 0 then
+		ingredients[#ingredients+1] = {type="fluid",name = "sludge",amount = 25}
+	end
 	return ingredients
 end
 
@@ -673,7 +737,10 @@ local local_create_recylce_item = function(r)
 	end 
 	local item = local_get_item(results[1].name)	
 
-	if item == nil or item.icon_size == nil or item.name == "warptorio-armor" then
+	if item == nil or item.icon_size == nil then
+		return
+	end
+	if item.stackable == false or item.name == "warptorio-armor" then
 		return
 	end
 	if (item.icon == nil or item.icon == false) and item.icons == nil then return end
@@ -795,78 +862,92 @@ local local_create_recycle_recipies = function(source)
 		end
 	end			
 end
+local local_update_recipe = function(name, standard, normal, expensive)
+	if data.raw.recipe[name] == nil then return end
+	if standard ~= nil then
+		data.raw.recipe[name].ingredients = standard		
+	end
+	if normal ~= nil then
+		if data.raw.recipe[name].normal == nil then data.raw.recipe[name].normal = 
+		{
+			result = name
+		} end
+		data.raw.recipe[name].normal.ingredients = normal
+	end
+	if expensive ~= nil then
+		if data.raw.recipe[name].expensive == nil then data.raw.recipe[name].expensive = 
+		{
+			result = name
+		} end
+		data.raw.recipe[name].expensive.ingredients = expensive
+	end
+end
 
 local local_update_recipies = function()
-	data.raw.recipe["red-wire"].ingredients =
+	local_update_recipe("red-wire",{      
+		  {name = "copper-cable", amount= 1}
+		},nil,nil)
+		
+	local_update_recipe("green-wire",
 		{      
-		  {"copper-cable", 1}
-		}
+		  {name = "copper-cable", amount = 1}
+		},nil,nil)
+	local_update_recipe("electronic-circuit",nil,
+		{      
+		  {name = "green-wire",  amount= 1},
+		  {name = "blank-circuit",amount= 1}
+		},
+		{      
+		  {name = "green-wire", amount=2},
+		  {name = "blank-circuit", amount=2}
+		})
+	
+	local_update_recipe("advanced-circuit",nil,
+		{      
+		  {name = "blank-circuit", amount=1},
+		  {name = "electronic-circuit", amount=1},
+		  {name = "plastic-bar", amount=1},
+		  {name = "red-wire", amount=1},
+		},
+		{      
+		  {name = "blank-circuit", amount=2},
+		  {name = "electronic-circuit", amount=1},
+		  {name = "plastic-bar", amount=2},
+		  {name = "red-wire", amount=2},
+		})
 
-	data.raw.recipe["green-wire"].ingredients =
-		{      
-		  {"copper-cable", 1}
-		}
 
-	data.raw.recipe["electronic-circuit"].normal.ingredients =
-		{      
-		  {"green-wire", 1},
-		  {"blank-circuit", 1}
-		}
-	data.raw.recipe["electronic-circuit"].expensive.ingredients =
-		{      
-		  {"green-wire", 2},
-		  {"blank-circuit", 2}
-		}	
-
-	data.raw.recipe["advanced-circuit"].normal.ingredients =
-		{      
-		  {"blank-circuit", 1},
-		  {"electronic-circuit", 1},
-		  {"plastic-bar", 1},
-		  {"red-wire", 1},
-		}	
-	data.raw.recipe["advanced-circuit"].expensive.ingredients =
-		{      
-		  {"blank-circuit", 2},
-		  {"electronic-circuit", 1},
-		  {"plastic-bar", 2},
-		  {"red-wire", 2},
-		}
 
 	if data.raw.recipe["processing-unit"].category == "crafting-with-fluid" then
-	data.raw.recipe["processing-unit"].normal.ingredients =
+		local_update_recipe("processing-unit",nil,
 		{      
-		  {"blank-circuit", 5},
-		  {"red-wire", 1},
-		  {"green-wire", 1},
-		  {"copper-cable", 1},
-		  {type = "fluid", name = "sulfuric-acid", amount = 5}
-		}	
-	data.raw.recipe["processing-unit"].expensive.ingredients =
+		   {name = "blank-circuit", amount=5},
+		  {name = "red-wire", amount=1},
+		  {name = "green-wire", amount=1},
+		  {name = "copper-cable",amount= 1},
+		  {type = "fluid", name = "sulfuric-acid",amount=5}
+		},
 		{      
-		  {"blank-circuit", 5},
-		  {"red-wire", 2},
-		  {"green-wire", 2},
-		  {"copper-cable", 2},
+		  {name = "blank-circuit",amount= 5},
+		  {name = "red-wire", amount=2},
+		  {name = "green-wire",amount= 2},
+		  {name = "copper-cable",amount= 2},
 		  {type = "fluid", name = "sulfuric-acid", amount = 10}
-		}
+		})
 	else
-	data.raw.recipe["processing-unit"].normal.ingredients =
+		local_update_recipe("processing-circuit",nil,
 		{      
-		  {"blank-circuit", 5},
-		  {"red-wire", 1},
-		  {"green-wire", 1},
-		  {"copper-cable", 1},
-		--  {type = "fluid", name = "sulfuric-acid", amount = 5}
-		}	
-	data.raw.recipe["processing-unit"].expensive.ingredients =
+		   {name = "blank-circuit", amount=5},
+		  {name = "red-wire", amount=1},
+		  {name = "green-wire", amount=1},
+		  {name = "copper-cable", amount=1},
+		},
 		{      
-		  {"blank-circuit", 5},
-		  {"red-wire", 2},
-		  {"green-wire", 2},
-		  {"copper-cable", 2},
-		--  {type = "fluid", name = "sulfuric-acid", amount = 10}
-		}
+		  {name = "blank-circuit", amount=5},
+		  {name = "red-wire", amount=2},
+		  {name = "green-wire", amount=2},
+		  {name = "copper-cable", amount=2},
+		})
 	end
 	local remove_recipie_from = function(tble,value)
 		local new_table = {}
@@ -1124,6 +1205,75 @@ local add_missing_materials_to_stone_and_uranium = function()
 	end
 end
 
+
+local check_ingredients = function(ingredients,name)
+	local new_table = {}
+	local names = {}
+	if ingredients ~= nil then
+		--log(convert_to_string(ingredients))
+		for i = 1, #ingredients do		
+			--log(convert_to_string(ingredients[i]))
+			if ingredients[i] == nil or ingredients[i].name == nil then
+				--log("-----------ERROR NIL ".. name.. " " ..convert_to_string(ingredients))			
+			elseif table_contains(names,ingredients[i].name) then
+				log("------------ERROR DETECTED RECIPE ".. name.. " has duplicates of "..ingredients[i].name)
+			else
+				table.insert(names,ingredients[i].name)
+				table.insert(new_table,ingredients[i])
+			end
+		end			
+	end
+	ingredients = new_table
+	return ingredients
+end
+
+local check_duplicate_items_in_recipies = function()
+	for name, recipe in pairs(data.raw.recipe) do
+		local normal = false;
+		local expensive = false;
+		local standard = false;
+
+		if recipe ~= nil and recipe.name ~= nil then
+			if recipe.ingredients ~= nil then
+				standard = true
+				recipe.ingredients = check_ingredients(recipe.ingredients,recipe.name)
+				if recipe.results == nil and recipe.result == nil then
+					log("------------ERROR DETECTED RECIPE ".. name.. " has standard but missing results")
+				end
+			end
+			if recipe.normal ~= nil then
+				normal = true
+				if recipe.normal.ingredients == nil then
+					log("------------ERROR DETECTED RECIPE ".. name.. " has normal but missing ingredients")
+				else 
+					recipe.normal.ingredients = check_ingredients(recipe.normal.ingredients,recipe.name)
+				end
+				if recipe.normal.results == nil and recipe.normal.result == nil then
+					log("------------ERROR DETECTED RECIPE ".. name.. " has normal but missing results")
+				end
+			end
+			if recipe.expensive ~= nil then
+				expensive = true
+				if recipe.expensive.ingredients == nil then
+					log("------------ERROR DETECTED RECIPE ".. name.. " has expensive but missing ingredients")
+				else 
+					recipe.expensive.ingredients = check_ingredients(recipe.expensive.ingredients,recipe.name)
+				end
+				if recipe.expensive.results == nil and recipe.expensive.result == nil then
+					log("------------ERROR DETECTED RECIPE ".. name.. " has expensive but missing results")
+				end
+			end
+		else
+			log("--------------------------ERROR DETECTED RECIPE WITH NO NAME")
+			if recipe ~= nil then
+				log(convert_to_string(recipe))
+			end
+		end
+		if standard == false and normal == false and expensive == false then
+			log("------------ERROR DETECTED RECIPE ".. name.. " has no ingredients at all!")
+		end
+	end
+end
 if data ~= nil and data_final_fixes == true then
     local_set_types_biome() --Dexy Edit
     local_set_types_non_pollutant() --Dexy Edit
@@ -1133,6 +1283,7 @@ if data ~= nil and data_final_fixes == true then
     local_create_recycle_recipies(data.raw.recipe)
 	local_create_super_material_conversions()
 	local_create_super_containers()
+	local_create_subspace_transport()
 	add_missing_materials_to_stone_and_uranium()
 	add_missing_ooze()
 
@@ -1145,4 +1296,6 @@ if data ~= nil and data_final_fixes == true then
 	loot_science_b.order = "zzzzz"
 	loot_science_b.localised_name ="Crashed science lab"
 	data:extend({loot_science_a,loot_science_b})
+
+	check_duplicate_items_in_recipies()
 end

@@ -1,4 +1,45 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.17.69
+  Changes:
+    - Added Subspace transportation network
+
+---------------------------------------------------------------------------------------------------
+Version: 0.17.68
+  Bugfix:
+    - Quick patch, changes pushed back to next recipe
+---------------------------------------------------------------------------------------------------
+Version: 0.17.67
+  Bugfix:
+    - Loot table trying to create hitting nil ingeredient in recipe.
+
+---------------------------------------------------------------------------------------------------
+Version: 0.17.66
+  Bugfix:
+    - Release version forcing changes when they wernt required Debug Mode
+
+---------------------------------------------------------------------------------------------------
+Version: 0.17.65
+  Changes:
+    - Added recipe check for nils missing or duplicate ingredients and results
+
+---------------------------------------------------------------------------------------------------
+Version: 0.17.64
+  Changes:
+    - Moved names and descriptions to local
+    - Added cost multiplier to generated tech
+
+---------------------------------------------------------------------------------------------------
+Version: 0.17.64
+  Changes:
+    - Begun moving names and desriptions to local
+  Bugfixes:
+    - Patches
+---------------------------------------------------------------------------------------------------
+Version: 0.17.63
+  Bugfixes:
+    - Patches
+
+---------------------------------------------------------------------------------------------------
 Version: 0.17.62
   Bugfixes:
     - Loader bug fix

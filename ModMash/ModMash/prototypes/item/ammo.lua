@@ -4,8 +4,8 @@
     type = "ammo",
     name = "titanium-rounds-magazine",
     icon = "__modmash__/graphics/icons/titanium-rounds-magazine.png",
-	localised_name = "Titanium rounds magazine",
-	localised_description = "Titanium rounds magazine Damage 32",
+	--localised_name = "Titanium rounds magazine",
+	--localised_description = "Titanium rounds magazine Damage 32",
     icon_size = 32,    
     ammo_type =
     {
@@ -43,8 +43,8 @@
   {
     type = "ammo",
     name = "alien-rounds-magazine",
-	localised_name = "Alien rounds magazine",
-	localised_description = "Alien rounds magazine Damage 48",
+	--localised_name = "Alien rounds magazine",
+	--localised_description = "Alien rounds magazine Damage 48",
     icon = "__modmash__/graphics/icons/alien-rounds-magazine.png",
     icon_size = 32,
     ammo_type =

@@ -606,6 +606,11 @@ end
 
 local local_get_name_for = function(item, prefix, suffix)
         local result
+		if prefix == nil and suffix == nil then suffix = "" end
+		if type(item) == "string" then item = 
+		{
+			localised_name = item
+		} end
 		if item.localised_name then
 			if type(item.localised_name) == "table" then
 				result = item.localised_name[1]

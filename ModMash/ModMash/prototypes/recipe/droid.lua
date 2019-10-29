@@ -3,8 +3,8 @@
   {
     type = "recipe",
     name = "droid",
-	localised_name = "Droid",
-	localised_description = "Droid",
+	--localised_name = "Droid",
+	--localised_description = "Droid",
 	enabled = false,
     ingredients =
     {
@@ -16,8 +16,8 @@
   {
         type = "recipe",
 		name = "droid-chest",
-		localised_name = "Droid chest",
-		localised_description = "Droid chest",
+		--localised_name = "Droid chest",
+		--localised_description = "Droid chest",
 		enabled = false,
 		ingredients =
 		{

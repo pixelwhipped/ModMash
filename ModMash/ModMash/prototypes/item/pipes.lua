@@ -3,8 +3,8 @@
   {
     type = "item",
     name = "titanium-pipe",
-	localised_name = "Titanium pipe",
-	localised_description = "Titanium pipe",
+	--localised_name = "Titanium pipe",
+	--localised_description = "Titanium pipe",
     icon = "__modmash__/graphics/icons/titanium-pipe.png",
     icon_size = 32,
     subgroup = "energy-pipe-distribution",
@@ -16,8 +16,8 @@
   {
     type = "item",
     name = "titanium-pipe-to-ground",
-	localised_name = "Titanium pipe to ground",
-	localised_description = "Titanium pipe to ground",
+	--localised_name = "Titanium pipe to ground",
+	--localised_description = "Titanium pipe to ground",
     icon = "__modmash__/graphics/icons/titanium-pipe-to-ground.png",
     icon_size = 32,
     subgroup = "energy-pipe-distribution",

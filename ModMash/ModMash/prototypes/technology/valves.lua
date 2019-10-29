@@ -5,8 +5,8 @@
     name = "fluid-handling-2",
     icon_size = 128,
     icon = "__base__/graphics/technology/fluid-handling.png",    	
-	localised_name = "Fluid Handling 2",
-	localised_description = "Adds Valves that can be used to better control Fluid",
+	--localised_name = "Fluid Handling 2",
+	--localised_description = "Adds Valves that can be used to better control Fluid",
     icon_size = 128,
     effects = {
 	{

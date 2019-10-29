@@ -3,8 +3,8 @@
   {
     type = "recipe",
     name = "titanium-wall",
-	localised_name = "Titanium wall",		
-	localised_description = "Titanium wall",
+	--localised_name = "Titanium wall",		
+	--localised_description = "Titanium wall",
     enabled = "false",
     ingredients =
     {

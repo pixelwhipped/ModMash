@@ -4,7 +4,7 @@
     type = "technology",
     name = "fluid-handling-3",
 		localised_name = "Fluid Handling 3",
-	localised_description = "Fluid Handling 3",
+	--localised_description = "Fluid Handling 3",
     icon_size = 128,
     icon = false,
 	icons = {

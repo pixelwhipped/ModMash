@@ -3,8 +3,8 @@
   {
     type = "recipe",
     name = "recycling-machine",
-	localised_name = "Recycling machine",		
-	localised_description = "Recycles items into their component items, encurs wastage. CTRL+A to enable/disable automation.",
+	--localised_name = "Recycling machine",		
+	--localised_description = "Recycles items into their component items, encurs wastage. CTRL+A to enable/disable automation.",
     enabled = "false",
     ingredients =
     {

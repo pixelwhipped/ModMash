@@ -3,8 +3,8 @@
   {
     type = "recipe",
     name = "regenerative-wall",
-	localised_name = "Regenerative wall",		
-	localised_description = "Regenerative wall",
+	--localised_name = "Regenerative wall",		
+	--localised_description = "Regenerative wall",
     enabled = "false",
     ingredients =
     {

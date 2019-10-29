@@ -12,7 +12,7 @@
   },
   {
     type = "item-subgroup",
-	localised_name = "Recycling",
+	--localised_name = "Recycling",
     name = "recyclable",
     group = "recycling",
     order = "a",
@@ -21,7 +21,7 @@
     type = "item-group",
     hidden = true,
 	name = "containment",
-	localised_name = "Containment",
+	--localised_name = "Containment",
     icon = "__modmash__/graphics/item-group/containment.png",
     icon_size = 64,
     order = "z",
@@ -29,7 +29,7 @@
   },
   {
     type = "item-subgroup",
-	localised_name = "Containment",
+	--localised_name = "Containment",
     name = "containers",
     group = "containment",
     order = "a",

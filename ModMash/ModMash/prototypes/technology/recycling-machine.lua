@@ -3,8 +3,8 @@
   {
     type = "technology",
     name = "recycling-machine",
-	localised_name = "Recycling Machine",
-	localised_description = "Recycling Machine",
+	--localised_name = "Recycling Machine",
+	--localised_description = "Recycling Machine",
     icon = "__modmash__/graphics/item-group/recycling.png",
     icon_size = 64,
     effects =

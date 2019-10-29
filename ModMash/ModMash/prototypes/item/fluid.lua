@@ -3,8 +3,8 @@
 	{
 		type = "fluid",
 		name = "alien-ooze",
-        localised_name = "Alien Ooze",		
-	    localised_description = "Alien Ooze",
+        --localised_name = "Alien Ooze",		
+	    --localised_description = "Alien Ooze",
 		default_temperature = 25,
 		max_temperature = 100,			
 		heat_capacity = "0.2KJ",
@@ -16,8 +16,8 @@
 	},{
 		type = "fluid",
 		name = "sludge",
-        localised_name = "Sludge",		
-	    localised_description = "Sludge",
+        --localised_name = "Sludge",		
+	    --localised_description = "Sludge",
 		default_temperature = 50,
 		max_temperature = 100,			
 		heat_capacity = "0.1KJ",
@@ -29,8 +29,8 @@
 	},{
 		type = "fluid",
 		name = "fish-oil",
-        localised_name = "Fish Oil",		
-	    localised_description = "Fish Oil",
+        --localised_name = "Fish Oil",		
+	    --localised_description = "Fish Oil",
 		default_temperature = 50,
 		max_temperature = 100,			
 		heat_capacity = "0.1KJ",

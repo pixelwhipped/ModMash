@@ -3,8 +3,8 @@
   {
     type = "item",
     name = "regenerative-wall",
-	localised_name = "Regenerative wall",		
-	localised_description = "Regenerative wall",
+	--localised_name = "Regenerative wall",		
+	--localised_description = "Regenerative wall",
     icon = "__modmash__/graphics/icons/regenerative-wall.png",
     icon_size = 32,
     subgroup = "defensive-structure",

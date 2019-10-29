@@ -4,8 +4,8 @@
 	{
 		type = "recipe",
 		name = "sludge-treatment",
-		localised_name = "Sludge treatment",
-		localised_description = "Sludge treatment",
+		--localised_name = "Sludge treatment",
+		--localised_description = "Sludge treatment",
 		energy_required = 1.5,
 		enabled = false,
 		category = "chemistry",
@@ -34,8 +34,8 @@
 	{
 		type = "recipe",
 		name = "fish-conversion",
-		localised_name = "Fish oil",
-		localised_description = "Fish oil",
+		--localised_name = "Fish oil",
+		--localised_description = "Fish oil",
 		energy_required = 1.5,
 		enabled = false,
 		category = "crafting-with-fluid",
@@ -64,8 +64,8 @@
 	{
 		type = "recipe",
 		name = "fish-conversion-light-oil",
-		localised_name = "Fish oil to Light oil",
-		localised_description = "Fish oil to Light oil",
+		--localised_name = "Fish oil to Light oil",
+		--localised_description = "Fish oil to Light oil",
 		energy_required = 1.5,
 		enabled = false,
 		category = "chemistry",
@@ -94,8 +94,8 @@
 	{
 		type = "recipe",
 		name = "fish-conversion-lubricant",
-		localised_name = "Fish oil to Lubricant",
-		localised_description = "Fish oil to Lubricant",
+		--localised_name = "Fish oil to Lubricant",
+		--localised_description = "Fish oil to Lubricant",
 		energy_required = 1.5,
 		enabled = false,
 		category = "chemistry",
