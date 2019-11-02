@@ -969,13 +969,16 @@ else
 		modmash.util.log("Creating Splitter " .. splitter.name)
 		local_create_splitter(splitter.name,splitter.max_health,splitter.localised_name,splitter.localised_description,splitter.next_upgrade,splitter.speed,splitter.belt_animation_set,splitter.order,splitter.ingredients,splitter.technology)
 	end
-	
-	for index=1, #local_loaders do local loader = local_loaders[index]
-		modmash.util.log("Creating Loader " .. loader.name)		
-		local_create_loader(loader.name,loader.max_health,loader.filter_count,loader.localised_name,loader.localised_description,loader.speed,loader.belt_animation_set, loader.order,loader.ingredients,loader.technology,loader.next_upgrade,loader.category)
+	if settings.startup["modmash-setting-loaders"].value == "Enabled" then 
+		for index=1, #local_loaders do local loader = local_loaders[index]
+			modmash.util.log("Creating Loader " .. loader.name)		
+			local_create_loader(loader.name,loader.max_health,loader.filter_count,loader.localised_name,loader.localised_description,loader.speed,loader.belt_animation_set, loader.order,loader.ingredients,loader.technology,loader.next_upgrade,loader.category)
+		end
 	end
-	for index=1, #local_mini_loaders do local loader = local_mini_loaders[index]
-		modmash.util.log("Creating Loader " .. loader.name)		
-		local_create_mini_loader(loader.name,loader.max_health,loader.filter_count,loader.localised_name,loader.localised_description,loader.speed,loader.belt_animation_set, loader.order,loader.ingredients,loader.technology,loader.next_upgrade,loader.category)
+	if settings.startup["modmash-setting-mini-loaders"].value == "Enabled" then 
+		for index=1, #local_mini_loaders do local loader = local_mini_loaders[index]
+			modmash.util.log("Creating Loader " .. loader.name)		
+			local_create_mini_loader(loader.name,loader.max_health,loader.filter_count,loader.localised_name,loader.localised_description,loader.speed,loader.belt_animation_set, loader.order,loader.ingredients,loader.technology,loader.next_upgrade,loader.category)
+		end
 	end
 end

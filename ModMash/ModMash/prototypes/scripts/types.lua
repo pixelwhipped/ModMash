@@ -382,6 +382,7 @@ local local_create_subspace_transport = function()
 	})
 end
 
+-- need to add check for stacking inception
 local local_create_super_containers = function()
 	local base_container = {
 		type = "item",
@@ -464,7 +465,12 @@ local local_create_super_containers = function()
 	for name,item in pairs(added) do	
 		if item ~= nil and item.name ~= nil and item.icon_size ~= nil then	
 			if item.stack_size ~= nil and item.stack_size > 1 and item.icon_size ~= nil
-				and table_contains(exclude_containers,item.name) == false and starts_with(item.name,"creative-mod") == false and starts_with(item.name,"crash") == false then
+				and table_contains(exclude_containers,item.name) == false
+				and starts_with(item.name,"creative-mod") == false  
+				and starts_with(item.name,"crash") == false 
+				and starts_with(item.name,"deadlock-stack") == false 
+				
+				then
 				local r = data.raw["recipe"][item.name]
 				if (r~= nil and r.hide_from_player_crafting ~= true) or item.subgroup == "raw-material" or ends_with(item.name,"barrel") then
 					if item.name ~= "empty-super-container" then
@@ -756,7 +762,7 @@ local local_create_recylce_item = function(r)
     end
     -------------------------------------------------
 
-	if r.normal ~= nil and r.expensive ~= nil then		
+	if r.normal ~= nil and type(r.normal) == "table" and r.expensive ~= nil and type(r.expensive) == "table"  then		
 		recipe =
 		{
 		type = "recipe",
@@ -788,7 +794,7 @@ local local_create_recylce_item = function(r)
             results = local_get_results_from_ingredients(r.expensive.ingredients)
         }
 		}
-	elseif r.normal ~= nil then		
+	elseif r.normal ~= nil and type(r.normal) == "table" then		
 		recipe =
 		{
 		type = "recipe",
@@ -805,6 +811,25 @@ local local_create_recylce_item = function(r)
 			            -- ingredients = {{name = results[1].name, amount = math.max(results[1].amount,1)}},--, {type="fluid",name = "steam",amount = 50}}, --Dexy Edit
             ingredients = {{name = results[1].name, amount = math.max(resultAmout,1)}},--, {type="fluid",name = "steam",amount = 50}},
 			results = local_get_results_from_ingredients(r.normal.ingredients)
+		}
+		}
+	elseif r.expensive ~= nil and type(r.expensive) == "table" then		
+		recipe =
+		{
+		type = "recipe",
+		name = "craft-" .. results[1].name,
+		category = "recycling",
+		subgroup = "recyclable",		
+		hidden = true,	    
+		icon_size = item.icon_size,
+		expensive = {
+			enabled = "false",
+			--hidden = true,
+			hide_from_player_crafting = true,
+			energy_required = r.normal.energy_required,			
+			            -- ingredients = {{name = results[1].name, amount = math.max(results[1].amount,1)}},--, {type="fluid",name = "steam",amount = 50}}, --Dexy Edit
+            ingredients = {{name = results[1].name, amount = math.max(resultAmout,1)}},--, {type="fluid",name = "steam",amount = 50}},
+			results = local_get_results_from_ingredients(r.expensive.ingredients)
 		}
 		}
 	else
@@ -855,7 +880,9 @@ local local_create_recycle_recipies = function(source)
 	end
 	for k=1, #recipies do local recipe = recipies[k];	
 		
-	    if recipe.hidden or recipe.hide_from_player_crafting or starts_with(recipe.name,"creative-mod") then
+	    if recipe.hidden or recipe.hide_from_player_crafting 
+			or starts_with(recipe.name,"creative-mod") 
+			or starts_with(recipe.name,"deadlock-stack") then
 			log("Skipping recyling " .. recipe.name)
 		else
 			local_create_recylce_item(recipe)
@@ -985,18 +1012,23 @@ local local_update_recipies = function()
 		log("nil recipe name")
 		return
 	  end
-	  if data.raw.recipe[recipe]  then		
-		if data.raw.recipe[recipe].expensive then
-		  log(recipe.." found expensive recipe")
-		  data.raw.recipe[recipe].expensive.ingredients = remove_ingredient_from_recipie_type(data.raw.recipe[recipe].expensive.ingredients,name)
-		end
-		if data.raw.recipe[recipe].normal then
-			log(recipe.." found normal recipe")
-			data.raw.recipe[recipe].normal.ingredients = remove_ingredient_from_recipie_type(data.raw.recipe[recipe].normal.ingredients,name)     
-		end
-		if data.raw.recipe[recipe].ingredients then
-		  log(recipe.." found standard recipe")
-		  data.raw.recipe[recipe].ingredients = remove_ingredient_from_recipie_type(data.raw.recipe[recipe].ingredients,name)
+	  if data.raw.recipe[recipe] then		
+		if (data.raw.recipe[recipe].normal ~= nil and type(data.raw.recipe[recipe].normal) == "table") or (data.raw.recipe[recipe].expensive ~= nil and type(data.raw.recipe[recipe].expensive) == "table") then
+			if data.raw.recipe[recipe].expensive and type(data.raw.recipe[recipe].expensive) == "table" then
+				log(recipe.." found expensive recipe")
+				data.raw.recipe[recipe].expensive.ingredients = remove_ingredient_from_recipie_type(data.raw.recipe[recipe].expensive.ingredients,name)
+			end
+			if data.raw.recipe[recipe].normal and type(data.raw.recipe[recipe].normal) == "table" then
+				log(recipe.." found normal recipe")
+				data.raw.recipe[recipe].normal.ingredients = remove_ingredient_from_recipie_type(data.raw.recipe[recipe].normal.ingredients,name)     
+			end
+		else
+			if data.raw.recipe[recipe].ingredients then
+			  log(recipe.." found standard recipe")
+			  data.raw.recipe[recipe].ingredients = remove_ingredient_from_recipie_type(data.raw.recipe[recipe].ingredients,name)
+			else
+				log(recipe.." not found")
+			end
 		end
 	  else
 		log(recipe.." not found")
@@ -1207,23 +1239,24 @@ end
 
 
 local check_ingredients = function(ingredients,name)
-	local new_table = {}
+	--local new_table = {}
 	local names = {}
 	if ingredients ~= nil then
 		--log(convert_to_string(ingredients))
-		for i = 1, #ingredients do		
+		for i = #ingredients, 1, -1 do		
 			--log(convert_to_string(ingredients[i]))
 			if ingredients[i] == nil or ingredients[i].name == nil then
 				--log("-----------ERROR NIL ".. name.. " " ..convert_to_string(ingredients))			
 			elseif table_contains(names,ingredients[i].name) then
 				log("------------ERROR DETECTED RECIPE ".. name.. " has duplicates of "..ingredients[i].name)
-			else
-				table.insert(names,ingredients[i].name)
-				table.insert(new_table,ingredients[i])
+				table.remove(ingredients,i)
+		--	else
+		--		table.insert(names,ingredients[i].name)
+		--		table.insert(new_table,ingredients[i])
 			end
 		end			
 	end
-	ingredients = new_table
+	--ingredients = new_table
 	return ingredients
 end
 
@@ -1234,33 +1267,34 @@ local check_duplicate_items_in_recipies = function()
 		local standard = false;
 
 		if recipe ~= nil and recipe.name ~= nil then
-			if recipe.ingredients ~= nil then
+			if (recipe.normal ~= nil and type(recipe.normal) == "table") or (recipe.expensive ~= nil and type(recipe.expensive) == "table") then
+				if recipe.normal ~= nil and type(recipe.normal) == "table" then
+					normal = true
+					if recipe.normal.ingredients == nil then
+						log("------------ERROR DETECTED RECIPE ".. name.. " has normal but missing ingredients")
+					else 
+						recipe.normal.ingredients = check_ingredients(recipe.normal.ingredients,recipe.name)
+					end
+					if recipe.normal.results == nil and recipe.normal.result == nil then
+						log("------------ERROR DETECTED RECIPE ".. name.. " has normal but missing results")
+					end
+				end
+				if recipe.expensive ~= nil and type(recipe.expensive) == "table" then
+					expensive = true
+					if recipe.expensive.ingredients == nil then
+						log("------------ERROR DETECTED RECIPE ".. name.. " has expensive but missing ingredients")
+					else 
+						recipe.expensive.ingredients = check_ingredients(recipe.expensive.ingredients,recipe.name)
+					end
+					if recipe.expensive.results == nil and recipe.expensive.result == nil then
+						log("------------ERROR DETECTED RECIPE ".. name.. " has expensive but missing results")
+					end
+				end
+			elseif recipe.ingredients ~= nil then
 				standard = true
 				recipe.ingredients = check_ingredients(recipe.ingredients,recipe.name)
 				if recipe.results == nil and recipe.result == nil then
 					log("------------ERROR DETECTED RECIPE ".. name.. " has standard but missing results")
-				end
-			end
-			if recipe.normal ~= nil then
-				normal = true
-				if recipe.normal.ingredients == nil then
-					log("------------ERROR DETECTED RECIPE ".. name.. " has normal but missing ingredients")
-				else 
-					recipe.normal.ingredients = check_ingredients(recipe.normal.ingredients,recipe.name)
-				end
-				if recipe.normal.results == nil and recipe.normal.result == nil then
-					log("------------ERROR DETECTED RECIPE ".. name.. " has normal but missing results")
-				end
-			end
-			if recipe.expensive ~= nil then
-				expensive = true
-				if recipe.expensive.ingredients == nil then
-					log("------------ERROR DETECTED RECIPE ".. name.. " has expensive but missing ingredients")
-				else 
-					recipe.expensive.ingredients = check_ingredients(recipe.expensive.ingredients,recipe.name)
-				end
-				if recipe.expensive.results == nil and recipe.expensive.result == nil then
-					log("------------ERROR DETECTED RECIPE ".. name.. " has expensive but missing results")
 				end
 			end
 		else
@@ -1271,7 +1305,65 @@ local check_duplicate_items_in_recipies = function()
 		end
 		if standard == false and normal == false and expensive == false then
 			log("------------ERROR DETECTED RECIPE ".. name.. " has no ingredients at all!")
+		elseif standard == true or normal == true then
+			if not (recipe.normal ~= nil and type(recipe.normal) == "table") then
+				if recipe.results ~= nil then
+					--[[recipe.normal = {
+						enabled = recipe.enabled,
+						results = recipe.results,
+						ingredients = recipe.ingredients
+					}]]
+				elseif recipe.result_count ~= nil then
+				--[[	recipe.normal = {
+						enabled = recipe.enabled,
+						results = {{ name= recipe.result, amount=recipe.result_count}},
+						ingredients = recipe.ingredients
+					}]]
+				else
+					--[[recipe.normal = {
+						enabled = recipe.enabled,
+						results = {{ name= recipe.result, amount=1}},
+						ingredients = recipe.ingredients
+					}]]
+				end
+			end
+			if not (recipe.expensive ~= nil and type(recipe.expensive) == "table") then
+				if recipe.normal == nil then
+					recipe.expensive = recipe.normal
+				end
+			end
+		elseif expensive == true and normal == false then			
+			recipe,normal = recipe.expensive
 		end
+
+		--if recipe.icon == nil then recipe.icon = false end
+		--if recipe.icon_size == nil then recipe.icon_size = 32 end
+		end
+end
+
+local check_prerequisites = function(prerequisites,name)
+	local new_table = {}
+	local names = {}
+	if prerequisites ~= nil then
+	for i = 1, #prerequisites do		
+			if prerequisites[i] == nil then
+				--log("-----------ERROR NIL ".. name.. " " ..convert_to_string(prerequisites))			
+			elseif table_contains(names,prerequisites[i]) then
+				log("------------ERROR DETECTED PREREQUISITS ".. name .. " has duplicates of "..prerequisites[i])
+			else
+				table.insert(names,prerequisites[i])
+				table.insert(new_table,prerequisites[i])
+			end
+		end			
+	end
+	prerequisites = new_table
+	return prerequisites
+end
+
+
+local check_duplicate_tech = function()
+	for name, tech in pairs(data.raw.technology) do
+		data.raw.technology[name].prerequisites = check_prerequisites(tech.prerequisites, name)
 	end
 end
 if data ~= nil and data_final_fixes == true then
@@ -1296,6 +1388,22 @@ if data ~= nil and data_final_fixes == true then
 	loot_science_b.order = "zzzzz"
 	loot_science_b.localised_name ="Crashed science lab"
 	data:extend({loot_science_a,loot_science_b})
+	if settings.startup["modmash-check-recipies"].value == "Enabled" then 
+		check_duplicate_items_in_recipies()
+	end
+	if settings.startup["modmash-check-tech"].value == "Enabled" then
+		check_duplicate_tech()
+	end
 
-	check_duplicate_items_in_recipies()
+	for name,item in pairs(data.raw["assembling-machine"]) do			
+		if item ~= nil and item.name ~= nil then	
+			if (starts_with(item.name,"assembling-machine") and item.crafting_speed > 1.25)
+			or starts_with(item.name,"centrifuge") then
+				if table_contains(item.crafting_categories,"containment") == false then
+					table.insert(item.crafting_categories,"containment")
+				end				
+			end
+		end
+	end
+
 end

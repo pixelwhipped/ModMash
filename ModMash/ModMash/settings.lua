@@ -19,5 +19,68 @@
 		default_value = "CONTROL + A",
 		allowed_values = {"CONTROL + A", "CONTROL + G", "CONTROL + M"},
 		order = "a"
+	},
+  	{
+		type = "string-setting",
+		name = "modmash-setting-tech-loot",
+		setting_type = "startup",
+		default_value = "Instant Tech",
+		allowed_values = {"Instant Tech", "Science", "Disabled"},
+		order = "b"
+	},
+  	{
+		type = "string-setting",
+		name = "modmash-setting-item-loot",
+		setting_type = "startup",
+		default_value = "Enabled",
+		allowed_values = {"Enabled", "Disabled"},
+		order = "c"
+	},
+	{
+		type = "string-setting",
+		name = "modmash-setting-loot-fill",
+		setting_type = "startup",
+		default_value = "Disabled",
+		allowed_values = {"Enabled", "Disabled"},
+		order = "d"
+	},	
+  	{
+		type = "int-setting",
+		name = "modmash-setting-loot-chance",
+		setting_type = "startup",
+		default_value = 0,
+		minimum_value = 0,
+		maximum_value = 100,
+		order = "e"
+	},
+	{
+		type = "string-setting",
+		name = "modmash-setting-loaders",
+		setting_type = "startup",
+		default_value = "Enabled",
+		allowed_values = {"Enabled", "Disabled"},
+		order = "f"
+	},
+  	{
+		type = "string-setting",
+		name = "modmash-setting-mini-loaders",
+		setting_type = "startup",
+		default_value = "Enabled",
+		allowed_values = {"Enabled", "Disabled"},
+		order = "g"
+	},{
+		type = "string-setting",
+		name = "modmash-check-recipies",
+		setting_type = "startup",
+		default_value = "Enabled",
+		allowed_values = {"Enabled", "Disabled"},
+		order = "h"
+	},{
+		type = "string-setting",
+		name = "modmash-check-tech",
+		setting_type = "startup",
+		default_value = "Enabled",
+		allowed_values = {"Enabled", "Disabled"},
+		order = "i"
 	}
 })

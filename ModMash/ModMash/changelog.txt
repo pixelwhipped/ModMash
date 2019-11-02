@@ -1,4 +1,27 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.17.72
+  Compatibility:
+    - Added fix for mods overriding crafting-categories
+  Changes:
+    - Added limit to droid loot.
+    - Balancing
+
+---------------------------------------------------------------------------------------------------
+Version: 0.17.71
+  Features:
+    - Added auto recipe fix for duplicate and other recipe errors(NOT MODMASH)
+    - Added tech tree fix for duplicates(NOT MODMASH)
+  Bugfix:
+    - Infinite shown in crafting menue
+  Changes:
+    - Added various settings
+
+---------------------------------------------------------------------------------------------------
+Version: 0.17.70
+  bugfix:
+    - Smelting issue
+
+---------------------------------------------------------------------------------------------------
 Version: 0.17.69
   Changes:
     - Added Subspace transportation network
