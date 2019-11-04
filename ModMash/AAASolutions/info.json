@@ -1,0 +1,13 @@
+{
+  "name": "aaasolutions",
+  "version": "0.17.01",
+  "title": "AAASolutions",
+  "author": "PixelWhipped",
+  "contact": "",
+  "homepage": "",
+  "factorio_version": "0.17",
+  "description": "Mod modifier(experminal).",
+  "dependencies": [
+    "base >= 0.17.0"
+  ]
+}

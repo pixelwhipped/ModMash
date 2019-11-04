@@ -1,4 +1,9 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.17.73
+  Compat:
+    - formalized some recipies due to other mods not checking
+
+---------------------------------------------------------------------------------------------------
 Version: 0.17.72
   Compatibility:
     - Added fix for mods overriding crafting-categories

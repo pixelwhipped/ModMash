@@ -175,7 +175,7 @@ local local_create_container = function(item,x)
 		hide_from_player_crafting = true,
 		ingredients =
 		{
-			{"super-container-for-"..item.name,1},
+			{name = "super-container-for-"..item.name,amount = 1}
 		},
 		results = {
 			{name = "empty-super-container", amount = 1},
@@ -313,7 +313,7 @@ local local_create_subspace_transport = function()
 			  {"titanium-plate",10},
 			  {"alien-plate",10},
 			  {"concrete",50},
-			  {"super-material", 20},
+			  {"super-material", 20}
 			},
 			result = "subspace-transport"
 		},

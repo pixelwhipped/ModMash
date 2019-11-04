@@ -1,0 +1,14 @@
+{
+  "name": "zzzsolutions",
+  "version": "0.17.01",
+  "title": "ZZZSolutions",
+  "author": "PixelWhipped",
+  "contact": "",
+  "homepage": "",
+  "factorio_version": "0.17",
+  "description": "Mod modifier(experminal).",
+  "dependencies": [
+    "base >= 0.17.0",
+    "aaasolutions >= 0.17.01"
+  ]
+}
