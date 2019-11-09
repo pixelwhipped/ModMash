@@ -1,4 +1,14 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.17.75
+  Changes:
+    - Added setting for glass difficulty
+
+---------------------------------------------------------------------------------------------------
+Version: 0.17.74
+  Compat:
+    - formalized some recipies due to other mods not checking
+
+---------------------------------------------------------------------------------------------------
 Version: 0.17.73
   Compat:
     - formalized some recipies due to other mods not checking
@@ -17,7 +27,7 @@ Version: 0.17.71
     - Added auto recipe fix for duplicate and other recipe errors(NOT MODMASH)
     - Added tech tree fix for duplicates(NOT MODMASH)
   Bugfix:
-    - Infinite shown in crafting menue
+    - Infinite shown in crafting menu
   Changes:
     - Added various settings
 

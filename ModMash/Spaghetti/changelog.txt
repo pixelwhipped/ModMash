@@ -1,0 +1,4 @@
+﻿---------------------------------------------------------------------------------------------------
+Version: 0.17.01
+  Feature:
+    - Restricts build the distance essentially enforcing spaghettification

@@ -1076,15 +1076,10 @@ local local_update_recipies = function()
 	add_ingredient_to_recipe("storage-tank",{name = "glass", amount = 1})
 	add_ingredient_to_recipe("rail-chain-signal",{name = "glass", amount = 1})
 	add_ingredient_to_recipe("rail-signal",{name = "glass", amount = 1})
-	add_ingredient_to_recipe("fluid-wagon",{name = "glass", amount = 1})
-	add_ingredient_to_recipe("oil-refinery",{name = "glass", amount = 4})
-	add_ingredient_to_recipe("chemical-plant",{name = "glass", amount = 2})
+	
 	add_ingredient_to_recipe("lab",{name = "glass", amount = 2})
 	add_ingredient_to_recipe("solar-panel",{name = "glass", amount = 1})
-	add_ingredient_to_recipe("nuclear-reactor",{name = "glass", amount = 10})
-	add_ingredient_to_recipe("nuclear-fuel",{name = "glass", amount = 1})
-	add_ingredient_to_recipe("rocket-fuel",{name = "glass", amount = 1})	
-	add_ingredient_to_recipe("pump",{name = "glass", amount = 1})	
+	
 
 	
 	add_ingredient_to_recipe("construction-robot",{name = "droid", amount = 1})	
@@ -1096,9 +1091,18 @@ local local_update_recipies = function()
 	remove_ingredient_from_recipie("inserter","iron-gear-wheel")
 	remove_ingredient_from_recipie("inserter","iron-plate")
 
-	for name, recipe in pairs(data.raw.recipe) do
-		if recipe ~= nil and recipe.name ~= nil and ends_with(recipe.name,"science-pack") then
-			add_ingredient_to_recipe(recipe.name,{name = "glass", amount = 1})	
+	if settings.startup["modmash-setting-glass"].value == "Hard" then 
+		add_ingredient_to_recipe("fluid-wagon",{name = "glass", amount = 1})
+		add_ingredient_to_recipe("oil-refinery",{name = "glass", amount = 4})
+		add_ingredient_to_recipe("chemical-plant",{name = "glass", amount = 2})
+		add_ingredient_to_recipe("nuclear-reactor",{name = "glass", amount = 10})
+		add_ingredient_to_recipe("nuclear-fuel",{name = "glass", amount = 1})
+		add_ingredient_to_recipe("rocket-fuel",{name = "glass", amount = 1})	
+		add_ingredient_to_recipe("pump",{name = "glass", amount = 1})	
+		for name, recipe in pairs(data.raw.recipe) do
+			if recipe ~= nil and recipe.name ~= nil and ends_with(recipe.name,"science-pack") then
+				add_ingredient_to_recipe(recipe.name,{name = "glass", amount = 1})	
+			end
 		end
 	end
 end

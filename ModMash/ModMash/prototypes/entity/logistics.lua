@@ -1,7 +1,7 @@
 ﻿if not modmash or not modmash.util then require("prototypes.scripts.util") end
 
 local patch_technology  = modmash.util.patch_technology
-
+local starts_with  = modmash.util.starts_with
 
 local local_create_belt_animation_set = function(name)
 	local belt_animation_set = 
@@ -956,6 +956,51 @@ if data_final_fixes then
 	data.raw["transport-belt"]["express-transport-belt"].next_upgrade = "high-speed-transport-belt"
 	data.raw["underground-belt"]["express-underground-belt"].next_upgrade = "high-speed-underground-belt-structure"
 	data.raw["splitter"]["express-splitter"].next_upgrade = "high-speed-splitter"
+
+	if settings.startup["modmash-setting-loaders"].value == "Enabled" then 
+		data.raw.loader["mini-loader"].speed = data.raw["transport-belt"]["transport-belt"].speed
+		data.raw.loader["fast-mini-loader"].speed = data.raw["transport-belt"]["fast-transport-belt"].speed
+		data.raw.loader["express-mini-loader"].speed = data.raw["transport-belt"]["express-transport-belt"].speed
+
+		data.raw.loader["loader"].speed = data.raw["transport-belt"]["transport-belt"].speed
+		data.raw.loader["fast-loader"].speed = data.raw["transport-belt"]["fast-transport-belt"].speed
+		data.raw.loader["express-loader"].speed = data.raw["transport-belt"]["express-transport-belt"].speed
+		local speeds = {}
+		for name, ent in pairs(data.raw["transport-belt"]) do
+			if starts_with(name,"regenerative") ~= true and starts_with(name,"high-speed")  ~= true then
+				table.insert(speeds,ent.speed)
+			end
+		end 
+		table.sort(speeds, function(a,b) return a < b end)
+		--log(serpent.block(speeds))
+		if data.raw.loader["regenerative-mini-loader"].speed < speeds[#speeds] then
+			log("Resetting belt speeds")		
+			local rspeed = speeds[#speeds] * 1.05
+			local items =math.ceil(rspeed*480)
+			rspeed = items/480
+			log("Regenerative ".. rspeed .. " " .. items)
+			local fspeed = (speeds[#speeds]+rspeed)/2.0
+			items =math.floor(fspeed*480)
+			fspeed = items/480
+			log("high-speed ".. fspeed .. " " .. items.. " base")
+
+			data.raw.loader["regenerative-mini-loader"].speed = rspeed
+			data.raw.loader["high-speed-mini-loader"].speed = fspeed
+
+			data.raw.loader["regenerative-loader"].speed = rspeed			
+			data.raw.loader["high-speed-loader"].speed = fspeed
+
+			data.raw["underground-belt"]["high-speed-underground-belt-structure"].speed = rspeed
+			data.raw["underground-belt"]["regenerative-underground-belt-structure"].speed = fspeed
+
+			data.raw["transport-belt"]["regenerative-transport-belt"].speed = rspeed
+			data.raw["transport-belt"]["high-speed-transport-belt"].speed = fspeed
+
+			data.raw["splitter"]["regenerative-splitter"].speed = rspeed
+			data.raw["splitter"]["high-speed-splitter"].speed = fspeed
+
+		end
+	end
 else
 	for index=1, #local_belts do local belt = local_belts[index]
 		modmash.util.log("Creating Belt " .. belt.name)

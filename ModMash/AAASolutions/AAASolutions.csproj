@@ -6,7 +6,7 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>C:\Users\TarrantFamily\AppData\Roaming\Factorio\mods\aaasolutions_0.17.01\</OutputPath>
+    <OutputPath>C:\Users\TarrantFamily\AppData\Roaming\Factorio\mods\aaasolutions_0.17.02\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <None Update="data-final-fixes.lua">
@@ -148,6 +148,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="settings.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="thumbnail.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

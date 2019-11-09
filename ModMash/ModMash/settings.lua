@@ -82,5 +82,12 @@
 		default_value = "Enabled",
 		allowed_values = {"Enabled", "Disabled"},
 		order = "i"
+	},{
+		type = "string-setting",
+		name = "modmash-setting-glass",
+		setting_type = "startup",
+		default_value = "Normal",
+		allowed_values = {"Normal", "Hard"},
+		order = "j"
 	}
 })
