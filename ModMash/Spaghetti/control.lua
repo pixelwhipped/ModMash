@@ -25,6 +25,7 @@ local local_on_init = function()
 	if global.spaghetti == nil then global.spaghetti = 
 	{
 		start_entities = {},
+		start_sum = 0,
 		shown_welcome = false,
 		distance = spaghetti.defines.defaults.initial_distance,
 		expected_entitites_in_tiles = initial_expected_entitites_in_tiles
@@ -46,52 +47,103 @@ script.on_configuration_changed(function(f)
 	end)
 
 local local_check_distances = function(start_entities,entity )
+	--local ret = true
+	local hypot = math.sqrt(math.pow(global.spaghetti.distance,2)*2)
 	for i = 1, #start_entities do
-		local p1 = start_entities[i].position
-		local p2 = entity.position
-		if distance(p1.x,p1.y,p2.x,p2.y) > global.spaghetti.distance then return false end
+		local e = start_entities[i]
+		if is_valid(e) then
+			--local size = get_entity_size(e)
+			--local tiles = size[1]*size[2]
+			--global.spaghetti.start_sum = global.spaghetti.start_sum + tiles
+			local p1 = e.position
+			local p2 = entity.position
+			if distance(p1.x,p1.y,p2.x,p2.y) >  hypot then 
+				--ret = false 
+				return false
+			end
+		end
 	end
 	return true
 	end
 
 local local_check_surface_distances = function(entity)
-	local dist = global.spaghetti.distance/2
-	local neg_dist = dist * -1
-	local entities = entity.surfaces.find_entities_filtered{area = {{-neg_dist, -neg_dist}, {dist, dist}}, force = "player"}
+	local dist = math.sqrt(math.pow(global.spaghetti.distance,2)*2)
+	--local posistion = {x=entity.bounding_box["left_top"]["x"],y=entity.bounding_box["left_top"]["x"]}
+	--spaghetti.util.print(posistion.x.." "posistion.y)
+	local entities = entity.surface.find_entities_filtered{area = {{entity.position.x-dist,entity.position.y-dist}, {entity.position.x+dist,entity.position.y+dist}}, force = "player"}
 	local sum = 0
+	local count = 0
 	for i = 1, #entities do
-		local size = get_entity_size(entities[i])
-		local tiles = size[1]*size[2]
-		sum = sum + tiles
+		local e = entities[i]
+		if is_valid(e) then
+			if e.name ~= "character" then
+				local size = get_entity_size(e)
+				local tiles = size[1]*size[2]
+				sum = sum + tiles
+				count = count + 1
+			end
+		end
 	end
+	--spaghetti.util.print("Adding more "..count.. " "..sum.." "..global.spaghetti.expected_entitites_in_tiles)
 	return sum >= global.spaghetti.expected_entitites_in_tiles
 	end
 
+local allow_any = {"splitter","transport-belt","underground-belt","pipe","pipe-to-ground","offshore-pump"}
 local local_on_added = function(event)
-	if is_valid(event.created_entity) == false return end
-	if #start_entities < global.spaghetti.expected_entitites_in_tiles then 
-		if #start_entities == 0 then 
-			table.insert(global.spaghetti.start_entities,event.created_entity) 
-		elseif local_check_distances(global.spaghetti.start_entities,event.created_entity) then
-			table.insert(global.spaghetti.start_entities,event.created_entity)
-		elseif local_check_surface_distances(global.spaghetti.start_entities,event.created_entity) == false then
-			if entity.name == "entity-ghost" or entity.name == "tile-ghost" then
-				entity.destroy()
-			if event.player_index then
-				entity.surface.spill_item_stack(entity.position, {name=entity.name, count=1})
-				entity.destroy()
+	if is_valid(event.created_entity) == false then return end		
+		if #global.spaghetti.start_entities == 0 or (global.spaghetti.start_sum < global.spaghetti.expected_entitites_in_tiles and local_check_distances(global.spaghetti.start_entities,event.created_entity)) then
+			
+			if event.created_entity.name ~= "entity-ghost" and event.created_entity.name ~= "tile-ghost" then
+				local size = get_entity_size(event.created_entity)
+				local tiles = size[1]*size[2]
+				--spaghetti.util.print(size)
+				global.spaghetti.start_sum = global.spaghetti.start_sum + tiles
+				table.insert(global.spaghetti.start_entities,event.created_entity)
+			else
+				if table_contains(allow_any,event.created_entity.type) == false then
+					event.created_entity.destroy()
+				end
+			end			
+			--spaghetti.util.print("Adding intial "..global.spaghetti.start_sum.. " "..global.spaghetti.expected_entitites_in_tiles)
+
+		elseif local_check_surface_distances(event.created_entity) == false then
+			if event.created_entity.name == "entity-ghost" or event.created_entity.name == "tile-ghost" then
+				if table_contains(allow_any,event.created_entity.type) == false then
+					event.created_entity.destroy()
+				end
+			elseif event.player_index then
+				if table_contains(allow_any,event.created_entity.type) == false then
+					event.created_entity.surface.spill_item_stack(event.created_entity.position, {name=event.created_entity.name, count=1})
+					event.created_entity.destroy()
+				end
 			end
 		end
 		
-	end
+	--end
 	end
 
 local local_on_removed = function(event)
-	if is_valid(event.created_entity) == false return end
-	if table_contains(global.spaghetti.start_entities,event.created_entity) then table_remove(global.spaghetti.start_entities,event.created_entity) end
+	if is_valid(event.entity) == false then return end
+	local entities = global.spaghetti.start_entities
+	if table_contains(entities,event.entity) then 
+		local size = get_entity_size(event.entity)
+		local tiles = size[1]*size[2]
+		global.spaghetti.start_sum = math.max(0, global.spaghetti.start_sum - tiles)
+		for i = #entities, 1, -1 do	
+			if entities[i] == event.entity then
+				table.remove(entities,i)
+				break
+			end
+		end
+		--table_remove(,event.entity) 
+	end
 	end
 
 local local_on_research = function(event)
+	if starts_with(event.research.name,"extend-build-range") then
+		if global.spaghetti.distance == nil then global.spaghetti.distance = initial_distance end
+		global.spaghetti.distance =  global.spaghetti.distance + 16		
+	end	
 	end
 
 local local_on_gui_click = function(event)
@@ -127,8 +179,15 @@ local local_on_tick = function()
 	if game.tick > 1 and run_init ~= true then run_init = local_on_start() end
 	end
 
+local local_on_selected = function(event)
+	 local player = game.players[event.player_index]
+	 if player.selected == nil then return end
+	-- spaghetti.util.print( player.selected.force.name)
+end
+
 script.on_event(build_events, local_on_added)
 script.on_event(remove_events, local_on_removed)
 script.on_event(defines.events.on_research_finished, local_on_research)
 script.on_event(defines.events.on_tick, local_on_tick)
 script.on_event(defines.events.on_gui_click, local_on_gui_click)
+script.on_event(defines.events.on_selected_entity_changed,local_on_selected)

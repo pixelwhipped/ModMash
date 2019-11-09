@@ -16,6 +16,12 @@
     <None Update="control.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="data.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\technology\extend-build-range.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="info.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -151,10 +157,10 @@
     <None Update="locale\zh-TW\locale.cfg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="prototypes\defines.lua">
+    <None Update="prototypes\scripts\defines.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="prototypes\util.lua">
+    <None Update="prototypes\scripts\util.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="settings.lua">
