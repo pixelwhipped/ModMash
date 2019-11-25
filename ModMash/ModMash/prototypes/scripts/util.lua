@@ -45,7 +45,7 @@ local local_print = function(arg,index)
 	end 
 end
 
-local local_is_valid = function(entity) return (entity ~= nil and entity.valid) end
+local local_is_valid = function(entity) return (entity ~= nil and type(entity)=="table" and entity.valid) end
 local local_is_valid_and_persistant = function(entity)  return local_is_valid(entity) and not entity.to_be_deconstructed(entity.force) end
 
 local local_is_int = function(n) return (type(n) == "number") and (math.floor(n) == n) end

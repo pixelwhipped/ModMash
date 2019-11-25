@@ -234,8 +234,20 @@ local local_loader_removed = function(entity)
 	end
 end
 
+local local_on_entity_cloned = function(event)
+	if is_valid(event.source) then 
+		if event.source.type == "loader" then return end	
+		for index, loader in pairs(loaders) do
+			if  loader.entity == event.source then
+				loader.entity = event.destination
+				return
+			end
+		end
+	end
+end
+
 local local_on_configuration_changed = function(f)
-	if f.mod_changes["modmash"].old_version < "0.17.61" then	
+	if f.mod_changes["modmash"].old_version < "0.17.62" then	
 		global.modmash.loader = {}	
 		global.modmash.loader.loaders = {}	
 		loaders = global.modmash.loader.loaders
@@ -259,5 +271,6 @@ modmash.register_script({
 	on_added = local_loader_added,
 	on_removed = local_loader_removed,
 	on_train_changed_state = local_on_train_changed_state,
-	on_configuration_changed = local_on_configuration_changed
+	on_configuration_changed = local_on_configuration_changed,
+	on_entity_cloned = local_on_entity_cloned
 })

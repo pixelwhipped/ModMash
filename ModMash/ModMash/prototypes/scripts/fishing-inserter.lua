@@ -308,6 +308,16 @@ local local_on_configuration_changed = function(f)
 	end
 	end
 
+local local_on_entity_cloned = function(event)
+	local entity = event.source
+	if fishing.allow_pickup_rotations and is_valid(entity) and (entity.type == "inserter" or (entity.type == "entity-ghost" and entity.ghost_type == "inserter")) then			
+		if fishing.allow_fishing then		
+			local_fishing_inserter_removed(entity)
+			local_fishing_inserter_added(entity)
+		end
+	end
+end
+
 modmash.register_script({
 	on_tick = {
 		priority = low_priority,
@@ -321,5 +331,6 @@ modmash.register_script({
 	on_adjust = local_inserter_adjust,
 	on_player_rotated_entity = local_on_player_rotated_entity,
 	on_research = local_on_research,
-	on_configuration_changed = local_on_configuration_changed
+	on_configuration_changed = local_on_configuration_changed,
+	on_entity_cloned = local_on_entity_cloned
 })

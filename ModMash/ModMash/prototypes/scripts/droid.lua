@@ -9,6 +9,7 @@ local distance  = modmash.util.distance
 local get_entities_around  = modmash.util.get_entities_around
 local is_valid  = modmash.util.is_valid
 local table_index_of  = modmash.util.table.index_of
+local table_contains = modmash.util.table.contains
 local starts_with  = modmash.util.starts_with
 local local_table_remove = modmash.util.table.remove
 local is_valid_and_persistant = modmash.util.is_valid_and_persistant
@@ -159,19 +160,37 @@ local local_droid_select_target= function(droid,name)
 	local entities = get_entities_around(droid.entity,rad,nil,name)		
 	if entities ~= nil then		
 		table.sort (entities, function (k1, k2) return distance(droid.entity.position.x,droid.entity.position.y,k2.position.x,k2.position.y) < distance(droid.entity.position.x,droid.entity.position.y,k1.position.x,k1.position.y) end)
-		for k=1, #entities do local ent = entities[k];			
-			if ent.name == name then	
-				if name == "item-on-ground" then
-					if droid.stack ~= nil and droid.stack.name ~=nil then
-						if droid.stack.name == ent.stack.name then droid.target = ent end
-						return
+		for k=1, #entities do local ent = entities[k];	
+			if droid.target_fail ~= nil and type(droid.target_fail) ~= "table" then droid.target_fail = nil end
+			if droid.target_fail == nil or table_contains(droid.target_fail,ent) == false  then
+				if ent.name == name then	
+					if name == "item-on-ground" then					
+						if droid.stack ~= nil and droid.stack.name ~=nil then
+							if droid.stack.name == ent.stack.name then droid.target = ent end
+							return
+						else
+							droid.target = ent
+							return
+						end				
 					else
-						droid.target = ent
+						droid.target = ent	
 						return
-					end				
-				else
-					droid.target = ent	
-					return
+					end
+				end --Well bugger it nothing else worked
+				droid.target_fail = {}
+				if ent.name == name then	
+					if name == "item-on-ground" then					
+						if droid.stack ~= nil and droid.stack.name ~=nil then
+							if droid.stack.name == ent.stack.name then droid.target = ent end
+							return
+						else
+							droid.target = ent
+							return
+						end				
+					else
+						droid.target = ent	
+						return
+					end
 				end
 			end	
 		end
@@ -930,7 +949,8 @@ local local_droid_tick = function()
 	if droids.research_modifier == nil then droids.research_modifier = 1 end
 	droids.research_modifier = math.max(droids.research_modifier,5.55)
 	for k=index, #all_droids do local droid = all_droids[k];					
-		if droid.entity.valid and not droid.entity.to_be_deconstructed(droid.entity.force) then				
+		if droid.entity.valid and not droid.entity.to_be_deconstructed(droid.entity.force) then		
+			--if droid.entity.has_command() and droid.target ~= nil then local_clear_droid_command(droid) end
 			if droid.stack == nil then droid.stack = {name = nil, count = 0} end
 			if droid.mode == collection_mode then
 				local_droid_process_collection(droid)
@@ -970,7 +990,7 @@ local local_droid_removed = function(entity)
 	if entity.name == "entity-ghost" or entity.name == "tile-ghost" then
 		local_remove_ghost(entity)
 	end
-	if entity.name == "droid" then				
+	if entity.name == "droid" then		
 		for _,e in pairs(entity.surface.find_entities_filtered{type="sticker", area=entity.bounding_box}) do 
 			e.destroy() 
 		end
@@ -987,20 +1007,22 @@ end
 local local_droid_adjust = function(entity)
 	if entity.name == "droid" then
 		for index, droid in pairs(all_droids) do
-			if not droid.entity.to_be_deconstructed(droid.entity.force) then
-				if droid.entity == entity then		
-					if droid.mode == attack_mode then
-						local_set_mode(droid,scout_mode)
-					elseif droid.mode == scout_mode then	
-						local_set_mode(droid,collection_mode)
-					elseif droid.mode == collection_mode then	
-						local_set_mode(droid,repair_mode)
-					elseif droid.mode == repair_mode then	
-						local_set_mode(droid,build_mode)
-					else
-						local_set_mode(droid,attack_mode)
+			if is_valid(droid.entity) then
+				if not droid.entity.to_be_deconstructed(droid.entity.force) then
+					if droid.entity == entity then		
+						if droid.mode == attack_mode then
+							local_set_mode(droid,scout_mode)
+						elseif droid.mode == scout_mode then	
+							local_set_mode(droid,collection_mode)
+						elseif droid.mode == collection_mode then	
+							local_set_mode(droid,repair_mode)
+						elseif droid.mode == repair_mode then	
+							local_set_mode(droid,build_mode)
+						else
+							local_set_mode(droid,attack_mode)
+						end
+						return
 					end
-					return
 				end
 			end
 		end
@@ -1016,6 +1038,9 @@ local local_droid_research = function(event)
 end
 
 local local_on_configuration_changed = function(f)
+	if f.mod_changes["modmash"].old_version < "0.17.82" then			
+		local_init()
+	end
 	if f.mod_changes["modmash"].old_version < "0.17.61" then	
 		for _, tech in pairs(game.players[1].force.technologies) do
 			if tech.researched == true and starts_with(tech.name,"enhance-drone-targeting") then
@@ -1023,8 +1048,48 @@ local local_on_configuration_changed = function(f)
 				global.modmash.droids.research_modifier =  global.modmash.droids.research_modifier * 1.1
 			end	
 		end
+		if f.mod_changes["modmash"].old_version < "0.17.77" then	
+			for k=1, #all_droids do local droid = all_droids[k];
+				local_clear_droid_command(droid)
+			end
+		end
 	end
 	end
+
+local local_on_ai_command_completed = function(event)
+	local unit_id = event.unit_number
+	local result = event.result
+	for k=1, #all_droids do local droid = all_droids[k];		
+		 if is_valid(droid.entity) and droid.entity.unit_number == unit_id then
+			--if result == defines.behavior_result.in_progress then modmash.util.print("AI In Progess") end
+			if result == defines.behavior_result.fail then
+				--modmash.util.print("AI Fail")
+				if droid.target_fail == nil then droid.target_fail = {} end
+				table.insert(droid.target_fail, droid.target);
+				local_clear_droid_command(droid)
+			end
+			if result == defines.behavior_result.success then
+				--droid.target_fail = nil
+			--	modmash.util.print("AI Success")
+			end
+			--if result == defines.behavior_result.deleted then modmash.util.print("AI Deleted") end			
+		 end
+	end
+	
+end
+
+local local_on_entity_cloned = function(event)
+	if is_valid(event.source) then 
+		if event.source.name ~= "droid" then return end	
+		for index, droid in pairs(all_droids) do
+			if  droid.entity == event.source then
+				droid.entity = event.destination
+				local_clear_droid_command(droid)
+				return
+			end
+		end
+	end
+end
 
 modmash.register_script({
 	on_tick = {
@@ -1038,6 +1103,7 @@ modmash.register_script({
 	on_removed = local_droid_removed,
 	on_adjust = local_droid_adjust,
 	on_research = local_droid_research,
-	on_configuration_changed = local_on_configuration_changed
-
+	on_configuration_changed = local_on_configuration_changed,
+	on_ai_command_completed = local_on_ai_command_completed,
+	on_entity_cloned = local_on_entity_cloned
 })

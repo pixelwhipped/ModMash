@@ -54,6 +54,18 @@ local local_discharge_pump_tick = function()
 	end
 end
 
+local local_on_entity_cloned = function(event)
+	if is_valid(event.source) then 
+		if event.source.name ~= discharge_water_pump then return end	
+		for index, pump in pairs(pumps) do
+			if  pump == event.source then
+				pump = event.destination
+				return
+			end
+		end
+	end
+end
+
 modmash.register_script({
 	names = {discharge_water_pump},
 	on_init = local_init,
@@ -62,5 +74,6 @@ modmash.register_script({
 		tick = local_discharge_pump_tick,		
 		table = function() return pumps end,
 		auto_add_remove = {discharge_water_pump}
-		}
+		},
+	on_entity_cloned = local_on_entity_cloned
 })

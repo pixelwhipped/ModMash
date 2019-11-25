@@ -3,6 +3,7 @@ log("wind-trap.lua")
 --[[check and import utils]]
 if modmash == nil or modmash.util == nil then require("prototypes.scripts.util") end
 if not modmash.defines then require ("prototypes.scripts.defines") end
+local is_valid  = modmash.util.is_valid
 
 --[[defines]]
 local wind_trap  = modmash.defines.names.wind_trap 
@@ -19,7 +20,16 @@ local local_wind_trap_pump_added = function(entity)
 	entity.operable = false
 end
 
+local local_on_entity_cloned = function(event)
+	if is_valid(event.source) then
+		if event.source.name == wind_trap then 		
+			local_wind_trap_pump_added(event.source)
+		end
+	end
+end
+
 modmash.register_script({
 	names = {wind_trap},
 	on_added_by_name = local_wind_trap_pump_added,
+	on_entity_cloned = local_on_entity_cloned
 })

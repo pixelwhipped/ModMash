@@ -35,14 +35,17 @@ local local_load = function()
 	biter_nero_toxin = global.modmash.biter_nero_toxin
 	end
 
-local local_toxin_added = function(entity)
-	local enemies = entity.surface.find_entities_filtered({
-		force = force_enemy,
-		position = entity.position,
-		radius = biter_nero_toxin.research_modifier,
-	})
-	for _, enemy in ipairs(enemies) do
-		enemy.force = force_player
+local local_toxin_added = function(event)
+	local entity = event.entity
+	if entity.name == biter_neuro_toxin_cloud then
+		local enemies = entity.surface.find_entities_filtered({
+			force = force_enemy,
+			position = entity.position,
+			radius = biter_nero_toxin.research_modifier,
+		})
+		for _, enemy in ipairs(enemies) do
+			enemy.force = force_player
+		end
 	end
 end
 
@@ -67,7 +70,7 @@ modmash.register_script({
 	names = {biter_neuro_toxin_cloud},
 	on_init = local_init,
 	on_load = local_load,
-	on_added_by_name = local_toxin_added,
+	on_trigger_created_entity = local_toxin_added,
 	on_research = local_toxin_research,
 	on_configuration_changed = local_on_configuration_changed
 })

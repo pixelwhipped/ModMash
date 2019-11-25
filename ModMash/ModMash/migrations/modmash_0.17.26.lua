@@ -11,6 +11,6 @@
 	--force.recipes["enhance-drone-targeting-1"].enabled = true
   end
   if force.technologies["logistics"].researched then
-    force.recipes["mini-loader"].enabled = true
+    if force.recipes["mini-loader"] ~= nil then force.recipes["mini-loader"].enabled = true end
   end
 end

@@ -1,4 +1,44 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.17.82
+  Bug fix:
+    - Valkyries can now return to players
+    - Added update support of for older saves
+
+---------------------------------------------------------------------------------------------------
+Version: 0.17.81
+  Bug fix:
+    - Nil check player character grid
+
+---------------------------------------------------------------------------------------------------
+Version: 0.17.80
+  Bug fix:
+    - Issues with cloning
+---------------------------------------------------------------------------------------------------
+Version: 0.17.79
+  Feature:
+    - Added Valkyries
+  Bug fix:
+    - Addded missing local detail
+    - Added fix for migration issue
+    - Added check for invalid surface and chunks
+    - Biter nueral toxin created event was not firing
+
+---------------------------------------------------------------------------------------------------
+Version: 0.17.78
+  Bug fix:
+    - Debug flag left on
+
+---------------------------------------------------------------------------------------------------
+Version: 0.17.77
+  Bug fix:
+    - Bot smartness enhanced
+
+---------------------------------------------------------------------------------------------------
+Version: 0.17.76
+  Bug fix:
+    - Map editor crash
+
+---------------------------------------------------------------------------------------------------
 Version: 0.17.75
   Changes:
     - Added setting for glass difficulty

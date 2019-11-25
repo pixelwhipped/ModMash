@@ -8,6 +8,7 @@ local medium_priority = modmash.events.medium_priority
 local starts_with  = modmash.util.starts_with
 local is_valid  = modmash.util.is_valid
 local is_valid_and_persistant = modmash.util.is_valid_and_persistant
+local table_remove = modmash.util.table.remove
 
 --[[unitialized globals]]
 local regenerative = nil
@@ -59,11 +60,24 @@ local local_regenerative_tick = function()
 	end end
 
 local local_regenerative_added = function(entity)
-	if starts_with(entity.name,"regenerative") then
-		if entity.health < entity.prototype.max_health then
-			table.insert(regenerables, entity)	
+	if is_valid(entity) then 
+		if starts_with(entity.name,"regenerative") then
+			if entity.health < entity.prototype.max_health then
+				table.insert(regenerables, entity)	
+			end
 		end
 	end end
+
+local local_on_entity_cloned = function(event)
+	if is_valid(event.source) then
+		if starts_with(event.source.name,"regenerative") then 		
+			if event.source.health < event.source.prototype.max_health then
+				table_remove(regenerables, event.source)	
+				table.insert(regenerables, event.destination)	
+			end
+		end
+	end
+end
 
 local local_regenerative_research = function(event)		
 	if starts_with(event.research.name,"enhance-regenerative-speed") then
@@ -103,5 +117,6 @@ modmash.register_script({
 	on_added = local_regenerative_added,
 	on_damage = local_regenerative_notify_damaged,
 	on_research = local_regenerative_research,
-	on_configuration_changed = local_on_configuration_changed
+	on_configuration_changed = local_on_configuration_changed,
+	on_entity_cloned = local_on_entity_cloned
 })

@@ -3,6 +3,8 @@ log("recycling.lua")
 --[[check and import utils]]
 if modmash == nil or modmash.util == nil then require("prototypes.scripts.util") end
 if not modmash.defines then require ("prototypes.scripts.defines") end
+local is_valid  = modmash.util.is_valid
+
 --[[defines]]
 local recycling_machine = modmash.defines.names.recycling_machine
 local low_priority = modmash.events.low_priority
@@ -234,6 +236,18 @@ local local_recycling_removed = function(entity)
 	end
 	end
 
+local local_on_entity_cloned = function(event)
+	if is_valid(event.source) then 
+		if event.source.name == recycling_machine then return end	
+		for index, recycling_machine in pairs(global.modmash.recycling_machines) do
+			if  recycling_machine.entity == event.source then
+				recycling_machine.entity = event.destination
+				return
+			end
+		end
+	end
+end
+
 local local_recycling_adjust = function(entity)
 	local recycling_machines = global.modmash.recycling_machines
 	for index=1, #recycling_machines do local recycling_machine = recycling_machines[index]
@@ -285,5 +299,6 @@ modmash.register_script({
 	on_removed_by_name = local_recycling_removed,
 	on_selected_by_name = local_on_selected,
 	on_adjust_by_name = local_recycling_adjust,
-	on_configuration_changed = local_on_configuration_changed
+	on_configuration_changed = local_on_configuration_changed,
+	on_entity_cloned = local_on_entity_cloned
 })

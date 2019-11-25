@@ -37,6 +37,11 @@ if not modmash.on_player_rotated_entity then modmash.on_player_rotated_entity = 
 if not modmash.on_player_rotated_entity_by_name then modmash.on_player_rotated_entity_by_name = {} end
 if not modmash.on_configuration_changed then modmash.on_configuration_changed = {} end
 if not modmash.on_train_changed_state then modmash.on_train_changed_state = {} end
+if not modmash.on_ai_command_completed then modmash.on_ai_command_completed = {} end
+if not modmash.on_trigger_created_entity then modmash.on_trigger_created_entity = {} end
+if not modmash.on_entity_cloned then modmash.on_entity_cloned = {} end
+
+
 local run_init = false
 
 require("prototypes.scripts.defines") 
@@ -49,6 +54,8 @@ local allow_fishing = modmash.defines.names.allow_fishing
 local low_priority = modmash.events.low_priority
 local medium_priority = modmash.events.medium_priority
 local high_priority = modmash.events.high_priority
+
+local is_map_editor = false
 
 --[[standardized script controls]]
 
@@ -95,6 +102,11 @@ modmash.register_script = function(script)
 		log("Registering train changed state event")
 		table.insert(modmash.on_train_changed_state,script.on_train_changed_state)
 	end
+	if script.on_entity_cloned ~= nil then 
+		log("Registering on entity cloned event")
+		table.insert(modmash.on_entity_cloned,script.on_entity_cloned)
+	end
+	
 	if script.on_player_cursor_stack_changed~= nil then 
 		log("Registering player stack changed event")
 		table.insert(modmash.on_player_cursor_stack_changed,script.on_player_cursor_stack_changed)
@@ -111,6 +123,11 @@ modmash.register_script = function(script)
 		log("Registering damage event")
 		table.insert(modmash.on_damage,script.on_damage)
 	end	
+	if script.on_trigger_created_entity ~= nil then 
+		log("Registering trigger entity created event")
+		table.insert(modmash.on_trigger_created_entity,script.on_trigger_created_entity)
+	end	
+	
 	if script.on_pick_up ~= nil then 
 		log("Registering pick up event")
 		table.insert(modmash.on_pick_up,script.on_pick_up)
@@ -143,6 +160,11 @@ modmash.register_script = function(script)
 		log("Registering rotated entity event")
 		table.insert(modmash.on_player_rotated_entity,script.on_player_rotated_entity)
 	end
+	if script.on_ai_command_completed ~= nil then 
+		log("Registering ai command completed event")
+		table.insert(modmash.on_ai_command_completed,script.on_ai_command_completed)
+	end
+	
 	if script.on_tick ~= nil then 
 		if type(script.on_tick)=="table" and type(script.on_tick.tick) == "function" then
 			log("Registering advanced tick event")
@@ -247,7 +269,7 @@ script.on_load(function()
 	for k=1, #modmash.on_load do local v = modmash.on_load[k]		
 		v()
 	end 
-	end)
+	end)	
 
 script.on_configuration_changed(function(f) 
 	if f.mod_changes["modmash"] == nil or f.mod_changes["modmash"].old_version == nil then
@@ -296,8 +318,10 @@ require("prototypes.scripts.pollution")
 require("prototypes.scripts.biter-spawner")
 require("prototypes.scripts.new-game")
 require("prototypes.scripts.subspace-transport")
+require("prototypes.scripts.valkyrie")
 
 local local_on_standard_entity_event = function(entity, table, table_by_name)	
+	if is_map_editor == true then return end
 	if is_valid(entity) then			
 		for k=1, #table do local v = table[k]		
 			v(entity)
@@ -311,8 +335,15 @@ local local_on_standard_entity_event = function(entity, table, table_by_name)
 			end
 		end
 	end end
+
+local local_on_entity_cloned = function (event)
+	for k=1, #modmash.on_entity_cloned do local v = modmash.on_entity_cloned[k]		
+		v(event)
+	end 
+end
+
 --[[done]]
-local local_on_added = function(event)
+local local_on_added = function(event)	
 	local_on_standard_entity_event(event.created_entity,modmash.on_added,modmash.on_added_by_name)
 	end
 --[[done]]
@@ -329,6 +360,7 @@ local local_on_damage = function(event)
 	end
 --[[done]]
 local local_item_pick_up = function(event)
+	if is_map_editor == true then return end
 	local stack = event.item_stack
 	if stack ~= nil then				
 		for k=1, #modmash.on_pick_up do local v = modmash.on_pick_up[k]		
@@ -350,6 +382,7 @@ local local_on_research = function(event)
 	end
 --[[done]]
 local local_on_chunk_charted = function(event)
+	if is_map_editor == true then return end
 	for k=1, #modmash.on_chunk_charted do local v = modmash.on_chunk_charted[k]
 		v(event)
 	end 
@@ -362,6 +395,7 @@ local local_on_gui_click = function(event)
 	end
 --[[done]]
 local local_on_player_spawned = function(event)
+	if is_map_editor == true then return end
 	for k=1, #modmash.on_player_spawned do local v = modmash.on_player_spawned[k]
 		v(event)
 	end 
@@ -405,7 +439,12 @@ local local_on_post_entity_died = function(event)
 		v(event)
 	end 
 	end
-	
+
+local local_on_ai_command_completed	= function(event)
+	for k=1, #modmash.on_ai_command_completed do local v = modmash.on_ai_command_completed[k]
+		v(event)
+	end
+end
 
 --[[done]]
 local local_on_selected = function(event)
@@ -436,6 +475,15 @@ local local_on_train_changed_state = function(event)
 		v(event)
 	end	
 	end
+
+
+local local_on_trigger_created_entity = function(event)					
+	local entity = event.entity	
+	if entity ~= nil then	
+		for k=1, #modmash.on_trigger_created_entity do local v = modmash.on_trigger_created_entity[k]		
+			v(event)
+		end
+	end end
 	
 --[[done]]
 local local_on_player_rotated_entity = function(event)
@@ -449,6 +497,11 @@ local local_on_adjust = function(event)
 	local_on_standard_entity_event(entity,modmash.on_adjust,modmash.on_adjust_by_name)
 	end
 
+script.on_event(defines.events.on_player_toggled_map_editor,function(event)
+	if is_map_editor == true then is_map_editor = false
+	else is_map_editor = true end
+	end)
+
 
 script.on_event({on_player_joined_game,defines.events.on_player_created},local_on_player_spawned)
 script.on_event(build_events, local_on_added)
@@ -461,6 +514,8 @@ script.on_event(defines.events.on_entity_spawned, local_on_spawned)
 script.on_event(defines.events.on_chunk_charted,local_on_chunk_charted)
 script.on_event(defines.events.on_train_changed_state,local_on_train_changed_state)
 script.on_event(defines.events.on_tick, local_on_tick)
+script.on_event(defines.events.on_ai_command_completed, local_on_ai_command_completed)
+script.on_event(defines.events.on_trigger_created_entity, local_on_trigger_created_entity)
 
 script.on_nth_tick(low_priority, local_on_tick_low)
 script.on_nth_tick(medium_priority, local_on_tick_med)
@@ -471,3 +526,5 @@ script.on_event(defines.events.on_selected_entity_changed,local_on_selected)
 script.on_event(defines.events.on_post_entity_died,local_on_post_entity_died)
 script.on_event(defines.events.on_player_rotated_entity,local_on_player_rotated_entity) 
 script.on_event("automate-target",local_on_adjust)
+
+script.on_event(defines.events.on_entity_cloned,local_on_entity_cloned) 

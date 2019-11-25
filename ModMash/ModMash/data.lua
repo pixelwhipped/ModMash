@@ -22,6 +22,7 @@ require("prototypes.item.juice")
 require("prototypes.item.droid")
 require("prototypes.item.steam-engine-mk2")
 require("prototypes.item.super-material")
+require("prototypes.item.valkyrie")
 
 require("prototypes.recipe.enrichment")
 require("prototypes.recipe.assembling-machine-4")
@@ -37,6 +38,7 @@ require("prototypes.recipe.fluids")
 require("prototypes.recipe.juice")
 require("prototypes.recipe.droid")
 require("prototypes.recipe.steam-engine-mk2")
+require("prototypes.recipe.valkyrie")
 
 require("prototypes.technology.regenerative")
 require("prototypes.technology.logistics")
@@ -53,6 +55,7 @@ require("prototypes.entity.pipes")
 require("prototypes.entity.droid")
 require("prototypes.entity.biter-neuro-toxin")
 require("prototypes.entity.steam-engine-mk2")
+require("prototypes.entity.valkyrie")
 
 require("prototypes.technology.enrichment")
 require("prototypes.technology.inserters")
@@ -67,6 +70,7 @@ require("prototypes.technology.regenerative-wall")
 require("prototypes.technology.titanium-wall")
 require("prototypes.technology.pipes")
 require("prototypes.technology.droid")
+require("prototypes.technology.valkyrie")
 
 data:extend({
   {
