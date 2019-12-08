@@ -26,6 +26,30 @@
       time = 30
     },
     order = "e-p-b-a"
+  },  
+  {
+	type = "technology",
+	name = "valkyries-network",
+	icon = "__base__/graphics/technology/combat-robotics.png",
+	icon_size = 128,
+	effects =
+	{
+	},
+	prerequisites =
+	{
+		"valkyrie-robot"
+	},
+	unit =
+	{
+		count = 200,
+		ingredients =
+		{
+			{"military-science-pack", 1}	
+		},
+		time = 45
+	},
+	upgrade = true,
+	order = "a-b-d",
   },
   {
 	type = "technology",

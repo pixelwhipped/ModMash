@@ -56,6 +56,7 @@ require("prototypes.entity.droid")
 require("prototypes.entity.biter-neuro-toxin")
 require("prototypes.entity.steam-engine-mk2")
 require("prototypes.entity.valkyrie")
+require("prototypes.entity.ore-refinery")
 
 require("prototypes.technology.enrichment")
 require("prototypes.technology.inserters")

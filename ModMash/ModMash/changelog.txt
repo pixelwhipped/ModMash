@@ -1,4 +1,19 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.17.85
+  Changes:
+    - Valkyries can now be deployed from connected roboports
+	- Added ore refinery
+---------------------------------------------------------------------------------------------------
+Version: 0.17.84
+  Bug fix:
+    - Restricted active Valkyries active targets
+
+---------------------------------------------------------------------------------------------------
+Version: 0.17.83
+  Bug fix:
+    - Quick patch Valkyries return to base issue
+
+---------------------------------------------------------------------------------------------------
 Version: 0.17.82
   Bug fix:
     - Valkyries can now return to players

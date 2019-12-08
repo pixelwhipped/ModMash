@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>C:\Users\TarrantFamily\AppData\Roaming\Factorio\mods\modmash_0.17.82\</OutputPath>
+    <OutputPath>C:\Users\TarrantFamily\AppData\Roaming\Factorio\mods\modmash_0.17.85\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -780,6 +780,9 @@
     <None Update="graphics\icons\ooze-juice.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="graphics\icons\ore-refinery.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="graphics\icons\petroleum-gas-from-solid-fuel.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -1126,6 +1129,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="prototypes\entity\logistics.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="prototypes\entity\ore-refinery.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="prototypes\entity\pipes.lua">

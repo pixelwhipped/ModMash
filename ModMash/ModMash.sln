@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AAASolutions", "AAASolution
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZZZSolutions", "ZZZSolutions\ZZZSolutions.csproj", "{DB57FD66-7327-4E46-A5E8-D2FA3F969570}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spaghetti", "Spaghetti\Spaghetti.csproj", "{C9B3A206-0FCB-4A92-85AD-88173A7144F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spaghetti", "Spaghetti\Spaghetti.csproj", "{C9B3A206-0FCB-4A92-85AD-88173A7144F2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1370,6 +1370,161 @@ local check_duplicate_tech = function()
 		data.raw.technology[name].prerequisites = check_prerequisites(tech.prerequisites, name)
 	end
 end
+
+
+local local_ensure_ingredient_format = function(product)
+	local type = nil
+	local name = nil
+	local amount = nil
+	if product == nil then return nil end
+	if product.type == nil then
+		type = "item" 
+	else 
+		type = product.type
+	end
+	if product.name == nil then
+		name = product[1] 
+	else 
+		name = product.name
+	end
+	if product.amount == nil then
+		amount = product[2]
+	else 
+		amount = product.amount
+	end
+	if amount == nil then amount = 1 end
+	if type ~= nil and name ~= nil then return {type=type, name=name, amount=amount} end
+	return nil
+end
+
+local local_get_standard_results = function(recipe)
+	if recipe == nil then return nil end
+	local result_count = 1
+	if recipe.results == nil then		
+		if recipe.result ~= nil then
+			result_count = recipe.result_count or 1
+			if type(recipe.result) == "string" then
+				return {{type = "item", name = recipe.result, amount = result_count}}
+			elseif recipe.result.name then
+				return {recipe.result}
+			elseif recipe.result[1] then
+				result_count = recipe.result[2] or result_count
+				return {{type = "item", name = recipe.result[1], amount = result_count}}
+			end	
+		end
+	end
+	return recipe.results
+end
+
+local local_get_normal_results = function(recipe)
+	if recipe == nil then return nil end
+	local result_count = 1		
+	if recipe.normal ~= nil and type(recipe.normal) == "table" and recipe.normal.result ~= nil then
+		result_count = recipe.normal.result_count or 1
+		if type(recipe.normal.result) == "string" then
+			return {{type = "item", name = recipe.normal.result, amount = result_count}}
+		elseif recipe.normal.result.name then
+			return {recipe.result}
+		elseif recipe.normal.result[1] then
+			result_count = recipe.normal.result[2] or result_count
+			return {{type = "item", name = recipe.normal.result[1], amount = result_count}}
+		end		
+	end
+	return recipe.results
+end
+
+
+local local_create_ore_refinements = function()
+	for name, recipe in pairs(data.raw.recipe) do
+		if recipe ~= nil and recipe.name ~= nil and recipe.category=="smelting" then
+			local sr = local_get_standard_results(recipe)
+			local nr = local_get_normal_results(recipe)
+			local s = nil
+			local n = nil
+			if sr~=nil and #sr==1 then s = sr[1] end
+			if nr~=nil and #nr==1 then n = nr[1] end
+			local make = nil
+			if s ~= nil and s.name ~= nil and ends_with(s.name,"plate") then
+				if #recipe.ingredients == 1 then
+					make = 
+					{
+						results = s,
+						ingredients = local_ensure_ingredient_format(recipe.ingredients[1])
+					}
+				end
+			elseif n ~= nil and n.name ~= nil and ends_with(n.name,"plate") then
+				if #recipe.normal.ingredients == 1 then	
+					make = 
+					{
+						results = n,
+						ingredients = local_ensure_ingredient_format(recipe.normal.ingredients[1])
+					}
+				end
+			end
+
+			if make ~= nil then
+				if make.ingredients ~=nil and ends_with(make.ingredients.name,"ore") then
+					local i = local_get_item(make.ingredients.name)
+					if i ~= nil and type(i.icon) == "string" then
+						local m = data.raw["item"][make.ingredients.name].stack_size
+						if m == nil then m = 50 end
+						local ore_name = i.name.."-refined"
+						local item = 
+						{
+						    type = "item",
+							name = ore_name,
+							localised_name = get_name_for(i,"Refined "),
+							localised_description = get_name_for(i,"Refined "),
+							icon = false,
+							icons = {
+								{
+									icon = i.icon,
+									icon_size = i.icon_size,
+								},
+								{
+									icon = i.icon,
+									icon_size = i.icon_size,
+									tint = {r=0.0,g=0.0,b=0.0,a=0.25}
+								}
+							},
+							subgroup = "raw-resource",
+							order = "z["..ore_name.."]",
+							stack_size = m
+						}
+						local refine_recipie = 
+						{
+							type = "recipe",
+							name = ore_name,
+							category = "ore-refining",
+							normal =
+							{
+								enabled = true,
+								energy_required = 2,
+								ingredients = {{i.name, 1}},
+								result = ore_name
+							}
+						}
+						local refine_result_recipie = 
+						{
+							type = "recipe",
+							name = ore_name.."_to_plate",
+							category = "smelting",
+							normal =
+							{
+								enabled = true,
+								energy_required = 4.8,
+								ingredients = {{ore_name, 1}},
+								results = { {name = make.results.name, amount = make.results.amount * 2 }}
+							}							
+						}
+						data:extend({item,refine_recipie,refine_result_recipie})
+					end
+				end
+			end
+		end
+	end
+end
+
 if data ~= nil and data_final_fixes == true then
     local_set_types_biome() --Dexy Edit
     local_set_types_non_pollutant() --Dexy Edit
@@ -1382,6 +1537,7 @@ if data ~= nil and data_final_fixes == true then
 	local_create_subspace_transport()
 	add_missing_materials_to_stone_and_uranium()
 	add_missing_ooze()
+	local_create_ore_refinements()
 
 	local loot_science_a = table.deepcopy(data.raw["simple-entity"]["crash-site-lab-broken"])
 	loot_science_a.name = "loot_science_a"
