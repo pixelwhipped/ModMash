@@ -89,5 +89,12 @@
 		default_value = "Normal",
 		allowed_values = {"Normal", "Hard"},
 		order = "j"
-	}
+	},{
+		type = "string-setting",
+		name = "modmash-check-pollution",
+		setting_type = "startup",
+		default_value = "Enabled",
+		allowed_values = {"Enabled", "Disabled"},
+		order = "k"
+	},
 })

@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>C:\Users\TarrantFamily\AppData\Roaming\Factorio\mods\modmash_0.17.85\</OutputPath>
+    <OutputPath>C:\Users\TarrantFamily\AppData\Roaming\Factorio\mods\modmash_0.17.90\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,6 +30,12 @@
     <None Update="graphics\blank64.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="graphics\entity\assembling-machine-0\assembling-machine-0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\entity\assembling-machine-0\hr-assembling-machine-0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="graphics\entity\assembling-machine-4\assembling-machine-4.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -49,6 +55,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="graphics\entity\discharge-pump\discharge-pump.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\entity\dredge-pump\dredge-pump.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="graphics\entity\droid\droid-chest-storage-s.png">
@@ -699,6 +708,9 @@
     <None Update="graphics\icons\discharge-pump.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="graphics\icons\dredge-pump.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="graphics\icons\droid-chest.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -813,6 +825,9 @@
     <None Update="graphics\icons\sludge-purification.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="graphics\icons\sludge-to-stone.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="graphics\icons\sludge.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -868,6 +883,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="graphics\icons\wind-trap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\item-group\refining.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="graphics\item-group\containment.png">
@@ -1119,10 +1137,16 @@
     <None Update="prototypes\entity\assembling-machine-5.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="prototypes\entity\assembling-machine-burner.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="prototypes\entity\biter-neuro-toxin.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="prototypes\entity\discharge-pump.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="prototypes\entity\dredge-pump.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="prototypes\entity\droid.lua">
@@ -1374,6 +1398,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="graphics\entity\assembling-machine-0\" />
+    <Folder Include="graphics\entity\dredge-pump\" />
     <Folder Include="graphics\entity\subspace-transport\" />
   </ItemGroup>
 

@@ -1,8 +1,32 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.17.90
+  Changes:
+    - updated welcome message
+---------------------------------------------------------------------------------------------------
+Version: 0.17.89
+  Changes:
+    - tweaked refined ore recipes to use original energy required * 1.2
+    - Reduced damage of Alien Ammo and made recipie slightly harder
+  Bug fix:
+    - Fishing was working prior to research. (Still pick up fish but do not return or hunt)
+---------------------------------------------------------------------------------------------------
+Version: 0.17.88
+  Changes:
+    - Added setting for enviromental de-evolution previously always on
+    - added dredge pump
+---------------------------------------------------------------------------------------------------
+Version: 0.17.87
+  Changes:
+    - Added cooldown period for driods unable to perform tasks.
+---------------------------------------------------------------------------------------------------
+Version: 0.17.86
+  Changes:
+    - Added Burner assmbling machine for to make glass a bit easier
+---------------------------------------------------------------------------------------------------
 Version: 0.17.85
   Changes:
     - Valkyries can now be deployed from connected roboports
-	- Added ore refinery
+    - Added ore refinery
 ---------------------------------------------------------------------------------------------------
 Version: 0.17.84
   Bug fix:

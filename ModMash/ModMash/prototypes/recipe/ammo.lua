@@ -20,7 +20,7 @@
     ingredients =
     {
       {"firearm-magazine", 1},      
-      {"alien-plate", 5}
+      {"alien-plate", 6}
     },
     result = "alien-rounds-magazine"
   },

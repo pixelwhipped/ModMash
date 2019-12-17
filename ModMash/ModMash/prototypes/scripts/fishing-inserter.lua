@@ -21,8 +21,8 @@ local get_entities_around  = modmash.util.get_entities_around
 
 local local_init = function()	
 	if global.modmash.fishing == nil then global.modmash.fishing = {} end	
-	if global.modmash.fishing.fishing_inserters == nil then global.modmash.fishing .fishing_inserters = {} end	
-	if global.modmash.fishing.fishing_transferers == nil then global.modmash.fishing .fishing_transferers = {} end		
+	if global.modmash.fishing.fishing_inserters == nil then global.modmash.fishing.fishing_inserters = {} end	
+	if global.modmash.fishing.fishing_transferers == nil then global.modmash.fishing.fishing_transferers = {} end		
 	fishing = global.modmash.fishing
 	end
 
@@ -102,20 +102,21 @@ local local_fishing_inserter_process = function(entity)
 		end
 	end end
 
-local local_fishing_inserter_tick = function()
-	--if true then return end
-	local fishing_inserters = fishing.fishing_inserters	
-	for index=1, #fishing.fishing_inserters do local fishing_inserter = fishing.fishing_inserters[index]
-		if fishing_inserter.valid and fishing_inserter.energy ~= 0 then
-			if not fishing_inserter.to_be_deconstructed(fishing_inserter.force) then					
-				local_fishing_inserter_process(fishing_inserter)				
+local local_fishing_inserter_tick = function()	
+	if fishing.allow_fishing  == true then 		
+		local fishing_inserters = fishing.fishing_inserters	
+		for index=1, #fishing.fishing_inserters do local fishing_inserter = fishing.fishing_inserters[index]
+			if fishing_inserter.valid and fishing_inserter.energy ~= 0 then
+				if not fishing_inserter.to_be_deconstructed(fishing_inserter.force) then					
+					local_fishing_inserter_process(fishing_inserter)				
+				end
 			end
-		end
-	end 
-	for index=1, #fishing.fishing_transferers do local fishing_transferer = fishing.fishing_transferers[index]
-		if fishing_transferer.valid and fishing_transferer.energy ~= 0 then
-			if not fishing_transferer.to_be_deconstructed(fishing_transferer.force) then					
-				local_fishing_transferer_process(fishing_transferer)				
+		end 
+		for index=1, #fishing.fishing_transferers do local fishing_transferer = fishing.fishing_transferers[index]
+			if fishing_transferer.valid and fishing_transferer.energy ~= 0 then
+				if not fishing_transferer.to_be_deconstructed(fishing_transferer.force) then					
+					local_fishing_transferer_process(fishing_transferer)				
+				end
 			end
 		end
 	end

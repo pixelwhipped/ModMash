@@ -29,7 +29,7 @@
             },
             {
               type = "damage",
-              damage = { amount = 32, type = "physical"}
+              damage = { amount = 28, type = "physical"}
             }
           }
         }
@@ -69,7 +69,7 @@
             },
             {
               type = "damage",
-              damage = { amount = 48, type = "physical"}
+              damage = { amount = 32, type = "physical"}
             }
           }
         }

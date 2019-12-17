@@ -21,6 +21,7 @@ local local_start = function()
 		local welcome = game.players[1].gui.center.add{ type="frame", name="modmash-show-welcome", direction = "vertical", caption="Welcome to ModMash" }
 		welcome.style.width = 310
 		local string = "ModMash add new or extends recipes and add's many new features. \n\n Quick Tip(s)\n"
+		string = string .. "Refine raw ore that can be smelted\ninto twice the plates.\n\n"
 		string = string .. "Press ".. settings.startup["modmash-setting-adjust-binding"].value .. " to adjust entites\n"
 		string = string .. "Place inserters by water to start fishing\n"
 		string = string .. "Throw a grenade at some raw resources\n\n"
@@ -30,6 +31,16 @@ local local_start = function()
 		local text = welcome.add{type = "label", caption = string}
 		text.style.width = 300
 		text.style.single_line = false
+	--	local refine = welcome.add{type="flow",direction = "horizontal"}
+	--	refine.style.width = 300
+		--refine.add{
+		 -- type = "button",
+		 -- name = "ore-refinery-button",
+		 -- style = "ore-refinery-image-button-style",
+		 -- state = true
+		--}
+		--refine.add{type="sprite", name="ore-refinery-spr"}
+		--refine.add{type = "label", caption = "Refine raw ore that can be smelted\ninto twice the plates"}
 		local options = welcome.add{type="flow",direction = "horizontal"}
 		options.style.width = 300
 		options.add{type = "button", name="modmash-show-welcome-btn",style = "confirm_button", caption="Ok"}		

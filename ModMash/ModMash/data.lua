@@ -57,6 +57,8 @@ require("prototypes.entity.biter-neuro-toxin")
 require("prototypes.entity.steam-engine-mk2")
 require("prototypes.entity.valkyrie")
 require("prototypes.entity.ore-refinery")
+require("prototypes.entity.assembling-machine-burner")
+require("prototypes.entity.dredge-pump")
 
 require("prototypes.technology.enrichment")
 require("prototypes.technology.inserters")
@@ -77,7 +79,7 @@ data:extend({
   {
     type = "custom-input",
     name = "automate-target",
-    key_sequence = settings.startup["modmash-setting-adjust-binding"].value,
+    key_sequence = "CONTROL + A", --settings.startup["modmash-setting-adjust-binding"].value,
     consuming = "script-only"
   },
 })

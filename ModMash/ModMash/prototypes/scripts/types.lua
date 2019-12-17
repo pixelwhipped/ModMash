@@ -845,7 +845,7 @@ local local_create_recylce_item = function(r)
 		subgroup = "recyclable",
 		enabled = "false",
 		--hidden = true,	    
-		hide_from_player_crafting = true,
+		hide_from_player_crafting = true,		
 		energy_required = r.energy_required,
 		icon_size = item.icon_size,
 		-- ingredients = {{name = results[1].name, amount = math.max(results[1].amount,1)}},--{type="fluid",name = "steam",amount = 50}}, -- results --Dexy Edit
@@ -1449,6 +1449,7 @@ local local_create_ore_refinements = function()
 					make = 
 					{
 						results = s,
+						energy_required  = recipe.energy_required,
 						ingredients = local_ensure_ingredient_format(recipe.ingredients[1])
 					}
 				end
@@ -1457,6 +1458,7 @@ local local_create_ore_refinements = function()
 					make = 
 					{
 						results = n,
+						energy_required  = recipe.normal.energy_required,
 						ingredients = local_ensure_ingredient_format(recipe.normal.ingredients[1])
 					}
 				end
@@ -1475,6 +1477,7 @@ local local_create_ore_refinements = function()
 							name = ore_name,
 							localised_name = get_name_for(i,"Refined "),
 							localised_description = get_name_for(i,"Refined "),
+							hide_from_player_crafting = true,
 							icon = false,
 							icons = {
 								{
@@ -1496,8 +1499,13 @@ local local_create_ore_refinements = function()
 							type = "recipe",
 							name = ore_name,
 							category = "ore-refining",
+							subgroup = "refine",
 							normal =
 							{
+								hide_from_player_crafting = true,
+								allow_as_intermediate = false,
+								allow_intermediates = false,
+								hidden_from_char_screen = true,
 								enabled = true,
 								energy_required = 2,
 								ingredients = {{i.name, 1}},
@@ -1509,10 +1517,15 @@ local local_create_ore_refinements = function()
 							type = "recipe",
 							name = ore_name.."_to_plate",
 							category = "smelting",
+							subgroup = "refine",
 							normal =
 							{
+								hide_from_player_crafting = true,
+								allow_as_intermediate = false,
+								allow_intermediates = false,
+								hidden_from_char_screen = true,
 								enabled = true,
-								energy_required = 4.8,
+								energy_required = make.energy_required * 1.2,
 								ingredients = {{ore_name, 1}},
 								results = { {name = make.results.name, amount = make.results.amount * 2 }}
 							}							

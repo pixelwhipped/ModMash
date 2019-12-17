@@ -1,5 +1,14 @@
 ﻿data:extend(
 {
+    -- sprites
+    {
+        type = "sprite",
+        name = "ore-refinery-spr",
+        filename = "__modmash__/graphics/icons/ore-refinery.png",
+        width = 32,
+        height = 32,
+		scale = 1
+    },
 	{
 		type = "recipe-category",
 		name = "ore-refining",		
@@ -174,3 +183,44 @@
 	},
 }
 )
+
+data.raw["gui-style"].default["ore-refinery-image-button-style"] = {
+	type = "button_style",
+	parent = "button",
+	font = "default",
+	align = "left",
+	top_padding = 0,
+	bottom_padding = 0,
+	left_padding = 0,
+	right_padding = 0,
+	width = 34,
+	height = 34,
+	default_graphical_set = {
+		type = "composition",
+		filename = "__modmash__/graphics/icons/ore-refinery.png",
+		priority = "extra-high-no-scale",
+		corner_size = 1,
+		position = {0, 0}
+	},
+	hovered_graphical_set = {
+		type = "composition",
+		filename = "__modmash__/graphics/icons/ore-refinery.png",
+		priority = "extra-high-no-scale",
+		corner_size = 1,
+		position = {0, 0}
+	},
+	clicked_graphical_set = {
+		type = "composition",
+		filename = "__modmash__/graphics/icons/ore-refinery.png",
+		priority = "extra-high-no-scale",
+		corner_size = 1,
+		position = {0, 0}
+	},
+	disabled_graphical_set = {
+		type = "composition",
+		filename = "__modmash__/graphics/icons/ore-refinery.png",
+		priority = "extra-high-no-scale",
+		corner_size = 1,
+		position = {0, 0}
+	}
+}

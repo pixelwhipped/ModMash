@@ -140,6 +140,7 @@ local local_clear_droid_command = function(droid)
 	droid.target = nil
 	droid.command = no_command
 	local_refresh_sticker(droid)	
+	droid.cooldown = game.tick + 120
 	end
 
 local local_set_mode = function(droid, mode)	
@@ -774,44 +775,67 @@ local local_droid_process_build_destroy_command = function(droid)
 	end
 end
 
+local nc = 0
+local gsc = 0
+local dsc = 0
+local bc = 0
+local dc = 0
+local cc = 0
+
 local local_droid_process_build = function(droid) 
 	local rad = (droid_scan_radius + droids.research_modifier)
-	if droid.stack == nil then droid.stack = {name = nil, count = 0} end	
-	if droid.command == no_command then				
-		local_droid_process_build_no_command(droid)
+	if droid.stack == nil then droid.stack = {name = nil, count = 0} end		
+	if droid.command == no_command then			
+		--if droid.cooldown == nil then
+			local_droid_process_build_no_command(droid)
+			nc = nc + 1
+			droid.cooldown = game.tick + (60 * 3)
+		--elseif droid.cooldown < game.tick then
+		--	droid.cooldown = nil
+		--end
 	elseif droid.command == get_stock_command then		
 		local_droid_process_build_get_stock_command(droid)
+		gsc = gsc + 1
 	elseif droid.command == drop_stock_command then
 		local_droid_process_build_drop_stock_command(droid)
+		dsc = dsc + 1
 	elseif droid.command == build_command then
 		local_droid_process_build_build_command(droid)
+		bc = bc + 1
 	elseif droid.command == destroy_command then
 		local_droid_process_build_destroy_command(droid)
+		dc = dc + 1
 	else
 		local_clear_droid_command(droid)
+		cc = cc + 1
 	end
+	--modmash.util.print(nc .."|"..gsc.."|"..dsc.."|"..bc.."|"..dc.."|"..cc)
 end
 
 local local_droid_process_collection = function(droid) 
-	local rad = (droid_scan_radius + droids.research_modifier)
+	if droid.cooldown == nil then
+		local rad = (droid_scan_radius + droids.research_modifier)
 
-	if droid.command == no_command then		
-		if droid.stack.count < droid_stack_size then
-			local_droid_select_pickup(droid)
-		else
-			local_droid_select_dropoff(droid)
-		end
-	elseif droid.goto_pos ~= nil and is_valid(droid.target) then		
-		if (distance(droid.goto_pos.x,droid.goto_pos.y,droid.entity.position.x,droid.entity.position.y)<beam_dist) then
-			if droid.target.name == "droid-chest" or local_is_player(droid.target) then				
-				local_dropoff(droid)
+		if droid.command == no_command then		
+			if droid.stack.count < droid_stack_size then
+				local_droid_select_pickup(droid)
 			else
-				local_pickup(droid)
+				local_droid_select_dropoff(droid)
 			end
+		elseif droid.goto_pos ~= nil and is_valid(droid.target) then		
+			if (distance(droid.goto_pos.x,droid.goto_pos.y,droid.entity.position.x,droid.entity.position.y)<beam_dist) then
+				if droid.target.name == "droid-chest" or local_is_player(droid.target) then				
+					local_dropoff(droid)
+				else
+					local_pickup(droid)
+				end
+				local_clear_droid_command(droid)
+			end
+		else
 			local_clear_droid_command(droid)
-		end
-	else
-		local_clear_droid_command(droid)
+		end		
+	elseif droid.cooldown < game.tick then
+		droid.cooldown = nil
 	end
 end
 
@@ -951,17 +975,21 @@ local local_droid_tick = function()
 	for k=index, #all_droids do local droid = all_droids[k];					
 		if droid.entity.valid and not droid.entity.to_be_deconstructed(droid.entity.force) then		
 			--if droid.entity.has_command() and droid.target ~= nil then local_clear_droid_command(droid) end
-			if droid.stack == nil then droid.stack = {name = nil, count = 0} end
-			if droid.mode == collection_mode then
-				local_droid_process_collection(droid)
-			elseif droid.mode == scout_mode then				
-				local_droid_process_scout(droid)
-			elseif droid.mode == attack_mode then	
-				local_droid_process_attack(droid)
-			elseif droid.mode == repair_mode then	
-				local_droid_process_repair(droid)
-			elseif droid.mode == build_mode then	
-				local_droid_process_build(droid)
+			if droid.cooldown == nil then
+				if droid.stack == nil then droid.stack = {name = nil, count = 0} end
+				if droid.mode == collection_mode then
+					local_droid_process_collection(droid)
+				elseif droid.mode == scout_mode then				
+					local_droid_process_scout(droid)
+				elseif droid.mode == attack_mode then	
+					local_droid_process_attack(droid)
+				elseif droid.mode == repair_mode then	
+					local_droid_process_repair(droid)
+				elseif droid.mode == build_mode then	
+					local_droid_process_build(droid)
+				end
+			elseif droid.cooldown < game.tick then
+				droid.cooldown = nil
 			end
 		end
 		if k >= #all_droids then k = 1 end

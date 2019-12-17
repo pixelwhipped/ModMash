@@ -33,7 +33,7 @@ local local_load = function()
 	end
 
 local local_check_pollution = function()
-	--if true then return end
+	if settings.startup["modmash-check-pollution"].value ~= "Enabled" then return end
 	if game.forces["enemy"].evolution_factor < pollution_min_evolution_factor then return end	
 	if global.modmash.pollution == nil then global.modmash.pollution = {} end
 	if global.modmash.pollution.check_chunks == nil then global.modmash.pollution.check_chunks = {} end

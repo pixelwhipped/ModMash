@@ -34,5 +34,22 @@
     group = "containment",
     order = "a",
   },
+  {
+    type = "item-group",
+    hidden = true,
+	name = "refining",
+	--localised_name = "Containment",
+    icon = "__modmash__/graphics/item-group/refining.png",
+    icon_size = 64,
+    order = "zz",
+    inventory_order = "zz",
+  },
+  {
+    type = "item-subgroup",
+	--localised_name = "Containment",
+    name = "refine",
+    group = "refining",
+    order = "zz",
+  },
 }
 )
