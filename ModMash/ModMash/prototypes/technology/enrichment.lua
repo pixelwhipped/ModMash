@@ -121,6 +121,18 @@
       {
         type = "unlock-recipe",
         recipe = "titanium-extraction-process"
+      },
+      {
+        type = "unlock-recipe",
+        recipe = "fish-conversion"
+      },
+      {
+        type = "unlock-recipe",
+        recipe = "fish-conversion-light-oil"
+      },
+      {
+        type = "unlock-recipe",
+        recipe = "fish-conversion-lubricant"
       }
     },
     prerequisites =

@@ -538,6 +538,17 @@ local local_get_entities_to = function(direction, entity, type)
 	return {} 
 end
 
+local local_get_entities_to_excluding = function(direction, entity, type)
+	local entities = local_get_entities_to(direction, entity, type)
+	local ret = {}
+	for index=1, #entities do
+		local e = entities[index]
+		if e ~= entity then 
+			table.insert(ret,e)
+		end
+	end
+	return ret
+end
 local local_get_entity_size = function(entity)
 	if entity == nil then return {1,1} end
 	if entity.prototype.selection_box ~= nil then				
@@ -757,3 +768,4 @@ modmash.util.get_entities_to_southeast = local_get_entities_to_southeast
 modmash.util.get_entities_to_southwest = local_get_entities_to_southwest
 modmash.util.get_entities_around = local_get_entities_around
 modmash.util.get_entity_size = local_get_entity_size
+modmash.util.get_entities_to_excluding = local_get_entities_to_excluding

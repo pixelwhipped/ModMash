@@ -9,7 +9,8 @@
 		energy_required = 1.5,
 		enabled = false,
 		category = "chemistry",
-		ingredients = {{type="fluid", name="sludge", amount=15},{type="fluid", name="steam", amount=50}},
+		--ingredients = {{type="fluid", name="sludge", amount=15},{type="fluid", name="steam", amount=50}},
+		ingredients = {{type="fluid", name="sludge", amount=50}},
 		icon = "__modmash__/graphics/icons/sludge-purification.png",
 		icon_size = 32,
 		subgroup = "intermediate-product",
@@ -20,7 +21,7 @@
 			{
 				type = "fluid",
 				name = "water",
-				amount = 10,
+				amount = 50,
 			}			
 		},
 		crafting_machine_tint =

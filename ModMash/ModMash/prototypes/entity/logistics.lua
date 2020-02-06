@@ -60,7 +60,7 @@ local local_create_belt_animation_set = function(name)
 local local_create_mini_loader = function(name,max_health,filter_count,localised_name,localised_description,speed,belt_animation_set,order,ingredients,technology,next_upgrade,category)
 	local icon = "__modmash__/graphics/icons/" .. name .. "-structure.png"
 	local entity = {
-		type = "loader",
+		type = "loader-1x1",
 		name = name,
 		localised_name = localised_name,
 		localised_description = localised_description,
@@ -82,11 +82,14 @@ local local_create_mini_loader = function(name,max_health,filter_count,localised
 		selection_box = {{-0.75, -0.75}, {0.75, 0.75}},
 		animation_speed_coefficient = 32,
 		belt_animation_set = belt_animation_set,
-		fast_replaceable_group = "loader",
+		fast_replaceable_group = "transport-belt",
 		speed = speed,
-		belt_distance = 0,
-	    container_distance = 0.75,
-		belt_length = 0.5,
+		belt_distance = 0.1,
+	    --container_distance = 0.75,
+		container_distance = 1,
+		--belt_length = 0.1,
+		--belt_length = 0.5,
+		structure_render_layer = "lower-object",
 		structure =
 		{
 		  direction_in =
@@ -120,11 +123,12 @@ local local_create_mini_loader = function(name,max_health,filter_count,localised
 			  width    = 53,
 			  height   = 43,
 			  shift = {0.15625, 0.0703125},
+			  priority = "extra-high",
 			  hr_version =
 				{
 				  filename = "__modmash__/graphics/entity/loader/hr-" .. name .. "-structure.png",
 				  priority = "extra-high",
-				  shift = {0.15625, 0.0703125},
+				  shift = {0.15625, 0.0703125},				  
 				  width = 106,
 				  height = 85,
 				  scale = 0.5
@@ -186,6 +190,7 @@ local local_create_loader = function(name,max_health,filter_count,localised_name
 		belt_animation_set = belt_animation_set,
 		fast_replaceable_group = "loader",
 		speed = speed,
+		structure_render_layer = "lower-object",
 		structure =
 		{
 		  direction_in =
@@ -196,6 +201,7 @@ local local_create_loader = function(name,max_health,filter_count,localised_name
 				width    = 96,
 				height   = 64,
 				y        = 0,
+				priority = "extra-high",
 				hr_version = 
 				{
 					filename = "__modmash__/graphics/entity/loader/hr-" .. name .. "-structure.png",
@@ -211,6 +217,7 @@ local local_create_loader = function(name,max_health,filter_count,localised_name
 				width    = 96,
 				height   = 64,
 				y        = 0,
+				priority = "extra-high",
 				hr_version = 
 				{
 					filename = "__modmash__/graphics/entity/loader/hr-" .. name .. "-structure.png",
@@ -231,6 +238,7 @@ local local_create_loader = function(name,max_health,filter_count,localised_name
 				width    = 96,
 				height   = 64,
 				y        = 64,
+				priority = "extra-high",
 				hr_version = 
 				{
 					filename = "__modmash__/graphics/entity/loader/hr-" .. name .. "-structure.png",
@@ -246,6 +254,7 @@ local local_create_loader = function(name,max_health,filter_count,localised_name
 				width    = 96,
 				height   = 64,
 				y        = 64,
+				priority = "extra-high",
 				hr_version = 
 				{
 					filename = "__modmash__/graphics/entity/loader/hr-" .. name .. "-structure.png",
@@ -958,9 +967,9 @@ if data_final_fixes then
 	data.raw["splitter"]["express-splitter"].next_upgrade = "high-speed-splitter"
 
 	if settings.startup["modmash-setting-loaders"].value == "Enabled" then 
-		data.raw.loader["mini-loader"].speed = data.raw["transport-belt"]["transport-belt"].speed
-		data.raw.loader["fast-mini-loader"].speed = data.raw["transport-belt"]["fast-transport-belt"].speed
-		data.raw.loader["express-mini-loader"].speed = data.raw["transport-belt"]["express-transport-belt"].speed
+		data.raw["loader-1x1"]["mini-loader"].speed = data.raw["transport-belt"]["transport-belt"].speed
+		data.raw["loader-1x1"]["fast-mini-loader"].speed = data.raw["transport-belt"]["fast-transport-belt"].speed
+		data.raw["loader-1x1"]["express-mini-loader"].speed = data.raw["transport-belt"]["express-transport-belt"].speed
 
 		data.raw.loader["loader"].speed = data.raw["transport-belt"]["transport-belt"].speed
 		data.raw.loader["fast-loader"].speed = data.raw["transport-belt"]["fast-transport-belt"].speed
@@ -973,7 +982,7 @@ if data_final_fixes then
 		end 
 		table.sort(speeds, function(a,b) return a < b end)
 		--log(serpent.block(speeds))
-		if data.raw.loader["regenerative-mini-loader"].speed < speeds[#speeds] then
+		if data.raw["loader-1x1"]["regenerative-mini-loader"].speed < speeds[#speeds] then
 			log("Resetting belt speeds")		
 			local rspeed = speeds[#speeds] * 1.05
 			local items =math.ceil(rspeed*480)
@@ -984,8 +993,8 @@ if data_final_fixes then
 			fspeed = items/480
 			log("high-speed ".. fspeed .. " " .. items.. " base")
 
-			data.raw.loader["regenerative-mini-loader"].speed = rspeed
-			data.raw.loader["high-speed-mini-loader"].speed = fspeed
+			data.raw["loader-1x1"]["regenerative-mini-loader"].speed = rspeed
+			data.raw["loader-1x1"]["high-speed-mini-loader"].speed = fspeed
 
 			data.raw.loader["regenerative-loader"].speed = rspeed			
 			data.raw.loader["high-speed-loader"].speed = fspeed

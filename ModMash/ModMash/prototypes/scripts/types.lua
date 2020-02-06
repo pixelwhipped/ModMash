@@ -116,6 +116,10 @@ local local_create_container = function(item,x)
 	local base_uncontain_icons = nil
 	if item.icon == nil or item.icon == false then
 		base_uncontain_icons = item.icons
+		if not base_uncontain_icons then
+			log("all icon data seems missing for item: " .. item.name)
+			log(serpent.block(item))
+		end
 	else
 		base_uncontain_icons = {
 			{
@@ -124,6 +128,7 @@ local local_create_container = function(item,x)
 			}}		
 	end
 
+	--    local icon_size = item.icon_size or item.icons[1].icon_size or 32 -- OR definitions, try 32 if someone did the wrong thing
 
 	local contain_icons = create_icon(base_contain_icons,item.icon,item.icon_size,item.icons,0.5,{0,2})		
 	local tech_icons = create_icon(base_tech_icons,item.icon,item.icon_size,item.icons,0.5,{24,24})	
@@ -490,7 +495,11 @@ local local_create_super_material_conversions = function()
 	for name,item in pairs(data.raw["resource"]) do			
 		
 		--if item ~= nil and item.name ~= nil and item.icon ~= false and starts_with(item.name,"creative-mod") == false and data.raw["fluid"][item.name] == nil and data.raw["item"][item.name] ~= nil then					
-		if item ~= nil and item.name ~= nil and starts_with(item.name,"creative-mod") == false and data.raw["fluid"][item.name] == nil and data.raw["item"][item.name] ~= nil then					
+		--if item ~= nil and item.name ~= nil and starts_with(item.name,"creative-mod") == false and data.raw["fluid"][item.name] == nil and data.raw["item"][item.name] ~= nil then					
+		if item ~= nil and item.name ~= nil
+				and starts_with(item.name,"creative-mod") == false
+				and data.raw["fluid"][item.name] == nil
+				and ((data.raw["item"][item.name] ~= nil) or (data.raw["tool"][item.name] ~= nil)) then
 			local base_icons = {
 			{
 				icon = "__modmash__/graphics/icons/super-material.png",
@@ -507,7 +516,10 @@ local local_create_super_material_conversions = function()
 			local icons = create_icon(base_icons,item.icon,item.icon_size,item.icons,0.5,{4,4})		
 			local tech_icons = create_icon(base_tech_icons,item.icon,item.icon_size,item.icons,1,{16,16})		
 			local m = data.raw["item"][item.name].stack_size
-			if m == nil then m = 50 end
+			--if m == nil then m = 50 end
+			local m = nil
+			if data.raw["item"][item.name] then m = data.raw["item"][item.name].stack_size
+			elseif data.raw["tool"][item.name] then m = data.raw["tool"][item.name].stack_size end
 			local recipe = {
 				type = "recipe",
 				name = "modmash-supermaterial-to-"..item.name,
@@ -776,7 +788,7 @@ local local_create_recylce_item = function(r)
 		icon_size = item.icon_size,
 		normal = {
 			enabled = "false",
-			hidden = true,
+			--hidden = true,
 			hide_from_player_crafting = true,
 			energy_required = r.normal.energy_required,			
             -- ingredients = {{name = results[1].name, amount = math.max(results[1].amount,1)}},-- {type="fluid",name = "steam",amount = 50}}, Dexy Edit
@@ -801,7 +813,7 @@ local local_create_recylce_item = function(r)
 		name = "craft-" .. results[1].name,
 		category = "recycling",
 		subgroup = "recyclable",		
-		hidden = true,	    
+		--hidden = true,	    
 		icon_size = item.icon_size,
 		normal = {
 			enabled = "false",
@@ -1208,11 +1220,16 @@ local add_missing_materials_to_stone_and_uranium = function()
 	local alien = data.raw["recipe"]["alien-enrichment-process"]
 	local added = {}	
 	for name,item in pairs(data.raw["resource"]) do	
-		if data.raw["fluid"][item.name] == nil then
+		
+		if data.raw["fluid"][item.name] == nil then			
 			if added[item.name] == nil and starts_with(item.name,"creative") == false then 
 				if data.raw["item"][item.name] ~= nil then
-					added[item.name] = item 
-				end
+					if ends_with(item.name,"science-ore") and settings.startup["modmash-allow-science-ores"].value == "Enabled" then
+						added[item.name] = item 
+					else
+						added[item.name] = item 
+					end
+				end				
 			end
 		end
 	end

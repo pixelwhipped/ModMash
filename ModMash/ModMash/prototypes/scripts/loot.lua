@@ -41,8 +41,6 @@ local local_init = function()
 	if global.modmash.loot.chunks == nil then global.modmash.loot.chunks = {} end
 	chunks = global.modmash.loot.chunks
 	end
-
-
 	
 local local_get_stack_restriction = function(item)
 	if item.type == "item-with-entity-data" then return 2 end
@@ -104,6 +102,7 @@ local local_add_tech_loot = function(surface_index, area)
 	end
 
 local local_add_loot = function(surface_index, area )
+	if not loot_table then return end
 	if distance(0,0,area.left_top.x,area.left_top.y) < loot_exclude_distance_from_origin then return end
 	if math.random(1, loot_tech_probability) == 2 then local_add_tech_loot(surface_index, area) end
 	if settings.startup["modmash-setting-item-loot"].value == "Disabled" then return end
@@ -282,7 +281,9 @@ local local_on_selected = function(player,entity)
 	end
 
 local local_on_configuration_changed = function(f)
-	if f.mod_changes["modmash"].old_version < "0.17.61" then	
+	log("loot.local_on_configuration_changed")
+	if f.mod_changes["modmash"].old_version < "0.17.61" or chunks == nil then	
+		if chunks == nil then local_init() end
 		for _, surface in pairs(game.surfaces) do
 			for c in surface.get_chunks() do
 				if #surface.find_entities_filtered{area = c.area, name={"loot_science_a","loot_science_b","crash-site-chest-1","crash-site-chest-2"}} > 0 then

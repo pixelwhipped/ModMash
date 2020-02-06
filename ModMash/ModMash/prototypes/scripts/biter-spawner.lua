@@ -3,6 +3,7 @@ log("biter-spawner.lua")
 --[[check and import utils]]
 if modmash == nil or modmash.util == nil then require("prototypes.scripts.util") end
 if not modmash.defines then require ("prototypes.scripts.defines") end
+local alerts_per_tick = 50
 
 --[[defines]]
 local force_neutral  = modmash.defines.names.force_neutral
@@ -32,11 +33,18 @@ local local_on_post_entity_died = function(event)
 	end
 	end
 
+local index = 1
 local local_tick = function()
 	--if true then return end
+	
+	if not index then index = 1 end
+	local numiter = 0
+	
+
 	local alerts = game.players[1].get_alerts{}
 	if #alerts>0 then
-		for k=1, #alerts do local v = alerts[k] 
+		local updates = math.min(#alerts,alerts_per_tick)
+		for k=index, #alerts do local v = alerts[k] 
 			if v ~= nil then
 				for j=1, #v do local w = v[j] 
 					for l=1, #w do local x = w[l] 
@@ -47,6 +55,12 @@ local local_tick = function()
 						end
 					end
 				end
+			end
+			if k >= #alerts then k = 1 end
+			numiter = numiter + 1
+			if numiter >= updates then 
+				index = k
+				return
 			end
 		end
 	end

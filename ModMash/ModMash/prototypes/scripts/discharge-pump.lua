@@ -12,6 +12,7 @@ local discharge_water_pump  = modmash.defines.names.discharge_water_pump
 --[[create local references]]
 --[[util]]
 local get_entities_to  = modmash.util.get_entities_to
+local get_entities_to_excluding  = modmash.util.get_entities_to_excluding	
 local change_fluidbox_fluid = modmash.util.change_fluidbox_fluid
 local is_valid = modmash.util.is_valid
 local is_valid_and_persistant = modmash.util.is_valid_and_persistant
@@ -35,11 +36,12 @@ local local_discharge_pump_process = function(entity)
 	local connected_pumps = get_entities_to(entity.direction,entity)
 	if #connected_pumps > 0 then	
 		for index=1, #connected_pumps do local connection = connected_pumps[index]
-			change_fluidbox_fluid(connection,entity.prototype.pumping_speed,entity)
+			change_fluidbox_fluid(connection,-10,entity)
+			--change_fluidbox_fluid(connection,entity.prototype.pumping_speed,entity)
 		end
 		local fluid =  entity.fluidbox[1]
 		if fluid ~= nil then
-			fluid.amount = 0
+			fluid.amount = 0.01
 			entity.fluidbox[1] = fluid
 		end
 	end

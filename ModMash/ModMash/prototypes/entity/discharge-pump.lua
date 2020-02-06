@@ -3,6 +3,7 @@
   	{
     type = "offshore-pump",
     name = "mm-discharge-water-pump",
+	--pumping_speed = 10,
 --	localised_name = "Discharge Pump",
 --	localised_description = "Discharges excess fluid.  Will cause pollution depending on fluid type",
     icon = "__modmash__/graphics/icons/discharge-pump.png",
@@ -42,7 +43,7 @@
         }
       }
     },
-    pumping_speed = -20,
+    pumping_speed = 0.001,
     tile_width = 1,
     tile_height = 1,
     vehicle_impact_sound =  { filename = "__base__/sound/car-metal-impact.ogg", volume = 0.65 },

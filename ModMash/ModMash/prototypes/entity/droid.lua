@@ -288,7 +288,21 @@ data:extend(
 			
 		--idle = compilatron_animations,
 		run_animation =compilatron_animations(tint7),		
-		working_sound = flying_robot_sounds()
+		working_sound =
+		{
+		  sound =
+		  {
+			filename = "__base__/sound/fight/compilatron-1.ogg",
+			volume = 0
+		  },
+		  {
+			filename = "__base__/sound/fight/compilatron-2.ogg",
+			volume = 0
+		  },
+		  apparent_volume = 1,
+		  max_sounds_per_type = 4,
+		  probability = 1 / (6 * 60) -- average pause between the sound is 6 seconds
+		}
 	},
 	{
 		--type = "logistic-container",

@@ -1,4 +1,43 @@
-﻿data:extend(
+﻿local construction_robot = function(volume)
+  return
+  {
+    sound =
+    {
+      { 
+        filename = "__base__/sound/construction-robot-1.ogg", volume = volume 
+      },
+      { 
+        filename = "__base__/sound/construction-robot-2.ogg", volume = volume
+      },
+      { 
+        filename = "__base__/sound/construction-robot-3.ogg", volume = volume 
+      },
+      { 
+        filename = "__base__/sound/construction-robot-4.ogg", volume = volume 
+      },
+      { 
+        filename = "__base__/sound/construction-robot-5.ogg", volume = volume 
+      },
+      { 
+        filename = "__base__/sound/construction-robot-6.ogg", volume = volume 
+      },
+      { 
+        filename = "__base__/sound/construction-robot-7.ogg", volume = volume 
+      },
+      { 
+        filename = "__base__/sound/construction-robot-8.ogg", volume = volume 
+      },
+      { 
+        filename = "__base__/sound/construction-robot-9.ogg", volume = volume 
+      }
+    },
+    max_sounds_per_type = 1,
+    audible_distance_modifier = 1,
+    probability = 1 / (10 * 60) -- average pause between the sound is 10 seconds
+  }
+end
+
+data:extend(
 {
   {
     type = "combat-robot",
@@ -402,7 +441,7 @@
         animation_speed = 0.3
       }
     },
-    working_sound = flying_robot_sounds(),
+    working_sound = construction_robot(0.7),
     cargo_centered = {0.0, 0.2},
     construction_vector = {0.30, 0.22}
   },

@@ -60,7 +60,7 @@ local local_on_player_spawned = function(event)
 	if table_contains(global.modmash.players,player) then return end
 	local stack = {name  = "assembling-machine-1", count = 1}
 	local inv = player.get_inventory(defines.inventory.character_main)
-	if inv.can_insert(stack) then inv.insert(stack) end
+	if inv and inv.can_insert(stack) then inv.insert(stack) end
 end	
 
 modmash.register_script({
