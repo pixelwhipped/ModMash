@@ -204,7 +204,7 @@ local local_find_targets = function()
 		end
 	end end
 
-local local_valkyrie_tick = function()		
+local local_valkyrie_tick = function()
 	--if global.modmash.valkyries.projectiles == nil then global.modmash.valkyries.projectiles = 0 end
 	--modmash.util.print(#return_targets .. " " .. #targets .. " " .. global.modmash.valkyries.projectiles)
 	if global.modmash.valkyries.enable_valkyries ~= true then return end	

@@ -357,19 +357,19 @@ local local_change_fluidbox_fluid = function(entity,amount, pollution_source)
 	local used = 0
 	local abs_amount = math.abs(amount)
     if entity.fluidbox ~= nil then
-		for i = 1, #entity.fluidbox do	
+		for i = 1, #entity.fluidbox do
 			local fluid =  entity.fluidbox[i]
 			local current_fluid = "water"
-			if fluid ~= nil and fluid.amount > 0 then			    
+			if fluid ~= nil and fluid.amount > 0 then
 				local innerDelta = 0
 				current_fluid = fluid.name
-				if amount < 0 then					
-					innerDelta = local_removeable_fluid(fluid,amount)					
+				if amount < 0 then
+					innerDelta = local_removeable_fluid(fluid,amount)
 					fluid.amount = fluid.amount-innerDelta
 					if fluid.amount <= 0 then
-						entity.fluidbox[i] = nil			
+						entity.fluidbox[i] = nil
 					else
-						entity.fluidbox[i] = fluid	
+						entity.fluidbox[i] = fluid
 					end
 				else
 					innerDelta = local_addable_fluid(entity,amount,i)
@@ -655,7 +655,7 @@ local local_check_icon_size = function(size,fallback)
 end
 local local_create_icon = function(base_icons, add_icon, add_size, add_icons, add_scale, add_shift)	
 	local icons =  nil
-	
+
 	local base_size = base_icons[1].icon_size
 	base_size = local_check_icon_size(base_size,add_size)
 	local base_scale = 64/base_size

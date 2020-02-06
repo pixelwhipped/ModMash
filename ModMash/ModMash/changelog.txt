@@ -1,4 +1,41 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.17.94
+  Changes:
+    - sludge treatment doesn't require steam (50 steam for 10 water?)
+    - sludge treatment takes 50 sludge and makes 50 water
+        (still in chemical plant for 1.5s - preferred to upscale instead of shorten time)
+    - super material to oil 2 supermaterial -> 4 to match other conversions
+                    (still 500 oil)
+    - enabled fish-oil to light oil and lubricant recipes, Enrichment 3
+    - certain items couldn't be recycled on first defined difficulty (unknown reason)
+         things like circuits, electric mining drills, few others, now enabled
+
+  General:
+    - Honktown (me) has been updating the last few times (0.17.91-0.17.93)
+    - split off graphics into a dependency? (make main download much smaller)
+    - wind trap doesn't output sludge (as it says). Want to change that.
+    - discharge pump doesn't work for anything but water since .17 (bug, will work on)
+
+  Bug fix:
+    - don't assume an entity has an icon (it's optional if icons is defined)
+
+---------------------------------------------------------------------------------------------------
+Version: 0.17.93
+  Changes:
+    - setting for loader snapping (can turn off if using other loader mods)
+    - titanium pipe-to-ground string
+    - super material strings for oil and uranium
+    - super material to crude oil 100->500
+---------------------------------------------------------------------------------------------------
+Version: 0.17.92
+  Bug fix:
+    - skip creating loot if loot table is empty
+        (games that start player off-center or reveal a lot of map)
+---------------------------------------------------------------------------------------------------
+Version: 0.17.91
+  Bug fix:
+    - don't insert into inventory on new game unless player has one (Sandbox fix)
+---------------------------------------------------------------------------------------------------
 Version: 0.17.90
   Changes:
     - updated welcome message

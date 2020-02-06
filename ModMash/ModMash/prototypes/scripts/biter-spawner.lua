@@ -40,7 +40,7 @@ local local_tick = function()
 			if v ~= nil then
 				for j=1, #v do local w = v[j] 
 					for l=1, #w do local x = w[l] 
-						if  x~= nil and x.target~=nil then							
+						if  x~= nil and x.target~=nil then
 							if (x.target.name ~= nil and starts_with(x.target.name,"biter")) or x.target.prototype.subgroup.name=="enemies" then
 								game.players[1].remove_alert{entity = x.target}
 							end							

@@ -11,7 +11,6 @@ local local_init = function()
 	end
 
 local local_check_resource = function()
-	--if true then return end
 	for i, v in ipairs(global.modmash.grenade_targets) do
 		if v.ticks > 400 then
 			table.remove(global.modmash.grenade_targets, i)

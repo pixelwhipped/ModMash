@@ -68,7 +68,16 @@
 		default_value = "Enabled",
 		allowed_values = {"Enabled", "Disabled"},
 		order = "g"
-	},{
+	},
+  	{
+		type = "string-setting",
+		name = "modmash-setting-loader-snapping",
+		setting_type = "startup",
+		default_value = "Enabled",
+		allowed_values = {"Enabled", "Disabled"},
+		order = "ga"
+	},
+	{
 		type = "string-setting",
 		name = "modmash-check-recipies",
 		setting_type = "startup",

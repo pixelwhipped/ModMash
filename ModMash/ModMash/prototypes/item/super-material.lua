@@ -62,10 +62,10 @@
 		enabled = false,
 		hide_from_player_crafting = true,
 		category = "crafting-with-fluid",
-		ingredients = {{"super-material", 2}},
+		ingredients = {{"super-material", 4}},
 		results =					
 		{
-			{type="fluid", name="crude-oil", amount=100}
+			{type="fluid", name="crude-oil", amount=500}
 		},
 		crafting_machine_tint =
 		{

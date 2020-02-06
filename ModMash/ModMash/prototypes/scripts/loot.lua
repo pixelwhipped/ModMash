@@ -104,6 +104,7 @@ local local_add_tech_loot = function(surface_index, area)
 	end
 
 local local_add_loot = function(surface_index, area )
+	if not loot_table then return end
 	if distance(0,0,area.left_top.x,area.left_top.y) < loot_exclude_distance_from_origin then return end
 	if math.random(1, loot_tech_probability) == 2 then local_add_tech_loot(surface_index, area) end
 	if settings.startup["modmash-setting-item-loot"].value == "Disabled" then return end

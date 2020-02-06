@@ -1,4 +1,7 @@
-﻿if not modmash or not modmash.util then require("prototypes.scripts.util") end
+﻿
+if settings.startup["modmash-setting-loader-snapping"].value == "Disabled" then return end
+
+if not modmash or not modmash.util then require("prototypes.scripts.util") end
 --if not modmash.util.loader then modmash.util.loader = {} end
 if not modmash.util.defines then require ("prototypes.scripts.defines") end
 
