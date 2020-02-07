@@ -101,6 +101,90 @@ local local_add_tech_loot = function(surface_index, area)
 	end
 	end
 
+local local_get_recipe = function(name)
+	return game.players[1].force.recipes[name]
+	end
+
+local local_get_recipe_results = function(r)
+	local results = nil
+	if r.normal ~= nil then 		
+		results = r.normal.results
+		if results == nil or #results == 0 then
+			if r.normal.result_count ~= nil then
+				results = {{name = r.normal.result, amount = math.max(r.normal.result_count,1)}}
+			else
+				results = {{name = r.normal.result, amount = 1}}
+			end	
+		else
+			results = {{name = r.result, amount = 1}}	
+		end
+	else
+		results = r.results;
+		if results == nil or #results == 0 then
+			if r.result_count ~= nil then
+				results = {{name = r.result, amount = math.max(r.result_count,1)}}
+			else
+				results = {{name = r.result, amount = 1}}
+			end
+		else
+			results = {{name = r.result, amount = 1}}
+		end		
+	end	
+	if #results == 0 then
+		results = {{name = r.result, amount = 1}}
+	end
+	return results
+end
+
+function get_raw_ingredients(recipe)
+	local ingredients = {}
+	for i,ingredient in pairs(recipe.ingredients) do
+		local name, amount = 0
+		if (ingredient.type) then
+			name = ingredient.name
+			amount = ingredient.amount
+		elseif (ingredient[1] and ingredient[2]) then
+			name = ingredient[1]
+			amount = ingredient[2]
+		end
+		if (amount > 0) then
+			local subrecipe = local_get_recipe(name)
+			local multiple = 1;			
+			local results = local_get_recipe_results(name)
+			if results ~= nil then
+				for j,product in pairs(results) do
+					if (product.name == name) then 
+						multiple = product.amount
+					end
+				end
+			end
+			if (subrecipe == nil) then 
+				ingredients[name] = amount / multiple
+			else	
+				for subname,subamount in pairs(get_raw_ingredients(subrecipe)) do
+					if (ingredients[subname]) then
+						ingredients[subname] = ingredients[subname] + subamount * amount / multiple
+					else 
+						ingredients[subname] = subamount * amount / multiple
+					end
+				end
+			end
+		end				
+	end
+	return ingredients	
+	end
+
+local get_total_ingredients = function(recipe)
+	local total = 0
+	local ingredients = get_raw_ingredients(recipe)
+	for name,amount in pairs(ingredients) do
+		if ingredients ~= nil then
+			total = total + amount
+		end
+	end
+	return total
+end
+
 local local_add_loot = function(surface_index, area )
 	if not loot_table then return end
 	if distance(0,0,area.left_top.x,area.left_top.y) < loot_exclude_distance_from_origin then return end
@@ -144,7 +228,21 @@ local local_add_loot = function(surface_index, area )
 					end
 				end
 			else
+				-- Test total
 				local stacks = math.random(3, 10)
+				log("Adding ".. item.name.. " to loot initial stacks "..stacks)
+				local s_r = local_get_recipe(item.name)
+				if s_r ~= nil then
+					local t_i = get_total_ingredients(s_r)
+					if t_i > 50 then stacks = math.min(stacks,8) end
+					if t_i > 150 then stacks = math.min(stacks,6) end
+					if t_i > 400 then stacks = math.min(stacks,4) end
+					if t_i > 600 then stacks = math.min(stacks,2) end
+					if t_i > 1000 then stacks = math.min(stacks,1) end
+					log("Modified to " .. stacks .. " total raw " .. t_i)
+				end
+				
+				
 				for s=1, stacks do
 					if item.name == "droid" and global.modmash.droids_looted ~= true then
 						global.modmash.droids_looted = true
