@@ -559,31 +559,18 @@ local local_get_entity_size = function(entity)
 	return {1,1} 
 end
 
-local local_get_entities_around = function(entity, tiles,type,name)	
+local local_get_entities_around = function(entity,tiles_away,findtype,name)
 	local wh = local_get_entity_size(entity)
 	local w = 0.5*wh[1] --wh[1]/2
 	local h = 0.5*wh[2] --wh[2]/2
 	local entities
-	if type ~= nil then
-		if name ~= nil then
-			entities = entity.surface.find_entities_filtered{area = {{entity.position.x-w, entity.position.y-h}, {entity.position.x-(w+0.5), entity.position.y+(h+0.5)}}, type = type}
-		else
-			entities = entity.surface.find_entities_filtered{area = {{entity.position.x-w, entity.position.y-h}, {entity.position.x-(w+0.5), entity.position.y+(h+0.5)}}, type = type, name = name}
-		end
-	else
-		if name ~= nil then
-			entities = entity.surface.find_entities_filtered{area = {{entity.position.x-(w+tiles), entity.position.y-(h+tiles)}, {entity.position.x+(w+tiles), entity.position.y+(h+tiles)}}, name = name}
-		else
-			entities = entity.surface.find_entities({{entity.position.x-(w+tiles), entity.position.y-(h+tiles)}, {entity.position.x+(w+tiles), entity.position.y+(h+tiles)}})
-		end
-	end
-	for i, ent in pairs(entities) do	
-		if ent == entity then
-			table.remove(entities,i)
-			break
-		end	
-	end
-	return entities	
+
+	-- pushes the distance out from the entity if tiles_away
+	if type(tiles_away) == "number" then w = w + tiles_away h = h + tiles_away
+	elseif type(tiles_away) == "string" then w = w + tonumber(tiles_away) h = h + tonumber(tiles_away) end
+
+	entities = entity.surface.find_entities_filtered{area = {{entity.position.x-w, entity.position.y-h}, {entity.position.x+w, entity.position.y+h}}, type = findtype, name = name}
+	return entities
 end
 
 local local_try_set_recipe = function(entity,recipe)
