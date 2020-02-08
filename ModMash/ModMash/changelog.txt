@@ -1,7 +1,6 @@
 ﻿---------------------------------------------------------------------------------------------------
 Version: 0.18.01
   Changes:
-    - Update for 0.18
     - Added startup option, modifier for alien ore loot
     - Made loot scale to total raw cost
 
