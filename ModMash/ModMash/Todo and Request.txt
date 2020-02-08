@@ -1,3 +1,4 @@
-﻿Request to Fix Titanium ore duplicate Angels/Bob
-Request to scale loot (Setting) schals compat
-Request to make loot chests reasonable.  Consider cost of item(total raw)
+﻿Not a Bug Request to Fix Titanium ore duplicate Angels/Bob
+	Impractical to fix.  Result of other mods using different names too many variants.
+Done Request to scale loot (Setting) schals compat  Done
+Done Request to make loot chests reasonable.  Consider cost of item(total raw)

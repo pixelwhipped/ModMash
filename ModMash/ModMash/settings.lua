@@ -113,4 +113,13 @@
 		allowed_values = {"Enabled", "Disabled"},
 		order = "l"
 	},
+	{
+		type = "int-setting",
+		name = "modmash-alien-ore-chance",
+		setting_type = "startup",
+		default_value = 100,
+		minimum_value = 0,
+		maximum_value = 100,
+		order = "e"
+	},
 })

@@ -8,6 +8,7 @@ local local_add_loot_to_entity = function(entityType, entityName, probability, c
             if data.raw[entityType][entityName].loot == nil then
                 data.raw[entityType][entityName].loot = {}
             end
+			local ore_probability = probability * (settings.startup["modmash-alien-ore-chance"].value/100.0)
             table.insert(data.raw[entityType][entityName].loot, 
 			{ 
 				item = "alien-ore", probability = probability, count_min = countMin, count_max = countMax 

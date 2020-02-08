@@ -1126,8 +1126,6 @@ if not modmash.util.types then
     local_set_types_non_pollutant() 
 end
 
-
-
 local add_missing_ooze = function()
 	local added = {}
 	local exclude_ooze = {"coal","titanium-ore","copper-ore","stone","iron-ore","uranium-ore"}	
@@ -1257,7 +1255,6 @@ local add_missing_materials_to_stone_and_uranium = function()
 		end
 	end
 end
-
 
 local check_ingredients = function(ingredients,name)
 	--local new_table = {}
@@ -1449,6 +1446,7 @@ local local_get_normal_results = function(recipe)
 	end
 	return recipe.results
 end
+
 
 
 local local_create_ore_refinements = function()
