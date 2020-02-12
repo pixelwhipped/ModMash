@@ -60,9 +60,10 @@ local local_fishing_transferer_process = function(entity)
 	end
 
 end
+
 --add check for frop position held position and over water
 local local_fishing_inserter_process = function(entity)    	
-	local fish = get_entities_around(entity,8)
+	local fish = get_entities_around(entity,8, "fish")
 	local fish_count = 0
 	local spawner = nil
 	local target = nil
@@ -70,17 +71,15 @@ local local_fishing_inserter_process = function(entity)
 	local target_dist = 100
 	if fish ~= nil then
 		for i, ent in pairs(fish) do					
-			if ent.prototype.name == "fish" then	
-				fish_count = fish_count + 1	
-				local dist = distance(entity.held_stack_position.x,entity.held_stack_position.y,ent.position.x,ent.position.y)
-				if dist > current_dist then
-					current_dist = dist
-					spawner = ent
-				end
-				if dist < target_dist then
-					target_dist = dist
-					target = ent
-				end
+			fish_count = fish_count + 1	
+			local dist = distance(entity.held_stack_position.x,entity.held_stack_position.y,ent.position.x,ent.position.y)
+			if dist > current_dist then
+				current_dist = dist
+				spawner = ent
+			end
+			if dist < target_dist then
+				target_dist = dist
+				target = ent
 			end
 		end
 	end
@@ -101,6 +100,7 @@ local local_fishing_inserter_process = function(entity)
 			end
 		end
 	end end
+
 
 local local_fishing_inserter_tick = function()	
 	if fishing.allow_fishing  == true then 		

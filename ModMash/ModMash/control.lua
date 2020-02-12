@@ -1,10 +1,15 @@
-﻿
+﻿--[[dsync checking 
+local force_configuration_change change to modmash.force_configuration_change altered in event
+]]
+
 local force_configuration_change = false
 --[[code reviewed 8.10.19
 	next going to have to move all global data to per player]]
 log("Entering control.lua")
 --[[Setup volatile structures]]
 if not modmash then modmash = {} end
+--potential desync issue
+if not modmash.force_configuration_change then modmash.force_configuration_change = false
 if not modmash.ticks then modmash.ticks = {} end
 if not modmash.ticks_low then modmash.ticks_low = {} end
 if not modmash.ticks_med then modmash.ticks_med = {} end
@@ -273,7 +278,7 @@ script.on_load(function()
 
 script.on_configuration_changed(function(f) 
 	if f.mod_changes["modmash"] == nil or f.mod_changes["modmash"].old_version == nil then
-		if force_configuration_change == true then
+		if modmash.force_configuration_change == true then
 			log("Forcing update to " .. game.active_mods["modmash"])
 			f.mod_changes["modmash"] = 
 			{
