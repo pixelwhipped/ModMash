@@ -1,4 +1,16 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.18.03
+  Bug fix:
+    -Trying to elimiate dsync isses
+
+---------------------------------------------------------------------------------------------------
+Version: 0.18.02
+  Optization:
+    -Optization for fishing inseters and
+  Bug fix:
+    -Get Entities fix
+
+---------------------------------------------------------------------------------------------------
 Version: 0.18.01
   Changes:
     - Added startup option, modifier for alien ore loot

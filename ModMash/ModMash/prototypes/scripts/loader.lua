@@ -1,4 +1,8 @@
-﻿if settings.startup["modmash-setting-loader-snapping"].value == "Disabled" then return end
+﻿--[[dsync checking 
+ok only locals are reference to global
+]]
+
+if settings.startup["modmash-setting-loader-snapping"].value == "Disabled" then return end
 
 if not modmash or not modmash.util then require("prototypes.scripts.util") end
 --if not modmash.util.loader then modmash.util.loader = {} end
@@ -66,16 +70,7 @@ local local_find_loaders  = function(entity)
 	end
 	end
 
---[[
-    train_state = {
-        on_the_path = 0,
 
-        wait_station = 7,
-
-        manual_control = 9,
-
-
-    },]]
 local local_find_train_loaders = function(entity)
 	if not (entity.type=="cargo-wagon" or entity.type=="locomotive") then return end
 	if (entity.train.state==defines.train_state.wait_station or entity.train.state==defines.train_state.manual_control) and entity.train.speed==0 then

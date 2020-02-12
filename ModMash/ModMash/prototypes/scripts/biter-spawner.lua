@@ -1,4 +1,8 @@
-﻿--[[code reviewed 12.10.19]]
+﻿--[[dsync checking 
+local index change to modmash.biter_spawner_index in event
+]]
+
+--[[code reviewed 12.10.19]]
 log("biter-spawner.lua")
 --[[check and import utils]]
 if modmash == nil or modmash.util == nil then require("prototypes.scripts.util") end
@@ -33,11 +37,8 @@ local local_on_post_entity_died = function(event)
 	end
 	end
 
-local index = 1
 local local_tick = function()
-	--if true then return end
-	
-	if not index then index = 1 end
+	if not modmash.biter_spawner_index then modmash.biter_spawner_index = 1 end
 	local numiter = 0
 	
 

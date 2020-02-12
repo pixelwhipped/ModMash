@@ -1,4 +1,6 @@
-﻿--[[code reviewed 15.10.19]]
+﻿--[[dsync checking No Changes]]
+
+--[[code reviewed 15.10.19]]
 log("explosive-mining.lua")
 --[[check and import utils]]
 if modmash == nil or modmash.util == nil then require("prototypes.scripts.util") end

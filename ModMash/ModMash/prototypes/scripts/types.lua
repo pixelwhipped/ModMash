@@ -1,4 +1,6 @@
-﻿if not modmash or not modmash.util then require("prototypes.scripts.util") end
+﻿--[[dsync checking No Changes]]
+
+if not modmash or not modmash.util then require("prototypes.scripts.util") end
 if not modmash.defines then require ("prototypes.scripts.defines") end
 
 local super_container_stack_size = modmash.defines.defaults.super_container_stack_size

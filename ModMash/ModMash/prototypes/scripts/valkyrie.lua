@@ -1,4 +1,8 @@
-﻿log("valkyrie.lua")
+﻿--[[dsync checking 
+ok only locals are reference to globals or a constant
+]]
+
+log("valkyrie.lua")
 if not modmash or not modmash.util then require("prototypes.scripts.util") end
 if not modmash.defines then require ("prototypes.scripts.defines") end
 

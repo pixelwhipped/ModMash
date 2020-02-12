@@ -1,4 +1,8 @@
-﻿--[[code reviewed 6.10.19
+﻿--[[dsync checking 
+ok only local is reference to global
+]]
+
+--[[code reviewed 6.10.19
 	Used defines for enitity name references
 	Updated symbols]]
 log("biter-neuro-toxin.lua")

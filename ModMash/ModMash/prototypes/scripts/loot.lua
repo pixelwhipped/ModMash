@@ -1,4 +1,9 @@
-﻿--[[check and import utils]]
+﻿--[[dsync checking 
+modifed last_chunk to modmash.last_chunk
+other variables should not be effecting states of objects
+]]
+
+--[[check and import utils]]
 if modmash == nil or modmash.util == nil then require("prototypes.scripts.util") end
 if not modmash.defines then require ("prototypes.scripts.defines") end
 
@@ -29,7 +34,6 @@ local get_name_for = modmash.util.get_name_for
 --[[locals]]
 local exclude_loot = {"player-port","spawner","spitter-spawner"}
 local loot_table = nil
-local last_chunk = nil
 
 --[[unitialized globals]]
 local chunks = nil
@@ -304,10 +308,11 @@ local local_start = function()
 
 local local_on_chunk_charted = function(event)	
 	local id = event.surface_index.."_"..event.position.x.."_"..event.position.y
-	if last_chunk == id then return end
+	if not modmash.last_chunk then modmash.last_chunk = nil end
+	if modmash.last_chunk == id then return end
 	if table_index_of(chunks,id) == nil then
 		table.insert(chunks,id)
-		last_chunk = id
+		modmash.last_chunk = id
 		local_add_loot(event.surface_index, event.area)
 	end	
 	end

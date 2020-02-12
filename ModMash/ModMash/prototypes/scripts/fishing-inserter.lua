@@ -1,4 +1,8 @@
-﻿--[[code reviewed 13.10.19]]
+﻿--[[dsync checking 
+ok only locals are reference to global
+]]
+
+--[[code reviewed 13.10.19]]
 log("fishing-inserter.lua")
 --[[check and import utils]]
 if modmash == nil or modmash.util == nil then require("prototypes.scripts.util") end
