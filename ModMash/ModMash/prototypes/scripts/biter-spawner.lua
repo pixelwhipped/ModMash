@@ -1,4 +1,8 @@
-﻿--[[code reviewed 12.10.19]]
+﻿--[[dsync checking 
+local index change to modmash.biter_spawner_index in event
+]]
+
+--[[code reviewed 12.10.19]]
 log("biter-spawner.lua")
 --[[check and import utils]]
 if modmash == nil or modmash.util == nil then require("prototypes.scripts.util") end
@@ -32,21 +36,26 @@ local local_on_post_entity_died = function(event)
 	end
 	end
 
-local local_tick = function()
-	--if true then return end
 	local alerts = game.players[1].get_alerts{}
 	if #alerts>0 then
-		for k=1, #alerts do local v = alerts[k] 
+		local updates = math.min(#alerts,alerts_per_tick)
+		for k=index, #alerts do local v = alerts[k] 
 			if v ~= nil then
 				for j=1, #v do local w = v[j] 
 					for l=1, #w do local x = w[l] 
-						if  x~= nil and x.target~=nil then
+						if  x~= nil and x.target~=nil then							
 							if (x.target.name ~= nil and starts_with(x.target.name,"biter")) or x.target.prototype.subgroup.name=="enemies" then
 								game.players[1].remove_alert{entity = x.target}
 							end							
 						end
 					end
 				end
+			end
+			if k >= #alerts then k = 1 end
+			numiter = numiter + 1
+			if numiter >= updates then 
+				index = k
+				return
 			end
 		end
 	end
