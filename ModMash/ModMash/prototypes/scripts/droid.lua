@@ -1,4 +1,9 @@
-﻿log("droid.lua")
+﻿--[[dsync checking 
+Only remaining locals are reference to global
+removed local debug tracking variables see local_droid_process_build
+]]
+
+log("droid.lua")
 if not modmash or not modmash.util then require("prototypes.scripts.util") end
 if not modmash.defines then require ("prototypes.scripts.defines") end
 
@@ -51,17 +56,6 @@ local local_add_ghost = function(entity)
 local local_remove_ghost = function(ent,entity)
 	local_table_remove(ghosts,entity)
 	end
-
---[[local local_clean_ghosts = function()
-	local new_ghosts = {} 
-	for index, e in pairs(ghosts) do
-		if is_valid(e) then
-			table.insert(new_ghosts, e)
-		end
-	end
-	ghosts = new_ghosts
-	end--]]
-
 	
 local local_clean_ghosts = function()
 	for k=#ghosts,1,-1 do local ghost = ghosts[k]
@@ -775,39 +769,40 @@ local local_droid_process_build_destroy_command = function(droid)
 	end
 end
 
-local nc = 0
-local gsc = 0
-local dsc = 0
-local bc = 0
-local dc = 0
-local cc = 0
+--potential dsync issue and not used
+--local nc = 0
+--local gsc = 0
+--local dsc = 0
+--local bc = 0
+--local dc = 0
+--local cc = 0
 
 local local_droid_process_build = function(droid) 
 	local rad = (droid_scan_radius + droids.research_modifier)
 	if droid.stack == nil then droid.stack = {name = nil, count = 0} end		
 	if droid.command == no_command then			
 		--if droid.cooldown == nil then
-			local_droid_process_build_no_command(droid)
-			nc = nc + 1
-			droid.cooldown = game.tick + (60 * 3)
+		local_droid_process_build_no_command(droid)
+		--nc = nc + 1 --potential dsync issue and not used
+		droid.cooldown = game.tick + (60 * 3)
 		--elseif droid.cooldown < game.tick then
 		--	droid.cooldown = nil
 		--end
 	elseif droid.command == get_stock_command then		
 		local_droid_process_build_get_stock_command(droid)
-		gsc = gsc + 1
+		--gsc = gsc + 1 --potential dsync issue and not used
 	elseif droid.command == drop_stock_command then
 		local_droid_process_build_drop_stock_command(droid)
-		dsc = dsc + 1
+		--dsc = dsc + 1  --potential dsync issue and not used
 	elseif droid.command == build_command then
 		local_droid_process_build_build_command(droid)
-		bc = bc + 1
+		--bc = bc + 1  --potential dsync issue and not used
 	elseif droid.command == destroy_command then
 		local_droid_process_build_destroy_command(droid)
-		dc = dc + 1
+		--dc = dc + 1  --potential dsync issue and not used
 	else
 		local_clear_droid_command(droid)
-		cc = cc + 1
+		--cc = cc + 1  --potential dsync issue and not used
 	end
 	--modmash.util.print(nc .."|"..gsc.."|"..dsc.."|"..bc.."|"..dc.."|"..cc)
 end

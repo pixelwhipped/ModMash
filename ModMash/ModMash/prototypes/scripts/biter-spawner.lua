@@ -1,5 +1,6 @@
 ﻿--[[dsync checking 
-local index change to modmash.biter_spawner_index in event
+local index change to gloab.modmash.biter_spawner_index in event
+fixed use of global.modmash.droids_update_index
 ]]
 
 --[[code reviewed 12.10.19]]
@@ -7,6 +8,7 @@ log("biter-spawner.lua")
 --[[check and import utils]]
 if modmash == nil or modmash.util == nil then require("prototypes.scripts.util") end
 if not modmash.defines then require ("prototypes.scripts.defines") end
+local alerts_per_tick = 50
 
 --[[defines]]
 local force_neutral  = modmash.defines.names.force_neutral
@@ -36,10 +38,14 @@ local local_on_post_entity_died = function(event)
 	end
 	end
 
+local local_tick = function()
+	local numiter = 0	
+	if not global.modmash.droids_update_index then  global.modmash.droids_update_index = 1 end
+	--dsync?
 	local alerts = game.players[1].get_alerts{}
 	if #alerts>0 then
 		local updates = math.min(#alerts,alerts_per_tick)
-		for k=index, #alerts do local v = alerts[k] 
+		for k=global.modmash.droids_update_index, #alerts do local v = alerts[k] 
 			if v ~= nil then
 				for j=1, #v do local w = v[j] 
 					for l=1, #w do local x = w[l] 
@@ -54,7 +60,7 @@ local local_on_post_entity_died = function(event)
 			if k >= #alerts then k = 1 end
 			numiter = numiter + 1
 			if numiter >= updates then 
-				index = k
+				global.modmash.droids_update_index = k
 				return
 			end
 		end

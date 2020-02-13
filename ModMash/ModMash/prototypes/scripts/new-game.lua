@@ -1,4 +1,8 @@
-﻿log("new-game.lua")
+﻿--[[dsync checking 
+Welcome screen will not pause game not 100% but seems iffy
+]]
+
+log("new-game.lua")
 --[[check and import utils]]
 if modmash == nil or modmash.util == nil then require("prototypes.scripts.util") end
 if not modmash.defines then require ("prototypes.scripts.defines") end
@@ -31,16 +35,6 @@ local local_start = function()
 		local text = welcome.add{type = "label", caption = string}
 		text.style.width = 300
 		text.style.single_line = false
-	--	local refine = welcome.add{type="flow",direction = "horizontal"}
-	--	refine.style.width = 300
-		--refine.add{
-		 -- type = "button",
-		 -- name = "ore-refinery-button",
-		 -- style = "ore-refinery-image-button-style",
-		 -- state = true
-		--}
-		--refine.add{type="sprite", name="ore-refinery-spr"}
-		--refine.add{type = "label", caption = "Refine raw ore that can be smelted\ninto twice the plates"}
 		local options = welcome.add{type="flow",direction = "horizontal"}
 		options.style.width = 300
 		options.add{type = "button", name="modmash-show-welcome-btn",style = "confirm_button", caption="Ok"}		
@@ -50,7 +44,7 @@ local local_start = function()
 local local_on_gui_click = function(event)
   if event.element and event.element.valid and starts_with(event.element.name, "modmash-show-welcome-btn") then    
 	game.players[event.player_index].gui.center["modmash-show-welcome"].destroy()
-    game.tick_paused = false
+    --game.tick_paused = false --potential desync?
   end
 end
 

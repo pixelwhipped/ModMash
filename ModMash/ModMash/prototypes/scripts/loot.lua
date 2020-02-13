@@ -1,4 +1,9 @@
-﻿--[[check and import utils]]
+﻿--[[dsync checking 
+modifed last_chunk to global.modmash.last_chunk
+other variables should not be effecting states of objects
+]]
+
+--[[check and import utils]]
 if modmash == nil or modmash.util == nil then require("prototypes.scripts.util") end
 if not modmash.defines then require ("prototypes.scripts.defines") end
 
@@ -29,7 +34,6 @@ local get_name_for = modmash.util.get_name_for
 --[[locals]]
 local exclude_loot = {"player-port","spawner","spitter-spawner"}
 local loot_table = nil
-local last_chunk = nil
 
 --[[unitialized globals]]
 local chunks = nil
@@ -41,8 +45,6 @@ local local_init = function()
 	if global.modmash.loot.chunks == nil then global.modmash.loot.chunks = {} end
 	chunks = global.modmash.loot.chunks
 	end
-
-
 	
 local local_get_stack_restriction = function(item)
 	if item.type == "item-with-entity-data" then return 2 end
@@ -103,6 +105,90 @@ local local_add_tech_loot = function(surface_index, area)
 	end
 	end
 
+local local_get_recipe = function(name)
+	return game.players[1].force.recipes[name]
+	end
+
+local local_get_recipe_results = function(r)
+	local results = nil
+	if r.normal ~= nil then 		
+		results = r.normal.results
+		if results == nil or #results == 0 then
+			if r.normal.result_count ~= nil then
+				results = {{name = r.normal.result, amount = math.max(r.normal.result_count,1)}}
+			else
+				results = {{name = r.normal.result, amount = 1}}
+			end	
+		else
+			results = {{name = r.result, amount = 1}}	
+		end
+	else
+		results = r.results;
+		if results == nil or #results == 0 then
+			if r.result_count ~= nil then
+				results = {{name = r.result, amount = math.max(r.result_count,1)}}
+			else
+				results = {{name = r.result, amount = 1}}
+			end
+		else
+			results = {{name = r.result, amount = 1}}
+		end		
+	end	
+	if #results == 0 then
+		results = {{name = r.result, amount = 1}}
+	end
+	return results
+end
+
+function get_raw_ingredients(recipe)
+	local ingredients = {}
+	for i,ingredient in pairs(recipe.ingredients) do
+		local name, amount = 0
+		if (ingredient.type) then
+			name = ingredient.name
+			amount = ingredient.amount
+		elseif (ingredient[1] and ingredient[2]) then
+			name = ingredient[1]
+			amount = ingredient[2]
+		end
+		if (amount > 0) then
+			local subrecipe = local_get_recipe(name)
+			local multiple = 1;			
+			local results = local_get_recipe_results(name)
+			if results ~= nil then
+				for j,product in pairs(results) do
+					if (product.name == name) then 
+						multiple = product.amount
+					end
+				end
+			end
+			if (subrecipe == nil) then 
+				ingredients[name] = amount / multiple
+			else	
+				for subname,subamount in pairs(get_raw_ingredients(subrecipe)) do
+					if (ingredients[subname]) then
+						ingredients[subname] = ingredients[subname] + subamount * amount / multiple
+					else 
+						ingredients[subname] = subamount * amount / multiple
+					end
+				end
+			end
+		end				
+	end
+	return ingredients	
+	end
+
+local get_total_ingredients = function(recipe)
+	local total = 0
+	local ingredients = get_raw_ingredients(recipe)
+	for name,amount in pairs(ingredients) do
+		if ingredients ~= nil then
+			total = total + amount
+		end
+	end
+	return total
+end
+
 local local_add_loot = function(surface_index, area )
 	if not loot_table then return end
 	if distance(0,0,area.left_top.x,area.left_top.y) < loot_exclude_distance_from_origin then return end
@@ -146,7 +232,21 @@ local local_add_loot = function(surface_index, area )
 					end
 				end
 			else
+				-- Test total
 				local stacks = math.random(3, 10)
+				log("Adding ".. item.name.. " to loot initial stacks "..stacks)
+				local s_r = local_get_recipe(item.name)
+				if s_r ~= nil then
+					local t_i = get_total_ingredients(s_r)
+					if t_i > 50 then stacks = math.min(stacks,8) end
+					if t_i > 150 then stacks = math.min(stacks,6) end
+					if t_i > 400 then stacks = math.min(stacks,4) end
+					if t_i > 600 then stacks = math.min(stacks,2) end
+					if t_i > 1000 then stacks = math.min(stacks,1) end
+					log("Modified to " .. stacks .. " total raw " .. t_i)
+				end
+				
+				
 				for s=1, stacks do
 					if item.name == "droid" and global.modmash.droids_looted ~= true then
 						global.modmash.droids_looted = true
@@ -208,10 +308,11 @@ local local_start = function()
 
 local local_on_chunk_charted = function(event)	
 	local id = event.surface_index.."_"..event.position.x.."_"..event.position.y
-	if last_chunk == id then return end
+	if not global.modmash.last_chunk then global.modmash.last_chunk = nil end
+	if global.modmash.last_chunk == id then return end
 	if table_index_of(chunks,id) == nil then
 		table.insert(chunks,id)
-		last_chunk = id
+		global.modmash.last_chunk = id
 		local_add_loot(event.surface_index, event.area)
 	end	
 	end
@@ -283,7 +384,9 @@ local local_on_selected = function(player,entity)
 	end
 
 local local_on_configuration_changed = function(f)
-	if f.mod_changes["modmash"].old_version < "0.17.61" then	
+	log("loot.local_on_configuration_changed")
+	if f.mod_changes["modmash"].old_version < "0.17.61" or chunks == nil then	
+		if chunks == nil then local_init() end
 		for _, surface in pairs(game.surfaces) do
 			for c in surface.get_chunks() do
 				if #surface.find_entities_filtered{area = c.area, name={"loot_science_a","loot_science_b","crash-site-chest-1","crash-site-chest-2"}} > 0 then
