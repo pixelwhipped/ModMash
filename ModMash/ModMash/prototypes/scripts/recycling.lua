@@ -193,8 +193,9 @@ local local_start = function()
 local local_recycling_tick = function()
 	--if true then return end
 	local recycling_machines = global.modmash.recycling_machines
+	if not global.modmash.recycling_machines_index then global.modmash.recycling_machines_index = 1 end
 	local index = global.modmash.recycling_machines_index
-	if not index then index = 1 end
+	
 	local numiter = 0
 	local updates = math.min(#recycling_machines,recycling_machines_per_tick)
 

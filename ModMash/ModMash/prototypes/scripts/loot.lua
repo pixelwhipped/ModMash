@@ -1,5 +1,5 @@
 ﻿--[[dsync checking 
-modifed last_chunk to modmash.last_chunk
+modifed last_chunk to global.modmash.last_chunk
 other variables should not be effecting states of objects
 ]]
 
@@ -308,11 +308,11 @@ local local_start = function()
 
 local local_on_chunk_charted = function(event)	
 	local id = event.surface_index.."_"..event.position.x.."_"..event.position.y
-	if not modmash.last_chunk then modmash.last_chunk = nil end
-	if modmash.last_chunk == id then return end
+	if not global.modmash.last_chunk then global.modmash.last_chunk = nil end
+	if global.modmash.last_chunk == id then return end
 	if table_index_of(chunks,id) == nil then
 		table.insert(chunks,id)
-		modmash.last_chunk = id
+		global.modmash.last_chunk = id
 		local_add_loot(event.surface_index, event.area)
 	end	
 	end

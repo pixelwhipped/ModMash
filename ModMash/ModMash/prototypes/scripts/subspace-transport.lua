@@ -1,5 +1,5 @@
 ﻿--[[dsync checking 
-changed local stock_transports = 0 to modmash.stock_transports
+changed local stock_transports = 0 to global.modmash.stock_transports
 ]]
 
 log("subspace-transport.lua")
@@ -49,9 +49,9 @@ local local_subspace_transports_share = function(name,stock,entity)
 			if inventory.get_item_count(name) < stock and inventory.can_insert({name=name,count=1}) then
 				inventory.insert({name=name,count=1})
 				stock = stock -1;
-				modmash.stock_transports = modmash.stock_transports + 1
+				global.modmash.stock_transports = global.modmash.stock_transports + 1
 			end
-			if stock == 0 or modmash.stock_transports >= stock_transports_per_tick then return stock end
+			if stock == 0 or global.modmash.stock_transports >= stock_transports_per_tick then return stock end
 		end
 	end
 	return stock
@@ -71,7 +71,7 @@ local local_subspace_transports_process = function(entity)
 end
 
 local local_subspace_transports_tick = function()	
-	modmash.stock_transports = 0
+	global.modmash.stock_transports = 0
 	local index = global.modmash.transports_update_index
 	if not index then index = 1 end
 	local numiter = 0
@@ -82,7 +82,7 @@ local local_subspace_transports_tick = function()
 		end
 		if k >= #transports then k = 1 end
 		numiter = numiter + 1
-		if numiter >= updates or modmash.stock_transports >= stock_transports_per_tick then 
+		if numiter >= updates or global.modmash.stock_transports >= stock_transports_per_tick then 
 			global.modmash.transports_update_index	= k
 			return
 		end
