@@ -281,10 +281,10 @@ local local_create_loot_table = function()
 			if r.ingredients[1]~= nil and r.ingredients[1].name ~= nil then
 				local i = local_get_item(r.ingredients[1].name)
 
-				if i ~= nil and i.type ~= ammo and i.place_result == nil then 
+				--[[ FAIL if i ~= nil and i.type ~= ammo and i.place_result == nil then 
 					log("Skipping Loot Item "..i.name)
 					i = nil
-				end
+				end]]
 				if i ~= nil and starts_with(i.name,"creative-mod") == false
 					and starts_with(i.name,"deadlock-stack") == false then
 					table.insert(loot_table,i)

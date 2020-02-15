@@ -3,7 +3,6 @@ Version: 0.18.03
   Bug fix:
     -Trying to elimiate dsync isses
   Changes:
-    -Exluded items with no place_result from loot except ammo
     -Scaled added enrichment items probability to between 0.25 and 0.05
 
 ---------------------------------------------------------------------------------------------------
