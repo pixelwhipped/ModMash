@@ -1233,25 +1233,26 @@ local add_missing_materials_to_stone_and_uranium = function()
 			end
 		end
 	end
+	local prob = math.min(math.max((1.0/#added),0.05),0.25)
 	for name,item in pairs(added) do
 		if ingredients_missing_in(stone,item.name) then
 			table.insert(stone.results,{
 				name = item.name,
-				probability = 0.25,
+				probability = prob,
 				amount = 1,
 			}) 
 		end
 		if ingredients_missing_in(uranium,item.name) then
 			table.insert(uranium.results,{
 				name = item.name,
-				probability = 0.25,
+				probability = prob,
 				amount = 1,
 			})
 		end
 		if ingredients_missing_in(alien,item.name) then
 			table.insert(alien.results,{
 				name = item.name,
-				probability = 0.25,
+				probability = prob,
 				amount = 1,
 			})	
 		end

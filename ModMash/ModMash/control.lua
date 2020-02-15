@@ -8,7 +8,7 @@ log("Entering control.lua")
 --[[Setup volatile structures]]
 if not modmash then modmash = {} end
 --potential desync issue
-if not modmash.force_configuration_change then modmash.force_configuration_change = false
+if not modmash.force_configuration_change then modmash.force_configuration_change = false end
 if not modmash.ticks then modmash.ticks = {} end
 if not modmash.ticks_low then modmash.ticks_low = {} end
 if not modmash.ticks_med then modmash.ticks_med = {} end

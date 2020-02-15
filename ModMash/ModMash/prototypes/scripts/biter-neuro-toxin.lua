@@ -1,4 +1,4 @@
-﻿--[[dsync checking 
+﻿ --[[dsync checking 
 ok only local is reference to global
 ]]
 

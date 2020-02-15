@@ -21,7 +21,7 @@ local local_init = function()
 local local_start = function()
 	if global.modmash.shown_welcome == true then return end
 	if settings.startup["modmash-show-welcome"].value ~= true and #game.connected_players ~= 1 then return end
-		game.tick_paused = true
+		--game.tick_paused = true
 		local welcome = game.players[1].gui.center.add{ type="frame", name="modmash-show-welcome", direction = "vertical", caption="Welcome to ModMash" }
 		welcome.style.width = 310
 		local string = "ModMash add new or extends recipes and add's many new features. \n\n Quick Tip(s)\n"
