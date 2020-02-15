@@ -20,18 +20,18 @@ local starts_with  = modmash.util.starts_with
 local ends_with  = modmash.util.ends_with
 
 local local_on_added = function(entity)		
+	modmash.util.print(entity.name)
 	entity.force = game.forces[force_neutral]
 	end
 
 local local_on_spawned = function(entity)
-	if ends_with(entity.name,"-biter") and entity.force == game.forces[force_neutral] then
+	if ends_with(entity.name,"-biter") and entity.force == game.forces[force_neutral] then		
 		entity.force = game.forces[force_enemy]
 	end
 	end
 
 local local_on_post_entity_died = function(event)
-	if event.ghost ~= nil then
-	
+	if event.ghost ~= nil then	
 		if event.ghost.ghost_name == "biter-spawner" then
 			event.ghost.destroy()
 		end
@@ -40,12 +40,12 @@ local local_on_post_entity_died = function(event)
 
 local local_tick = function()
 	local numiter = 0	
-	if not global.modmash.droids_update_index then  global.modmash.droids_update_index = 1 end
+	if not global.modmash.spawner_update_index then  global.modmash.spawner_update_index = 1 end
 	--dsync?
 	local alerts = game.players[1].get_alerts{}
 	if #alerts>0 then
 		local updates = math.min(#alerts,alerts_per_tick)
-		for k=global.modmash.droids_update_index, #alerts do local v = alerts[k] 
+		for k=global.modmash.spawner_update_index, #alerts do local v = alerts[k] 
 			if v ~= nil then
 				for j=1, #v do local w = v[j] 
 					for l=1, #w do local x = w[l] 
@@ -60,7 +60,7 @@ local local_tick = function()
 			if k >= #alerts then k = 1 end
 			numiter = numiter + 1
 			if numiter >= updates then 
-				global.modmash.droids_update_index = k
+				global.modmash.spawner_update_index = k
 				return
 			end
 		end
@@ -80,6 +80,7 @@ local local_on_configuration_changed = function(f)
 	end
 
 modmash.register_script({
+	names = {"biter-spawner"},
 	on_tick = local_tick,
 	on_added_by_name = local_on_added,
 	on_spawned = local_on_spawned,

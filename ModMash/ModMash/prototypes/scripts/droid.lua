@@ -866,6 +866,10 @@ end
 
 local local_droid_process_scout = function(droid)
 	local rad = droid_scan_radius + droids.research_modifier		
+	if global.modmash.droids.loot_boxes == nil then 	
+		global.modmash.droids.loot_boxes = {} 
+		loot_boxes = global.modmash.droids.loot_boxes
+	end --fix sould not be required
 	for i = 1, #game.players do local p = game.players[i]
 			p.force.chart(p.surface, {{droid.entity.position.x-rad, droid.entity.position.y-rad}, {droid.entity.position.x+rad, droid.entity.position.y+rad}})
 			local chests = p.surface.find_entities_filtered	{area = {{droid.entity.position.x-rad, droid.entity.position.y-rad}, {droid.entity.position.x+rad, droid.entity.position.y+rad}},name={"crash-site-chest-1","crash-site-chest-2","loot_science_a"}}
@@ -925,13 +929,6 @@ local local_droid_process_repair = function(droid)
 	end
 end
 
---[[ will need repair
-	if global.modmash == nil then global.modmash = {} end
-	if global.modmash.droids == nil then global.modmash.droids = {} end
-	if global.modmash.ghosts == nil then global.modmash.ghosts = {} end
-	if global.modmash.loot_boxes == nil then global.modmash.loot_boxes = {} end
-	if global.modmash.droids.last_mode == nil collection_mode
-]]
 local local_init = function()	
 	if global.modmash == nil then global.modmash = {} end
 	if global.modmash.droids == nil then global.modmash.droids = {} end
@@ -939,9 +936,9 @@ local local_init = function()
 	if global.modmash.droids.loot_boxes == nil then global.modmash.droids.loot_boxes = {} end
 	if global.modmash.droids.all_droids == nil then global.modmash.droids.all_droids = {} end
 	if global.modmash.droids.last_mode == nil then global.modmash.droids.last_mode = collection_mode end
-	loot_boxes = global.modmash.loot_boxes
+	loot_boxes = global.modmash.droids.loot_boxes
 	all_droids = global.modmash.droids.all_droids
-	ghosts =  global.modmash.droids.ghosts
+	ghosts =  global.modmash.droids.ghosts --fix
 	droids = global.modmash.droids
 	global.modmash.droids_update_index = nil	
 	if global.modmash.droids.research_modifier == nil then global.modmash.droids.research_modifier = 1 end
@@ -949,7 +946,7 @@ local local_init = function()
 	end
 
 local local_load = function()	
-	loot_boxes = global.modmash.loot_boxes
+	loot_boxes = global.modmash.droids.loot_boxes --fix
 	all_droids = global.modmash.droids.all_droids
 	ghosts =  global.modmash.droids.ghosts
 	droids = global.modmash.droids
@@ -960,9 +957,9 @@ local local_start = function()
 	end
 
 local local_droid_tick = function()		
-	--if true then return end
+	if not global.modmash.droids_update_index then global.modmash.droids_update_index = 1 end --fix order
 	local index = global.modmash.droids_update_index
-	if not index then index = 1 end
+
 	local numiter = 0
 	local updates = math.min(#all_droids,droids_per_tick)
 	if droids.research_modifier == nil then droids.research_modifier = 1 end
