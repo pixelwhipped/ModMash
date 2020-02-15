@@ -1233,7 +1233,7 @@ local add_missing_materials_to_stone_and_uranium = function()
 			end
 		end
 	end
-	local prob = math.min(math.max((1.0/#added),0.05),0.25)
+	local prob = math.min(math.max((0.3/#added),0.05),0.25)
 	for name,item in pairs(added) do
 		if ingredients_missing_in(stone,item.name) then
 			table.insert(stone.results,{
