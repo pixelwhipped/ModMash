@@ -287,7 +287,7 @@ local local_valves_tick = function()
 	local valves = global.modmash.valves or {}
 	for k=1, #valves do
 		local valve = valves[k]
-		if valve ~= nil
+		if valve ~= nil then
 			if is_valid(valve.entity) and valve.entity.to_be_deconstructed(valve.entity.force) ~= true then							
 				if valve.entity.name == "modmash-check-valve" then local_check_valve_process(valve)					
 				elseif valve.entity.name == "modmash-check-valve" then local_check_valve_process(valve) 
