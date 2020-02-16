@@ -1,0 +1,4 @@
+﻿---------------------------------------------------------------------------------------------------
+Version: 0.18.01
+  Features:
+    - Addeds Coffee, you coffee beans are harvested from trees by adding an inserter nearby, Coffee keeps you going.
