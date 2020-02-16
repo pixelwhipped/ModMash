@@ -172,7 +172,7 @@ modmash.register_script = function(script)
 	if script.on_tick ~= nil then 
 		if type(script.on_tick)=="table" and type(script.on_tick.tick) == "function" then
 			log("Registering advanced tick event")
-			if script.on_tick.nth ~= nil then
+			if script.on_tick.priority ~= nil then
 				if script.on_tick.priority == low_priority then
 					table.insert(modmash.ticks_low,script.on_tick.tick)
 				elseif script.on_tick.priority == med_priority then

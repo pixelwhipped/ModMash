@@ -1,57 +1,51 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.18.05
+  Changes:
+    - Nth tick optimizations
+
+---------------------------------------------------------------------------------------------------
 Version: 0.18.04
   Bug fix:
-    -Droid fixes
-    -Spawner fixes
-
+    - Droid fixes
+    - Spawner fixes
 ---------------------------------------------------------------------------------------------------
 Version: 0.18.03
   Bug fix:
     -Trying to elimiate dsync isses
   Changes:
-    -Scaled added enrichment items probability to between 0.25 and 0.05
-
+    - Scaled added enrichment items probability to between 0.25 and 0.05
 ---------------------------------------------------------------------------------------------------
 Version: 0.18.02
   Optization:
     -Optization for fishing inseters and
   Bug fix:
-    -Get Entities fix
-
+    - Get Entities fix
 ---------------------------------------------------------------------------------------------------
 Version: 0.18.01
   Changes:
     - Added startup option, modifier for alien ore loot
     - Made loot scale to total raw cost
-
 ---------------------------------------------------------------------------------------------------
 Version: 0.18.00
   Changes:
     - Update for 0.18
     - Added startup option for Science Ores from Enrichment Processes
     - Added max alerts to check
-
 ---------------------------------------------------------------------------------------------------
 Version: 0.17.94
   Changes:
     - sludge treatment doesn't require steam (50 steam for 10 water?)
-    - sludge treatment takes 50 sludge and makes 50 water
-        (still in chemical plant for 1.5s - preferred to upscale instead of shorten time)
-    - super material to oil 2 supermaterial -> 4 to match other conversions
-                    (still 500 oil)
+    - sludge treatment takes 50 sludge and makes 50 water (still in chemical plant for 1.5s - preferred to upscale instead of shorten time)
+    - super material to oil 2 supermaterial -> 4 to match other conversions (still 500 oil)
     - enabled fish-oil to light oil and lubricant recipes, Enrichment 3
-    - certain items couldn't be recycled on first defined difficulty (unknown reason)
-         things like circuits, electric mining drills, few others, now enabled
-
+    - certain items couldn't be recycled on first defined difficulty (unknown reason) things like circuits, electric mining drills, few others, now enabled
   General:
     - Honktown (me) has been updating the last few times (0.17.91-0.17.93)
     - split off graphics into a dependency? (make main download much smaller)
     - wind trap doesn't output sludge (as it says). Want to change that.
     - discharge pump doesn't work for anything but water since .17 (bug, will work on)
-
   Bug fix:
     - don't assume an entity has an icon (it's optional if icons is defined)
-
 ---------------------------------------------------------------------------------------------------
 Version: 0.17.93
   Changes:
@@ -62,8 +56,7 @@ Version: 0.17.93
 ---------------------------------------------------------------------------------------------------
 Version: 0.17.92
   Bug fix:
-    - skip creating loot if loot table is empty
-        (games that start player off-center or reveal a lot of map)
+    - skip creating loot if loot table is empty (games that start player off-center or reveal a lot of map)
 ---------------------------------------------------------------------------------------------------
 Version: 0.17.91
   Bug fix:
@@ -241,7 +234,7 @@ Version: 0.17.61
     - fishing inserters slightly optimized and can put fish back in water
     - recycle machine now works with loaders
     - better loader rotation
-    - loaders can now load/unload cargo wagon	
+    - loaders can now load/unload cargo wagon
     - much better UPS
 
 ---------------------------------------------------------------------------------------------------
@@ -323,7 +316,7 @@ Version: 0.17.49
 Version: 0.17.48
   Features:
     - Loot now can work with other mod entities and generates groups of loot based on groupings of item types
-    - Recycling machine can now recyle most things	
+    - Recycling machine can now recyle most things
   Changes:
     - Code cleanup
     - Fixing names and recipe categories
