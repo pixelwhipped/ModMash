@@ -284,16 +284,17 @@ local local_valve_removed = function(entity)
 
 local local_valves_tick = function()	
 	--if true then return end
-	local valves = global.modmash.valves	
-	for k=1, #valves do local valve = valves[k];	
-		if is_valid(valve.entity) then
-			if valve ~= nil and is_valid(valve.entity) and valve.entity.to_be_deconstructed(valve.entity.force) ~= true then							
-					if valve.entity.name == "modmash-check-valve" then local_check_valve_process(valve)					
-					elseif valve.entity.name == "modmash-check-valve" then local_check_valve_process(valve) 
-					elseif valve.entity.name == "modmash-overflow-valve" then local_overflow_valve_process(valve) 
-					elseif valve.entity.name == "mini-boiler" then local_mini_boiler_process(valve) 
-					elseif valve.entity.name == "modmash-underflow-valve" then local_undeflow_valve_process(valve) 				
-					elseif valve.entity.name == "modmash-super-boiler-valve" then local_super_boiler_process(valve) end
+	local valves = global.modmash.valves or {}
+	for k=1, #valves do
+		local valve = valves[k]
+		if valve ~= nil
+			if is_valid(valve.entity) and valve.entity.to_be_deconstructed(valve.entity.force) ~= true then							
+				if valve.entity.name == "modmash-check-valve" then local_check_valve_process(valve)					
+				elseif valve.entity.name == "modmash-check-valve" then local_check_valve_process(valve) 
+				elseif valve.entity.name == "modmash-overflow-valve" then local_overflow_valve_process(valve) 
+				elseif valve.entity.name == "mini-boiler" then local_mini_boiler_process(valve) 
+				elseif valve.entity.name == "modmash-underflow-valve" then local_undeflow_valve_process(valve) 				
+				elseif valve.entity.name == "modmash-super-boiler-valve" then local_super_boiler_process(valve) end
 			else
 				local_remove(valve.entity)
 			end
