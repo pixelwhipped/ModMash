@@ -1,4 +1,9 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.18.07
+  Bug fix:
+    - loader-1x1 now usable on recycler (A)uto (Honktown)
+
+---------------------------------------------------------------------------------------------------
 Version: 0.18.06
   Bug fix:
     - add extra nil checks to valves update tick (Honktown)

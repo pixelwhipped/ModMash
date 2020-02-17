@@ -38,7 +38,7 @@ local local_recycling_machine_process = function(entity)
 	local current = entity.get_recipe()
 	if loaders ~= nil then
 		for i, ent in pairs(loaders) do			
-			if ent.prototype.type == "inserter" then			
+			if ent.type == "inserter" then			
 				if ent.drop_target == entity then
 					if current ~= nil and ent.held_stack.valid_for_read then				   
 						return current
@@ -53,7 +53,36 @@ local local_recycling_machine_process = function(entity)
 					end	
 					table.insert(storage,ent.pickup_target)					
 				end
-			elseif ent.prototype.type == "loader" then
+			elseif ent.type == "loader" then
+				local filtered = false
+				if ent.filter_slot_count > 0 then
+					for fi = 1, ent.filter_slot_count do	
+						local f = ent.get_filter(fi)
+						if f ~= nil then 
+							local rc = local_get_recyle_recipe(f)					
+							if rc ~= nil then
+								if rc == current then return nil end
+								filtered = true
+								result = f
+								max = 1
+							end							
+						end
+					end
+				end
+				if filtered == false then
+					local contents = aggrigate_content(ent.get_transport_line(1),ent.get_transport_line(2))	
+					for name, count in pairs(contents) do
+						local rc = local_get_recyle_recipe(name)					
+						if rc ~= nil then
+							if rc == current then return nil end
+							if count > max then 
+								result = name
+								max = count
+							end	
+						end
+					end
+				end
+			elseif ent.type == "loader-1x1" then
 				local filtered = false
 				if ent.filter_slot_count > 0 then
 					for fi = 1, ent.filter_slot_count do	
@@ -83,6 +112,7 @@ local local_recycling_machine_process = function(entity)
 					end
 				end
 			end
+
 		end		
 		for index, sto in pairs(storage) do			
 			if (sto.prototype.type == "transport-belt" or entity.prototype.type == "underground-belt")  then				
