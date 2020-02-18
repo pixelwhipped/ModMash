@@ -62,20 +62,21 @@ local local_init = function()
 	end
 
 local local_load = function()	
-	if global.modmash.valkyries ~= nil then
-		if global.modmash.valkyries.targets ~= nil then targets = global.modmash.valkyries.targets end
-		if global.modmash.valkyries.all_roboports ~= nil then all_roboports = global.modmash.valkyries.all_roboports end
-		if global.modmash.valkyries.return_targets ~= nil then return_targets = global.modmash.valkyries.return_targets end
-		if global.modmash.valkyries.max_targets ~= nil then max_targets = global.modmash.valkyries.max_targets end
-		if global.modmash.valkyries.max_distance ~= nil then max_distance = global.modmash.valkyries.max_distance end		
-	end
+		targets = global.modmash.valkyries.targets 
+		all_roboports = global.modmash.valkyries.all_roboports 
+		return_targets = global.modmash.valkyries.return_targets 
+		max_targets = global.modmash.valkyries.max_targets 
+		max_distance = global.modmash.valkyries.max_distance 		
 	end
 
 local local_update_return_targets = function(target)
 	 -- invalid?
-	if is_valid(target.entity) then	
-		if is_valid(target.player) then						
-			if distance(target.player.position.x,target.player.position.y,target.entity.position.x,target.entity.position.y) < 3 then
+	if target ~= nil and is_valid(target.entity) then	
+		if is_valid(target.player) then		
+		
+			local d = distance(target.player.position.x,target.player.position.y,target.entity.position.x,target.entity.position.y)
+			if d < 4 then
+			
 				if target.player.can_insert({name="valkyrie-robot",count = 1}) then		
 					target.entity.destroy() 
 					target.player.insert({name="valkyrie-robot",count = 1})					
@@ -131,6 +132,7 @@ local local_update_target = function(k)
 	end end
 
 local local_find_targets = function()
+	
 	if local_active() < max_targets then
 		for _, player in pairs(game.connected_players) do
 			if is_valid(player) and is_valid(player.character) and is_valid(player.character.logistic_network) then
@@ -158,13 +160,16 @@ local local_find_targets = function()
 		end
 		
 		local updates = math.min(#all_roboports,roboports_per_tick)
-		for k = 1, updates do 
+		
+		for k = 1, updates do 		
 			local x = math.random(1, #all_roboports)
 			r = all_roboports[x]
 			if is_valid(r.entity) then			
-				local enemy = r.entity.surface.find_enemy_units(r.entity.position, max_distance)				
-				if enemy ~= nil and #enemy > 0 then 				
+				local enemy = r.entity.surface.find_enemy_units(r.entity.position, max_distance)		
+				
+				if enemy ~= nil and #enemy > 0 then 							
 					local removed = r.entity.get_inventory(defines.inventory.roboport_robot).remove("valkyrie-robot")
+					--modmash.util.print(x .. " of " .. #all_roboports .. " " .. serpent.block(r.entity.get_inventory(defines.inventory.roboport_robot).get_contents()))
 					if removed > 0 then			
 					    local c = r.entity.surface.create_entity({
 							name='valkyrie-robot-projectile',
@@ -175,17 +180,17 @@ local local_find_targets = function()
 							target=enemy[1].position
 							})	
 							local_add_projectile()
-					elseif global.modmash.valkyries.valkyrie_network == true then --- only if researched
-						--modmash.util.print(#r.entity.logistic_network.cells)
+					elseif global.modmash.valkyries.valkyrie_network == true then --- only if researched					
+						
 						local net = r.entity.logistic_network
-						if net ~= nil then
+						if net ~= nil then							
 							local cells = net.cells
-							if cell ~= nil then
-								for z = 1, #cells do local port = cells[z].owner
-									if port.type == "roboport" then
-										removed = r.entity.get_inventory(defines.inventory.roboport_robot).remove("valkyrie-robot")
+							if cells ~= nil then								
+								for z = 1, #cells do local port = cells[z].owner									
+									if port.type == "roboport" then									
+										removed = port.get_inventory(defines.inventory.roboport_robot).remove("valkyrie-robot")
 										if removed > 0 then			
-											local c = r.entity.surface.create_entity({
+											local c = port.surface.create_entity({
 												name='valkyrie-robot-projectile',
 												force=r.entity.force,
 												position=r.entity.position,
@@ -234,24 +239,22 @@ local local_valkyrie_tick = function()
 		local_find_targets()
 	end
 
-	local rindex = global.modmash.valkyries.return_valkyries_update_index
-	if not rindex then 
-		global.modmash.valkyries.return_valkyries_update_index = 1
-		rindex = 1
-	end
+	if not global.modmash.return_valkyries_update_index then global.modmash.return_valkyries_update_index = 1 end --fix order
+	local rindex = global.modmash.return_valkyries_update_index
+
 	local rnumiter = 0
 	local rupdates = math.min(#return_targets,return_targets_per_tick)
 
 	for k = rindex, #return_targets do t = return_targets[k]
 		if local_update_return_targets(t) == true then
 			table.remove(return_targets,k)
-			return
 		end
 		if k >= #return_targets then k = 1 end
 		rnumiter = rnumiter + 1
 		if rnumiter >= rupdates then 
 			global.modmash.valkyries.return_valkyries_update_index	= k
 			k = #return_targets + 1 -- break
+
 		end
 	end end
 
@@ -386,7 +389,6 @@ end
 
 modmash.register_script({
 	on_tick = {
-		priority = med_priority,
 		tick = local_valkyrie_tick,
 		priority = low_priority
 		},
