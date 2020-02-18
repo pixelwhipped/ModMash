@@ -1,4 +1,17 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.18.02
+  Changes:
+    - Blancing
+    - Now Effects character_mining_speed_modifier
+    - Now Effects character_crafting_speed_modifier
+    - Now Effects character_build_distance_bonus
+    - Now Effects character_reach_distance_bonus
+    - Now Effects character_item_pickup_distance_bonus
+    - But will hurt if you run out of juice
+  Bug Fix:
+    - Fixed error or respawn
+
+---------------------------------------------------------------------------------------------------
 Version: 0.18.01
   Features:
     - Addeds Coffee, you coffee beans are harvested from trees by adding an inserter nearby, Coffee keeps you going.

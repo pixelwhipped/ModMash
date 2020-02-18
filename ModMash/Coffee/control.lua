@@ -488,7 +488,7 @@ script.on_event(defines.events.on_player_toggled_map_editor,function(event)
 	end)
 
 
-script.on_event({on_player_joined_game,defines.events.on_player_created},local_on_player_spawned)
+script.on_event({on_player_joined_game,defines.events.on_player_created,defines.events.on_player_respawned},local_on_player_spawned)
 script.on_event(build_events, local_on_added)
 script.on_event(remove_events, local_on_removed)
 script.on_event(item_pick_up_events, local_item_pick_up)

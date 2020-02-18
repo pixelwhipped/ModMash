@@ -9,7 +9,7 @@ coffee.defines.names.force_enemy = "enemy"
 coffee.defines.names.force_neutral = "neutral"
 
 --[[defaults]]
-coffee.defines.defaults.coffee_decrease_per_nth_tick = 60*5
+coffee.defines.defaults.coffee_decrease_per_nth_tick = 60*15
 coffee.defines.defaults.coffee_max_tree_chest = 50
 coffee.defines.defaults.coffee_chest_growth_rate_per_nth_tick = 60*2   --every 2 seconds
 
