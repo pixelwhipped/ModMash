@@ -572,6 +572,13 @@ local local_get_entities_around = function(entity,tiles_away,findtype,name)
 	elseif type(tiles_away) == "string" then w = w + tonumber(tiles_away) h = h + tonumber(tiles_away) end
 
 	entities = entity.surface.find_entities_filtered{area = {{entity.position.x-w, entity.position.y-h}, {entity.position.x+w, entity.position.y+h}}, type = findtype, name = name}
+
+	for i, ent in pairs(entities) do	
+		if ent == entity then
+			table.remove(entities,i)
+			break
+		end	
+	end
 	return entities
 end
 
