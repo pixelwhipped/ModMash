@@ -66,7 +66,9 @@ local local_fishing_transferer_process = function(entity)
 end
 --add check for frop position held position and over water
 local local_fishing_inserter_process = function(entity)    	
+
 	local fish = get_entities_around(entity,8, "fish")
+	
 	local fish_count = 0
 	local spawner = nil
 	local target = nil
@@ -89,16 +91,16 @@ local local_fishing_inserter_process = function(entity)
 	if target ~= nil then	
 		local_try_pickup_fish_at_position(entity,target)
 	end
-	if spawner ~= nil and fish_count < 10 then
+	if spawner ~= nil and spawner.valid and fish_count < 10 then	
 		local r = math.random()
-		if r < 0.05 then
+		if r < 0.05 and entity.surface.can_place_entity({name="fish", amount=1, position=spawner.position}) then
 			entity.surface.create_entity({name="fish", amount=1, position=spawner.position})
 		end
 	elseif fish_count == 0 then
 		local box = {{entity.pickup_position.x-0.5, entity.pickup_position.y-0.5}, {entity.pickup_position.x+0.5, entity.pickup_position.y+0.5}}
 		local tiles = entity.surface.find_tiles_filtered{area=box}
 		for _,tile in pairs(tiles) do
-			if tile.name == "water" then 
+			if tile.name == "water" and entity.surface.can_place_entity({name="fish", amount=1, position=spawner.position}) then 
 				entity.surface.create_entity({name="fish", amount=1, position=tile.position})
 			end
 		end

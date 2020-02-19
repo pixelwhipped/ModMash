@@ -2,6 +2,7 @@
 Version: 0.18.10
   Bug fix:
     - add accidentally-removed behavior from get_entities_around function (Honktown)
+    - added check and edge case fizes for fishing inserters
 
 ---------------------------------------------------------------------------------------------------
 Version: 0.18.09
