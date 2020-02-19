@@ -323,7 +323,7 @@ end
 
 modmash.register_script({
 	on_tick = {
-		priority = low_priority,
+		priority = high_priority,
 		tick = local_fishing_inserter_tick
 		},
 	on_load = local_load,
