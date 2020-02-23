@@ -523,6 +523,31 @@ local local_pickup_stock = function(droid)
 	end
 end
 
+local local_droid_available_resources = function(droid)
+	local items = {}
+	local rad = (droid_scan_radius + global.modmash.droids.research_modifier)
+	local entities = get_entities_around(droid.entity,rad,nil,{"droid-chest"})
+	if #entities > 0 then		
+		for k=1, #entities do local ent = entities[k]
+			local prods = {}
+			local_extract_inventory(ent,defines.inventory.chest,prods)
+			for k=1, #prods do local p = prods[k]
+				items[p.name] = p.name			
+			end
+		end
+	end
+	for i = 1, #game.players do local p = game.players[i]	
+		if distance(droid.entity.position.x,droid.entity.position.y,p.position.x,p.position.y) <= rad then
+			local prods = {}
+			local_extract_inventory(p,defines.inventory.character_main,prods)
+			for k=1, #prods do local i = prods[k]
+				items[i.name] = i.name
+			end
+		end
+	end
+	return items
+	end
+
 local local_find_location_for = function(droid)	
 	if droid.target == nil then return end
 	local rad = (droid_scan_radius + global.modmash.droids.research_modifier)
@@ -569,8 +594,16 @@ local local_find_location_for = function(droid)
 	end
 end
 
+local local_get_keys = function(tab)
+  local keyset = {}
+  for k,v in pairs(tab) do
+    keyset[#keyset + 1] = k
+  end
+  return keyset
+end
+
 local local_droid_process_build_no_command = function(droid) 	
-	if droid.target == nil then		
+	if droid.target == nil then				
 		local_select_deconstruct_target(droid)
 		if droid.target  ~= nil then
 			droid.goto_pos = droid.target.position
@@ -583,28 +616,45 @@ local local_droid_process_build_no_command = function(droid)
 	if droid.stack ~= nil and droid.stack.name ~=nil then
 		name = droid.stack.name
 	end
-
-	local require = local_select_ghost(droid,name)
-	if is_valid(droid.target) then	
-		droid.goto_pos = droid.target.position
-		if droid.stack.count == 0 then
-			droid.stack.name = require
-			local_find_location_for(droid)			
-			if droid.goto_pos == nil then
-				droid.goto_pos = nil
-				droid.target = nil
-				droid.command = no_command
-			else		
-				droid.command = get_stock_command
-				droid.entity.set_command({type=defines.command.go_to_location, destination=droid.goto_pos, distraction=defines.distraction.none})				
-			end
-			return
+	
+	local require = nil 
+	if name == nil then
+		local options = local_droid_available_resources(droid)
+		local keys = local_get_keys(options)
+		if #keys > 0 then
+			local c = 0
+			repeat
+				local n = keys[math.random(1, #keys)]
+				require = local_select_ghost(droid,n)
+				c = c + 1
+			until(require ~= nil or c > 10)
 		end
-		droid.command = build_command
-		droid.entity.set_command({type=defines.command.go_to_location, destination=droid.goto_pos, distraction=defines.distraction.none})
-		return
-	end		
-
+	else
+		require = local_select_ghost(droid,name)
+	end
+	if is_valid(droid.target) then 
+		droid.goto_pos = droid.target.position
+		if require ~= nil then
+			if is_valid(droid.target) then	
+				if droid.stack.count == 0 then
+					droid.stack.name = require
+					local_find_location_for(droid)			
+					if droid.goto_pos == nil then
+						droid.goto_pos = nil
+						droid.target = nil
+						droid.command = no_command
+					else		
+						droid.command = get_stock_command
+						droid.entity.set_command({type=defines.command.go_to_location, destination=droid.goto_pos, distraction=defines.distraction.none})				
+					end
+					return
+				end
+				droid.command = build_command
+				droid.entity.set_command({type=defines.command.go_to_location, destination=droid.goto_pos, distraction=defines.distraction.none})
+				return
+			end		
+		end
+	end
 	local_droid_select_dropoff(droid)
 	if is_valid(droid.target) then
 		droid.command = drop_stock_command
@@ -682,8 +732,6 @@ local local_droid_process_build_drop_stock_command = function(droid)
 		local_clear_droid_command(droid)
 	end
 end
-
-
 
 local local_droid_process_build_build_command = function(droid)
 	if not is_valid(droid.target) then
@@ -769,42 +817,24 @@ local local_droid_process_build_destroy_command = function(droid)
 	end
 end
 
---potential dsync issue and not used
---local nc = 0
---local gsc = 0
---local dsc = 0
---local bc = 0
---local dc = 0
---local cc = 0
 
 local local_droid_process_build = function(droid) 
 	local rad = (droid_scan_radius + droids.research_modifier)
-	if droid.stack == nil then droid.stack = {name = nil, count = 0} end		
+	if droid.stack == nil then droid.stack = {name = nil, count = 0} end			
 	if droid.command == no_command then			
-		--if droid.cooldown == nil then
-		local_droid_process_build_no_command(droid)
-		--nc = nc + 1 --potential dsync issue and not used
+		local_droid_process_build_no_command(droid)		
 		droid.cooldown = game.tick + (60 * 3)
-		--elseif droid.cooldown < game.tick then
-		--	droid.cooldown = nil
-		--end
 	elseif droid.command == get_stock_command then		
 		local_droid_process_build_get_stock_command(droid)
-		--gsc = gsc + 1 --potential dsync issue and not used
 	elseif droid.command == drop_stock_command then
 		local_droid_process_build_drop_stock_command(droid)
-		--dsc = dsc + 1  --potential dsync issue and not used
 	elseif droid.command == build_command then
 		local_droid_process_build_build_command(droid)
-		--bc = bc + 1  --potential dsync issue and not used
 	elseif droid.command == destroy_command then
 		local_droid_process_build_destroy_command(droid)
-		--dc = dc + 1  --potential dsync issue and not used
 	else
 		local_clear_droid_command(droid)
-		--cc = cc + 1  --potential dsync issue and not used
 	end
-	--modmash.util.print(nc .."|"..gsc.."|"..dsc.."|"..bc.."|"..dc.."|"..cc)
 end
 
 local local_droid_process_collection = function(droid) 
@@ -957,9 +987,9 @@ local local_start = function()
 	end
 
 local local_droid_tick = function()		
+	
 	if not global.modmash.droids_update_index then global.modmash.droids_update_index = 1 end --fix order
-	local index = global.modmash.droids_update_index
-
+	local index = global.modmash.droids_update_index	
 	local numiter = 0
 	local updates = math.min(#all_droids,droids_per_tick)
 	if droids.research_modifier == nil then droids.research_modifier = 1 end
@@ -968,7 +998,7 @@ local local_droid_tick = function()
 		if droid.entity.valid and not droid.entity.to_be_deconstructed(droid.entity.force) then		
 			--if droid.entity.has_command() and droid.target ~= nil then local_clear_droid_command(droid) end
 			if droid.cooldown == nil then
-				if droid.stack == nil then droid.stack = {name = nil, count = 0} end
+				if droid.stack == nil then droid.stack = {name = nil, count = 0} end				
 				if droid.mode == collection_mode then
 					local_droid_process_collection(droid)
 				elseif droid.mode == scout_mode then				
@@ -1080,19 +1110,15 @@ local local_on_ai_command_completed = function(event)
 	local unit_id = event.unit_number
 	local result = event.result
 	for k=1, #all_droids do local droid = all_droids[k];		
-		 if is_valid(droid.entity) and droid.entity.unit_number == unit_id then
-			--if result == defines.behavior_result.in_progress then modmash.util.print("AI In Progess") end
+		 if is_valid(droid.entity) and droid.entity.unit_number == unit_id then			
 			if result == defines.behavior_result.fail then
-				--modmash.util.print("AI Fail")
 				if droid.target_fail == nil then droid.target_fail = {} end
 				table.insert(droid.target_fail, droid.target);
 				local_clear_droid_command(droid)
 			end
 			if result == defines.behavior_result.success then
-				--droid.target_fail = nil
-			--	modmash.util.print("AI Success")
-			end
-			--if result == defines.behavior_result.deleted then modmash.util.print("AI Deleted") end			
+				--do nothing
+			end			
 		 end
 	end
 	
