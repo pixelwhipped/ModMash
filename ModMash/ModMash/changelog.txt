@@ -1,4 +1,9 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.18.11
+  Bug fix:
+    - Droid build change, could get stuck on anavailable ghosts
+
+---------------------------------------------------------------------------------------------------
 Version: 0.18.10
   Bug fix:
     - add accidentally-removed behavior from get_entities_around function (Honktown)
