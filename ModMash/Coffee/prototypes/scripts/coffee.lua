@@ -37,13 +37,24 @@ local local_update_player = function(k,m)
 			players[k].value = math.max(players[k].value-1+0,0)
 			local level = players[k].value/100.0
 			local mod = level * 3
-			player.character_running_speed_modifier = mod
-			player.character_mining_speed_modifier = mod
-			player.character_crafting_speed_modifier = mod
-			player.character_build_distance_bonus = mod
-			player.character_reach_distance_bonus = mod
-			player.character_item_pickup_distance_bonus = mod
-
+			if settings.global["coffee-setting-speed-mod"].value ~= "0" then
+				player.character_running_speed_modifier = mod * settings.global["coffee-setting-speed-mod"].value/100
+			end
+			if settings.global["coffee-setting-mining-mod"].value ~= "0" then
+				player.character_mining_speed_modifier = mod * settings.global["coffee-setting-mining-mod"].value/100
+			end
+			if settings.global["coffee-setting-crafting-mod"].value ~= "0" then
+				player.character_crafting_speed_modifier = mod * settings.global["coffee-setting-crafting-mod"].value/100
+			end
+			if settings.global["coffee-setting-build-dist-mod"].value ~= "0" then
+				player.character_build_distance_bonus = mod * settings.global["coffee-setting-build-dist-mod"].value/100
+			end
+			if settings.global["coffee-setting-reach-dist-mod"].value ~= "0" then
+				player.character_reach_distance_bonus = mod * settings.global["coffee-setting-reach-dist-mod"].value/100
+			end
+			if settings.global["coffee-setting-pickup-dist-mod"].value ~= "0" then
+				player.character_item_pickup_distance_bonus = mod * settings.global["coffee-setting-pickup-dist-mod"].value/100
+			end
 			
 			local text = string.rep("●", math.ceil(level * 5 + 0.1)) .. " " .. players[k].value
 			local color = {r = 1 - level, g = level, b = 0, a = 0.5}
@@ -57,7 +68,9 @@ local local_update_player = function(k,m)
 				alignment = "center",
 				scale = 0.75,
 			}
-			if mod == 0 then player.character.damage(10,"neutral") end
+			if settings.global["coffee-setting-no-coffee"].value == "It Hurts" and mod == 0 then
+				player.character.damage(10,"neutral")
+			end
 			
 			--[[
 			
