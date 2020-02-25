@@ -21,7 +21,7 @@ local local_check_resource = function()
 			local entities = v.target.surface.find_entities_filtered{area = {{v.target.position.x-0.5, v.target.position.y-0.5}, {v.target.position.x-1, v.target.position.y+1}}}
 			for i, ent in pairs(entities) do
 				if ent.name == "small-scorchmark" then
-					if is_valid(v.target) then
+					if is_valid(v.target) and game.item_prototypes[v.target.name] then
 						v.target.surface.spill_item_stack(ent.position, {name=v.target.name, count=50})
 						local r = v.target.amount - math.min(50,v.target.amount);
 						if r == 0 then
