@@ -1,7 +1,8 @@
 ﻿---------------------------------------------------------------------------------------------------
 Version: 0.18.12
   Bug Fix:
-    - explosive mining no longer tries to mine fluids (honk honk)
+    - explosive mining no longer tries to mine fluids (honk)
+    - check if explosive mining entity becomes invalid (honk honk)
 
 ---------------------------------------------------------------------------------------------------
 Version: 0.18.11
