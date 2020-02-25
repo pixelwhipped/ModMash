@@ -1,4 +1,9 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.18.12
+  Bug Fix:
+    - explosive mining no longer tries to mine fluids (honk honk)
+
+---------------------------------------------------------------------------------------------------
 Version: 0.18.11
   Bug fix:
     - Droid build change, could get stuck on anavailable ghosts
