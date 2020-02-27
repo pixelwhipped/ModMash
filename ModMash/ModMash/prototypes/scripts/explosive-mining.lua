@@ -14,14 +14,14 @@ local local_init = function()
 
 local local_check_resource = function()
 	for i, v in ipairs(global.modmash.grenade_targets) do
-		if v.ticks > 400 then
+		if (v.ticks > 400) or (not v.target.valid) then
 			table.remove(global.modmash.grenade_targets, i)
 		else
 			v.ticks = v.ticks + 1
 			local entities = v.target.surface.find_entities_filtered{area = {{v.target.position.x-0.5, v.target.position.y-0.5}, {v.target.position.x-1, v.target.position.y+1}}}
 			for i, ent in pairs(entities) do
 				if ent.name == "small-scorchmark" then
-					if is_valid(v.target) then
+					if is_valid(v.target) and game.item_prototypes[v.target.name] then
 						v.target.surface.spill_item_stack(ent.position, {name=v.target.name, count=50})
 						local r = v.target.amount - math.min(50,v.target.amount);
 						if r == 0 then
