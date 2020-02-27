@@ -124,10 +124,6 @@
       },
       {
         type = "unlock-recipe",
-        recipe = "fish-conversion"
-      },
-      {
-        type = "unlock-recipe",
         recipe = "fish-conversion-light-oil"
       },
       {

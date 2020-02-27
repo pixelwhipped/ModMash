@@ -3,6 +3,7 @@ Version: 0.18.12
   Bug Fix:
     - explosive mining no longer tries to mine fluids (honk)
     - check if explosive mining entity becomes invalid (honk honk)
+    - removed excess add fish oid to enrichment 1 and 3. only on 1 now
 
 ---------------------------------------------------------------------------------------------------
 Version: 0.18.11
