@@ -511,6 +511,6 @@ script.on_event(defines.events.on_gui_click, local_on_gui_click)
 script.on_event(defines.events.on_selected_entity_changed,local_on_selected)	
 script.on_event(defines.events.on_post_entity_died,local_on_post_entity_died)
 script.on_event(defines.events.on_player_rotated_entity,local_on_player_rotated_entity) 
-script.on_event("automate-target",local_on_adjust)
+--script.on_event("automate-target",local_on_adjust)
 
 script.on_event(defines.events.on_entity_cloned,local_on_entity_cloned) 
