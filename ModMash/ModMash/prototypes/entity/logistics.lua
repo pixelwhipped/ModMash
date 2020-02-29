@@ -1,4 +1,7 @@
-﻿if not modmash or not modmash.util then require("prototypes.scripts.util") end
+﻿--[[Code check 29.2.20
+no changes
+--]]
+if not modmash or not modmash.util then require("prototypes.scripts.util") end
 
 local patch_technology  = modmash.util.patch_technology
 local starts_with  = modmash.util.starts_with

@@ -1,4 +1,7 @@
-﻿if not modmash or not modmash.util then require("prototypes.scripts.util") end
+﻿--[[Code check 29.2.20
+removed old comments
+--]]
+if not modmash or not modmash.util then require("prototypes.scripts.util") end
 
 local get_name_for = modmash.util.get_name_for
 
@@ -13,8 +16,6 @@ local create_regenerative_technology = function(level,count)
 			icon_size = 128,
 			localised_name = {"",{"technology-name.enhance-regenerative-speed-1"}," ",level},
 			localised_description =  {"technology-description.enhance-regenerative-speed-1"},
-			--localised_name = "Advanced Regenerative Technology "..level,
-			--localised_description = "Increases regenerative items healing factor",
 			effects =
 			{
 			},

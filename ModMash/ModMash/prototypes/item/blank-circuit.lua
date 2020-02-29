@@ -1,11 +1,12 @@
-﻿if not data.raw.item["sand"] then
+﻿--[[Code check 29.2.20
+removed old comments
+--]]
+if not data.raw.item["sand"] then
   data:extend({
     {
       icon = "__modmash__/graphics/icons/sand.png",
       icon_size = 32,
       name = "sand",
-	 -- localised_name = "Silicates",
-	 -- localised_description = "Silicates",
       order = "a[wood]-b-b",
       stack_size = 200,
       subgroup = "raw-material",
@@ -19,8 +20,6 @@ if not data.raw.item["glass"] then
     {
       icon = "__modmash__/graphics/icons/glass.png",
       icon_size = 64,
-	 -- localised_name = "Glass",
-	  --localised_description = "Glass",
       name = "glass",
       order = "a[wood]-b-c",
       stack_size = 100,
@@ -65,8 +64,6 @@ data:extend(
 	{
 		type = "item",
 		name = "blank-circuit",
-		--localised_name = "Blank Circuit",
-		--localised_description = "Blank Circuit",
 		icon = "__modmash__/graphics/icons/blank-circuit.png",
 		icon_size = 32,
 		subgroup = "intermediate-product",

@@ -1,4 +1,7 @@
-﻿data:extend(
+﻿--[[Code check 29.2.20
+removed old comments
+--]]
+data:extend(
 {
     -- sprites
     {
@@ -43,10 +46,6 @@
 		collision_box = {{-0.7, -0.7}, {0.7, 0.7}},
 		selection_box = {{-0.8, -1}, {0.8, 1}},
 
-		--collision_box = {{-1.2, -1.2}, {1.2, 1.2}},
-		--selection_box = {{-1.5, -1.5}, {1.5, 1.5}},
-		--alert_icon_shift = util.by_pixel(-3, -12),
-
 		always_draw_idle_animation = true,
 
 		idle_animation =
@@ -61,7 +60,6 @@
 				height = 107,
 				scale = 0.8,
 				frame_count = 64,
-				--shift = util.by_pixel(-0.5, -26.5),
 				hr_version =
 				{
 				filename = "__base__/graphics/entity/centrifuge/hr-centrifuge-C.png",
@@ -71,7 +69,6 @@
 				width = 237,
 				height = 214,
 				frame_count = 64,
-				--shift = util.by_pixel(-0.25, -26.5)
 				}
 			},
 			{
@@ -83,7 +80,6 @@
 				height = 74,
 				scale = 0.8,
 				frame_count = 64,
-				-- shift = util.by_pixel(20, -10),
 				hr_version =
 				{
 				filename = "__base__/graphics/entity/centrifuge/hr-centrifuge-C-shadow.png",
@@ -94,7 +90,6 @@
 				width = 279,
 				height = 152,
 				frame_count = 64,
-				--shift = util.by_pixel(16.75, -10)
 				}
 			},	
 			}
@@ -114,8 +109,6 @@
 					width = 96,
 					height = 104,
 					frame_count = 64,
-					--shift = util.by_pixel(0, -27),
-					
 					hr_version =
 					{
 						filename = "__base__/graphics/entity/centrifuge/hr-centrifuge-C-light.png",
@@ -127,8 +120,6 @@
 						width = 190,
 						height = 207,
 						frame_count = 64,
-						
-						--shift = util.by_pixel(0, -27.25)
 					}
 				},      
 			}

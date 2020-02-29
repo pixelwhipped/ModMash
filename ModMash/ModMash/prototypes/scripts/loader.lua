@@ -1,11 +1,11 @@
-﻿--[[dsync checking 
-ok only locals are reference to global
-]]
+﻿--[[Code check 29.2.20
+removed old comments
+added references for loader-1x1
+--]]
 
 if settings.startup["modmash-setting-loader-snapping"].value == "Disabled" then return end
 
 if not modmash or not modmash.util then require("prototypes.scripts.util") end
---if not modmash.util.loader then modmash.util.loader = {} end
 if not modmash.util.defines then require ("prototypes.scripts.defines") end
 
 local is_valid = modmash.util.is_valid
@@ -21,11 +21,11 @@ local get_entities_to_west  = modmash.util.get_entities_to_west
 loaders = nil
 
 local beltTypes = {
-  "loader","splitter","underground-belt","transport-belt"
+  "loader","loader-1x1","splitter","underground-belt","transport-belt"
 }
 
-local local_adjust_loader = function(entity)
-	if entity.direction  == defines.direction.north or entity.direction  == defines.direction.south then
+local local_adjust_loader = function(entity)	
+	if entity.direction == defines.direction.north or entity.direction == defines.direction.south then
 		local north = get_entities_to_north(entity,beltTypes)
 		if #north > 0 then
 			if north[1].direction == 4 then entity.loader_type = "input" return end
@@ -64,7 +64,7 @@ local local_find_loaders  = function(entity)
 	elseif entity.direction  == defines.direction.east or entity.direction  == defines.direction.west then
 		area = {{entity.position.x-(w+0.5), entity.position.y-h}, {entity.position.x+(w+0.5), entity.position.y+h}}
 	end
-	local loaders = surface.find_entities_filtered{area=area, type = 'loader'}
+	local loaders = surface.find_entities_filtered{area=area, type = {'loader-1x1','loader'}}
 	for i, loader in pairs (loaders) do
 		local_adjust_loader (loader)
 	end
@@ -75,17 +75,17 @@ local local_find_train_loaders = function(entity)
 	if not (entity.type=="cargo-wagon" or entity.type=="locomotive") then return end
 	if (entity.train.state==defines.train_state.wait_station or entity.train.state==defines.train_state.manual_control) and entity.train.speed==0 then
 		if entity.orientation==0 or entity.orientation==0.5 then
-			for j,loader in pairs(entity.surface.find_entities_filtered{type="loader",area={{entity.position.x-1.5,entity.position.y-2.2},{entity.position.x-0.5,entity.position.y+2.2}}}) do
+			for j,loader in pairs(entity.surface.find_entities_filtered{type={'loader-1x1','loader'},area={{entity.position.x-1.5,entity.position.y-2.2},{entity.position.x-0.5,entity.position.y+2.2}}}) do
 				table.insert(loaders,{loader,entity,6})				
 			end
-			for j,loader in pairs(entity.surface.find_entities_filtered{type="loader",area={{entity.position.x+0.5,entity.position.y-2.2},{entity.position.x+1.5,entity.position.y+2.2}}}) do
+			for j,loader in pairs(entity.surface.find_entities_filtered{type={'loader-1x1','loader'},area={{entity.position.x+0.5,entity.position.y-2.2},{entity.position.x+1.5,entity.position.y+2.2}}}) do
 				table.insert(loaders,{loader,entity,2})
 			end
 		elseif entity.orientation==0.25 or entity.orientation==0.75 then
-			for j,loader in pairs(entity.surface.find_entities_filtered{type="loader",area={{entity.position.x-2.2,entity.position.y-1.5},{entity.position.x+2.2,entity.position.y-0.5}}}) do				
+			for j,loader in pairs(entity.surface.find_entities_filtered{type={'loader-1x1','loader'},area={{entity.position.x-2.2,entity.position.y-1.5},{entity.position.x+2.2,entity.position.y-0.5}}}) do				
 				table.insert(loaders,{loader,entity,0})
 			end
-			for j,loader in pairs(entity.surface.find_entities_filtered{type="loader",area={{entity.position.x-2.2,entity.position.y+0.5},{entity.position.x+2.2,entity.position.y+1.5}}}) do
+			for j,loader in pairs(entity.surface.find_entities_filtered{type={'loader-1x1','loader'},area={{entity.position.x-2.2,entity.position.y+0.5},{entity.position.x+2.2,entity.position.y+1.5}}}) do
 				table.insert(loaders,{loader,entity,4})
 			end
 		end
@@ -93,9 +93,8 @@ local local_find_train_loaders = function(entity)
 	end
 
 local local_loader_added = function(entity)	
-		if is_valid(entity) ~= true then return end
-		
-		if entity.type == "loader" then 
+		if is_valid(entity) ~= true then return end		
+		if entity.type == "loader-1x1" or entity.type == "loader" then 
 			local_adjust_loader(entity)
 			local w=entity.surface.find_entities_filtered{type="cargo-wagon",area={{entity.position.x-2,entity.position.y-2},{entity.position.x+2,entity.position.y+2}}}
 			for a,b in pairs(w) do
@@ -190,7 +189,6 @@ local local_clean_loaders = function()
 end
 
 local local_loader_tick = function()
-	--if true then return end
 	local loader_active = function(entity,direction)
 		if entity.loader_type=="output" and entity.direction==direction then return true end
 		return entity.loader_type=="input" and entity.direction==(direction+4)%8 		
@@ -221,7 +219,7 @@ local local_load = function()
 	end
 	
 local local_loader_removed = function(entity)
-	if entity.type == "loader" then				
+	if entity.type == "loader-1x1" or entity.type == "loader" then				
 		for index, loader in pairs(loaders) do
 			if  loader.entity == entity then
 				table.remove(loaders, index)				
@@ -233,7 +231,7 @@ end
 
 local local_on_entity_cloned = function(event)
 	if is_valid(event.source) then 
-		if event.source.type == "loader" then return end	
+		if entity.source.type == "loader-1x1" or event.source.type == "loader" then return end	
 		for index, loader in pairs(loaders) do
 			if  loader.entity == event.source then
 				loader.entity = event.destination
@@ -264,7 +262,6 @@ modmash.register_script({
 	on_tick = local_loader_tick,
 	on_init = local_init,
 	on_load = local_load,
-	--on_start = local_init,
 	on_added = local_loader_added,
 	on_removed = local_loader_removed,
 	on_train_changed_state = local_on_train_changed_state,

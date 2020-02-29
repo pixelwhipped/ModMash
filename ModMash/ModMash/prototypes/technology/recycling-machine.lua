@@ -1,10 +1,11 @@
-﻿data:extend(
+﻿--[[Code check 29.2.20
+removed old comments
+--]]
+data:extend(
 {
   {
     type = "technology",
     name = "recycling-machine",
-	--localised_name = "Recycling Machine",
-	--localised_description = "Recycling Machine",
     icon = "__modmash__/graphics/item-group/recycling.png",
     icon_size = 64,
     effects =

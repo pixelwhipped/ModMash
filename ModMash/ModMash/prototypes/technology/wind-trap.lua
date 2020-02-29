@@ -1,11 +1,11 @@
-﻿data:extend(
+﻿--[[Code check 29.2.20
+removed old comments
+--]]
+data:extend(
 {
   {
     type = "technology",
     name = "wind-trap",
-	--localised_name = "Air Purifier",
-	--localised_description = "Reduces polution and produces water and sludge as byproducts.",
-
     icon = "__base__/graphics/technology/automation.png",
     icon_size = 128,
     effects =

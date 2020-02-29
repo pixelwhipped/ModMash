@@ -1,10 +1,12 @@
-﻿data:extend(
+﻿--[[Code check 29.2.20
+removed old comments
+--]]
+data:extend(
 {
   {
     type = "technology",
     name = "fluid-handling-3",
-		localised_name = "Fluid Handling 3",
-	--localised_description = "Fluid Handling 3",
+	localised_name = "Fluid Handling 3",
     icon_size = 128,
     icon = false,
 	icons = {

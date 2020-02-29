@@ -1,4 +1,7 @@
-﻿function compilatron_animations(tint1)
+﻿--[[Code check 29.2.20
+removed old comments
+--]]
+function compilatron_animations(tint1)
 	return
 	{
 	  layers =
@@ -209,9 +212,6 @@ data:extend(
 	{
 		type = "unit",
 		name = "droid",
-		--localised_name = "Droid",
-		--localised_description = "Droid",
-	--	ai_settings = { path_resolution_modifier = -8, allow_try_return_to_spawner = true },
 		icon_size = 64,
 		icon = "__modmash__/graphics/icons/construction_drone_icon.png",
 		flags = {"placeable-player", "player-creation", "placeable-off-grid"},
@@ -304,12 +304,9 @@ data:extend(
 		  probability = 1 / (6 * 60) -- average pause between the sound is 6 seconds
 		}
 	},
-	{
-		--type = "logistic-container",
+	{		
 		type = "container",
 		name = "droid-chest",
-		--localised_name = "Droid chest",
-		--localised_description = "Droid chest",
 		icon = "__modmash__/graphics/icons/droid-chest.png",
 		icon_size = 32,
 		flags = {"placeable-player", "player-creation"},
@@ -377,7 +374,6 @@ local local_create_beam_type = function(name, tint, interval, damage, damage_typ
 	  target_offset_y = -0.3,
 	  head =
 	  {
-		--filename = "__modmash__/graphics/entity/droid/beams/beam-head.png",
 		filename = "__base__/graphics/entity/beam/beam-head.png",
 		line_length = 16,
 		width = 45,
@@ -389,7 +385,6 @@ local local_create_beam_type = function(name, tint, interval, damage, damage_typ
 	  },
 	  tail =
 	  {
-		--filename = "__modmash__/graphics/entity/droid/beams/beam-tail.png",
 		filename = "__base__/graphics/entity/beam/beam-tail.png",
 		line_length = 16,
 		width = 45,
@@ -401,7 +396,6 @@ local local_create_beam_type = function(name, tint, interval, damage, damage_typ
 	  body =
 	  {
 		{
-		  --filename = "__modmash__/graphics/entity/droid/beams/beam-body-1.png",
 		  filename = "__base__/graphics/entity/beam/beam-body-1.png",
 		  line_length = 16,
 		  width = 45,
@@ -412,7 +406,6 @@ local local_create_beam_type = function(name, tint, interval, damage, damage_typ
 		},
 		{
 		  filename = "__base__/graphics/entity/beam/beam-body-2.png",
-		  --filename = "__modmash__/graphics/entity/droid/beams/beam-body-2.png",
 		  line_length = 16,
 		  width = 45,
 		  height = 39,
@@ -422,7 +415,6 @@ local local_create_beam_type = function(name, tint, interval, damage, damage_typ
 		},
 		{
 		  filename = "__base__/graphics/entity/beam/beam-body-3.png",
-		 -- filename = "__modmash__/graphics/entity/droid/beams/beam-body-3.png",
 		  line_length = 16,
 		  width = 45,
 		  height = 39,
@@ -432,7 +424,6 @@ local local_create_beam_type = function(name, tint, interval, damage, damage_typ
 		},
 		{
 		  filename = "__base__/graphics/entity/beam/beam-body-4.png",
-		 -- filename = "__modmash__/graphics/entity/droid/beams/beam-body-4.png",
 		  line_length = 16,
 		  width = 45,
 		  height = 39,
@@ -442,7 +433,6 @@ local local_create_beam_type = function(name, tint, interval, damage, damage_typ
 		},
 		{
 	      filename = "__base__/graphics/entity/beam/beam-body-5.png",
-		  --filename = "__modmash__/graphics/entity/droid/beams/beam-body-5.png",
 		  line_length = 16,
 		  width = 45,
 		  height = 39,
@@ -452,7 +442,6 @@ local local_create_beam_type = function(name, tint, interval, damage, damage_typ
 		},
 		{
 		  filename = "__base__/graphics/entity/beam/beam-body-6.png",
-		--  filename = "__modmash__/graphics/entity/droid/beams/beam-body-6.png",
 		  line_length = 16,
 		  width = 45,
 		  height = 39,

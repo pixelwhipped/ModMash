@@ -1,4 +1,7 @@
-﻿if not modmash or not modmash.util then require("prototypes.scripts.util") end
+﻿--[[Code check 29.2.20
+removed old comments
+--]]
+if not modmash or not modmash.util then require("prototypes.scripts.util") end
 
 local get_name_for = modmash.util.get_name_for
 
@@ -7,8 +10,6 @@ data:extend({
     type = "ammo",
     name = "biter-neuro-toxin-artillery-shell",
     icon = "__modmash__/graphics/icons/biter-neuro-toxin.png",
-	--localised_name = "Biter Neuro Toxin Artillery Shell",
-	--localised_description = "Biter Neuro Toxin Artillery Shell",
 
     icon_size = 32,
     ammo_type =
@@ -223,8 +224,6 @@ data:extend({
   {
     type = "technology",
     name = "biter-neuro-toxin-artillery-shell",
-	--localised_name = "Biter Neuro Toxin Artillery Shell",
-	--localised_description = "Biter Neuro Toxin Artillery Shell",
     icon = "__base__/graphics/technology/artillery.png",
     icon_size = 128,
     effects =
@@ -282,8 +281,6 @@ data:extend({
   {
     type = "recipe",
     name = "biter-neuro-toxin-artillery-shell",
-	--localised_name = "Biter Neuro Toxin Artillery Shell",
-	--localised_description = "Biter Neuro Toxin Artillery Shell",
 	category = "crafting-with-fluid",
     enabled = false,
     energy_required = 15,

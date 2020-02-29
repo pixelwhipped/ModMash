@@ -1,11 +1,12 @@
-﻿data:extend(
+﻿--[[Code check 29.2.20
+removed old comments
+--]]
+data:extend(
 {
   {
 	type = "technology",
     name = "logistics-4",
     icon = "__base__/graphics/technology/logistics.png",
-	--localised_name = "Logistics 4",
-	--localised_description = "Logistics 4",
     icon_size = 128,
     effects = {},
     prerequisites = {"logistics-3"},
@@ -25,8 +26,6 @@
   {
 	type = "technology",
     name = "logistics-5",
-	--localised_name = "Logistics 5",
-	--localised_description = "Logistics 5",
     icon = "__base__/graphics/technology/logistics.png",
     icon_size = 128,
     effects = {},

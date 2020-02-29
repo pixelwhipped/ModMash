@@ -1,11 +1,12 @@
-﻿data:extend(
+﻿--[[Code check 29.2.20
+removed old comments
+--]]
+data:extend(
 {
   {
     type = "generator",
     name = "steam-engine-mk2",
     icon = "__modmash__/graphics/icons/steam-engine-mk2.png",
-	--localised_name = "Steam engine MK2",
-	--localised_description = "Steam engine MK2",
     icon_size = 32,
     flags = {"placeable-neutral","player-creation"},
     minable = {mining_time = 0.3, result = "steam-engine-mk2"},

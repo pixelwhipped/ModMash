@@ -1,9 +1,6 @@
-﻿--[[dsync checking 
-local force_configuration_change change to modmash.force_configuration_change altered in event
-]]
-
---[[code reviewed 8.10.19
-	next going to have to move all global data to per player]]
+﻿--[[Code check 29.2.20
+no changes
+--]]
 log("Entering control.lua")
 --[[Setup volatile structures]]
 if not modmash then modmash = {} end

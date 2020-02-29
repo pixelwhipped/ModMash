@@ -1,11 +1,11 @@
-﻿data:extend(
+﻿--[[Code check 29.2.20
+removed old comments
+--]]
+data:extend(
 {
   	{
     type = "offshore-pump",
     name = "mm-discharge-water-pump",
-	--pumping_speed = 10,
---	localised_name = "Discharge Pump",
---	localised_description = "Discharges excess fluid.  Will cause pollution depending on fluid type",
     icon = "__modmash__/graphics/icons/discharge-pump.png",
     icon_size = 32,
     flags = {"placeable-neutral", "player-creation", "filter-directions"},

@@ -1,4 +1,7 @@
-﻿require("prototypes.scripts.util")
+﻿--[[Code check 29.2.20
+removed old comments
+--]]
+require("prototypes.scripts.util")
 
 require("prototypes.categories.discharge-fluids")
 require("prototypes.categories.item-groups")
@@ -79,7 +82,7 @@ data:extend({
   {
     type = "custom-input",
     name = "automate-target",
-    key_sequence = "CONTROL + A", --settings.startup["modmash-setting-adjust-binding"].value,
+    key_sequence = "CONTROL + A",
     consuming = "script-only"
   },
 })

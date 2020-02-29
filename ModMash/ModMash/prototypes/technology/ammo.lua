@@ -1,4 +1,7 @@
-﻿local function patch_technology(technology, recipe)
+﻿--[[Code check 29.2.20
+no changes
+--]]
+local function patch_technology(technology, recipe)
 	if data.raw["technology"][technology] then
 		table.insert(data.raw["technology"][technology].effects, {
 			type="unlock-recipe",

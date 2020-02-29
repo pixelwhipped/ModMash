@@ -1,4 +1,6 @@
-﻿--[[dsync checking No Changes]]
+﻿--[[Code check 29.2.20
+tweaked get entities functions n,e,s,w
+--]]
 
 if not modmash then modmash = {} end
 if not modmash.util then modmash.util = {} end
@@ -481,7 +483,7 @@ end
 
 local local_get_entities_to_north = function(entity,type)
 	local wh = local_get_entity_size(entity)	
-	local w = 0.5*wh[1] --wh[1]/2
+	local w = (0.5*wh[1])-0.2  --wh[1]/2
 	local h = 0.5*wh[2] --wh[2]/2
 	if type ~= nil then return entity.surface.find_entities_filtered{area = {{entity.position.x-w, entity.position.y-(h+0.5)}, {entity.position.x+w, entity.position.y-h}}, type = type} end
 	return entity.surface.find_entities({{entity.position.x-w, entity.position.y-(h+0.5)}, {entity.position.x+w, entity.position.y-h}})
@@ -489,7 +491,7 @@ end
 
 local local_get_entities_to_south = function(entity,type)
 	local wh = local_get_entity_size(entity)
-	local w = 0.5*wh[1] --wh[1]/2
+	local w = (0.5*wh[1])-0.2  --wh[1]/2
 	local h = 0.5*wh[2] --wh[2]/2
 	if type ~= nil then return entity.surface.find_entities_filtered{area = {{entity.position.x-w, entity.position.y+h}, {entity.position.x+w, entity.position.y+h+(0.5)}}, type = type} end
 	return entity.surface.find_entities({{entity.position.x-w, entity.position.y+h}, {entity.position.x+w, entity.position.y+h+(0.5)}}) 
@@ -498,7 +500,7 @@ end
 local local_get_entities_to_east = function(entity,type)
 	local wh = local_get_entity_size(entity)
 	local w = 0.5*wh[1] --wh[1]/2
-	local h = 0.5*wh[2] --wh[2]/2
+	local h = (0.5*wh[2])-0.2  --wh[2]/2
 	if type ~= nil then return entity.surface.find_entities_filtered{area = {{entity.position.x+w, entity.position.y-h}, {entity.position.x+(w+0.5), entity.position.y+h}}, type = type} end
 	return entity.surface.find_entities({{entity.position.x+w, entity.position.y-h}, {entity.position.x+(w+0.5), entity.position.y+h}}) 
 end
@@ -506,7 +508,7 @@ end
 local local_get_entities_to_west = function(entity,type) 
 	local wh = local_get_entity_size(entity)
 	local w = 0.5*wh[1] --wh[1]/2
-	local h = 0.5*wh[2] --wh[2]/2
+	local h = (0.5*wh[2])-0.2 --wh[2]/2
 	if type ~= nil then return entity.surface.find_entities_filtered{area = {{entity.position.x-(w+0.5), entity.position.y-h}, {entity.position.x-w, entity.position.y+h}}, type = type} end
 	return entity.surface.find_entities({{entity.position.x-(w+0.5), entity.position.y-h}, {entity.position.x-w, entity.position.y+h}}) 
 end

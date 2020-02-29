@@ -1,11 +1,11 @@
-﻿ data:extend(
+﻿--[[Code check 29.2.20
+removed old comments
+--]]
+data:extend(
 	{
 	 {
     type = "wall",
     name = "regenerative-wall",
-	--localised_name = "Regenerative wall",		
-	--localised_description = "Regenerative wall",
-
     icon = "__modmash__/graphics/icons/regenerative-wall.png",
     icon_size = 32,
     flags = {"placeable-neutral", "player-creation"},

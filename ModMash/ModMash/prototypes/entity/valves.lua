@@ -1,4 +1,7 @@
-﻿if not modmash or not modmash.util then require("prototypes.scripts.util") end
+﻿--[[Code check 29.2.20
+no changes
+--]]
+if not modmash or not modmash.util then require("prototypes.scripts.util") end
 
 local patch_technology  = modmash.util.patch_technology
 
@@ -269,7 +272,6 @@ local local_valves = {
 		},
 		light = {intensity = 0.6, size = 3.3, shift = {0.0, 0.0}, color = {r = 1.0, g = 0.0, b = 0.0}},
 		energy_usage = "50kW",
-		--crafting_speed = 0.8,
 	},
 	{		
 		name = "condenser-valve",		

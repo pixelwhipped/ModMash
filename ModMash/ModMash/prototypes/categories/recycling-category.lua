@@ -1,14 +1,15 @@
-﻿data:extend(
+﻿--[[Code check 29.2.20
+no changes
+--]]
+data:extend(
 {
 	{
 		type = "recipe-category",
-		name = "recycling",
-		--localised_name = "Recycling"
+		name = "recycling"
 	},
 	{
 		type = "recipe-category",
-		name = "containment",
-		--localised_name = "Containment"
+		name = "containment"
 	},
 }
 )

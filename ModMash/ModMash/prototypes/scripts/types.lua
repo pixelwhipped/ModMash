@@ -1,4 +1,6 @@
-﻿--[[dsync checking No Changes]]
+﻿--[[Code check 29.2.20
+changed red and green wire result count to 2
+--]]
 
 if not modmash or not modmash.util then require("prototypes.scripts.util") end
 if not modmash.defines then require ("prototypes.scripts.defines") end
@@ -928,11 +930,12 @@ local local_update_recipies = function()
 	local_update_recipe("red-wire",{      
 		  {name = "copper-cable", amount= 1}
 		},nil,nil)
-		
+	if data.raw.recipe["red-wire"] ~= nil then data.raw.recipe["red-wire"].result_count = 2 end
 	local_update_recipe("green-wire",
 		{      
 		  {name = "copper-cable", amount = 1}
 		},nil,nil)
+	if data.raw.recipe["green-wire"] ~= nil then data.raw.recipe["red-wire"].result_count = 2 end
 	local_update_recipe("electronic-circuit",nil,
 		{      
 		  {name = "green-wire",  amount= 1},

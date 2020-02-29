@@ -1,10 +1,11 @@
-﻿data:extend(
+﻿--[[Code check 29.2.20
+removed old comments
+--]]
+data:extend(
 {
   {
     type = "assembling-machine",
     name = "assembling-machine-4",
-	--localised_name = "Assembling Machine 4",
-	--localised_description = "Assembling Machine 4, 5 Module Slots",
     icon = "__modmash__/graphics/icons/assembling-machine-4.png",
     icon_size = 32,
     flags = {"placeable-neutral", "placeable-player", "player-creation"},

@@ -1,4 +1,7 @@
-﻿local recycling_state = {
+﻿--[[Code check 29.2.20
+removed old comments
+--]]
+local recycling_state = {
     type = "simple-entity-with-force",
     name = "recycling-machine-indicator",
     flags = {"not-blueprintable", "not-deconstructable", "not-on-map", "placeable-off-grid"},
@@ -44,8 +47,6 @@ data:extend(
 	stack_size = 50,
     name = "recycling-machine",
 	localised_description = {"item-description.recycling-machine",settings.startup["modmash-setting-adjust-binding"].value},
-	--localised_name = "Recycling machine",		
-	--localised_description = "Recycles items into their component items, encurs wastage. CTRL+A to enable/disable automation.",
     icon = "__modmash__/graphics/icons/recycling-machine.png",
     icon_size = 32,	
     flags = {"placeable-neutral","placeable-player", "player-creation"},
@@ -135,8 +136,3 @@ data:extend(
   }
 }
 )
-
---[[table.insert(
-data.raw["technology"]["automation-3"].effects,
-{type = "unlock-recipe",recipe = "recycling-machine"}
-)]]

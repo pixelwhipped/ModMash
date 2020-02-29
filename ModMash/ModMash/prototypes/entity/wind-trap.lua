@@ -1,10 +1,11 @@
-﻿data:extend(
+﻿--[[Code check 29.2.20
+remove localized strings
+--]]
+data:extend(
 {
 {
     type = "assembling-machine",
     name = "wind-trap",
-	localised_name = "Air Purifier",
-	localised_description = "Reduces polution and produces water and sludge as byproducts.",
     icon = "__modmash__/graphics/icons/wind-trap.png",
     icon_size = 32,
     flags = {"placeable-neutral", "placeable-player", "player-creation"},

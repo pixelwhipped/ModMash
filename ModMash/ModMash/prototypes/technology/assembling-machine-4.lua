@@ -1,4 +1,7 @@
-﻿data:extend(
+﻿--[[Code check 29.2.20
+removed old comments
+--]]
+data:extend(
 {
   {
     type = "technology",
@@ -33,8 +36,3 @@
   }
 }
 )
-
---[[table.insert(
-data.raw["technology"]["automation-3"].effects,
-{type = "unlock-recipe",recipe = "assembling-machine-4"}
-)]]

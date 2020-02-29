@@ -1,10 +1,11 @@
-﻿data:extend(
+﻿--[[Code check 29.2.20
+removed old comments
+--]]
+data:extend(
 {
   {
     type = "recipe",
     name = "recycling-machine",
-	--localised_name = "Recycling machine",		
-	--localised_description = "Recycles items into their component items, encurs wastage. CTRL+A to enable/disable automation.",
     enabled = "false",
     ingredients =
     {

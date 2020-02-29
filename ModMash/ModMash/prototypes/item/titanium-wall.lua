@@ -1,10 +1,11 @@
-﻿data:extend(
+﻿--[[Code check 29.2.20
+removed old comments
+--]]
+data:extend(
 {
   {
     type = "item",
     name = "titanium-wall",
-	--localised_name = "Titanium wall",		
-	--localised_description = "Titanium wall",
     icon = "__modmash__/graphics/icons/titanium-wall.png",
     icon_size = 32,
     subgroup = "defensive-structure",

@@ -1,10 +1,11 @@
-﻿data:extend(
+﻿--[[Code check 29.2.20
+removed old comments
+--]]
+data:extend(
 {
 	{
 		type = "recipe",
 		name = "titanium-plate",
-		--localised_name = "Titanium plate",
-		--localised_description = "Titanium plate",
 		category = "smelting",
 		normal =
 		{
@@ -17,8 +18,6 @@
 	{
 		type = "recipe",
 		name = "alien-plate",
-		--localised_name = "Alien plate",
-		--localised_description = "Alien plate",
 		category = "smelting",
 		normal =
 		{
@@ -31,8 +30,6 @@
 	{
 		type = "recipe",
 		name = "copper-enrichment-process",
-		--localised_name = "Copper enrichment",
-		--localised_description = "Copper enrichment",
 		energy_required = 1.5,
 		enabled = false,
 		category = "crafting-with-fluid",
@@ -63,8 +60,6 @@
 	{
 		type = "recipe",
 		name = "stone-enrichment-process",
-		--localised_name = "Stone enrichment",
-		--localised_description = "Stone enrichment",
 		energy_required = 1.5,
 		enabled = false,
 		category = "crafting-with-fluid",
@@ -101,8 +96,6 @@
 	{
 		type = "recipe",
 		name = "uranium-enrichment-process",
-		--localised_name = "Uranium enrichment",
-		--localised_description = "Uranium enrichment",
 		energy_required = 1.5,
 		enabled = false,
 		category = "crafting-with-fluid",
@@ -140,8 +133,6 @@
 	{
 		type = "recipe",
 		name = "coal-enrichment-process",
-		--localised_name = "Coal enrichment",
-		--localised_description = "Coal enrichment",
 		energy_required = 1.5,
 		enabled = false,
 		category = "crafting-with-fluid",
@@ -160,8 +151,6 @@
 	{
 		type = "recipe",
 		name = "iron-enrichment-process",
-		--localised_name = "Iron ore enrichment",
-		--localised_description = "Iron ore enrichment",
 		energy_required = 1.5,
 		enabled = false,
 		category = "crafting-with-fluid",
@@ -193,8 +182,6 @@
 	{
 		type = "recipe",
 		name = "alien-enrichment-process",
-		--localised_name = "Alien ore enrichment",
-		--localised_description = "Alien ore enrichment",
 		energy_required = 1.5,
 		enabled = false,
 		category = "crafting-with-fluid",
@@ -237,8 +224,6 @@
 	},{
 		type = "recipe",
 		name = "titanium-extraction-process",
-		--localised_name = "Titanium extraction",
-		--localised_description = "Titanium extraction",
 		energy_required = 1.5,
 		enabled = false,
 		category = "crafting-with-fluid",
@@ -260,8 +245,6 @@
 	{
 		type = "recipe",
 		name = "alien-ooze",
-		--localised_name = "Alien ooze",
-		--localised_description = "Alien ooze",
 		energy_required = 1.5,
 		enabled = false,
 		category = "crafting-with-fluid",
@@ -281,20 +264,15 @@
 		},
 		crafting_machine_tint =
 		{
-		  primary = {r = 1.000, g = 1, b = 0.0, a = 0.000}, -- #ffa70000
-		  secondary = {r = 0.812, g = 0.812, b = 0.0, a = 0.000}, -- #cfff0000
-		  tertiary = {r = 0.960, g = 0.960, b = 0.0, a = 0.000}, -- #f4cd0000
-		 -- primary = {r = 1.000, g = 0.000, b = 0.659, a = 0.000}, -- #ffa70000
-		 -- secondary = {r = 0.812, g = 0.000, b = 1.000, a = 0.000}, -- #cfff0000
-		 -- tertiary = {r = 0.960, g = 0.000, b = 0.806, a = 0.000}, -- #f4cd0000
+		  primary = {r = 1.000, g = 1, b = 0.0, a = 0.000},
+		  secondary = {r = 0.812, g = 0.812, b = 0.0, a = 0.000},
+		  tertiary = {r = 0.960, g = 0.960, b = 0.0, a = 0.000}, 
 		},
 		allow_decomposition = false,
 	},
 	{
 		type = "recipe",
 		name = "alien-enrichment-process-to-ore",
-		--localised_name = "Alien ooze to alien ore",
-		--localised_description = "Alien ooze to alien ore",
 		energy_required = 1.5,
 		enabled = false,
 		category = "crafting-with-fluid",
@@ -316,8 +294,6 @@
 	{
 		type = "recipe",
 		name = "alien-artifact-enrichment-process-to-ore",
-		--localised_name = "Alien artifact to alien ore",
-		--localised_description = "Alien artifact to alien ore",
 		energy_required = 1.5,
 		enabled = false,
 		category = "crafting-with-fluid",
@@ -339,8 +315,6 @@
 	{
 		type = "recipe",
 		name = "alien-enrichment-process-to-iron",
-		--localised_name = "Alien ooze to iron",
-		--localised_description = "Alien ooze to iron",
 		energy_required = 1.5,
 		enabled = false,
 		category = "crafting-with-fluid",
@@ -362,8 +336,6 @@
 	{
 		type = "recipe",
 		name = "alien-enrichment-process-to-stone",
-		--localised_name = "Alien ooze to stone",
-		--localised_description = "Alien ooze to stone",
 		energy_required = 1.5,
 		enabled = false,
 		category = "crafting-with-fluid",
@@ -385,8 +357,6 @@
 	{
 		type = "recipe",
 		name = "alien-enrichment-process-to-copper",
-		--localised_name = "Alien ooze to copper",
-		--localised_description = "Alien ooze to copper",
 		energy_required = 1.5,
 		enabled = false,
 		category = "crafting-with-fluid",
@@ -408,8 +378,6 @@
 	{
 		type = "recipe",
 		name = "alien-enrichment-process-to-titanium",
-		--localised_name = "Alien ooze to titanium",
-		--localised_description = "Alien ooze to titanium",
 		energy_required = 1.5,
 		enabled = false,
 		category = "crafting-with-fluid",
@@ -431,8 +399,6 @@
 	{
 		type = "recipe",
 		name = "alien-enrichment-process-to-coal",
-		--localised_name = "Alien ooze to coal",
-		--localised_description = "Alien ooze to coal",
 		energy_required = 1.5,
 		enabled = false,
 		category = "crafting-with-fluid",
@@ -454,8 +420,6 @@
 	{
 		type = "recipe",
 		name = "alien-enrichment-process-to-uranium",
-		--localised_name = "Alien ooze to uranium",
-		--localised_description = "Alien ooze to uranium",
 		energy_required = 1.5,
 		enabled = false,
 		category = "crafting-with-fluid",
@@ -478,8 +442,6 @@
 	{
 		type = "recipe",
 		name = "alien-enrichment-process-to-artifact",
-		--localised_name = "Alien artifact gestation",
-		--localised_description = "Alien artifact gestation",
 		energy_required = 1.5,
 		enabled = false,
 		category = "crafting-with-fluid",
@@ -504,8 +466,6 @@
 	{
 		type = "recipe",
 		name = "spawner",
-		--localised_name = "Spawner",
-		--localised_description = "Spawner",
 		energy_required = 1.5,
 		enabled = false,
 		category = "crafting-with-fluid",
@@ -527,8 +487,6 @@
 	{
     type = "recipe",
     name = "petroleum-gas-from-solid-fuel",
-	--localised_name = "Petroleum gas from solid fuel",
-	--localised_description = "Petroleum gas from solid fuel",
     category = "chemistry",
     energy_required = 2,
     ingredients =
@@ -546,9 +504,9 @@
     order = "b[fluid-chemistry]-d[petroleum-gas-from-solid-fuel]",
     crafting_machine_tint =
     {
-      primary = {r = 0.331, g = 0.075, b = 0.510, a = 0.000}, -- #54138200
-      secondary = {r = 0.589, g = 0.540, b = 0.615, a = 0.361}, -- #96899c5c
-      tertiary = {r = 0.469, g = 0.145, b = 0.695, a = 0.000}, -- #7724b100
+      primary = {r = 0.331, g = 0.075, b = 0.510, a = 0.000},
+      secondary = {r = 0.589, g = 0.540, b = 0.615, a = 0.361},
+      tertiary = {r = 0.469, g = 0.145, b = 0.695, a = 0.000},
     }
   },
 }

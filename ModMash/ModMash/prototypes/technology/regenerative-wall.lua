@@ -1,10 +1,11 @@
-﻿ data:extend(
+﻿--[[Code check 29.2.20
+removed old comments
+--]]
+data:extend(
 {
  {
     type = "technology",
     name = "regenerative-wall",
-	--localised_name = "Regenerative wall",		
-	--localised_description = "Regenerative wall",
     icon_size = 128,
     icon = "__base__/graphics/technology/stone-walls.png",
     effects =

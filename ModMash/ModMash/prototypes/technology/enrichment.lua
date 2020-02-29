@@ -1,10 +1,11 @@
-﻿data:extend(
+﻿--[[Code check 29.2.20
+removed old comments
+--]]
+data:extend(
 {
 {
     type = "technology",
     name = "spawner",
-	--localised_name = "Spawner",
-	--localised_description = "Allows spawners to be created",
     icon = "__base__/graphics/technology/demo/analyse-ship.png",
     icon_size = 128,
     effects =
@@ -33,8 +34,6 @@
   {
     type = "technology",
     name = "enrichment",
-	--localised_name = "Enrichment",
-	--localised_description = "Refines materials to obtain more usefull components",
     icon = "__modmash__/graphics/technology/chemistry.png",
     icon_size = 128,
     effects =
@@ -111,8 +110,6 @@
   },{
     type = "technology",
     name = "enrichment-3",
-	--localised_name = "Enrichment 3",
-	--localised_description = "Refines materials to obtain more usefull components",
 	localised_description = {"technology-description.enrichment"},
     icon = "__modmash__/graphics/technology/advanced-chemistry.png",
     icon_size = 128,
@@ -152,8 +149,6 @@
   ,{
     type = "technology",
     name = "enrichment-4",
-	--localised_name = "Enrichment 4",
-	--localised_description = "Refines materials to obtain more usefull components",
 	localised_description = {"technology-description.enrichment"},
     icon = "__modmash__/graphics/technology/advanced-chemistry.png",
     icon_size = 128,
@@ -219,8 +214,6 @@
   ,{
     type = "technology",
     name = "enrichment-5",
-	--localised_name = "Enrichment 5",
-	--localised_description = "Refines materials to obtain more usefull components",
 	localised_description = {"technology-description.enrichment"},
     icon = "__modmash__/graphics/technology/advanced-chemistry.png",
     icon_size = 128,

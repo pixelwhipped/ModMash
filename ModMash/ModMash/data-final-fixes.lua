@@ -1,4 +1,7 @@
-﻿data_final_fixes = true
+﻿--[[Code check 29.2.20
+no changes
+--]]
+data_final_fixes = true
 require("prototypes.entity.logistics")
 require ("prototypes.scripts.types")
 

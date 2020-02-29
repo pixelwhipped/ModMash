@@ -1,10 +1,11 @@
-﻿data:extend(
+﻿--[[Code check 29.2.20
+removed old comments
+--]]
+data:extend(
 {
   {
     type = "recipe",
     name = "droid",
-	--localised_name = "Droid",
-	--localised_description = "Droid",
 	enabled = false,
     ingredients =
     {
@@ -16,8 +17,6 @@
   {
         type = "recipe",
 		name = "droid-chest",
-		--localised_name = "Droid chest",
-		--localised_description = "Droid chest",
 		enabled = false,
 		ingredients =
 		{

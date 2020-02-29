@@ -1,10 +1,11 @@
-﻿data:extend(
+﻿--[[Code check 29.2.20
+removed old comments
+--]]
+data:extend(
 {
   {
     type = "recipe",
     name = "mm-discharge-water-pump",
-	--localised_name = "Discharge Pump",
-	--localised_description = "Discharges excess fluid.  Will cause pollution depending on fluid type",
     ingredients =
     {
       {"electronic-circuit", 2},

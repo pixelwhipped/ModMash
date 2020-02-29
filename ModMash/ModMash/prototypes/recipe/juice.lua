@@ -1,10 +1,11 @@
-﻿data:extend(
+﻿--[[Code check 29.2.20
+removed old comments
+--]]
+data:extend(
 {
 	{
 		type = "recipe",
 		name = "fish-juice",
-		--localised_name = "Fish juice",
-		--localised_description = "Fish juice",
 		energy_required = 1.5,
 		enabled = false,
 		category = "crafting-with-fluid",
@@ -22,17 +23,15 @@
 		},
 		crafting_machine_tint =
 		{
-		  primary = {r = 1.000, g = 1, b = 0.0, a = 0.000}, -- #ffa70000
-		  secondary = {r = 0.812, g = 0.812, b = 0.0, a = 0.000}, -- #cfff0000
-		  tertiary = {r = 0.960, g = 0.960, b = 0.0, a = 0.000}, -- #f4cd0000
+		  primary = {r = 1.000, g = 1, b = 0.0, a = 0.000},
+		  secondary = {r = 0.812, g = 0.812, b = 0.0, a = 0.000},
+		  tertiary = {r = 0.960, g = 0.960, b = 0.0, a = 0.000},
 		},
 		allow_decomposition = false,
 	},
 	{
 		type = "recipe",
 		name = "ooze-juice",
-		--localised_name = "Ooze juice",
-		--localised_description = "Ooze juice",
 		energy_required = 1.5,
 		enabled = false,
 		category = "crafting-with-fluid",
@@ -50,9 +49,9 @@
 		},
 		crafting_machine_tint =
 		{
-		  primary = {r = 1.000, g = 1, b = 0.0, a = 0.000}, -- #ffa70000
-		  secondary = {r = 0.812, g = 0.812, b = 0.0, a = 0.000}, -- #cfff0000
-		  tertiary = {r = 0.960, g = 0.960, b = 0.0, a = 0.000}, -- #f4cd0000
+		  primary = {r = 1.000, g = 1, b = 0.0, a = 0.000},
+		  secondary = {r = 0.812, g = 0.812, b = 0.0, a = 0.000},
+		  tertiary = {r = 0.960, g = 0.960, b = 0.0, a = 0.000}, 
 		},
 		allow_decomposition = false,
 	}

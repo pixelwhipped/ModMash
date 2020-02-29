@@ -1,4 +1,7 @@
-﻿local construction_robot = function(volume)
+﻿--[[Code check 29.2.20
+removed old comments
+--]]
+local construction_robot = function(volume)
   return
   {
     sound =
@@ -52,7 +55,6 @@ data:extend(
     alert_when_damaged = false,
     collision_box = {{0, 0}, {0, 0}},
     selection_box = {{-0.5, -1.5}, {0.5, -0.5}},
-    --distance_per_frame = 0.13,
     time_to_live = 60 * 60 * 60 * 60,
     speed = 0.06,
     resistances =
@@ -515,18 +517,7 @@ data:extend(
         direction_count = 16,
         scale = 0.5
       }
-    },
-	--[[smoke = {
-		{
-		name = "smoke-fast",
-		deviation = {0.15, 0.15},
-		frequency = 1,
-		position = {0, 0},
-		starting_frame = 3,
-		starting_frame_deviation = 5,
-		starting_frame_speed_deviation = 5
-		}
-	}]]
+    }
   },
   {
     type = "projectile",
@@ -599,17 +590,6 @@ data:extend(
         scale = 0.5
       }
     },
---[[smoke = {
-		{
-		name = "smoke-fast",
-		deviation = {0.15, 0.15},
-		frequency = 1,
-		position = {0, 0},
-		starting_frame = 3,
-		starting_frame_deviation = 5,
-		starting_frame_speed_deviation = 5
-		}
-	}]]
   },
   {
     type = "combat-robot",
@@ -843,17 +823,6 @@ data:extend(
         direction_count = 16,
         scale = 0.5
       }
-    },
-	--[[smoke = {
-		{
-		name = "smoke-fast",
-		deviation = {0.15, 0.15},
-		frequency = 1,
-		position = {0, 0},
-		starting_frame = 3,
-		starting_frame_deviation = 5,
-		starting_frame_speed_deviation = 5
-		}
-	}]]
+    }
   }
 })

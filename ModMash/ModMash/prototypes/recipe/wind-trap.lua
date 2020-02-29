@@ -1,10 +1,12 @@
-﻿data:extend(
+﻿--[[Code check 29.2.20
+removed old comments
+fix string to type
+--]]
+data:extend(
 {
 	{
 		type = "recipe",
 		name = "wind-trap",
-		--localised_name = "Air Purifier",
-		--localised_description = "Reduces polution and produces water and sludge as byproducts.",
 		energy_required = 10,
 		enabled = false,
 		ingredients =

@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZZZSolutions", "ZZZSolution
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spaghetti", "Spaghetti\Spaghetti.csproj", "{C9B3A206-0FCB-4A92-85AD-88173A7144F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Coffee", "Coffee\Coffee.csproj", "{402783C8-F16A-4EC4-B3CA-6FED47F3822F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coffee", "Coffee\Coffee.csproj", "{402783C8-F16A-4EC4-B3CA-6FED47F3822F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

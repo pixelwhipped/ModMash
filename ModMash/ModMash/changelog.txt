@@ -1,4 +1,15 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.18.13
+  Changes:
+    - Changed red and green wire result count to 2
+    - Updated assembling machine 0 graphics
+    - Remove hard coded localized name and description
+  Bug fix:
+    - Fixed loader snap, change of prototype name loader-1x1 and loader
+    - Tightned get entities n,e,s,w functions.
+    - Fixed assebling machine 0 to assembling-machine-burner add to player start
+
+---------------------------------------------------------------------------------------------------
 Version: 0.18.12
   Bug Fix:
     - explosive mining no longer tries to mine fluids (honk)

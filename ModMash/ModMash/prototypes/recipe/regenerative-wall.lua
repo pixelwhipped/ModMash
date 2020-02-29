@@ -1,10 +1,11 @@
-﻿data:extend(
+﻿--[[Code check 29.2.20
+removed old comments
+--]]
+data:extend(
 {
   {
     type = "recipe",
     name = "regenerative-wall",
-	--localised_name = "Regenerative wall",		
-	--localised_description = "Regenerative wall",
     enabled = "false",
     ingredients =
     {

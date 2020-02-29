@@ -1,11 +1,13 @@
-﻿data:extend(
+﻿--[[Code check 29.2.20
+removed old comments
+fix string to type
+--]]
+data:extend(
 {
   {
     type = "recipe",
     name = "titanium-wall",
-	--localised_name = "Titanium wall",		
-	--localised_description = "Titanium wall",
-    enabled = "false",
+    enabled = false,
     ingredients =
     {
       {"stone-wall", 1},      

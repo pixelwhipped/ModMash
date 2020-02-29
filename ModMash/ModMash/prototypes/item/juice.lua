@@ -1,10 +1,11 @@
-﻿data:extend(
+﻿--[[Code check 29.2.20
+removed old comments
+--]]
+data:extend(
 {
 	{
 		type = "capsule",
 		name = "fish-juice",
-		--localised_name = "Fish Juice",
-		--localised_description = "Fish Juice",
 		icon = "__modmash__/graphics/icons/fish-juice.png",
 		icon_size = 32,
 		subgroup = "raw-resource",

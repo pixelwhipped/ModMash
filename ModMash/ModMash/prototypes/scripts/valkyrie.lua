@@ -1,6 +1,7 @@
-﻿--[[dsync checking 
-ok only locals are reference to globals or a constant
-]]
+﻿--[[Code check 29.2.20
+removed old comments
+--]]
+
 
 log("valkyrie.lua")
 if not modmash or not modmash.util then require("prototypes.scripts.util") end
@@ -95,8 +96,6 @@ local local_update_return_targets = function(target)
 end
 
 local local_update_target = function(k)
-	--for k = #targets, 1, -1 do t = targets[k]
-		--if target == nil then return end
 		local t = targets[k]
 		local r = t.entity
 		local is_player = t.player ~= false
@@ -140,7 +139,6 @@ local local_find_targets = function()
 				local grid = nil
 				if player ~= nil and player.character ~= nil then grid = player.character.grid end
 				if logistic and logistic.all_construction_robots > 0 and logistic.robot_limit > 0 and grid ~= nil then
-					--local d = max_distance/5
 					local enemy = player.surface.find_enemy_units(player.position, max_distance) --player.surface.find_entities_filtered{area = {{-d, -d}, {d, d}}, force = "enemy", limit=1} --				
 					if enemy ~= nil and #enemy > 0 then 
 						if player.remove_item({name='valkyrie-robot',count=1}) > 0 then
@@ -168,8 +166,7 @@ local local_find_targets = function()
 				local enemy = r.entity.surface.find_enemy_units(r.entity.position, max_distance)		
 				
 				if enemy ~= nil and #enemy > 0 then 							
-					local removed = r.entity.get_inventory(defines.inventory.roboport_robot).remove("valkyrie-robot")
-					--modmash.util.print(x .. " of " .. #all_roboports .. " " .. serpent.block(r.entity.get_inventory(defines.inventory.roboport_robot).get_contents()))
+					local removed = r.entity.get_inventory(defines.inventory.roboport_robot).remove("valkyrie-robot")					
 					if removed > 0 then			
 					    local c = r.entity.surface.create_entity({
 							name='valkyrie-robot-projectile',
@@ -213,9 +210,7 @@ local local_find_targets = function()
 		end
 	end end
 
-local local_valkyrie_tick = function()		
-	--if global.modmash.valkyries.projectiles == nil then global.modmash.valkyries.projectiles = 0 end
-	--modmash.util.print(#return_targets .. " " .. #targets .. " " .. global.modmash.valkyries.projectiles)
+local local_valkyrie_tick = function()
 	if global.modmash.valkyries.enable_valkyries ~= true then return end	
 
 	local tindex = global.modmash.valkyries.valkyries_update_index
@@ -354,7 +349,6 @@ local local_on_entity_cloned = function(event)
 
 local local_on_configuration_changed = function(f)
 	if f.mod_changes["modmash"].old_version < "0.17.82" then	
-		--if global.modmash.valkyries.return_targets == nil then global.modmash.valkyries.return_targets = {} end
 		local_init()
 	end
 	if f.mod_changes["modmash"].old_version < "0.17.79" then	
@@ -386,6 +380,12 @@ local local_valkyrie_research = function(event)
 		max_targets = global.modmash.valkyries.max_targets
     end	
 end
+--[[this wil happen
+local local_on_entity_selected = function(entity)
+	if is_valid(entity) and entity.type == "roboport" then
+		draw_rectangle{color=…, width=…, filled=…, left_top=…, left_top_offset=…, right_bottom=…, right_bottom_offset=…, surface=…, time_to_live=…, forces=…, players=…, visible=…, draw_on_ground=…, only_in_alt_mode=…} 
+	end
+end]]
 
 modmash.register_script({
 	on_tick = {
@@ -400,4 +400,5 @@ modmash.register_script({
 	on_research = local_valkyrie_research,
 	on_configuration_changed = local_on_configuration_changed,
 	on_entity_cloned = local_on_entity_cloned
+	--on_selected = local_on_entity_selected
 })

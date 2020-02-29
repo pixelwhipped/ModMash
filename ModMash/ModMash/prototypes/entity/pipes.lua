@@ -1,4 +1,7 @@
-﻿local local_modmash_pipepictures = function(pipe_type)
+﻿--[[Code check 29.2.20
+removed old comments
+--]]
+local local_modmash_pipepictures = function(pipe_type)
   return
   {
     straight_vertical_single =
@@ -584,8 +587,6 @@ data:extend(
     type = "pipe",	
     name = "titanium-pipe",
     icon = "__modmash__/graphics/icons/titanium-pipe.png",
-	--localised_name = "Titanium Pipe",
-	--localised_description = "Titanium Pipe",
     icon_size = 32,
     flags = {"placeable-neutral", "player-creation"},
     minable = {hardness = 0.4, mining_time = 0.5, result = "titanium-pipe"},
@@ -631,8 +632,6 @@ data:extend(
   {
     type = "pipe-to-ground",
     name = "titanium-pipe-to-ground",
-	--localised_name = "Titanium Pipe To Ground",
-	--localised_description = "Titanium Pipe To Ground",
     icon = "__modmash__/graphics/icons/titanium-pipe-to-ground.png",
     icon_size = 32,
     flags = {"placeable-neutral", "player-creation"},
