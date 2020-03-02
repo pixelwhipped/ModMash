@@ -1,14 +1,14 @@
 {
   "name": "spaghetti",
-  "version": "0.17.01",
+  "version": "0.18.01",
   "title": "Spaghetti",
   "author": "PixelWhipped",
   "contact": "",
   "homepage": "",
-  "factorio_version": "0.17",
+  "factorio_version": "0.18",
   "description": "Challenge to force builings closer togeather",
   "dependencies": [
-    "base >= 0.17.0",
-    "? modmash >= 0.17.75"
+    "base >= 0.18.0",
+    "? modmash >= 0.18.13"
   ]
 }

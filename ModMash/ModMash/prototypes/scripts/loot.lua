@@ -140,8 +140,12 @@ local local_get_recipe_results = function(r)
 	return results
 end
 
-function get_raw_ingredients(recipe)
+--todo better solution
+function get_raw_ingredients(recipe,exclude)
+	
 	local ingredients = {}
+	if exclude == nil then exclude = {} end
+
 	for i,ingredient in pairs(recipe.ingredients) do
 		local name, amount = 0
 		if (ingredient.type) then
@@ -151,7 +155,8 @@ function get_raw_ingredients(recipe)
 			name = ingredient[1]
 			amount = ingredient[2]
 		end
-		if (amount > 0) then
+		if (amount > 0 and table_contains(exclude,name) == false) then --skip duplicate ingredients
+			table.insert(exclude,name)
 			local subrecipe = local_get_recipe(name)
 			local multiple = 1;			
 			local results = local_get_recipe_results(name)
@@ -165,7 +170,7 @@ function get_raw_ingredients(recipe)
 			if (subrecipe == nil) then 
 				ingredients[name] = amount / multiple
 			else	
-				for subname,subamount in pairs(get_raw_ingredients(subrecipe)) do
+				for subname,subamount in pairs(get_raw_ingredients(subrecipe,exclude)) do
 					if (ingredients[subname]) then
 						ingredients[subname] = ingredients[subname] + subamount * amount / multiple
 					else 
