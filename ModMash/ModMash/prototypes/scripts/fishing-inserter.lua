@@ -100,8 +100,8 @@ local local_fishing_inserter_process = function(entity)
 		local box = {{entity.pickup_position.x-0.5, entity.pickup_position.y-0.5}, {entity.pickup_position.x+0.5, entity.pickup_position.y+0.5}}
 		local tiles = entity.surface.find_tiles_filtered{area=box}
 		for _,tile in pairs(tiles) do
-			if tile.name == "water" and entity.surface.can_place_entity({name="fish", amount=1, position=spawner.position}) then 
-				entity.surface.create_entity({name="fish", amount=1, position=tile.position})
+			if tile.name == "water" and tile.surface.can_place_entity({name="fish", amount=1, position={tile.position.x+.5, tile.position.y+.5}}) then
+				tile.surface.create_entity({name="fish", amount=1, position={tile.position.x+.5, tile.position.y+.5}})
 			end
 		end
 	end end
