@@ -134,14 +134,14 @@ local local_check_fishing_inserter = function(entity)
 		if starts_with(tile.name, "water") then water = true end
 	end
 	if water == false then return end
-	entity.operable = false
+	--entity.operable = false
 	table.insert(fishing.fishing_inserters, entity)
 end
 
 local local_check_fishing_transferer = function(entity)			
 	local tile = entity.surface.get_tile(entity.drop_position.x, entity.drop_position.y)
 	if starts_with(tile.name, "water") then
-		entity.operable = false
+		--entity.operable = false
 		table.insert(fishing.fishing_transferers, entity)
 	end
 end

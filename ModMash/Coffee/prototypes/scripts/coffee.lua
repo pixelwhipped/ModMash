@@ -23,68 +23,75 @@ local local_load = function()
 	players = global.coffee.players
 	end
 
+local local_remove_sticker = function(entity)
+	for _,e in pairs(entity.surface.find_entities_filtered{name="coffee-blank-sticker", area=entity.bounding_box}) do 
+		e.destroy() 
+	end
+	end
+
+local local_add_sticker = function(entity)
+	if #entity.surface.find_entities_filtered{type="coffee-blank-sticker", area=entity.bounding_box} == 0 then 
+		entity.surface.create_entity{ name="coffee-blank-sticker", position=entity.position, target=entity }
+	end
+	end
+
 local local_on_player_spawned = function(event)
 	local player = game.get_player(event.player_index)
 	if global.coffee == nil then global.coffee = {} end	
 	if global.coffee.players == nil then global.coffee.players = {} end		
 	players = global.coffee.players
 	players[event.player_index] = {value=100,id=nil}
+	local_remove_sticker(player.character)
 end	
 
 local local_update_player = function(k,m)
-		local player = game.get_player(k)
-		if player ~= nil and player.valid and player.character then
-			players[k].value = math.max(players[k].value-1+0,0)
-			local level = players[k].value/100.0
-			local mod = level * 3
-			if settings.global["coffee-setting-speed-mod"].value ~= "0" then
-				player.character_running_speed_modifier = mod * settings.global["coffee-setting-speed-mod"].value/100
-			end
-			if settings.global["coffee-setting-mining-mod"].value ~= "0" then
-				player.character_mining_speed_modifier = mod * settings.global["coffee-setting-mining-mod"].value/100
-			end
-			if settings.global["coffee-setting-crafting-mod"].value ~= "0" then
-				player.character_crafting_speed_modifier = mod * settings.global["coffee-setting-crafting-mod"].value/100
-			end
-			if settings.global["coffee-setting-build-dist-mod"].value ~= "0" then
-				player.character_build_distance_bonus = mod * settings.global["coffee-setting-build-dist-mod"].value/100
-			end
-			if settings.global["coffee-setting-reach-dist-mod"].value ~= "0" then
-				player.character_reach_distance_bonus = mod * settings.global["coffee-setting-reach-dist-mod"].value/100
-			end
-			if settings.global["coffee-setting-pickup-dist-mod"].value ~= "0" then
-				player.character_item_pickup_distance_bonus = mod * settings.global["coffee-setting-pickup-dist-mod"].value/100
-			end
-			
-			local text = string.rep("●", math.ceil(level * 5 + 0.1)) .. " " .. players[k].value
-			local color = {r = 1 - level, g = level, b = 0, a = 0.5}
-			if players[k].id ~=nil then rendering.destroy(players[k].id) end
-			players[k].id = rendering.draw_text{
-				text = text,
-				surface = player.surface,
-				target = player.character,
-				color = color,
-				time_to_live = priority,
-				alignment = "center",
-				scale = 0.75,
-			}
-			if settings.global["coffee-setting-no-coffee"].value == "It Hurts" and mod == 0 then
-				player.character.damage(10,"neutral")
-			end
-			
-			--[[
-			
-			/c game.player.print(game.player.character_crafting_speed_modifier)
-			/c game.player.print(game.player.character_mining_speed_modifier)
-			/c game.player.print(game.player.character_running_speed_modifier)
-			/c game.player.character_running_speed_modifier = 3
-
-			game.player.character.damage(20,"neutral")
-
-			/c game.player.print(game.player.character.health)]]
-				
-			
+	local player = game.get_player(k)
+	if player ~= nil and player.valid and player.character then
+		players[k].value = math.max(players[k].value-1+m,0)
+		local level = players[k].value/100.0
+		local mod = level * 3
+		if settings.global["coffee-setting-speed-mod"].value ~= "0" then
+			player.character_running_speed_modifier = mod * settings.global["coffee-setting-speed-mod"].value/100
 		end
+		if settings.global["coffee-setting-mining-mod"].value ~= "0" then
+			player.character_mining_speed_modifier = mod * settings.global["coffee-setting-mining-mod"].value/100
+		end
+		if settings.global["coffee-setting-crafting-mod"].value ~= "0" then
+			player.character_crafting_speed_modifier = mod * settings.global["coffee-setting-crafting-mod"].value/100
+		end
+		if settings.global["coffee-setting-build-dist-mod"].value ~= "0" then
+			player.character_build_distance_bonus = mod * settings.global["coffee-setting-build-dist-mod"].value/100
+		end
+		if settings.global["coffee-setting-reach-dist-mod"].value ~= "0" then
+			player.character_reach_distance_bonus = mod * settings.global["coffee-setting-reach-dist-mod"].value/100
+		end
+		if settings.global["coffee-setting-pickup-dist-mod"].value ~= "0" then
+			player.character_item_pickup_distance_bonus = mod * settings.global["coffee-setting-pickup-dist-mod"].value/100
+		end
+			
+		local text = string.rep("●", math.ceil(level * 5 + 0.1)) .. " " .. players[k].value
+		local color = {r = 1 - level, g = level, b = 0, a = 0.5}
+		if players[k].id ~=nil then rendering.destroy(players[k].id) end
+		players[k].id = rendering.draw_text{
+			text = text,
+			surface = player.surface,
+			target = player.character,
+			color = color,
+			time_to_live = priority,
+			alignment = "center",
+			scale = 0.75,
+		}
+		if mod ~= 0 then
+			local_remove_sticker(player.character)
+		elseif settings.global["coffee-setting-no-coffee"].value == "It Hurts" then
+			player.character.damage(10,"neutral")
+		elseif settings.global["coffee-setting-no-coffee"].value == "Massive Withdrawals" then 
+			player.character.damage(10,"neutral")
+			local_add_sticker(player.character)
+		elseif settings.global["coffee-setting-no-coffee"].value == "Feeling Sluggish" then 
+			local_add_sticker(player.character)			
+		end			
+	end
 end
 
 local local_tick = function()	
@@ -104,11 +111,11 @@ local local_on_player_used_capsule = function(event)
 		for i = 1, #game.players do local p = game.players[i]
 			players[i].value = 100
 		end
-	end
+	end	
 	if event.item.name == "coffee-low-grade" then
-		players[event.player_index].value = math.min(math.max(players[event.player_index].value+5,0),100)
+		players[event.player_index].value = math.min(math.max(players[event.player_index].value+5,0),100)		
 	end
-	if event.item.name == "coffee-high-grade" then
+	if event.item.name == "coffee-high-grade" then		
 		players[event.player_index].value = math.min(math.max(players[event.player_index].value+10,0),100)
 	end	
 	local_update_player(event.player_index,1)	

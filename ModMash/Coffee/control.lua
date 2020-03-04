@@ -253,8 +253,6 @@ local distance  = coffee.util.distance
 local is_valid  = coffee.util.is_valid
 
 
-
-
 --[[Called first time mod is added to current game instance. Called Once]]
 local local_on_init = function()
 	log("control.local_on_init")

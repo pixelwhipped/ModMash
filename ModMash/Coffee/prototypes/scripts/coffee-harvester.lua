@@ -82,7 +82,7 @@ local local_check_harvester_inserter = function(entity)
 	local box = {{entity.pickup_position.x-0.5, entity.pickup_position.y-0.5}, {entity.pickup_position.x+0.5, entity.pickup_position.y+0.5}}
 	local entities = entity.surface.find_entities_filtered{area=box, type = "tree"}
 	if #entities == 0 then return end
-	entity.operable = false
+	--entity.operable = false
 	table.insert(harvester.harvester_inserters, entity)
 end
 

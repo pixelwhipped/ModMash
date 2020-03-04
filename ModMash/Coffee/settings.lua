@@ -5,7 +5,7 @@
 		name = "coffee-setting-no-coffee",
 		setting_type = "runtime-global",
 		default_value = "It Hurts",
-		allowed_values = {"It Hurts", "No Dammage"},
+		allowed_values = {"It Hurts", "Feeling Sluggish", "Massive Withdrawals", "No Dammage"},
 		order = "a"
 	},  	
 	{

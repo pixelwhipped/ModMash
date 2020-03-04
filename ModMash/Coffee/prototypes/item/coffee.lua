@@ -1,6 +1,22 @@
 ﻿data:extend(
 {
 	{
+		duration_in_ticks = 180000,
+
+		animation= {
+			frame_count = 1,
+			width = 16,
+			priority = "extra-high",
+			animation_speed = 0.0001,
+			filename =  "__coffee__/graphics/stickers/blank.png",
+			height= 16,
+		},
+		single_particle = true,
+		target_movement_modifier = 0.6,
+		type = "sticker",
+		name = "coffee-blank-sticker"
+	},
+	{
 		type = "item",
 		name = "coffee-beans",
 		icon = "__coffee__/graphics/icons/coffee-beans.png",

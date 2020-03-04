@@ -1,4 +1,13 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.18.06
+  Bug Fix:
+    - inserters that are seeking coffee are now operable
+
+---------------------------------------------------------------------------------------------------
+Version: 0.18.05
+  Changes:
+    - As per requested added option to slowdown play if out of coffee
+---------------------------------------------------------------------------------------------------
 Version: 0.18.04
   Bug Fix:
     - Calling missing event
