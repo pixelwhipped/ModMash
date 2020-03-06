@@ -1,7 +1,7 @@
 ﻿---------------------------------------------------------------------------------------------------
 Version: 0.18.15
   Bug Fix:
-    - fishing inserters are now operable
+    - Fishing inserters shouldn't crash when there's no fish (Honktown)
 
 ---------------------------------------------------------------------------------------------------
 Version: 0.18.14
