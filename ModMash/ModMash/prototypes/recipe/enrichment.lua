@@ -5,6 +5,24 @@ data:extend(
 {
 	{
 		type = "recipe",
+		name = "light-oil-conversion-crude-oil",
+		energy_required = 1.5,
+		enabled = false,
+		category = "crafting-with-fluid",
+		ingredients = {{"coal", 15},{type="fluid", name="light-oil", amount=30},{type="fluid", name="steam", amount=50}},
+		icon = "__modmash__/graphics/icons/light-oil-conversion-crude-oil.png",
+		icon_size = 32,
+		subgroup = "intermediate-product",
+		order = "c[light-oil-conversion-crude-oil]",
+		main_product = "",
+		results =
+		{
+			{type="fluid", name="crude-oil", amount=50},     
+		},
+		allow_decomposition = false,
+	},
+	{
+		type = "recipe",
 		name = "titanium-plate",
 		category = "smelting",
 		normal =

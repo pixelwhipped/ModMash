@@ -126,6 +126,10 @@ data:extend(
       {
         type = "unlock-recipe",
         recipe = "fish-conversion-lubricant"
+      },
+	  {
+        type = "unlock-recipe",
+        recipe = "light-oil-conversion-crude-oil"
       }
     },
     prerequisites =
