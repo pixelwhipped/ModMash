@@ -8,7 +8,7 @@ data:extend(
 		name = "light-oil-conversion-crude-oil",
 		energy_required = 1.5,
 		enabled = false,
-		category = "crafting-with-fluid",
+		category = "chemistry",
 		ingredients = {{"coal", 15},{type="fluid", name="light-oil", amount=30},{type="fluid", name="steam", amount=50}},
 		icon = "__modmash__/graphics/icons/light-oil-conversion-crude-oil.png",
 		icon_size = 32,

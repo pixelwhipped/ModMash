@@ -498,9 +498,7 @@ end
 local local_create_super_material_conversions = function()
 	for name,item in pairs(data.raw["resource"]) do			
 		
-		--if item ~= nil and item.name ~= nil and item.icon ~= false and starts_with(item.name,"creative-mod") == false and data.raw["fluid"][item.name] == nil and data.raw["item"][item.name] ~= nil then					
-		--if item ~= nil and item.name ~= nil and starts_with(item.name,"creative-mod") == false and data.raw["fluid"][item.name] == nil and data.raw["item"][item.name] ~= nil then					
-		if item ~= nil and item.name ~= nil
+			if item ~= nil and item.name ~= nil
 				and starts_with(item.name,"creative-mod") == false
 				and data.raw["fluid"][item.name] == nil
 				and ((data.raw["item"][item.name] ~= nil) or (data.raw["tool"][item.name] ~= nil)) then
