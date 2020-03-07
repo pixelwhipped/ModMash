@@ -662,60 +662,94 @@ local local_check_icon_size = function(size,fallback)
 	if fallback ~= nil then return fallback end
 	return 32
 end
-local local_create_icon = function(base_icons, add_icon, add_size, add_icons, add_scale, add_shift)	
-	local icons =  nil
-	
-	local base_size = base_icons[1].icon_size
-	base_size = local_check_icon_size(base_size,add_size)
-	local base_scale = 64/base_size
 
-	icons = {
-		{
-			icon = "__modmash__/graphics/blank64.png",
-			icon_size = 64
-			}
-		}
-	for k = 1, #base_icons do 		
-			local i = base_icons[k]		
-			local s = local_check_icon_size(i.icon_size,add_size)/64
-			local off = {0,0}
-			if i.shift ~= nil then off = i.shift end
-			local add = {
-				icon = i.icon,
-				icon_size = local_check_icon_size(i.icon_size,add_size),
-				scale = i.scale,
-				tint = i.tint,
-				shift = {off[1]+(add_shift[1]*s),off[2]+(add_shift[2]*s)},
-			}
-			table.insert(icons,add)
-		end
+table.deepestcopy = function (tablein)
+  -- use to copy a non-referential table, will break for infinitely referential tables
+  local tableout = {}
+  local key = nil
+  local thing = nil
 
-	if add_icons == nil or #add_icons == 0 then
-		table.insert(icons,
-			{
-				icon = add_icon,
-				icon_size = add_size,
-				scale = add_scale,
-				shift = add_shift
-			})
-	else
-		for k = 1, #add_icons do 		
-			local i = add_icons[k]		
-			local s = 1
-			local off = {0,0}
-			if i.shift ~= nil then off = i.shift end
-			if i.scale ~= nil then s = i.scale end
-			local add = {
-				icon = i.icon,
-				icon_size = local_check_icon_size(i.icon_size,add_size),
-				scale = add_scale,
-				shift = add_shift,
-				tint = i.tint
-			}
-			table.insert(icons,add)
+  for key, thing in pairs(tablein) do
+    if type(thing) == "table" then
+      tableout[key] = table.deepestcopy(thing)
+    else
+      tableout[key] = thing
+    end
+  end
+
+  return tableout
+end
+
+local local_create_icon = function(base_icons, new_icons, options)
+	if type(base_icons) ~= "table" then return base_icons end
+	if type(options) ~= "table" then options = {} end
+	local icon = nil
+
+	if not options.rescale then options.rescale = 1 end
+	if not options.origin then options.origin = {0,0} end
+	if not new_icons then
+		if options.from ~= nil and type(options.from) == "table" then
+			if options.from.icons then new_icons = options.from.icons
+			elseif options.from.icon then new_icons = {{icon = options.from.icon}}
+			else error("Table given had no icons.") end
+
+			for _, icon in pairs(new_icons) do
+				if not icon.icon_size then icon.icon_size = options.from.icon_size end
+				if not icon.icon_size then error("Had icon "..icon.icon.." but size is missing.")
+				end
+			end
+		else
+		  error("Couldn't build icons: no icons and no table to build from.")
 		end
 	end
-	return icons
+
+	local icons = table.deepestcopy(new_icons)
+
+	for _, icon in pairs(base_icons) do
+		if not icon.scale then icon.scale = 1 end
+		if not icon.shift then icon.shift = {0,0} end
+	end
+
+	if options.type == nil or options.type == "recipe" then
+		for _, icon in pairs(icons) do
+			if not icon.icon_size then icon.icon_size = 32 end
+		end
+    end
+
+	local extra_scale
+	for _, icon in pairs(icons) do
+		if not icon.scale then icon.scale = 1 end
+		if not icon.shift then icon.shift = {0,0} end
+
+		extra_scale = 1
+		if base_icons[1] then
+			if (base_icons[1].icon_size * base_icons[1].scale) ~= (icon.icon_size * icon.scale) then
+				extra_scale = (base_icons[1].icon_size * base_icons[1].scale) / (icon.icon_size)
+			end
+		else
+			if (icons[1].icon_size * icons[1].scale) ~= (icon.icon_size * icon.scale) then
+				extra_scale = (icons[1].icon_size * icons[1].scale) / (icon.icon_size)
+			end
+		end
+
+		icon.shift[1] = icon.shift[1]/icon.scale
+		icon.shift[2] = icon.shift[2]/icon.scale
+
+		icon.scale = icon.scale * options.rescale * extra_scale
+		icon.shift[1] = icon.shift[1] * icon.scale + options.origin[1] * icon.scale * icon.icon_size
+		icon.shift[2] = icon.shift[2] * icon.scale + options.origin[2] * icon.scale * icon.icon_size
+	end
+
+	for _, icon in pairs(icons) do
+		table.insert(base_icons, icon)
+	end
+--[[
+	for _, icon in pairs(base_icons) do
+		if icon.shift and icon.shift[1] == 0 and icon.shift[2] == 0 then icon.shift = nil end
+		if icon.scale and icon.scale == 1 then icon.scale = nil end
+	end
+--]]
+	return base_icons
 end
 
 modmash.util.create_icon = local_create_icon

@@ -105,38 +105,32 @@ local local_create_container = function(item,x)
 			icon_size = 32
 		}}
 	local base_tech_icons = {
-		{
+--[[		{
 			icon = "__modmash__/graphics/technology/super-material.png",
 			icon_size = 128,
 			scale = 0.5,
 			shift = {-48,-48}
-		},{
+		},
+--]]
+		{
 			icon = "__modmash__/graphics/icons/super-container.png",
 			icon_size = 32,
 			scale = 0.5,
-			shift = {-24,12}
+--			shift = {-24,12}
 		}}
 	
-	local base_uncontain_icons = nil
-	if item.icon == nil or item.icon == false then
-		base_uncontain_icons = item.icons
-		if not base_uncontain_icons then
-			log("all icon data seems missing for item: " .. item.name)
-			log(serpent.block(item))
-		end
-	else
-		base_uncontain_icons = {
-			{
-				icon=item.icon,
-				icon_size = item.icon_size
-			}}		
-	end
+	local base_uncontain_icons = {}
+	--log("item: "..item.name)
+	local check_item = nil
+	if check_item ~= nil and item.name == check_item then log(serpent.block(item)) end
+	local contain_icons = create_icon(base_contain_icons, nil, {from = item, rescale = .5})
+	local tech_icons = create_icon(base_tech_icons,nil, {from = item, rescale = .5, type = "technology"})
+	local uncontain_icons = create_icon(base_uncontain_icons,nil,{from = item})
+	uncontain_icons = create_icon(base_uncontain_icons,{{icon = "__modmash__/graphics/icons/super-container.png", icon_size = 32, scale = .5, shift = {5,5}}})
+	if check_item ~= nil and item.name == check_item then log(serpent.block(contain_icons)) end
+	if check_item ~= nil and item.name == check_item then log(serpent.block(tech_icons)) end
+	if check_item ~= nil and item.name == check_item then log(serpent.block(uncontain_icons)) end
 
-	--    local icon_size = item.icon_size or item.icons[1].icon_size or 32 -- OR definitions, try 32 if someone did the wrong thing
-
-	local contain_icons = create_icon(base_contain_icons,item.icon,item.icon_size,item.icons,0.5,{0,2})		
-	local tech_icons = create_icon(base_tech_icons,item.icon,item.icon_size,item.icons,0.5,{24,24})	
-	local uncontain_icons = create_icon(base_uncontain_icons,"__modmash__/graphics/icons/super-container.png",32,nil,0.5,{5,5})	
 
 	local container = {
 		type = "item",
@@ -497,8 +491,7 @@ end
 
 local local_create_super_material_conversions = function()
 	for name,item in pairs(data.raw["resource"]) do			
-		
-			if item ~= nil and item.name ~= nil
+		if item ~= nil and item.name ~= nil
 				and starts_with(item.name,"creative-mod") == false
 				and data.raw["fluid"][item.name] == nil
 				and ((data.raw["item"][item.name] ~= nil) or (data.raw["tool"][item.name] ~= nil)) then
@@ -512,12 +505,12 @@ local local_create_super_material_conversions = function()
 			{
 				icon = "__modmash__/graphics/technology/super-material.png",
 				icon_size = 128,
-				shift = {-32,-32},
+				shift = {0,8},
 				scale = 0.5
 			}}
-			local icons = create_icon(base_icons,item.icon,item.icon_size,item.icons,0.5,{4,4})		
-			local tech_icons = create_icon(base_tech_icons,item.icon,item.icon_size,item.icons,1,{16,16})		
-			local m = data.raw["item"][item.name].stack_size
+			local icons = create_icon(base_icons,nil,{from = item, rescale = 0.5, origin = {.5 , .5}})
+			local tech_icons = create_icon(base_tech_icons,nil,{from = item, rescale = .5, origin = {.5, .5}, type = "technology"})
+--			local m = data.raw["item"][item.name].stack_size
 			--if m == nil then m = 50 end
 			local m = nil
 			if data.raw["item"][item.name] then m = data.raw["item"][item.name].stack_size
@@ -1176,7 +1169,7 @@ local add_missing_ooze = function()
 			scale = 0.75,
 			shift = {-8,-8}
 		}}
-		local icons = create_icon(base_icons,item.icon,item.icon_size,item.icons,0.5,{8,8})		
+		local icons = create_icon(base_icons,nil,{from = item,scale = 0.5,origin = {.25,.25}})
 		local r = 	{
 			type = "recipe",
 			name = "alien-enrichment-process-to-"..item.name,
