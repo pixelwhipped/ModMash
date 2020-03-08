@@ -28,12 +28,12 @@ local local_add_loot_to_entity = function(entityType, entityName, probability, c
 local local_create_entity_loot = function()
 	local max_health = 0
 	for i,unit in pairs(data.raw["unit"]) do
-		if unit.subgroup == "enemies" then
+		if unit.subgroup == "enemies" and unit.max_health then
 			if unit.max_health > max_health then max_health = unit.max_health end
 		end end
 
 	for i,unit in pairs(data.raw["unit"]) do
-		if unit.subgroup == "enemies" then
+		if unit.subgroup == "enemies" and unit.max_health then
 			local min = (unit.max_health/max_health)*3
 			local max = (unit.max_health/max_health)*50
 			local_add_loot_to_entity("unit",unit.name,0.9,math.ceil(min),math.ceil(max))
