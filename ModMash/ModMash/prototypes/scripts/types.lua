@@ -926,7 +926,7 @@ local local_update_recipies = function()
 		{      
 		  {name = "copper-cable", amount = 1}
 		},nil,nil)
-	if data.raw.recipe["green-wire"] ~= nil then data.raw.recipe["red-wire"].result_count = 2 end
+	if data.raw.recipe["green-wire"] ~= nil then data.raw.recipe["green-wire"].result_count = 2 end
 	local_update_recipe("electronic-circuit",nil,
 		{      
 		  {name = "green-wire",  amount= 1},
