@@ -2,6 +2,7 @@
 Version: 0.18.20
   Changes:
     - Added underground world
+    - Added support for bob's mods titanium
   Bug Fix:
     - Added on_load for loot.
 
