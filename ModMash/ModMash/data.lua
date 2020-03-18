@@ -47,6 +47,7 @@ require("prototypes.recipe.valkyrie")
 
 require("prototypes.technology.regenerative")
 require("prototypes.technology.logistics")
+require("prototypes.technology.underground")
 
 require("prototypes.entity.underground")
 require("prototypes.entity.logistics")

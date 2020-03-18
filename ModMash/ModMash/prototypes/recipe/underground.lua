@@ -17,7 +17,7 @@
 		type = "recipe",
 		name = "underground-accumulator",
 		energy_required = 10,
-		enabled = true,
+		enabled = false,
 		ingredients =
 		{
 		  {"iron-plate", 10},

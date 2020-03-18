@@ -1125,6 +1125,9 @@
     <None Update="locale\zh-TW\locale.cfg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="migrations\modmash_0.18.20.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="migrations\modmash_0.18.16.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -1441,6 +1444,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="prototypes\technology\titanium-wall.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="prototypes\technology\underground.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="prototypes\technology\valkyrie.lua">
