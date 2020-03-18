@@ -316,8 +316,15 @@ local local_start = function()
 	
 	end
 
-local local_on_chunk_charted = function(event)	
+local local_load = function()	
+	log("loot.local_load")
+	chunks = global.modmash.loot.chunks
+	end
+	
+
+local local_on_chunk_charted = function(event)	   
 	local id = event.surface_index.."_"..event.position.x.."_"..event.position.y
+	if game.surfaces[event.surface_index].name == "underground" then return end
 	if not global.modmash.last_chunk then global.modmash.last_chunk = nil end
 	if global.modmash.last_chunk == id then return end
 	if table_index_of(chunks,id) == nil then
@@ -412,6 +419,7 @@ modmash.register_script({
 	names = {loot_science_a},
 	on_init = local_init,
 	on_start = local_start,
+	on_load = local_load,
 	on_selected_by_name = local_on_selected,
 	on_chunk_charted = local_on_chunk_charted,
 	on_configuration_changed = local_on_configuration_changed

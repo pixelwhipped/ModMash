@@ -29,7 +29,7 @@ data:extend(
 		{
 			enabled = true,
 			energy_required = 17.5,
-			ingredients = {{"titanium-ore", 5}},
+			ingredients = {{modmash.defines.names.titanium_ore_name, 5}},
 			result = "titanium-plate"
 		}
 	},
@@ -190,7 +190,7 @@ data:extend(
 			amount = 1,
 			},
 			{
-			name = "titanium-ore",
+			name = modmash.defines.names.titanium_ore_name,
 			probability = 1,
 			amount = 1,
 			}
@@ -227,7 +227,7 @@ data:extend(
 			}
 			,
 			{
-			name = "titanium-ore",
+			name = modmash.defines.names.titanium_ore_name,
 			probability = 0.4,
 			amount = 1,
 			}
@@ -254,7 +254,7 @@ data:extend(
 		results =
 		{
 			{
-			name = "titanium-ore",
+			name = modmash.defines.names.titanium_ore_name,
 			amount = 4,
 			}
 		},
@@ -408,7 +408,7 @@ data:extend(
 		results =
 		{
 			{
-			name = "titanium-ore",
+			name = modmash.defines.names.titanium_ore_name,
 			amount = 12,
 			}
 		},

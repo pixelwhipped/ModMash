@@ -1,11 +1,12 @@
-﻿--[[Code check 29.2.20
+﻿if not modmash.defines then require ("prototypes.scripts.defines") end
+--[[Code check 29.2.20
 removed old comments
 --]]
 data:extend(
 {
   {
     type = "item",
-    name = "titanium-ore",
+    name = modmash.defines.names.titanium_ore_name,
     icon = "__modmash__/graphics/icons/titanium-ore.png",
     icon_size = 32,    
     subgroup = "raw-resource",

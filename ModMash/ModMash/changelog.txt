@@ -1,4 +1,11 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.18.20
+  Changes:
+    - Added underground world
+  Bug Fix:
+    - Added on_load for loot.
+
+---------------------------------------------------------------------------------------------------
 Version: 0.18.19
   Bug Fix:
     - nil check for optional max_health in local_create_entity_loot (Honktown)

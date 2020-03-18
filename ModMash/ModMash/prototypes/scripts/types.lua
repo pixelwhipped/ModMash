@@ -1124,7 +1124,7 @@ end
 
 local add_missing_ooze = function()
 	local added = {}
-	local exclude_ooze = {"coal","titanium-ore","copper-ore","stone","iron-ore","uranium-ore"}	
+	local exclude_ooze = {"coal",modmash.defines.names.titanium_ore_name,"copper-ore","stone","iron-ore","uranium-ore"}	
 	for name,item in pairs(data.raw["resource"]) do	
 		if data.raw["fluid"][item.name] == nil then
 			if added[item.name] == nil and starts_with(item.name,"creative") == false then 

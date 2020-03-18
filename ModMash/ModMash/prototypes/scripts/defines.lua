@@ -7,6 +7,12 @@ if not modmash.defines.defaults then modmash.defines.defaults = {} end
 if not modmash.events then modmash.events = {} end
 
 --[[names]]
+modmash.defines.names.titanium_ore_name = "titanium-ore" 
+if settings.startup["modmash-bob-support"].value == "Yes" then
+	modmash.defines.names.titanium_ore_name = "rutile-ore" 
+end
+ 
+
 modmash.defines.names.force_player = "player"
 modmash.defines.names.force_enemy = "enemy"
 modmash.defines.names.force_neutral = "neutral"
@@ -21,6 +27,8 @@ modmash.defines.names.allow_pickup_rotations = "allow-pickup-rotations"
 modmash.defines.names.allow_fishing = "allow-fishing"
 modmash.defines.names.recycling_machine = "recycling-machine"
 modmash.defines.names.subspace_transport = "subspace-transport"
+modmash.defines.names.underground_access = "underground-access"
+modmash.defines.names.underground_accumulator = "underground-accumulator"
 
 modmash.defines.names.wind_trap = "wind-trap"
 modmash.defines.names.wind_trap_action_prefix = "wind-trap-action-"

@@ -124,5 +124,12 @@ data:extend(
 		minimum_value = 0,
 		maximum_value = 100,
 		order = "e"
+	},{
+		type = "string-setting",
+		name = "modmash-bob-support",
+		setting_type = "startup",
+		default_value = "No",
+		allowed_values = {"Yes", "No"},
+		order = "f"
 	},
 })

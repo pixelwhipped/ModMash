@@ -29,6 +29,7 @@ if not modmash.on_selected_by_name then modmash.on_selected_by_name = {} end
 if not modmash.on_spawned then modmash.on_spawned = {} end 
 if not modmash.on_spawned_by_name then modmash.on_spawned_by_name = {} end 
 if not modmash.on_chunk_charted then modmash.on_chunk_charted = {} end 
+if not modmash.on_chunk_generated then modmash.on_chunk_generated = {} end 
 if not modmash.on_post_entity_died then modmash.on_post_entity_died = {} end 
 if not modmash.on_gui_click then modmash.on_gui_click = {} end
 if not modmash.on_player_spawned then modmash.on_player_spawned = {} end
@@ -145,6 +146,10 @@ modmash.register_script = function(script)
 		log("Registering legacy chunk charted event")
 		table.insert(modmash.on_chunk_charted,script.on_chunk_charted)
 	end
+	if script.on_chunk_generated ~= nil then 
+		log("Registering legacy chunk generated event")
+		table.insert(modmash.on_chunk_generated,script.on_chunk_generated)
+	end
 	if script.on_spawned~= nil then 
 		log("Registering spawned event")
 		table.insert(modmash.on_spawned,script.on_spawned)
@@ -248,8 +253,7 @@ local starts_with  = modmash.util.starts_with
 local ends_with  = modmash.util.ends_with
 local distance  = modmash.util.distance
 local is_valid  = modmash.util.is_valid
-
-
+local is_valid_and_persistant  = modmash.util.is_valid_and_persistant
 
 
 --[[Called first time mod is added to current game instance. Called Once]]
@@ -320,18 +324,19 @@ require("prototypes.scripts.biter-spawner")
 require("prototypes.scripts.new-game")
 require("prototypes.scripts.subspace-transport")
 require("prototypes.scripts.valkyrie")
+require("prototypes.scripts.underground")
 
-local local_on_standard_entity_event = function(entity, table, table_by_name)	
+local local_on_standard_entity_event = function(entity, table, table_by_name, event)	
 	if is_map_editor == true then return end
 	if is_valid(entity) then			
 		for k=1, #table do local v = table[k]		
-			v(entity)
+			v(entity,event)
 		end
-		if table_by_name ~= nil then
+		if table_by_name ~= nil and is_valid_and_persistant(entity) then
 			local tbl = table_by_name[entity.name]
 			if tbl ~= nil then
 				for k=1, #tbl do local v = tbl[k]		
-					v(entity)
+					v(entity,event)
 				end
 			end
 		end
@@ -345,19 +350,19 @@ end
 
 --[[done]]
 local local_on_added = function(event)	
-	local_on_standard_entity_event(event.created_entity,modmash.on_added,modmash.on_added_by_name)
+	local_on_standard_entity_event(event.created_entity,modmash.on_added,modmash.on_added_by_name,event)
 	end
 --[[done]]
 local local_on_spawned = function(event)
-	local_on_standard_entity_event(event.entity,modmash.on_spawned,modmash.on_spawned_by_name)
+	local_on_standard_entity_event(event.entity,modmash.on_spawned,modmash.on_spawned_by_name,event)
 	end
 --[[done]]
 local local_on_removed = function(event)
-	local_on_standard_entity_event(event.entity,modmash.on_removed,modmash.on_removed_by_name)
+	local_on_standard_entity_event(event.entity,modmash.on_removed,modmash.on_removed_by_name,event)
 	end
 --[[done]]
 local local_on_damage = function(event)
-	local_on_standard_entity_event(event.entity,modmash.on_damage,modmash.on_damage_by_name)
+	local_on_standard_entity_event(event.entity,modmash.on_damage,modmash.on_damage_by_name,event)
 	end
 --[[done]]
 local local_item_pick_up = function(event)
@@ -365,12 +370,12 @@ local local_item_pick_up = function(event)
 	local stack = event.item_stack
 	if stack ~= nil then				
 		for k=1, #modmash.on_pick_up do local v = modmash.on_pick_up[k]		
-			v(stack)
+			v(stack,event)
 		end
 		local tbl = modmash.on_pick_up_by_name[stack.name]
 		if tbl ~= nil then
 			for k=1, #tbl do local v = tbl[k]		
-				v(stack)
+				v(stack,event)
 			end
 		end
 	end 
@@ -385,6 +390,12 @@ local local_on_research = function(event)
 local local_on_chunk_charted = function(event)
 	if is_map_editor == true then return end
 	for k=1, #modmash.on_chunk_charted do local v = modmash.on_chunk_charted[k]
+		v(event)
+	end 
+	end
+local local_on_chunk_generated = function(event)
+	if is_map_editor == true then return end
+	for k=1, #modmash.on_chunk_generated do local v = modmash.on_chunk_generated[k]
 		v(event)
 	end 
 	end
@@ -513,6 +524,7 @@ script.on_event(defines.events.on_research_finished, local_on_research)
 script.on_event(defines.events.on_player_cursor_stack_changed,local_on_player_cursor_stack_changed)
 script.on_event(defines.events.on_entity_spawned, local_on_spawned)
 script.on_event(defines.events.on_chunk_charted,local_on_chunk_charted)
+script.on_event(defines.events.on_chunk_generated,local_on_chunk_generated)
 script.on_event(defines.events.on_train_changed_state,local_on_train_changed_state)
 script.on_event(defines.events.on_tick, local_on_tick)
 script.on_event(defines.events.on_ai_command_completed, local_on_ai_command_completed)
