@@ -1,4 +1,11 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.18.21
+  Changes:
+    - Reduced dependancy on (entity) for creating surfaces
+    - Added Names for rock
+    - Tweaked rocks and spawning randomness
+
+---------------------------------------------------------------------------------------------------
 Version: 0.18.20
   Changes:
     - Added underground world

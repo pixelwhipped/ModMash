@@ -1,4 +1,6 @@
-﻿function underground_accumulator_picture(tint, repeat_count)
+﻿if not modmash or not modmash.util then require("prototypes.scripts.util") end
+
+function underground_accumulator_picture(tint, repeat_count)
   return
   {
     layers =
@@ -235,13 +237,16 @@ local rock_names = {
 
 for k=1, #rock_names do
 local r = table.deepcopy(data.raw["simple-entity"][rock_names[k]])
+	local desc = modmash.util.get_name_for(r.name)
 	r.name = "mm_"..r.name
 	r.loot = nil
+	r.localised_name = desc
+	r.max_health = r.max_health/2
 	r.minable =
     {
       mining_particle = "stone-particle",
       mining_time = 1,
-      results = {{name = "stone", amount_min = 5, amount_max = 10}, {name = "sand", amount_min = 1, amount_max = 5}},
+      results = {{name = "stone", amount_min = 1, amount_max = 8}, {name = "sand", amount_min = 1, amount_max = 5}},
     }
 	data:extend({r})
 end

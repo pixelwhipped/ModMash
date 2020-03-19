@@ -112,7 +112,7 @@ local generate_surface_area = function(x,y,r,surface, force_gen)
 	end
 	local p = get_circle_lines(x,y,r)
 	local d = get_sorted_lines(p)
-	local rnd = math.random(1, 60)
+	local rnd = math.random(1, 45)
     local amt = math.random(500, 1200)
 
 
@@ -139,15 +139,15 @@ local generate_surface_area = function(x,y,r,surface, force_gen)
 			  --inside
 			  if current_tile.name == "out-of-map" then 
 			    surface.set_tiles({{ name = tile, position = pos }})
-				if rnd<2 and x == j and y == i then	
+				if rnd<5 and x == j and y == i then	
 					surface.create_entity({ name = enemy_spawns[math.random(#enemy_spawns)], position = pos })
-				elseif rnd<7 then
+				elseif rnd<10 then
 					surface.create_entity({name="uranium-ore", amount=amt*m, position=pos})
-				elseif rnd<12 then
+				elseif rnd<14 then
 					surface.create_entity({name="iron-ore", amount=amt*m, position=pos})
-				elseif rnd<17 then
+				elseif rnd<19 then
 					surface.create_entity({name="copper-ore", amount=amt*m, position=pos})
-				elseif rnd<20 then
+				elseif rnd<24 then
 					surface.create_entity({name="coal", amount=amt*m, position=pos})
 				end
 			  end
@@ -223,11 +223,12 @@ local init_surface = function(surface,parent)
 	return surface
 	end
 
-local local_ensure_underground_environment = function(entity)
-	if entity.surface.name == "underground" then return end
-	if entity.surface.name == "nauvis" then
+local local_ensure_underground_environment = function()
+	--if game.surfaces["underground"] ~= nil then return end --entity.surface.name == "underground" then return end
+	if game.surfaces["nauvis"] ~= nil then
+--	if entity.surface.name == "nauvis" then
 		if game.surfaces["underground"] then return end
-		local surface = init_surface(game.create_surface("underground"),entity.surface)
+		local surface = init_surface(game.create_surface("underground"),game.surfaces["nauvis"])
 		--for c in game.surfaces["nauvis"].get_chunks() do
 		--	surface.request_to_generate_chunks({c.x,c.y}, 1)
 		--end
@@ -278,7 +279,7 @@ local local_ensure_can_place_entity = function(entity,event)
 local local_underground_added = function(entity,event)			
 		if is_valid(entity) ~= true then return end	
 		-- should  have been called by spawn		
-		local_ensure_underground_environment(entity)
+		local_ensure_underground_environment()
 		if local_ensure_can_place_entity(entity,event) == false then 
 			return
 		end		
@@ -438,19 +439,24 @@ local local_underground_tick = function()
 end
 
 local local_on_player_spawned = function(event)
+
 	local player = game.get_player(event.player_index)
+	if player == nil or player.character == nil then return end
 	if table_contains(underground_origins,player.force) then return end
-	table.insert(underground_origins,player.force)
-	local_ensure_underground_environment(player.character)
-	local pos = player.force.get_spawn_position( game.surfaces["underground"])
 	
-	local rocks = game.surfaces["underground"].find_entities_filtered{area = {{pos.x-2.5, pos.y-2.5}, {pos.x+2.5, pos.y+2.5}}, name = rock_names}			
-	for index=1, #rocks do local r = rocks[index]				
-		if is_valid(r) then 
-			r.destroy({raise_destroy = true}) 
+	local_ensure_underground_environment()
+	if game.surfaces["underground"] ~= nil then
+		table.insert(underground_origins,player.force)
+		local pos = player.force.get_spawn_position(game.surfaces["underground"])
+	
+		local rocks = game.surfaces["underground"].find_entities_filtered{area = {{pos.x-2.5, pos.y-2.5}, {pos.x+2.5, pos.y+2.5}}, name = rock_names}			
+		for index=1, #rocks do local r = rocks[index]				
+			if is_valid(r) then 
+				r.destroy({raise_destroy = true}) 
+			end			
 		end			
-	end			
-	generate_surface_area(pos.x, pos.y,6,game.surfaces["underground"])	
+		generate_surface_area(pos.x, pos.y,6,game.surfaces["underground"])	
+	end
 	end	
 
 
