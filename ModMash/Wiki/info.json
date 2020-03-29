@@ -1,0 +1,13 @@
+{
+  "name": "wiki",
+  "version": "0.18.01",
+  "title": "Factorio Wiki Mod",
+  "author": "PixelWhipped",
+  "contact": "",
+  "homepage": "",
+  "factorio_version": "0.18",
+  "description": "Common Wiki GUI interface for mods",
+  "dependencies": [
+    "base >= 0.18.0"
+  ]
+}

@@ -91,3 +91,6 @@ data:extend({
     consuming = "script-only"
   },
 })
+
+require("wiki") 
+wiki_register_mod_wiki(modmash_wiki)

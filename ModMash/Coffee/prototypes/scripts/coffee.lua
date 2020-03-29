@@ -37,6 +37,7 @@ local local_add_sticker = function(entity)
 
 local local_on_player_spawned = function(event)
 	local player = game.get_player(event.player_index)
+	if player == nil or player.character == nil then return end
 	if global.coffee == nil then global.coffee = {} end	
 	if global.coffee.players == nil then global.coffee.players = {} end		
 	players = global.coffee.players
@@ -84,9 +85,9 @@ local local_update_player = function(k,m)
 		if mod ~= 0 then
 			local_remove_sticker(player.character)
 		elseif settings.global["coffee-setting-no-coffee"].value == "It Hurts" then
-			player.character.damage(10,"neutral")
+			player.character.damage(55,"neutral")
 		elseif settings.global["coffee-setting-no-coffee"].value == "Massive Withdrawals" then 
-			player.character.damage(10,"neutral")
+			player.character.damage(55,"neutral")
 			local_add_sticker(player.character)
 		elseif settings.global["coffee-setting-no-coffee"].value == "Feeling Sluggish" then 
 			local_add_sticker(player.character)			

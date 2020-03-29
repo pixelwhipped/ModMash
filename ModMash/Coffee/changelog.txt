@@ -1,4 +1,10 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.18.07
+  Changes:
+    - Reduced dependancy on (entity) for creating surfaces
+    - Tweaked damage
+
+---------------------------------------------------------------------------------------------------
 Version: 0.18.06
   Bug Fix:
     - inserters that are seeking coffee are now operable

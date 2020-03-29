@@ -47,6 +47,7 @@ if not modmash.on_entity_cloned then modmash.on_entity_cloned = {} end
 local run_init = false
 
 require("prototypes.scripts.defines") 
+require("wiki")
 local build_events = modmash.events.on_build
 local remove_events = modmash.events.on_remove
 local item_pick_up_events = modmash.events.on_pick_up_item
@@ -259,6 +260,7 @@ local is_valid_and_persistant  = modmash.util.is_valid_and_persistant
 --[[Called first time mod is added to current game instance. Called Once]]
 local local_on_init = function()
 	log("control.local_on_init")
+	remote.call("wiki","register_mod_wiki",modmash_wiki)
 	if global.modmash == nil then global.modmash = {allow_pickup_rotations = false} end	
 	for k=1, #modmash.on_init do local v = modmash.on_init[k]		
 		v()
@@ -271,6 +273,7 @@ script.on_init(local_on_init)
 --[[Called subsequent times mod is loaded. Called each time except first instance]]
 script.on_load(function()
 	log("control.on_load")
+	remote.call("wiki","register_mod_wiki",modmash_wiki)
 	for k=1, #modmash.on_load do local v = modmash.on_load[k]		
 		v()
 	end 

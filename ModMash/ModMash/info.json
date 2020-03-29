@@ -1,6 +1,6 @@
 {
   "name": "modmash",
-  "version": "0.18.21",
+  "version": "0.18.23",
   "title": "ModMash",
   "author": "PixelWhipped",
   "contact": "",
@@ -9,7 +9,8 @@
   "description": "Mod Mash, valkyries, Ore refining, Crash Site Items and Tech Loot, Subspace Transport, Sub-Dimensional Stacking, Biter harvesting, Droids and more. Placeable spawners, Alien Ooze, Ore Enrichments, conversions, Explosive Mining, Regenerative Walls and Belts, Recycler, Fluid controls(animated), Mini Boiler, Fishing Machine, Mini And Normal Loaders. Titanium Walls and Belts, Biter Neural Toxin and various entities can be automated or adjusted, Fish and Ooze juice now included.",
   "dependencies": [
     "base >= 0.18.0",
-    "? coffee >= 0.18.02",
+    "wiki >= 0.18.01",
+    "? coffee >= 0.18.07",
     "? biterbullets >= 0.18.4",
     "? mininukes >= 0.18.02"
   ]

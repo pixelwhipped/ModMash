@@ -19,6 +19,7 @@ local local_init = function()
 	end
 
 local local_start = function()
+	if true then return end
 	if global.modmash.shown_welcome == true then return end
 	if settings.startup["modmash-show-welcome"].value ~= true and #game.connected_players ~= 1 then return end
 		--game.tick_paused = true

@@ -53,7 +53,7 @@ local local_recycling_machine_process = function(entity)
 					end	
 					table.insert(storage,ent.pickup_target)					
 				end
-			elseif ent.type == "loader" then
+			elseif ent.type == "loader" and ent.loader_type == "input" then
 				local filtered = false
 				if ent.filter_slot_count > 0 then
 					for fi = 1, ent.filter_slot_count do	
@@ -82,7 +82,7 @@ local local_recycling_machine_process = function(entity)
 						end
 					end
 				end
-			elseif ent.type == "loader-1x1" then
+			elseif (ent.type == "loader-1x1" or ent.type == "loader-1x2") and ent.loader_type == "input" then
 				local filtered = false
 				if ent.filter_slot_count > 0 then
 					for fi = 1, ent.filter_slot_count do	

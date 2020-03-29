@@ -57,7 +57,7 @@ local local_load = function()
 	end
 
 local local_on_configuration_changed = function(f)
-	if f.mod_changes["modmash"].old_version < "0.18.19" then			
+	if f.mod_changes["modmash"].old_version <= "0.18.19" or global.modmash.underground_accumulators == nil then		
 		local_init()
 	end
 	end

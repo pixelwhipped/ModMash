@@ -1,4 +1,18 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.18.23
+  Changes:
+    - Added Wiki
+  Bug Fixes:
+    - Added check for loader input on recyclers
+
+---------------------------------------------------------------------------------------------------
+Version: 0.18.22
+  Changes:
+    - Removed welcome screen plan to replace
+  Bug Fix:
+    - Fixed version skip not adding new globals
+
+---------------------------------------------------------------------------------------------------
 Version: 0.18.21
   Changes:
     - Reduced dependancy on (entity) for creating surfaces
