@@ -7,7 +7,7 @@ data:extend(
 		type = "bool-setting",
 		name = "modmash-show-welcome",
 		setting_type = "startup",
-		default_value = true,
+		default_value = false,
 	},
 	{
 		type = "bool-setting",

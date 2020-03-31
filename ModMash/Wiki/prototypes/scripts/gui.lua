@@ -649,19 +649,26 @@ local local_create_wiki = function(event, mod_filter)
 
 	end
 
+local local_remove_wiki_frame = function(player_index)
+	local player_gui_center = game.players[player_index].gui.center
+	for k = #player_gui_center.children, 1, -1 do
+		local ui = player_gui_center.children[k]
+		if ui and ui.name == "wiki-main-frame" then
+			ui.destroy()
+			return true
+		end
+	end
+	return false
+	end
+
+
 local local_toggle_wiki = function(event)
-	local wiki_gui = local_get_element_by_name(event.player_index, "wiki-main-frame")
-	if wiki_gui and wiki_gui.valid then
-		wiki_gui.destroy()
-	else
+	if local_remove_wiki_frame(event.player_index) == false then
 		local_create_wiki(event)	
 	end
 	end
 
-local local_close_wiki = function(event)
-	local wiki_gui = local_get_element_by_name(event.player_index, "wiki-main-frame")
-	if wiki_gui and wiki_gui.valid then wiki_gui.destroy() end
-	end
+local local_close_wiki = function(event) local_remove_wiki_frame(event.player_index) end
 
 local local_get_description_pane = function(event)
 	local wiki_gui = local_get_element_by_name(event.player_index, "wiki-main-frame")
@@ -689,6 +696,7 @@ local local_add_image_to_descrption_pane = function(pane, name, index)
 		sprite = name
 	})
 	end
+
 
 local local_add_text_to_descrption_pane = function(pane, text, index)
 	local_add_description(pane,
