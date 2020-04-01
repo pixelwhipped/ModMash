@@ -277,6 +277,15 @@ script.on_load(function()
 	for k=1, #modmash.on_load do local v = modmash.on_load[k]		
 		v()
 	end 
+	--[[local test = function(parent)
+		if parent ~= nil then
+			modmash.util.print("Parent Found")
+		else
+			modmash.util.print("Null Parent")
+		end
+	end
+
+	remote.add_interface("modmash",{test = test})]]
 	end)	
 
 script.on_configuration_changed(function(f) 

@@ -94,6 +94,13 @@ styles["wiki-description-flow"] =
 	vertical_scrollbar_style = { type = "vertical_scrollbar_style" },
 	width   = 525,
 	padding = 4,
+	graphical_set = {}
+	--[[{
+		filename = "__core__/graphics/gui-new.png",
+		position = {0, 0},
+		opacity = 0.0,
+		background_blur = true
+	}
 	graphical_set = 
 	{
 		base = 
@@ -103,7 +110,7 @@ styles["wiki-description-flow"] =
 			draw_type = "outer"
 		},
 		shadow = default_inner_shadow
-	},
+	}]],
     background_graphical_set = {},
     extra_padding_when_activated = 4
 }
