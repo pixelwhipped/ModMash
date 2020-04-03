@@ -1,5 +1,14 @@
 ﻿---------------------------------------------------------------------------------------------------
-Version: 0.18.03
+Version: 0.18.05
+  Changes:
+    - Code tweaks and clean
+    - Wiki now draggable
+    - Updates to Wiki Frame
+    - Change Modlist to show Title not Name
+    - Added support for booktorio
+
+---------------------------------------------------------------------------------------------------
+Version: 0.18.04
   Changes:
     - Changed Wiki style
     - Added custom elements

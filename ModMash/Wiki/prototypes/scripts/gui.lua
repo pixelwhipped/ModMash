@@ -3,6 +3,8 @@ if not wiki.events then wiki.events = {} end
 if not wiki.events.click_events then wiki.events.click_events = {} end
 if not wiki.events.select_events then wiki.events.select_events = {} end
 if not wiki.topics then wiki.topics = {} end
+if not wiki.last_location then wiki.last_location = {64,64} end
+
 if not wiki.mods then 
 	wiki.mods = {"All"} 
 end
@@ -13,6 +15,7 @@ require("prototypes.scripts.util")
 require("__core__/lualib/mod-gui")
 
 local table_contains = wiki.util.table_contains
+local booktorio_posted = false
 
 local local_create_element = function(parent,type,name,caption,tooltip)
 	if not (parent and parent.valid) then return nil end
@@ -116,16 +119,21 @@ local local_remove_toggle_button = function(player_index)
 	end
 	end
 
-local local_get_wiki_frame = function(player_index)
-	local player_gui_center = game.players[player_index].gui.center
-	for k = #player_gui_center.children, 1, -1 do
-		local ui = player_gui_center.children[k]
+local local_get_wiki_frame_from = function(player_gui)
+	for k = #player_gui.children, 1, -1 do
+		local ui = player_gui.children[k]
 		if ui and ui.name == "wiki-main-frame" then
 			return ui
 		end
 	end
 	return nil
 	end
+
+local local_get_wiki_frame = function(player_index)
+	local ui = local_get_wiki_frame_from(game.players[player_index].gui.screen)
+	if ui ~= nil then return ui end
+	return  local_get_wiki_frame_from(game.players[player_index].gui.center)
+end
 
 local local_get_wiki_main_flow = function(player_index)	
 	local wiki_frame = local_get_wiki_frame(player_index)
@@ -152,10 +160,73 @@ local local_get_wiki_info_pane = function(player_index)
 local local_remove_wiki_frame = function(player_index)
 	local ui = local_get_wiki_frame(player_index)
 	if ui ~= nil then
+		if ui.location ~= nil then wiki.last_location = ui.location end
 		ui.destroy()
 		return true
 	end
 	return false
+	end
+
+local local_get_wiki_threads = function()
+	local threads = {}
+
+	for i = 1, #wiki.topics do local topic = wiki.topics[i]
+		local desc = wiki.descriptions[topic]
+		local thread = threads[desc.mod]	
+		local thread_str = desc.title
+		local thread_localized = type(thread_str) == "table"
+		if thread == nil then 
+			thread = {
+				name = thread_str,
+				localized = thread_localized,
+				topics = {}
+			}
+		end
+		local topic = {
+				name = wiki.topics[i],
+				topic = {}
+			}
+		for j = 1, #desc do local element = desc[j]			
+			if element.type == "title" or element.type == "subtitle" then
+					local str = element.title
+					local localized = type(str) == "table"
+					table.insert(topic.topic,
+					{
+						type = "title", title = str , localized = localized
+					})
+			elseif element.type == "image" then
+				table.insert(topic.topic,
+					{
+						type = "image", spritename = element.name
+					})
+			elseif element.type == "text" then
+					local str = element.text
+					local localized = type(str) == "table"
+					table.insert(topic.topic,
+					{
+						type = "text", text = str , localized = localized
+					})
+			end
+		end
+		table.insert(thread.topics,topic)
+		threads[desc.mod] = thread
+	end
+	return threads
+	end
+
+local local_post_to_booktorio = function(event)	
+	local settings = game.players[event.player_index].mod_settings	
+	if booktorio_posted ~= true and #wiki.topics > 0 and settings["wiki-defer-booktorio"] and settings["wiki-defer-booktorio"].value then
+		if remote.interfaces["Booktorio"] then			
+			local threads = local_get_wiki_threads()			
+			if threads ~= nil then
+				for _, thread in pairs(threads) do
+					remote.call("Booktorio", "add_thread", thread) 
+				end
+			end
+		end
+	end
+	booktorio_posted = true
 	end
 
 function wiki_on_runtime_mod_setting_changed(event)
@@ -167,6 +238,11 @@ function wiki_on_runtime_mod_setting_changed(event)
 			wiki_initialize(event)
 		end
 	end
+	if event.setting_type == "runtime-per-user" and event.setting == "wiki-defer-booktorio" then
+		if game.players[event.player_index].mod_settings["wiki-defer-booktorio"].value then	
+			local_post_to_booktorio(event) 
+		end
+	end
 	end
 
 function wiki_initialize(event)
@@ -175,8 +251,12 @@ function wiki_initialize(event)
 	local_remove_toggle_button(event.player_index)
 	if #wiki.topics == 0  or (settings["wiki-enable-disable"] and settings["wiki-enable-disable"].value) then 				
 		local_remove_wiki_frame(event.player_index)
+	else
+		local_add_sprite_button(button_flow, "wiki-toggle-button","wiki-open-gui",{"gui.wiki-open-tooltip"},"wiki-icon-button")
 	end
-	local_add_sprite_button(button_flow, "wiki-toggle-button","wiki-open-gui",{"gui.wiki-open-tooltip"},"wiki-icon-button")
+	if settings["wiki-defer-booktorio"].value then	
+		local_post_to_booktorio(event) 
+	end
 	end
 
 function wiki_on_gui_selection_state_changed(event)	
@@ -199,9 +279,6 @@ local local_wiki_register_mod_wiki_control = function(wiki_data)
 	elseif table_contains(wiki.mods,wiki_data.title) == false then
 		table.insert(wiki.mods,wiki_data.title)
 	end	
-	--[[if wiki_data.mod_path == nil or wiki_data.mod_path == '' then		
-		wiki.util.log("Skipping Mod " .. wiki_data.name .. " missing mod path")
-	end]]
 	local text_index = 0
 	local title_index = 0
 	for i = 1, #wiki_data do local item = wiki_data[i]
@@ -214,7 +291,8 @@ local local_wiki_register_mod_wiki_control = function(wiki_data)
 			return
 		else
 			local desc = {
-				mod = wiki_data.name
+				mod = wiki_data.name,
+				title = wiki_data.title
 			}				
 			for j = 1, #item.topic do local element = item.topic[j]
 				if element ~= nil then
@@ -304,9 +382,6 @@ local local_wiki_register_mod_wiki_data = function(wiki_data)
 		wiki.util.log("Skipping Mod " .. wiki_data.name .. " missing title")
 		return
 	end	
-	--[[if wiki_data.mod_path == nil or wiki_data.mod_path == '' then
-		wiki.util.log("Skipping Mod " .. wiki_data.name .. " missing mod path")
-	end]]
 	for i = 1, #wiki_data do local item = wiki_data[i]
 		if item ~= nil then
 			for j = 1, #item.topic do local element = item.topic[j]
@@ -339,7 +414,7 @@ local local_wiki_register_mod_wiki_data = function(wiki_data)
 
 function wiki_register_mod_wiki(wiki_data)
 	if wiki.util.data_stage() == wiki.defines.data_stages.control then
-		local_wiki_register_mod_wiki_control(wiki_data)
+		local_wiki_register_mod_wiki_control(wiki_data)		
 	else
 		local_wiki_register_mod_wiki_data(wiki_data)
 	end
@@ -353,15 +428,6 @@ function wiki_on_gui_click(event)
 	end
 	end
 
-local local_get_description_pane = function(event)
-	local info_pane = local_get_wiki_info_pane(event.player_index)
-	if info_pane ~= nil then
-		info_pane.clear()
-		return info_pane
-	end
-	return nil
-	end
-
 local local_add_image_to_descrption_pane = function(pane, sprite, index)
 	local image_flow = local_add_flow(pane, "wiki-image-flow-" .. index,"horizontal","wiki-image-flow")
 	local_add_sprite(image_flow,"wiki-preview-" .. index, sprite)
@@ -369,34 +435,34 @@ local local_add_image_to_descrption_pane = function(pane, sprite, index)
 
 local local_add_title_to_descrption_pane = function(pane, title, index)
 	local title_flow = local_add_flow(pane, "title-flow-"..index,"horizontal","wiki-title-flow")
-	local_add_label(title_flow, "wiki-description-title-"..index, title,"bold_label")
+	local_add_label(title_flow, "wiki-description-title-"..index, title,"wiki-description-label")
 	local_add_line(pane, "wiki-title-line-"..index,nil,"dark_line")
 	end
 
 local local_add_custom = function(pane,name,interface,func)
 	local custom_flow = local_add_flow(pane, name,"horizontal","horizontal_flow")
-	--wiki.util.print(interface.." "..func)
-	--remote.call(interface,func,custom_flow)
-	local call = function(i,f,cf)
-		
+	local call = function(i,f,cf)		
 		remote.call(i,f,cf)
 	end	
 	local status, retval = pcall(call,interface,func,custom_flow)
-	
-end
-
+	if status == false then 
+		name = name or ""
+		wiki.util.log("Adding remote UI elemennt failed "..name)
+	end
+	end
 
 local local_change_wiki_description = function(event)
 	local list = event.element
 	if list and list.valid then	
 		local topic = wiki.descriptions[wiki.topics[list.selected_index]]			
-		local wiki_info_pane = local_get_description_pane(event)
+		local wiki_info_pane = local_get_wiki_info_pane(event.player_index)
 		local image_index = 0 
 		local text_index = 0
 		local title_index = 0
 		local line_index = 0
 		local custom_index = 0
 		if topic and wiki_info_pane then
+			wiki_info_pane.clear()
 			for _, element in pairs(topic) do		
 				if element.type == "image" then				
 					image_index = image_index + 1
@@ -421,11 +487,15 @@ local local_change_wiki_description = function(event)
 
 local local_create_wiki = function(event, mod_filter)	
 	mod_filter = mod_filter or "All"
-	local player_gui_center = game.players[event.player_index].gui.center	
+	local player_gui_center = game.players[event.player_index].gui.screen	
 	local wiki_frame = local_add_frame(player_gui_center, "wiki-main-frame", {"gui.wiki-name"},"vertical", "wiki-window")
 	local wiki_main_flow = local_add_flow(wiki_frame, "wiki-main-flow","horizontal","wiki-window-flow")
-	local inner_back_button_flow = local_add_flow(wiki_frame, "wiki-inner-back-button-flow","horizontal","horizontal_flow")
-	local_add_text_button(inner_back_button_flow,"wiki-close", {"gui.wiki-close"}, "back_button")
+	local button_flow = local_add_flow(wiki_frame, "wiki-button-flow","horizontal","wiki-bottom-button-flow")
+	
+	local_add_text_button(button_flow,"wiki-close", {"gui.wiki-close"}, "button")
+	local element = { type = "empty-widget", style = "wiki-bottom-filler"} 
+	button_flow.add(element)
+
 	local left_flow = local_add_flow(wiki_main_flow,"wiki-left-flow","vertical","wiki-left-window-flow")
 	local_add_line(wiki_main_flow,"wiki-main-flow-line","vertical")
 	local mods_left_flow = local_add_flow(left_flow, "wiki-left-flow","horizontal","horizontal_flow")	
@@ -434,7 +504,7 @@ local local_create_wiki = function(event, mod_filter)
 	local selected_mod_index = 1
 	for i = 1, #wiki.mods do
 		if mod_filter == wiki.mods[i] then
-			selected_mod_index = 1
+			selected_mod_index = i
 		end
 	end
 	local_add_dropdown(mods_left_flow, "wiki-list-mods", wiki.mods, selected_mod_index)	
@@ -447,7 +517,7 @@ local local_create_wiki = function(event, mod_filter)
 		active_topics = wiki.topics
 	else
 		for k = 1, #wiki.topics do local topic = wiki.topics[k]
-			if wiki.descriptions[topic].mod == mod_filter then
+			if wiki.descriptions[topic].title == mod_filter then
 				if table_contains(active_topics,topic) == false then
 					table.insert(active_topics,topic)
 				end			
@@ -458,12 +528,11 @@ local local_create_wiki = function(event, mod_filter)
 	local topic_list = local_add_list(left_flow, "wiki-topics-list", active_topics)
 	
 	local_add_scroll_pane(wiki_main_flow,"wiki-info-pane", "never", "auto-and-reserve-space","wiki-description-flow")
-	--local_add_label(wiki_info_pane, "wiki_info", {"gui.wiki-info-description"},"wiki-description-label")	
 	
 	local_change_wiki_description({element = topic_list, player_index = event.player_index})
 	
 	game.players[event.player_index].opened =	wiki_frame
-
+	if wiki_frame.location ~= nil then wiki_frame.location = wiki.last_location end
 	end
 
 local local_toggle_wiki = function(event)
@@ -475,8 +544,13 @@ local local_toggle_wiki = function(event)
 local local_close_wiki = function(event) local_remove_wiki_frame(event.player_index) end
 
 local local_change_wiki_mod_filter = function(event)
-	local_remove_wiki_frame(event.player_index)
-	local_create_wiki(event)		
+	local list = event.element
+	local mod=nil
+	if list and list.valid then
+		mod = wiki.mods[list.selected_index]
+	end
+	local_remove_wiki_frame(event.player_index)	
+	local_create_wiki(event,mod)		
 	end
 
 wiki.events.click_events["wiki-toggle-button"] = local_toggle_wiki

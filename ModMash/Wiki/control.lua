@@ -6,9 +6,11 @@ require("prototypes.scripts.gui")
 
 script.on_event(defines.events.on_gui_click, wiki_on_gui_click)
 script.on_event(defines.events.on_gui_selection_state_changed,wiki_on_gui_selection_state_changed)	
-script.on_event(defines.events.on_runtime_mod_setting_changed,wiki_on_runtime_mod_setting_changed)	
+script.on_event(defines.events.on_runtime_mod_setting_changed,wiki_on_runtime_mod_setting_changed)
+
 script.on_event(defines.events.on_player_created,wiki_initialize)	
-script.on_configuration_changed(function(f) 
+
+script.on_configuration_changed(function(f) 	
 	for i = 1, #game.players do
 		wiki_initialize({player_index = i})
 	end

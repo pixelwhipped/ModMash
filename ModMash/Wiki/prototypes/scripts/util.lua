@@ -3,13 +3,10 @@ data_state = wiki.defines.data_stages.data
 if not wiki then wiki = {} end
 if not wiki.util then wiki.util = {} end
 
-
 local local_data_stage = function() 
 	if data_state == wiki.defines.data_stages.control then 
-		--log("DATA STATE IN CONTROL")
 		return wiki.defines.data_stages.control
 	end
-	--log("DATA STATE NOT IN CONTROL")
 	return data_state
 	end
 
@@ -58,7 +55,7 @@ local local_table_index_of = function(table,value)
 			return k 
 		end
 	end return nil 
-end
+	end
 
 local local_table_contains = function(table, value) return local_table_index_of(table,value) ~= nil end
 

@@ -2,7 +2,6 @@
 
 data:extend(
 {
-	-- Images
 	{
 		type     = "sprite",
 		name     = "wiki-open-gui",
@@ -36,7 +35,26 @@ styles["wiki-window"] =
 	}
 }
 
--- Main flow
+styles["wiki-bottom-button-flow"] =
+{
+	type = "horizontal_flow_style",
+	parent = "dialog_buttons_horizontal_flow",
+	vertically_stretchable   = "off",
+	horizontally_stretchable = "on",	
+	width   = 730,
+	padding = 0,
+	graphical_set = {},
+    background_graphical_set = {}
+}
+styles["wiki-bottom-filler"] =
+{    
+    type = "empty_widget_style",
+    parent = "draggable_space",
+    width = 608,
+	height = 24,
+    right_margin = 0
+}
+
 styles["wiki-window-flow"] =
 {
 	type = "horizontal_flow_style",
@@ -56,7 +74,6 @@ styles["wiki-window-flow"] =
 	}
 }
 
--- Box for left elements
 styles["wiki-left-window-flow"] =
 {
 	type = "vertical_flow_style",
@@ -72,20 +89,6 @@ styles["wiki-left-window-flow"] =
 	}
 }
 
--- Inside of right box where put description, this is the vertical box
-styles["wiki-right-window-flow"] =
-{
-	type = "vertical_flow_style",
-	vertical_align = "top",
-	horizontal_align = "left",
-	natural_width  = 600,
-	natural_height = 350,
-	vertically_stretchable   = "on",
-	horizontally_stretchable = "on",
-    padding = 1
-}
-
--- Box where put description
 styles["wiki-description-flow"] =
 {
 	type = "scroll_pane_style",
@@ -94,38 +97,11 @@ styles["wiki-description-flow"] =
 	vertical_scrollbar_style = { type = "vertical_scrollbar_style" },
 	width   = 525,
 	padding = 4,
-	graphical_set = {}
-	--[[{
-		filename = "__core__/graphics/gui-new.png",
-		position = {0, 0},
-		opacity = 0.0,
-		background_blur = true
-	}
-	graphical_set = 
-	{
-		base = 
-		{
-			position = {0, 0}, 
-			corner_size = 8, 
-			draw_type = "outer"
-		},
-		shadow = default_inner_shadow
-	}]],
+	graphical_set = {},
     background_graphical_set = {},
     extra_padding_when_activated = 4
 }
 
-styles["wiki-back-button-flow"] =
-{
-	type = "horizontal_flow_style",
-    horizontal_align = "left",
-	natural_width = 740,
-	vertically_stretchable = "off",
-    padding = 2,
-	margin = 2
-}
-
--- Open button
 local base_icon_button_grahphical_set =
 {
 	filename = "__core__/graphics/gui-new.png",
@@ -179,19 +155,6 @@ styles["wiki-icon-button"] =
 	draw_shadow_under_picture = true
 }
 
--- Back button
-styles["wiki-back-button"] =
-{
-	type = "button_style",
-	horizontal_align = "left",
-	default_graphical_set = arrow_back(red_arrow_tileset, arrow_idle_index, "shadow", default_dirt_color),
-	hovered_graphical_set = arrow_back(red_arrow_tileset, arrow_hovered_index, "glow", red_arrow_button_glow_color),
-	clicked_graphical_set = arrow_back(red_arrow_tileset, arrow_clicked_index),
-	disabled_font_color = {0.5, 0.5, 0.5},
-	horizontally_squashable = "on",
-	disabled_graphical_set = arrow_back(red_arrow_tileset, arrow_disabled_index, "glow", default_dirt_color)
-}
-
 styles["wiki-title-flow"] =
 {
 	type = "horizontal_flow_style",
@@ -201,7 +164,8 @@ styles["wiki-title-flow"] =
     padding = 1,
 	margin = 1
 }
--- Description labels
+
+
 styles["wiki-description-label"] =
 {
 	type = "label_style",
@@ -209,9 +173,10 @@ styles["wiki-description-label"] =
 	font = "default",
 	rich_text_setting = "enabled",
 	single_line = false,
-	vertically_stretchable = "on",
+	vertically_stretchable = "off",
 	horizontally_stretchable = "off",
-	width = 500
+	width = 500,
+	bottom_padding = 4
 }
 
 styles["wiki-image-flow"] =
