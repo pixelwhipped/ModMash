@@ -239,7 +239,7 @@ local local_add_loot = function(surface_index, area )
 			else
 				-- Test total
 				local stacks = math.random(3, 10)
-				log("Adding ".. item.name.. " to loot initial stacks "..stacks)
+				--log("Adding ".. item.name.. " to loot initial stacks "..stacks)
 				local s_r = local_get_recipe(item.name)
 				if s_r ~= nil then
 					local t_i = get_total_ingredients(s_r)
@@ -248,7 +248,7 @@ local local_add_loot = function(surface_index, area )
 					if t_i > 400 then stacks = math.min(stacks,4) end
 					if t_i > 600 then stacks = math.min(stacks,2) end
 					if t_i > 1000 then stacks = math.min(stacks,1) end
-					log("Modified to " .. stacks .. " total raw " .. t_i)
+					--log("Modified to " .. stacks .. " total raw " .. t_i)
 				end
 				
 				
