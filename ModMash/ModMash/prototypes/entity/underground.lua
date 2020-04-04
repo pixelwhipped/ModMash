@@ -1,5 +1,162 @@
 ﻿if not modmash or not modmash.util then require("prototypes.scripts.util") end
 
+local local_get_alien_particle_shadow_pictures = function()
+	return
+	{
+	{
+		filename = "__modmash__/graphics/entity/alien-ore/alien-ore-particle-shadow-1.png",
+		priority = "extra-high",
+		width = 16,
+		height = 16,
+		frame_count = 1,
+		hr_version =
+		{
+		filename = "__modmash__/graphics/entity/alien-ore/hr-alien-ore-particle-shadow-1.png",
+		priority = "extra-high",
+		width = 32,
+		height = 32,
+		frame_count = 1,
+		scale = 0.5
+		}
+	},
+	{
+		filename = "__modmash__/graphics/entity/alien-ore/alien-ore-particle-shadow-2.png",
+		priority = "extra-high",
+		width = 16,
+		height = 16,
+		frame_count = 1,
+		hr_version =
+		{
+		filename = "__modmash__/graphics/entity/alien-ore/hr-alien-ore-particle-shadow-2.png",
+		priority = "extra-high",
+		width = 32,
+		height = 32,
+		frame_count = 1,
+		scale = 0.5
+		}
+	},
+	{
+		filename = "__modmash__/graphics/entity/alien-ore/alien-ore-particle-shadow-3.png",
+		priority = "extra-high",
+		width = 16,
+		height = 16,
+		frame_count = 1,
+		hr_version =
+		{
+		filename = "__modmash__/graphics/entity/alien-ore/hr-alien-ore-particle-shadow-3.png",
+		priority = "extra-high",
+		width = 32,
+		height = 32,
+		frame_count = 1,
+		scale = 0.5
+		}
+	},
+	{
+		filename = "__modmash__/graphics/entity/alien-ore/alien-ore-particle-shadow-4.png",
+		priority = "extra-high",
+		width = 16,
+		height = 16,
+		frame_count = 1,
+		hr_version =
+		{
+		filename = "__modmash__/graphics/entity/alien-ore/hr-alien-ore-particle-shadow-4.png",
+		priority = "extra-high",
+		width = 32,
+		height = 32,
+		frame_count = 1,
+		scale = 0.5
+		}
+	}
+	}
+	end
+local local_get_alien_particle_pictures = function()
+	return
+	{
+		{
+		  filename = "__modmash__/graphics/entity/alien-ore/alien-ore-particle-1.png",
+		  priority = "extra-high",
+		  width = 16,
+		  height = 16,
+		  frame_count = 1,
+		  hr_version =
+		  {
+			filename = "__modmash__/graphics/entity/alien-ore/hr-alien-ore-particle-1.png",
+			priority = "extra-high",
+			width = 32,
+			height = 32,
+			frame_count = 1,
+			scale = 0.5
+		  }
+		},
+		{
+		  filename = "__modmash__/graphics/entity/alien-ore/alien-ore-particle-2.png",
+		  priority = "extra-high",
+		  width = 16,
+		  height = 16,
+		  frame_count = 1,
+		  hr_version =
+		  {
+			filename = "__modmash__/graphics/entity/alien-ore/hr-alien-ore-particle-2.png",
+			priority = "extra-high",
+			width = 32,
+			height = 32,
+			frame_count = 1,
+			scale = 0.5
+		  }
+		},
+		{
+		  filename = "__modmash__/graphics/entity/alien-ore/alien-ore-particle-3.png",
+		  priority = "extra-high",
+		  width = 16,
+		  height = 16,
+		  frame_count = 1,
+		  hr_version =
+		  {
+			filename = "__modmash__/graphics/entity/alien-ore/hr-alien-ore-particle-3.png",
+			priority = "extra-high",
+			width = 32,
+			height = 32,
+			frame_count = 1,
+			scale = 0.5
+		  }
+		},
+		{
+		  filename = "__modmash__/graphics/entity/alien-ore/alien-ore-particle-4.png",
+		  priority = "extra-high",
+		  width = 16,
+		  height = 16,
+		  frame_count = 1,
+		  hr_version =
+		  {
+			filename = "__modmash__/graphics/entity/alien-ore/hr-alien-ore-particle-4.png",
+			priority = "extra-high",
+			width = 32,
+			height = 32,
+			frame_count = 1,
+			scale = 0.5
+		  }
+		}
+    }
+	end
+
+local local_make_particle = function()
+	return
+	{
+		{
+			type = "optimized-particle",
+			name = "alien-ore-particle",
+			life_time = 180,
+			render_layer = "projectile",
+			 render_layer_when_on_ground =  "corpse",
+			regular_trigger_effect_frequency = 2,
+			pictures = local_get_alien_particle_pictures(),
+			shadows = local_get_alien_particle_shadow_pictures()
+		}
+	}
+	end
+
+data:extend(local_make_particle())
+
 function underground_accumulator_picture(tint, repeat_count)
   return
   {
@@ -226,7 +383,54 @@ data:extend(
 		circuit_wire_max_distance = default_circuit_wire_max_distance,
 
 		default_output_signal = {type = "virtual", name = "signal-A"}
-    }
+    },
+	{
+		type = "resource",
+		name = "alien-ore",
+		icon = "__modmash__/graphics/icons/alien-ore.png",
+		icon_size = 32,
+		flags = {"placeable-neutral"},
+		order="a-b-z",
+		tree_removal_probability = 0.8,
+		tree_removal_max_distance = 32 * 32,
+		minable =
+		{
+		  mining_particle = "alien-ore-particle",
+		  mining_time = 1,
+		  result = "alien-ore"
+		},
+		collision_box = {{ -0.1, -0.1}, {0.1, 0.1}},
+		selection_box = {{ -0.5, -0.5}, {0.5, 0.5}},
+		autoplace = 
+		{
+			create = false,
+			starting_area = false,
+			richness = 0.0,
+			size = 0.0
+		},
+		stage_counts = {15000, 9500, 5500, 2900, 1300, 400, 150, 80},
+		stages =
+		{
+		  sheet =
+		  {
+			filename = "__modmash__/graphics/entity/alien-ore/alien-ore.png",
+			priority = "extra-high",
+			size = 64,
+			frame_count = 8,
+			variation_count = 8,
+			hr_version =
+			{
+			  filename = "__modmash__/graphics/entity/alien-ore/hr-alien-ore.png",
+			  priority = "extra-high",
+			  size = 128,
+			  frame_count = 8,
+			  variation_count = 8,
+			  scale = 0.5
+			}
+		  }
+		},
+		map_color = {r=1.0, g=1.0, b=0.0}
+	}
 })
 
 local rock_names = {
@@ -241,11 +445,11 @@ local r = table.deepcopy(data.raw["simple-entity"][rock_names[k]])
 	r.name = "mm_"..r.name
 	r.loot = nil
 	r.localised_name = desc
-	r.max_health = r.max_health/2
+	r.max_health = r.max_health/3
 	r.minable =
     {
       mining_particle = "stone-particle",
-      mining_time = 1,
+      mining_time = 0.75,
       results = {{name = "stone", amount_min = 1, amount_max = 8}, {name = "sand", amount_min = 1, amount_max = 5}},
     }
 	data:extend({r})

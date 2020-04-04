@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>C:\Users\TarrantFamily\AppData\Roaming\Factorio\mods\modmash_0.18.24\</OutputPath>
+    <OutputPath>C:\Users\TarrantFamily\AppData\Roaming\Factorio\mods\modmash_0.18.25\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -28,6 +28,60 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="graphics\blank64.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\entity\alien-ore\alien-ore-particle-1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\entity\alien-ore\alien-ore-particle-2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\entity\alien-ore\alien-ore-particle-3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\entity\alien-ore\alien-ore-particle-4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\entity\alien-ore\alien-ore-particle-shadow-1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\entity\alien-ore\alien-ore-particle-shadow-2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\entity\alien-ore\alien-ore-particle-shadow-3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\entity\alien-ore\alien-ore-particle-shadow-4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\entity\alien-ore\alien-ore.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\entity\alien-ore\hr-alien-ore-particle-1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\entity\alien-ore\hr-alien-ore-particle-2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\entity\alien-ore\hr-alien-ore-particle-3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\entity\alien-ore\hr-alien-ore-particle-4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\entity\alien-ore\hr-alien-ore-particle-shadow-1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\entity\alien-ore\hr-alien-ore-particle-shadow-2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\entity\alien-ore\hr-alien-ore-particle-shadow-3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\entity\alien-ore\hr-alien-ore-particle-shadow-4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\entity\alien-ore\hr-alien-ore.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="graphics\entity\assembling-machine-0\assembling-machine-0-broken.png">
@@ -990,6 +1044,9 @@
     <None Update="graphics\technology\super-material.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="graphics\wiki\alien-ore.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="graphics\wiki\thumbnail.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -1478,6 +1535,7 @@
   <ItemGroup>
     <Folder Include="graphics\entity\assembling-machine-0\" />
     <Folder Include="graphics\entity\dredge-pump\" />
+    <Folder Include="graphics\entity\alien-ore\" />
     <Folder Include="graphics\entity\subspace-transport\" />
   </ItemGroup>
 

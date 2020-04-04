@@ -56,11 +56,6 @@ local local_load = function()
 	underground_origins = global.modmash.underground_origins 
 	end
 
-local local_on_configuration_changed = function(f)
-	if f.mod_changes["modmash"].old_version <= "0.18.19" or global.modmash.underground_accumulators == nil then		
-		local_init()
-	end
-	end
 
 local get_circle_lines = function( centerX, centerY, radius)
   local points = {}
@@ -105,14 +100,14 @@ local get_sorted_lines = function(circle)
   return {ret,tkeys[1],tkeys[#tkeys],min,max}
 end
 
-local generate_surface_area = function(x,y,r,surface, force_gen)	
+local generate_surface_area = function(x,y,r,surface, force_gen, force_ore)	
 	if force_gen == nil then
 	  surface.request_to_generate_chunks({x, y}, r*2)
 	  surface.force_generate_chunk_requests()
 	end
 	local p = get_circle_lines(x,y,r)
 	local d = get_sorted_lines(p)
-	local rnd = math.random(1, 45)
+	local rnd = math.random(1, 50)
     local amt = math.random(500, 1200)
 
 
@@ -139,16 +134,21 @@ local generate_surface_area = function(x,y,r,surface, force_gen)
 			  --inside
 			  if current_tile.name == "out-of-map" then 
 			    surface.set_tiles({{ name = tile, position = pos }})
-				if rnd<5 and x == j and y == i then	
-					surface.create_entity({ name = enemy_spawns[math.random(#enemy_spawns)], position = pos })
-				elseif rnd<10 then
+				if force_ore ~= nil then
+					surface.create_entity({name=force_ore, amount=amt*m, position=pos})
+				elseif rnd<6 and x == j and y == i then	
+					--surface.create_entity({name="alien-ore", amount=amt*m, position=pos})
+					surface.create_entity({ name = enemy_spawns[math.random(#enemy_spawns)], position = pos })					
+				elseif rnd<12 then
 					surface.create_entity({name="uranium-ore", amount=amt*m, position=pos})
-				elseif rnd<14 then
+				elseif rnd<17 then
 					surface.create_entity({name="iron-ore", amount=amt*m, position=pos})
-				elseif rnd<19 then
+				elseif rnd<23 then
 					surface.create_entity({name="copper-ore", amount=amt*m, position=pos})
-				elseif rnd<24 then
+				elseif rnd<27 then
 					surface.create_entity({name="coal", amount=amt*m, position=pos})
+				elseif rnd<29 then
+					surface.create_entity({name="alien-ore", amount=amt*m, position=pos})
 				end
 			  end
 			end
@@ -165,6 +165,28 @@ local generate_surface_area = function(x,y,r,surface, force_gen)
 	  end
 	end
 end
+
+local local_on_configuration_changed = function(f)
+	if f.mod_changes["modmash"].old_version <= "0.18.19" or global.modmash.underground_accumulators == nil then		
+		local_init()
+	end
+	if f.mod_changes["modmash"].old_version <= "0.18.24"then		
+		local surface = game.surfaces["underground"]
+		if surface then
+			surface.daytime = 0.3
+			for c in surface.get_chunks() do
+				local pos = {x = c.area.left_top.x+16, y = c.area.left_top.y+16 }
+				local current_tile = surface.get_tile(pos)
+				if current_tile.name == "out-of-map" then 
+					local rnd = math.random(1,10)
+					if rnd <= 3 then
+						generate_surface_area(pos.x,pos.y,math.random(5,8),surface, false,"alien-ore")
+					end
+				end
+			end			
+		end
+	end	
+	end
 
 local local_chunk_generated = function(event)
   
@@ -195,7 +217,8 @@ local init_surface = function(surface,parent)
 			["stone"] = { richness = "none"},
 			["coal"] = { richness = "none"},
 			["uranium-ore"] = { richness = "none"},
-			["crude-oil"] = { richness = "none"}
+			["crude-oil"] = { richness = "none"},
+			--["alien-ore"] = { richness = "none"}
 		},
 		default_enable_all_autoplace_controls = false,
 		autoplace_settings = {
@@ -219,19 +242,14 @@ local init_surface = function(surface,parent)
 	}
 	surface.peaceful_mode = parent.map_gen_settings.peaceful_mode
 	surface.freeze_daytime = 1
-	surface.daytime = 0.5
+	surface.daytime = 0.3
 	return surface
 	end
 
-local local_ensure_underground_environment = function()
-	--if game.surfaces["underground"] ~= nil then return end --entity.surface.name == "underground" then return end
+local local_ensure_underground_environment = function()	
 	if game.surfaces["nauvis"] ~= nil then
---	if entity.surface.name == "nauvis" then
 		if game.surfaces["underground"] then return end
 		local surface = init_surface(game.create_surface("underground"),game.surfaces["nauvis"])
-		--for c in game.surfaces["nauvis"].get_chunks() do
-		--	surface.request_to_generate_chunks({c.x,c.y}, 1)
-		--end
 	end
 	end
 

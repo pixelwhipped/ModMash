@@ -2,6 +2,8 @@
 Version: 0.18.25
   Changes:
     - Remove log messages on loot generation
+    - Added Alien Ore to underground surface
+    - Decreased underground rock health
 
 ---------------------------------------------------------------------------------------------------
 Version: 0.18.24
