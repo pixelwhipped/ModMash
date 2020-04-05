@@ -281,7 +281,7 @@ local local_ensure_can_place_entity = function(entity,event)
 		entity.surface.create_entity{name="flying-text", position = entity.position, text={"modmash.underground-placement-fail"} , color={r=1,g=0.25,b=0.5}}
 		entity.destroy()
 		return false
-	elseif entity.surface.name == "underground" and (entity.type=="solar-panel" or entity.type == "rocket-silo") then
+	elseif entity.surface.name == "underground" and (entity.type=="solar-panel" or entity.type == "rocket-silo" or (entity.name == "wind-trap" and settings.startup["modmash-allow-air-filter-below"].value == false)) then
 		if event.stack ~= nil then
 			event.stack.count = event.stack.count + 1
 		else

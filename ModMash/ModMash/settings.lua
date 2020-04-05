@@ -131,5 +131,11 @@ data:extend(
 		default_value = "No",
 		allowed_values = {"Yes", "No"},
 		order = "f"
-	},
+	},{
+		type = "bool-setting",
+		name = "modmash-allow-air-filter-below",
+		setting_type = "startup",
+		default_value = false,
+		order = "g"
+	}
 })
