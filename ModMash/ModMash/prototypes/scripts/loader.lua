@@ -230,8 +230,8 @@ local local_loader_removed = function(entity)
 end
 
 local local_on_entity_cloned = function(event)
-	if is_valid(event.source) then 
-		if entity.source.type == "loader-1x1" or event.source.type == "loader" then return end	
+	if is_valid(event.source) then
+		if event.source.type == "loader-1x1" or event.source.type == "loader" then return end	
 		for index, loader in pairs(loaders) do
 			if  loader.entity == event.source then
 				loader.entity = event.destination

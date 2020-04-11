@@ -1,4 +1,8 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.18.27
+  Bug Fix:
+    - typo in loader clone event would caused an error
+---------------------------------------------------------------------------------------------------
 Version: 0.18.26
   Changes:
     - Prevented placement of air filters underground, Left as runtime option
