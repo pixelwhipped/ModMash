@@ -1,5 +1,5 @@
 ﻿---------------------------------------------------------------------------------------------------
-Version: 0.18.27
+Version: 0.18.28
   Changes:
     - changed option names and order a little bit. added a description to alien drop modifier
   Bug Fix:
@@ -7,6 +7,14 @@ Version: 0.18.27
     - alien loot setting didn't do anything
   Writer:
     - Honktown
+-----------------------------------------------------------------------------
+Version: 0.18.27
+  Changes:
+    - Chnage alien ore resource color
+  Bug Fix:
+    - Loader fix
+    - Valve recipie icon fix
+
 ---------------------------------------------------------------------------------------------------
 Version: 0.18.26
   Changes:
