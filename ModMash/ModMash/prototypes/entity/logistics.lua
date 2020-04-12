@@ -3,7 +3,7 @@ no changes
 --]]
 if not modmash or not modmash.util then require("prototypes.scripts.util") end
 
-local patch_technology  = modmash.util.patch_technology
+local patch_technology  = modmash.util.tech.patch_technology
 local starts_with  = modmash.util.starts_with
 
 local local_create_belt_animation_set = function(name)

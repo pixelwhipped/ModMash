@@ -9,15 +9,14 @@ if not modmash.defines then require ("prototypes.scripts.defines") end
 
 --[[defines]]
 local medium_priority = modmash.events.medium_priority
-
 local distance  = modmash.util.distance
-local get_entities_around  = modmash.util.get_entities_around
+local get_entities_around  = modmash.util.entity.get_entities_around
 local is_valid  = modmash.util.is_valid
 local table_index_of  = modmash.util.table.index_of
 local table_contains = modmash.util.table.contains
 local starts_with  = modmash.util.starts_with
 local local_table_remove = modmash.util.table.remove
-local is_valid_and_persistant = modmash.util.is_valid_and_persistant
+local is_valid_and_persistant = modmash.util.entity.is_valid_and_persistant
 
 local droid_stack_size = 10
 local droid_scan_radius = 32

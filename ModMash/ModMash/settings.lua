@@ -1,4 +1,5 @@
-﻿--[[ Made changes 2020-04-21 honk honk
+﻿--[[Code check 29.2.20
+no changes
 --]]
 data:extend(
 {
@@ -7,14 +8,12 @@ data:extend(
 		name = "modmash-show-welcome",
 		setting_type = "startup",
 		default_value = false,
-		order = "aa" -- important settings at top
 	},
 	{
 		type = "bool-setting",
 		name = "modmash-setting-show-adjustable",
 		setting_type = "startup",
 		default_value = false,
-		order = "ab"
 	},
   	{
 		type = "string-setting",
@@ -22,7 +21,7 @@ data:extend(
 		setting_type = "startup",
 		default_value = "CONTROL + A",
 		allowed_values = {"CONTROL + A", "CONTROL + G", "CONTROL + M"},
-		order = "ac"
+		order = "a"
 	},
   	{
 		type = "string-setting",
@@ -30,7 +29,7 @@ data:extend(
 		setting_type = "startup",
 		default_value = "Instant Tech",
 		allowed_values = {"Instant Tech", "Science", "Disabled"},
-		order = "ba" --second from top
+		order = "b"
 	},
   	{
 		type = "string-setting",
@@ -38,7 +37,7 @@ data:extend(
 		setting_type = "startup",
 		default_value = "Enabled",
 		allowed_values = {"Enabled", "Disabled"},
-		order = "bb"
+		order = "c"
 	},
 	{
 		type = "string-setting",
@@ -46,7 +45,7 @@ data:extend(
 		setting_type = "startup",
 		default_value = "Disabled",
 		allowed_values = {"Enabled", "Disabled"},
-		order = "bc"
+		order = "d"
 	},	
   	{
 		type = "int-setting",
@@ -55,15 +54,7 @@ data:extend(
 		default_value = 0,
 		minimum_value = 0,
 		maximum_value = 100,
-		order = "bd"
-	},{
-		type = "int-setting",
-		name = "modmash-alien-loot-chance",
-		setting_type = "startup",
-		default_value = 100,
-		minimum_value = 0,
-		maximum_value = 100,
-		order = "be"
+		order = "e"
 	},
 	{
 		type = "string-setting",
@@ -71,7 +62,7 @@ data:extend(
 		setting_type = "startup",
 		default_value = "Enabled",
 		allowed_values = {"Enabled", "Disabled"},
-		order = "la" -- logistic
+		order = "f"
 	},
   	{
 		type = "string-setting",
@@ -79,7 +70,7 @@ data:extend(
 		setting_type = "startup",
 		default_value = "Enabled",
 		allowed_values = {"Enabled", "Disabled"},
-		order = "lb"
+		order = "g"
 	},
   	{
 		type = "string-setting",
@@ -87,7 +78,7 @@ data:extend(
 		setting_type = "startup",
 		default_value = "Enabled",
 		allowed_values = {"Enabled", "Disabled"},
-		order = "lc"
+		order = "ga"
 	},
 	{
 		type = "string-setting",
@@ -95,47 +86,56 @@ data:extend(
 		setting_type = "startup",
 		default_value = "Enabled",
 		allowed_values = {"Enabled", "Disabled"},
-		order = "za" -- "debug" sort of, so at bottom
+		order = "h"
 	},{
 		type = "string-setting",
 		name = "modmash-check-tech",
 		setting_type = "startup",
 		default_value = "Enabled",
 		allowed_values = {"Enabled", "Disabled"},
-		order = "zb"
+		order = "i"
 	},{
 		type = "string-setting",
 		name = "modmash-setting-glass",
 		setting_type = "startup",
 		default_value = "Normal",
 		allowed_values = {"Normal", "Hard"},
-		order = "oa" -- option
+		order = "j"
 	},{
 		type = "string-setting",
 		name = "modmash-check-pollution",
 		setting_type = "startup",
 		default_value = "Enabled",
 		allowed_values = {"Enabled", "Disabled"},
-		order = "ob"
+		order = "k"
 	},{
 		type = "string-setting",
 		name = "modmash-allow-science-ores",
 		setting_type = "startup",
 		default_value = "Disabled",
 		allowed_values = {"Enabled", "Disabled"},
-		order = "oc"
+		order = "l"
+	},
+	{
+		type = "int-setting",
+		name = "modmash-alien-ore-chance",
+		setting_type = "startup",
+		default_value = 100,
+		minimum_value = 0,
+		maximum_value = 100,
+		order = "e"
 	},{
 		type = "string-setting",
 		name = "modmash-bob-support",
 		setting_type = "startup",
 		default_value = "No",
 		allowed_values = {"Yes", "No"},
-		order = "od"
+		order = "f"
 	},{
 		type = "bool-setting",
 		name = "modmash-allow-air-filter-below",
 		setting_type = "startup",
 		default_value = false,
-		order = "oe"
+		order = "g"
 	}
 })

@@ -15,11 +15,12 @@ local discharge_water_pump  = modmash.defines.names.discharge_water_pump
 	
 --[[create local references]]
 --[[util]]
-local get_entities_to  = modmash.util.get_entities_to
-local get_entities_to_excluding  = modmash.util.get_entities_to_excluding	
-local change_fluidbox_fluid = modmash.util.change_fluidbox_fluid
+
+local get_entities_to  = modmash.util.entity.get_entities_to
+local get_entities_to_excluding  = modmash.util.entity.get_entities_to_excluding	
+local change_fluidbox_fluid = modmash.util.fluid.change_fluidbox_fluid
 local is_valid = modmash.util.is_valid
-local is_valid_and_persistant = modmash.util.is_valid_and_persistant
+local is_valid_and_persistant = modmash.util.entity.is_valid_and_persistant
 local table_index_of = modmash.util.table.index_of
 
 --[[unitialized globals]]

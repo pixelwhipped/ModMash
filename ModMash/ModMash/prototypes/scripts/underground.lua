@@ -1,7 +1,7 @@
 ﻿log("underground-access.lua")
 --[[check and import utils]]
-if modmash == nil or modmash.util == nil then require("prototypes.scripts.util") end
-if not modmash.defines then require ("prototypes.scripts.defines") end
+--if modmash == nil or modmash.util == nil then require("prototypes.scripts.util") end
+--if not modmash.defines then require ("prototypes.scripts.defines") end
 
 local teleport_cooldown = 0
 local last_pos = nil
@@ -18,9 +18,8 @@ local spawn_radius = 10
 --[[util]]
 local is_valid = modmash.util.is_valid
 local table_contains = modmash.util.table.contains
-local is_valid_and_persistant = modmash.util.is_valid_and_persistant
+local is_valid_and_persistant = modmash.util.entity.is_valid_and_persistant
 local distance = modmash.util.distance
-
 
 local rock_names = {
   "mm_rock-huge",
@@ -134,22 +133,23 @@ local generate_surface_area = function(x,y,r,surface, force_gen, force_ore)
 			  --inside
 			  if current_tile.name == "out-of-map" then 
 			    surface.set_tiles({{ name = tile, position = pos }})
+				local create = nil
 				if force_ore ~= nil then
-					surface.create_entity({name=force_ore, amount=amt*m, position=pos})
+					create = {name=force_ore, amount=amt*m, position=pos}
 				elseif rnd<6 and x == j and y == i then	
-					--surface.create_entity({name="alien-ore", amount=amt*m, position=pos})
-					surface.create_entity({ name = enemy_spawns[math.random(#enemy_spawns)], position = pos })					
+					create = { name = enemy_spawns[math.random(#enemy_spawns)], position = pos }					
 				elseif rnd<12 then
-					surface.create_entity({name="uranium-ore", amount=amt*m, position=pos})
+					create = {name="uranium-ore", amount=amt*m, position=pos}
 				elseif rnd<17 then
-					surface.create_entity({name="iron-ore", amount=amt*m, position=pos})
+					create = {name="iron-ore", amount=amt*m, position=pos}
 				elseif rnd<23 then
-					surface.create_entity({name="copper-ore", amount=amt*m, position=pos})
+					create = {name="copper-ore", amount=amt*m, position=pos}
 				elseif rnd<27 then
-					surface.create_entity({name="coal", amount=amt*m, position=pos})
+					create = {name="coal", amount=amt*m, position=pos}
 				elseif rnd<30 then
-					surface.create_entity({name="alien-ore", amount=amt*m, position=pos})
+					create = {name="alien-ore", amount=amt*m, position=pos}
 				end
+				if create ~= nil and surface.can_place_entity{name=create.name, position=create.position} then surface.create_entity(create) end
 			  end
 			end
 		  elseif j==s or j == e then
@@ -479,7 +479,10 @@ local local_on_player_spawned = function(event)
 
 
 modmash.register_script({
-	on_tick = local_underground_tick,
+	on_tick = {
+		tick = local_underground_tick,
+		priority = low_priority
+		},
 	on_init = local_init,
 	on_load = local_load,
 	on_start = local_start,

@@ -23,7 +23,6 @@ local force_enemy = modmash.defines.names.force_enemy
 --[[util]]
 local starts_with  = modmash.util.starts_with
 
-
 --[[unitialized globals]]
 local biter_nero_toxin = nil
 

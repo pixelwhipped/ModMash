@@ -1,32 +1,31 @@
 ﻿---------------------------------------------------------------------------------------------------
 Version: 0.18.30
-  Bug Fix:
-    - changelog can be seen in-game again
+  Bug Fixes:
+    - changelog can be seen in-game again (Honktown)
+    - fix for missing ore types due to mods removing them
+    - fix valve recipie icons
+  Changes:
+    - migrated all utils to use liborio
+    - added valkryie radius to roboports
 
-  Writer:
-    - Honktown (changelog fix)
 ---------------------------------------------------------------------------------------------------
 Version: 0.18.29
-  Bug Fix:
+  Bug Fixes:
     - re-merge more missing changes (require __modmash__wiki error...)
     - loader-1x2's now usable with recycler
   Writer:
     - Honktown
+
 ---------------------------------------------------------------------------------------------------
 Version: 0.18.28
-  Changes:
-    - changed option names and order a little bit. added a description to alien drop modifier
-  Bug Fix:
-    - loader clone event would caused an error
-    - alien loot setting didn't do anything
-    - add 0.18.27 changes that were on the mod portal but not github
-  Writer:
-    - Honktown
+  Bug Fixes:
+    - Loader typo
+
 ---------------------------------------------------------------------------------------------------
 Version: 0.18.27
   Changes:
-    - Chnage alien ore resource color
-  Bug Fix:
+    - Change alien ore resource color
+  Bug Fixes:
     - Loader fix
     - Valve recipie icon fix
 
@@ -34,6 +33,7 @@ Version: 0.18.27
 Version: 0.18.26
   Changes:
     - Prevented placement of air filters underground, Left as runtime option
+
 ---------------------------------------------------------------------------------------------------
 Version: 0.18.25
   Changes:
@@ -43,7 +43,7 @@ Version: 0.18.25
 
 ---------------------------------------------------------------------------------------------------
 Version: 0.18.24
-  Bug Fix:
+  Bug Fixes:
     - zip vs unzipped folder name casing issue
 
 ---------------------------------------------------------------------------------------------------
@@ -57,9 +57,8 @@ Version: 0.18.23
 Version: 0.18.22
   Changes:
     - Removed welcome screen plan to replace
-  Bug Fix:
+  Bug Fixes:
     - Fixed version skip not adding new globals
-
 ---------------------------------------------------------------------------------------------------
 Version: 0.18.21
   Changes:
@@ -72,12 +71,12 @@ Version: 0.18.20
   Changes:
     - Added underground world
     - Added support for bob's mods titanium
-  Bug Fix:
+  Bug Fixes:
     - Added on_load for loot.
 
 ---------------------------------------------------------------------------------------------------
 Version: 0.18.19
-  Bug Fix:
+  Bug Fixes:
     - nil check for optional max_health in local_create_entity_loot (Honktown)
 
 ---------------------------------------------------------------------------------------------------
@@ -97,12 +96,12 @@ Version: 0.18.16
 
 ---------------------------------------------------------------------------------------------------
 Version: 0.18.15
-  Bug Fix:
+  Bug Fixes:
     - Fishing inserters shouldn't crash when there's no fish (Honktown)
 
 ---------------------------------------------------------------------------------------------------
 Version: 0.18.14
-  Bug Fix:
+  Bug Fixes:
     - check for recipe recursion in loot
 
 ---------------------------------------------------------------------------------------------------
@@ -111,47 +110,47 @@ Version: 0.18.13
     - Changed red and green wire result count to 2
     - Updated assembling machine 0 graphics
     - Remove hard coded localized name and description
-  Bug fix:
+  Bug Fixes:
     - Fixed loader snap, change of prototype name loader-1x1 and loader
     - Tightned get entities n,e,s,w functions.
     - Fixed assebling machine 0 to assembling-machine-burner add to player start
 
 ---------------------------------------------------------------------------------------------------
 Version: 0.18.12
-  Bug Fix:
+  Bug Fixes:
     - explosive mining no longer tries to mine fluids (honk)
     - check if explosive mining entity becomes invalid (honk honk)
     - removed excess add fish oid to enrichment 1 and 3. only on 1 now
 
 ---------------------------------------------------------------------------------------------------
 Version: 0.18.11
-  Bug fix:
+  Bug Fixes:
     - Droid build change, could get stuck on anavailable ghosts
 
 ---------------------------------------------------------------------------------------------------
 Version: 0.18.10
-  Bug fix:
+  Bug Fixes:
     - add accidentally-removed behavior from get_entities_around function (Honktown)
     - added check and edge case fizes for fishing inserters
 
 ---------------------------------------------------------------------------------------------------
 Version: 0.18.09
-  Bug fix:
+  Bug Fixes:
     - Changed fishing insterter priority. Result of UPS Fix.
 
 ---------------------------------------------------------------------------------------------------
 Version: 0.18.08
-  Bug fix:
+  Bug Fixes:
     - Reduced Valkyie derp
 
 ---------------------------------------------------------------------------------------------------
 Version: 0.18.07
-  Bug fix:
+  Bug Fixes:
     - loader-1x1 now usable on recycler (A)uto (Honktown)
 
 ---------------------------------------------------------------------------------------------------
 Version: 0.18.06
-  Bug fix:
+  Bug Fixes:
     - add extra nil checks to valves update tick (Honktown)
 
 ---------------------------------------------------------------------------------------------------
@@ -161,12 +160,12 @@ Version: 0.18.05
 
 ---------------------------------------------------------------------------------------------------
 Version: 0.18.04
-  Bug fix:
+  Bug Fixes:
     - Droid fixes
     - Spawner fixes
 ---------------------------------------------------------------------------------------------------
 Version: 0.18.03
-  Bug fix:
+  Bug Fixes:
     - Trying to elimiate dsync isses
   Changes:
     - Scaled added enrichment items probability to between 0.25 and 0.05
@@ -174,7 +173,7 @@ Version: 0.18.03
 Version: 0.18.02
   Optization:
     - Optization for fishing inseters and
-  Bug fix:
+  Bug Fixes:
     - Get Entities fix
 ---------------------------------------------------------------------------------------------------
 Version: 0.18.01
@@ -200,7 +199,7 @@ Version: 0.17.94
     - split off graphics into a dependency? (make main download much smaller)
     - wind trap doesn't output sludge (as it says). Want to change that.
     - discharge pump doesn't work for anything but water since .17 (bug, will work on)
-  Bug fix:
+  Bug Fixes:
     - don't assume an entity has an icon (it's optional if icons is defined)
 ---------------------------------------------------------------------------------------------------
 Version: 0.17.93
@@ -211,11 +210,11 @@ Version: 0.17.93
     - super material to crude oil 100->500
 ---------------------------------------------------------------------------------------------------
 Version: 0.17.92
-  Bug fix:
+  Bug Fixes:
     - skip creating loot if loot table is empty (games that start player off-center or reveal a lot of map)
 ---------------------------------------------------------------------------------------------------
 Version: 0.17.91
-  Bug fix:
+  Bug Fixes:
     - don't insert into inventory on new game unless player has one (Sandbox fix)
 ---------------------------------------------------------------------------------------------------
 Version: 0.17.90
@@ -226,7 +225,7 @@ Version: 0.17.89
   Changes:
     - tweaked refined ore recipes to use original energy required * 1.2
     - Reduced damage of Alien Ammo and made recipie slightly harder
-  Bug fix:
+  Bug Fixes:
     - Fishing was working prior to research. (Still pick up fish but do not return or hunt)
 ---------------------------------------------------------------------------------------------------
 Version: 0.17.88
@@ -248,34 +247,34 @@ Version: 0.17.85
     - Added ore refinery
 ---------------------------------------------------------------------------------------------------
 Version: 0.17.84
-  Bug fix:
+  Bug Fixes:
     - Restricted active Valkyries active targets
 
 ---------------------------------------------------------------------------------------------------
 Version: 0.17.83
-  Bug fix:
+  Bug Fixes:
     - Quick patch Valkyries return to base issue
 
 ---------------------------------------------------------------------------------------------------
 Version: 0.17.82
-  Bug fix:
+  Bug Fixes:
     - Valkyries can now return to players
     - Added update support of for older saves
 
 ---------------------------------------------------------------------------------------------------
 Version: 0.17.81
-  Bug fix:
+  Bug Fixes:
     - Nil check player character grid
 
 ---------------------------------------------------------------------------------------------------
 Version: 0.17.80
-  Bug fix:
+  Bug Fixes:
     - Issues with cloning
 ---------------------------------------------------------------------------------------------------
 Version: 0.17.79
   Feature:
     - Added Valkyries
-  Bug fix:
+  Bug Fixes:
     - Addded missing local detail
     - Added fix for migration issue
     - Added check for invalid surface and chunks
@@ -283,17 +282,17 @@ Version: 0.17.79
 
 ---------------------------------------------------------------------------------------------------
 Version: 0.17.78
-  Bug fix:
+  Bug Fixes:
     - Debug flag left on
 
 ---------------------------------------------------------------------------------------------------
 Version: 0.17.77
-  Bug fix:
+  Bug Fixes:
     - Bot smartness enhanced
 
 ---------------------------------------------------------------------------------------------------
 Version: 0.17.76
-  Bug fix:
+  Bug Fixes:
     - Map editor crash
 
 ---------------------------------------------------------------------------------------------------

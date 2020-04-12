@@ -10,6 +10,7 @@
   "dependencies": [
     "base >= 0.18.0",
     "wiki >= 0.18.05",
+    "liborio >= 0.18.01",
     "? coffee >= 0.18.07",
     "? biterbullets >= 0.18.4",
     "? mininukes >= 0.18.02"

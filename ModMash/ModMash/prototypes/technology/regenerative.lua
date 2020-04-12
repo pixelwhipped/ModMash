@@ -1,12 +1,4 @@
-﻿--[[Code check 29.2.20
-removed old comments
---]]
-if not modmash or not modmash.util then require("prototypes.scripts.util") end
-
-local get_name_for = modmash.util.get_name_for
-
-
-local create_regenerative_technology = function(level,count)
+﻿local create_regenerative_technology = function(level,count)
 	return  
 	{
 		{

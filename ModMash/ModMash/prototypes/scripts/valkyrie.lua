@@ -4,8 +4,8 @@ removed old comments
 
 
 log("valkyrie.lua")
-if not modmash or not modmash.util then require("prototypes.scripts.util") end
-if not modmash.defines then require ("prototypes.scripts.defines") end
+--if not modmash or not modmash.util then require("prototypes.scripts.util") end
+--if not modmash.defines then require ("prototypes.scripts.defines") end
 
 local low_priority = modmash.events.low_priority
 
@@ -53,7 +53,8 @@ local local_init = function()
 	if global.modmash.valkyries.max_targets == nil then global.modmash.valkyries.max_targets = 25 end
 	if global.modmash.valkyries.max_distance == nil then global.modmash.valkyries.max_distance = 55 end
 	if global.modmash.valkyries.projectiles == nil then global.modmash.valkyries.projectiles = 0 end
-	
+	if global.modmash.valkyries.highlights == nil then global.modmash.valkyries.highlights = {} end
+
 	targets = global.modmash.valkyries.targets
 	all_roboports = global.modmash.valkyries.all_roboports
 	return_targets = global.modmash.valkyries.return_targets
@@ -63,11 +64,11 @@ local local_init = function()
 	end
 
 local local_load = function()	
-		targets = global.modmash.valkyries.targets 
-		all_roboports = global.modmash.valkyries.all_roboports 
-		return_targets = global.modmash.valkyries.return_targets 
-		max_targets = global.modmash.valkyries.max_targets 
-		max_distance = global.modmash.valkyries.max_distance 		
+	targets = global.modmash.valkyries.targets 
+	all_roboports = global.modmash.valkyries.all_roboports 
+	return_targets = global.modmash.valkyries.return_targets 
+	max_targets = global.modmash.valkyries.max_targets 
+	max_distance = global.modmash.valkyries.max_distance 		
 	end
 
 local local_update_return_targets = function(target)
@@ -210,6 +211,13 @@ local local_find_targets = function()
 		end
 	end end
 
+local local_on_start = function()
+	for i=1, #game.players do
+		if global.modmash.valkyries.highlight[i] ~= nil then
+			rendering.destroy(global.modmash.valkyries.highlight[i])
+		end
+	end
+	end
 local local_valkyrie_tick = function()
 	if global.modmash.valkyries.enable_valkyries ~= true then return end	
 
@@ -348,6 +356,7 @@ local local_on_entity_cloned = function(event)
 	end end
 
 local local_on_configuration_changed = function(f)
+	log("Valkyrie on_configuration_changed")
 	if f.mod_changes["modmash"].old_version < "0.17.82" then	
 		local_init()
 	end
@@ -362,7 +371,12 @@ local local_on_configuration_changed = function(f)
 				local_roboport_added(f)
 			end
 		end
-	end end
+	end 
+	if f.mod_changes["modmash"].old_version < "0.18.30" then	
+		if global.modmash.valkyries.highlights == nil then global.modmash.valkyries.highlights = {} end
+	end
+	end
+
 
 local local_valkyrie_research = function(event)
 	if starts_with(event.research.name,"enable-valkyries") then
@@ -380,12 +394,29 @@ local local_valkyrie_research = function(event)
 		max_targets = global.modmash.valkyries.max_targets
     end	
 end
---[[this wil happen
-local local_on_entity_selected = function(entity)
-	if is_valid(entity) and entity.type == "roboport" then
-		draw_rectangle{color=…, width=…, filled=…, left_top=…, left_top_offset=…, right_bottom=…, right_bottom_offset=…, surface=…, time_to_live=…, forces=…, players=…, visible=…, draw_on_ground=…, only_in_alt_mode=…} 
+
+local local_on_entity_selected = function(player,entity)
+	local player_index = player.index
+	
+	if is_valid(entity) and entity.type == "roboport" then		
+		local id = rendering.draw_circle
+		{
+			surface = entity.surface,
+			players = {player},
+			filled = true,
+			color = {r = 1, g = 0.1, b = 0, a = 0.1},
+			draw_on_ground = true,
+			target = entity,
+			only_in_alt_mode = false,
+			radius = max_distance
+			--left_top = area[1],
+			--right_bottom = area[2]
+		}
+		global.modmash.valkyries.highlights[player_index] = id
+	elseif global.modmash.valkyries.highlights[player_index] ~= nil then
+		rendering.destroy(global.modmash.valkyries.highlights[player_index])
 	end
-end]]
+end
 
 modmash.register_script({
 	on_tick = {
@@ -399,6 +430,6 @@ modmash.register_script({
 	on_removed = local_roboport_removed,
 	on_research = local_valkyrie_research,
 	on_configuration_changed = local_on_configuration_changed,
-	on_entity_cloned = local_on_entity_cloned
-	--on_selected = local_on_entity_selected
+	on_entity_cloned = local_on_entity_cloned,
+	on_selected = local_on_entity_selected
 })

@@ -4,11 +4,12 @@ ok only locals are reference to globals or a constant
 if not modmash or not modmash.util then require("prototypes.scripts.util") end
 
 local is_valid  = modmash.util.is_valid
-local get_connected_input_fluid  = modmash.util.get_connected_input_fluid
+local get_connected_input_fluid  = modmash.util.fluid.get_connected_input_fluid
 local set_new_signal  = modmash.util.signal.set_new_signal
-local try_set_recipe  = modmash.util.try_set_recipe
+local try_set_recipe  = modmash.util.entity.try_set_recipe
 local table_contains = modmash.util.table.contains
 local local_table_remove = modmash.util.table.remove
+
 local valve_types = {"modmash-super-boiler-valve", "mini-boiler", "modmash-check-valve", "modmash-overflow-valve", "condenser-valve", "modmash-underflow-valve"}		
 
 local local_get_connected_input_fluid_for_valve = function(valve,box)

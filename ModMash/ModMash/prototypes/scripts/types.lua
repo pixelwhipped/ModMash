@@ -615,8 +615,10 @@ local local_create_fluid_item = function(name, fluid)
 	hidden = false,
     order = fluid.order,
     enabled = true,
-    icon = fluid.icon,	
-    icon_size = 32,
+    --icon = fluid.icon,	
+    --icon_size = 32,
+	icon = "__modmash__/graphics/blank64.png",	
+	icon_size = 64,
 	hide_from_stats = true,
     ingredients = {{type = "fluid", name = fluid.name, amount = 100}},
     results = 

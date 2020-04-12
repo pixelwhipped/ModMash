@@ -1,4 +1,5 @@
-﻿if not modmash.defines then require ("prototypes.scripts.defines") end
+﻿if not modmash then modmash = {} end
+if not modmash.defines then require ("prototypes.scripts.defines") end
 --[[Code check 29.2.20
 removed old comments
 --]]

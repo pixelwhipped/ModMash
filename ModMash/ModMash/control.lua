@@ -47,6 +47,18 @@ if not modmash.on_entity_cloned then modmash.on_entity_cloned = {} end
 local run_init = false
 
 require("prototypes.scripts.defines") 
+--[[Import utils]]
+--require("prototypes.scripts.util") 
+require '__liborio__/prototypes/scripts/util'
+modmash.util = get_liborio()
+local table_contains = modmash.util.table.contains
+local table_index_of = modmash.util.table.index_of
+local starts_with  = modmash.util.starts_with
+local ends_with  = modmash.util.ends_with
+local distance  = modmash.util.distance
+local is_valid  = modmash.util.is_valid
+local is_valid_and_persistant  = modmash.util.entity.is_valid_and_persistant
+
 require("wiki")
 local build_events = modmash.events.on_build
 local remove_events = modmash.events.on_remove
@@ -246,15 +258,7 @@ modmash.register_script = function(script)
 
 --chunks should possibly be global
 
---[[Import utils]]
-require("prototypes.scripts.util") 
-local table_contains = modmash.util.table.contains
-local table_index_of = modmash.util.table.index_of
-local starts_with  = modmash.util.starts_with
-local ends_with  = modmash.util.ends_with
-local distance  = modmash.util.distance
-local is_valid  = modmash.util.is_valid
-local is_valid_and_persistant  = modmash.util.is_valid_and_persistant
+
 
 
 --[[Called first time mod is added to current game instance. Called Once]]
@@ -277,15 +281,6 @@ script.on_load(function()
 	for k=1, #modmash.on_load do local v = modmash.on_load[k]		
 		v()
 	end 
-	--[[local test = function(parent)
-		if parent ~= nil then
-			modmash.util.print("Parent Found")
-		else
-			modmash.util.print("Null Parent")
-		end
-	end
-
-	remote.add_interface("modmash",{test = test})]]
 	end)	
 
 script.on_configuration_changed(function(f) 
@@ -473,11 +468,11 @@ end
 --[[done]]
 local local_on_selected = function(event)
 	player = game.players[event.player_index]
-	entity = player.selected
-	if is_valid(entity) ~= true then return end
+	entity = player.selected	
 	for k=1, #modmash.on_selected do local v = modmash.on_selected[k]
 		v(player,entity)
 	end
+	if is_valid(entity) ~= true then return end
 	local on_selected_by_name = modmash.on_selected_by_name[entity.name]
 	if on_selected_by_name ~= nil then
 		for k=1, #on_selected_by_name do local v = on_selected_by_name[k]		

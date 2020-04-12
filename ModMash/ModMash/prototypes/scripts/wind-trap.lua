@@ -7,7 +7,7 @@ log("wind-trap.lua")
 --[[check and import utils]]
 if modmash == nil or modmash.util == nil then require("prototypes.scripts.util") end
 if not modmash.defines then require ("prototypes.scripts.defines") end
-local is_valid  = modmash.util.is_valid
+
 
 --[[defines]]
 local wind_trap  = modmash.defines.names.wind_trap 
@@ -15,8 +15,9 @@ local wind_trap_action_prefix  = modmash.defines.names.wind_trap_action_prefix
 	
 --[[create local references]]
 --[[util]]
+local is_valid  = modmash.util.is_valid
 local get_biome  = modmash.util.get_biome
-local try_set_recipe  = modmash.util.try_set_recipe
+local try_set_recipe  = modmash.util.entity.try_set_recipe
 
 local local_wind_trap_pump_added = function(entity)
 	local biome = get_biome(entity)

@@ -7,7 +7,7 @@ log("recycling.lua")
 --[[check and import utils]]
 if modmash == nil or modmash.util == nil then require("prototypes.scripts.util") end
 if not modmash.defines then require ("prototypes.scripts.defines") end
-local is_valid  = modmash.util.is_valid
+
 
 --[[defines]]
 local recycling_machine = modmash.defines.names.recycling_machine
@@ -15,10 +15,11 @@ local low_priority = modmash.events.low_priority
 local medium_priority = modmash.events.medium_priority
 local high_priority = modmash.events.high_priority
 
-local get_entities_around  = modmash.util.get_entities_around
-local aggrigate_content  = modmash.util.aggrigate_content
+local is_valid = modmash.util.is_valid
+local get_entities_around  = modmash.util.entity.get_entities_around
+local aggrigate_content_as_dictionary  = modmash.util.table.aggrigate_content_as_dictionary
 local set_new_signal  = modmash.util.signal.set_new_signal
-local try_set_recipe  = modmash.util.try_set_recipe
+local try_set_recipe  = modmash.util.entity.try_set_recipe
 local starts_with  = modmash.util.starts_with
 
 local recycling_machines_per_tick = 10
@@ -53,7 +54,7 @@ local local_recycling_machine_process = function(entity)
 					end	
 					table.insert(storage,ent.pickup_target)					
 				end
-			elseif ent.type == "loader" and ent.loader_type == "input" then
+			elseif (ent.type == "loader-1x1" or ent.type == "loader-1x2" or ent.type == "loader") and ent.loader_type == "input" then
 				local filtered = false
 				if ent.filter_slot_count > 0 then
 					for fi = 1, ent.filter_slot_count do	
@@ -70,36 +71,7 @@ local local_recycling_machine_process = function(entity)
 					end
 				end
 				if filtered == false then
-					local contents = aggrigate_content(ent.get_transport_line(1),ent.get_transport_line(2))	
-					for name, count in pairs(contents) do
-						local rc = local_get_recyle_recipe(name)					
-						if rc ~= nil then
-							if rc == current then return nil end
-							if count > max then 
-								result = name
-								max = count
-							end	
-						end
-					end
-				end
-			elseif (ent.type == "loader-1x1" or ent.type == "loader-1x2") and ent.loader_type == "input" then
-				local filtered = false
-				if ent.filter_slot_count > 0 then
-					for fi = 1, ent.filter_slot_count do	
-						local f = ent.get_filter(fi)
-						if f ~= nil then 
-							local rc = local_get_recyle_recipe(f)					
-							if rc ~= nil then
-								if rc == current then return nil end
-								filtered = true
-								result = f
-								max = 1
-							end							
-						end
-					end
-				end
-				if filtered == false then
-					local contents = aggrigate_content(ent.get_transport_line(1),ent.get_transport_line(2))	
+					local contents = aggrigate_content_as_dictionary(ent.get_transport_line(1),ent.get_transport_line(2))	
 					for name, count in pairs(contents) do
 						local rc = local_get_recyle_recipe(name)					
 						if rc ~= nil then
@@ -112,11 +84,10 @@ local local_recycling_machine_process = function(entity)
 					end
 				end
 			end
-
 		end		
 		for index, sto in pairs(storage) do			
 			if (sto.prototype.type == "transport-belt" or entity.prototype.type == "underground-belt")  then				
-				local contents = aggrigate_content(sto.get_transport_line(1),sto.get_transport_line(2))																			
+				local contents = aggrigate_content_as_dictionary(sto.get_transport_line(1),sto.get_transport_line(2))																			
 				for name, count in pairs(contents) do	--for _, x in pairs(contents) do			
 					local rc = local_get_recyle_recipe(name)					
 					if rc ~= nil then

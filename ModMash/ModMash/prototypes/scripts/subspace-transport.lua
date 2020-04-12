@@ -4,11 +4,9 @@ changed local stock_transports = 0 to global.modmash.stock_transports
 
 log("subspace-transport.lua")
 --[[check and import utils]]
-if modmash == nil or modmash.util == nil then require("prototypes.scripts.util") end
-if not modmash.defines then require ("prototypes.scripts.defines") end
+--if modmash == nil or modmash.util == nil then require("prototypes.scripts.util") end
+--if not modmash.defines then require ("prototypes.scripts.defines") end
 
-local is_valid  = modmash.util.is_valid
-local table_remove = modmash.util.table.remove
 
 --[[defines]]
 local subspace_transport  = modmash.defines.names.subspace_transport 
@@ -18,8 +16,9 @@ local priority = modmash.events.medium_priority
 --[[create local references]]
 --[[util]]
 local is_valid = modmash.util.is_valid
-local is_valid_and_persistant = modmash.util.is_valid_and_persistant
+local is_valid_and_persistant = modmash.util.entity.is_valid_and_persistant
 local table_index_of = modmash.util.table.index_of
+local table_remove = modmash.util.table.remove
 
 --[[unitialized globals]]
 local transports = nil
@@ -39,7 +38,6 @@ local local_load = function()
 	log("subspace-transport.local_load")
 	transports = global.modmash.subspace_transports
 	end
-
 
 local local_subspace_transports_share = function(name,stock,entity)
 	for index=1, #transports do local transport = transports[index]

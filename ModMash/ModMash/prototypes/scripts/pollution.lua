@@ -9,7 +9,8 @@ log("pollution.lua")
 --[[check and import utils]]
 if modmash == nil or modmash.util == nil then require("prototypes.scripts.util") end
 if not modmash.defines then require ("prototypes.scripts.defines") end
-local is_valid = modmash.util.is_valid 
+local is_valid = modmash.util.is_valid
+
 
 --[[defines]]
 local chunks_per_tick  = modmash.defines.defaults.pollution_chunks_per_tick 

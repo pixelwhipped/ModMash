@@ -1,7 +1,4 @@
-﻿--[[Code check 29.2.20
-removed old comments
---]]
-data:extend(
+﻿data:extend(
 {
  {
     type = "technology",

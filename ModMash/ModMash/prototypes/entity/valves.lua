@@ -1,9 +1,6 @@
-﻿--[[Code check 29.2.20
-no changes
---]]
-if not modmash or not modmash.util then require("prototypes.scripts.util") end
+﻿if not modmash or not modmash.util then require("prototypes.scripts.util") end
 
-local patch_technology  = modmash.util.patch_technology
+local patch_technology  = modmash.util.tech.patch_technology
 
 local valve_levels = {
     type = "simple-entity-with-force",

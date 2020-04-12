@@ -9,7 +9,6 @@ local is_valid  = modmash.util.is_valid
 
 local local_init = function()	
 	if global.modmash.grenade_targets == nil then global.modmash.grenade_targets = {} end	
-	if not global.modmash.grenade then global.modmash.grenade = nil end	
 	end
 
 local local_check_resource = function()

@@ -173,9 +173,11 @@ local local_fishing_inserter_removed = function(entity)
 	end
 
 local local_on_selected = function(player,entity)
+	if entity ~= nil then
 		if fishing.allow_pickup_rotations and (entity.type == "inserter" or (entity.type == "entity-ghost" and entity.ghost_type == "inserter")) then
-		if settings.startup["modmash-setting-show-adjustable"].value == true then
-			entity.surface.create_entity{name="flying-text", position = entity.position, text="Press " .. settings.startup["modmash-setting-adjust-binding"].value .. " to adjust", color={r=1,g=1,b=1}}
+			if settings.startup["modmash-setting-show-adjustable"].value == true then
+				entity.surface.create_entity{name="flying-text", position = entity.position, text="Press " .. settings.startup["modmash-setting-adjust-binding"].value .. " to adjust", color={r=1,g=1,b=1}}
+			end
 		end
 	end
 	end

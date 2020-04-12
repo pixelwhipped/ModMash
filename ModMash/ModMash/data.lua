@@ -1,8 +1,8 @@
 ﻿--[[Code check 29.2.20
 removed old comments
 --]]
-require("prototypes.scripts.util")
-
+--require("prototypes.scripts.util")
+modmash = { util = get_liborio() }
 require("prototypes.categories.discharge-fluids")
 require("prototypes.categories.item-groups")
 require("prototypes.categories.recycling-category")

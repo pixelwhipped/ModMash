@@ -4,8 +4,8 @@ other variables should not be effecting states of objects
 ]]
 
 --[[check and import utils]]
-if modmash == nil or modmash.util == nil then require("prototypes.scripts.util") end
-if not modmash.defines then require ("prototypes.scripts.defines") end
+--if modmash == nil or modmash.util == nil then require("prototypes.scripts.util") end
+--if not modmash.defines then require ("prototypes.scripts.defines") end
 
 --[[defines]]
 local loot_probability = modmash.defines.defaults.loot_probability
@@ -24,8 +24,8 @@ local crash_site_prefix = modmash.defines.names.crash_site_prefix
 --[[create local references]]
 
 --[[util]]
-local table_contains = modmash.util.table.contains
 local table_index_of = modmash.util.table.index_of
+local table_contains = modmash.util.table.contains
 local distance  = modmash.util.distance
 local starts_with  = modmash.util.starts_with
 local print = modmash.util.print
@@ -320,7 +320,6 @@ local local_load = function()
 	log("loot.local_load")
 	chunks = global.modmash.loot.chunks
 	end
-	
 
 local local_on_chunk_charted = function(event)	   
 	local id = event.surface_index.."_"..event.position.x.."_"..event.position.y

@@ -6,6 +6,15 @@ if not modmash.defines.names then modmash.defines.names = {} end
 if not modmash.defines.defaults then modmash.defines.defaults = {} end
 if not modmash.events then modmash.events = {} end
 
+--[[
+if not modmash.defines.data_stages then modmash.defines.data_stages = {} end
+ 
+modmash.defines.data_stages.data = "data"
+modmash.defines.data_stages.data_final_fixes = "data-final-fixes"
+modmash.defines.data_stages.data_updates = "data-updates"
+modmash.defines.data_stages.control = "control"]]
+
+
 --[[names]]
 modmash.defines.names.titanium_ore_name = "titanium-ore" 
 if settings.startup["modmash-bob-support"].value == "Yes" then
