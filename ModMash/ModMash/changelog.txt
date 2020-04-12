@@ -1,7 +1,12 @@
 ﻿---------------------------------------------------------------------------------------------------
 Version: 0.18.27
+  Changes:
+    - changed option names and order a little bit. added a description to alien drop modifier
   Bug Fix:
-    - typo in loader clone event would caused an error
+    - loader clone event would caused an error
+    - alien loot setting didn't do anything
+  Writer:
+    - Honktown
 ---------------------------------------------------------------------------------------------------
 Version: 0.18.26
   Changes:
