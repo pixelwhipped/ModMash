@@ -5,6 +5,7 @@ Version: 0.18.28
   Bug Fix:
     - loader clone event would caused an error
     - alien loot setting didn't do anything
+    - add 0.18.27 changes that were on the mod portal but not github
   Writer:
     - Honktown
 -----------------------------------------------------------------------------
