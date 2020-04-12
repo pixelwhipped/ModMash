@@ -1,4 +1,11 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.18.30
+  Bug Fix:
+    - changelog can be seen in-game again
+
+  Writer:
+    - Honktown (changelog fix)
+---------------------------------------------------------------------------------------------------
 Version: 0.18.29
   Bug Fix:
     - re-merge more missing changes (require __modmash__wiki error...)
@@ -15,7 +22,7 @@ Version: 0.18.28
     - add 0.18.27 changes that were on the mod portal but not github
   Writer:
     - Honktown
------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 Version: 0.18.27
   Changes:
     - Chnage alien ore resource color
