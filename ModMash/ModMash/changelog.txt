@@ -1,4 +1,11 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.18.29
+  Bug Fix:
+    - re-merge more missing changes (require __modmash__wiki error...)
+    - loader-1x2's now usable with recycler
+  Writer:
+    - Honktown
+---------------------------------------------------------------------------------------------------
 Version: 0.18.28
   Changes:
     - changed option names and order a little bit. added a description to alien drop modifier

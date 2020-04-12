@@ -429,7 +429,7 @@ data:extend(
 			}
 		  }
 		},
-		map_color = {r=1.0, g=1.0, b=0.0}
+		map_color = {r=1.0, g=0.0, b=0.5}
 	}
 })
 

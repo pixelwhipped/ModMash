@@ -646,8 +646,8 @@ local local_create_fluid_recipies = function()
 		hidden = false,
 		order = "z[valve-water-steam]",
 		enabled = true,
-		icon = "__base__/graphics/icons/fluid/steam.png",	
-		icon_size = 32,
+		icon = "__modmash__/graphics/blank64.png",	
+		icon_size = 64,
 		hide_from_stats = true,
 		ingredients = {{type = "fluid", name = "water", amount = 100}},
 		results = 
@@ -669,8 +669,8 @@ local local_create_fluid_recipies = function()
 		hidden = false,
 		order = "z[valve-steam-water]",
 		enabled = true,
-		icon = "__base__/graphics/icons/fluid/water.png",	
-		icon_size = 32,
+		icon = "__modmash__/graphics/blank64.png", --"__base__/graphics/icons/fluid/water.png",	
+		icon_size = 64,
 		hide_from_stats = true,
 		ingredients = {{type = "fluid", name = "steam", amount = 100}},
 		results = 

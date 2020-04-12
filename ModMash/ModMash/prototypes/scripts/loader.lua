@@ -21,7 +21,7 @@ local get_entities_to_west  = modmash.util.get_entities_to_west
 loaders = nil
 
 local beltTypes = {
-  "loader","loader-1x1","splitter","underground-belt","transport-belt"
+  "loader","loader-1x1",'loader-1x2',"splitter","underground-belt","transport-belt"
 }
 
 local local_adjust_loader = function(entity)	
@@ -64,7 +64,7 @@ local local_find_loaders  = function(entity)
 	elseif entity.direction  == defines.direction.east or entity.direction  == defines.direction.west then
 		area = {{entity.position.x-(w+0.5), entity.position.y-h}, {entity.position.x+(w+0.5), entity.position.y+h}}
 	end
-	local loaders = surface.find_entities_filtered{area=area, type = {'loader-1x1','loader'}}
+	local loaders = surface.find_entities_filtered{area=area, type = {'loader-1x1','loader-1x2','loader'}}
 	for i, loader in pairs (loaders) do
 		local_adjust_loader (loader)
 	end
@@ -75,17 +75,17 @@ local local_find_train_loaders = function(entity)
 	if not (entity.type=="cargo-wagon" or entity.type=="locomotive") then return end
 	if (entity.train.state==defines.train_state.wait_station or entity.train.state==defines.train_state.manual_control) and entity.train.speed==0 then
 		if entity.orientation==0 or entity.orientation==0.5 then
-			for j,loader in pairs(entity.surface.find_entities_filtered{type={'loader-1x1','loader'},area={{entity.position.x-1.5,entity.position.y-2.2},{entity.position.x-0.5,entity.position.y+2.2}}}) do
+			for j,loader in pairs(entity.surface.find_entities_filtered{type={'loader-1x1','loader-1x2','loader'},area={{entity.position.x-1.5,entity.position.y-2.2},{entity.position.x-0.5,entity.position.y+2.2}}}) do
 				table.insert(loaders,{loader,entity,6})				
 			end
-			for j,loader in pairs(entity.surface.find_entities_filtered{type={'loader-1x1','loader'},area={{entity.position.x+0.5,entity.position.y-2.2},{entity.position.x+1.5,entity.position.y+2.2}}}) do
+			for j,loader in pairs(entity.surface.find_entities_filtered{type={'loader-1x1','loader-1x2','loader'},area={{entity.position.x+0.5,entity.position.y-2.2},{entity.position.x+1.5,entity.position.y+2.2}}}) do
 				table.insert(loaders,{loader,entity,2})
 			end
 		elseif entity.orientation==0.25 or entity.orientation==0.75 then
-			for j,loader in pairs(entity.surface.find_entities_filtered{type={'loader-1x1','loader'},area={{entity.position.x-2.2,entity.position.y-1.5},{entity.position.x+2.2,entity.position.y-0.5}}}) do				
+			for j,loader in pairs(entity.surface.find_entities_filtered{type={'loader-1x1','loader-1x2','loader'},area={{entity.position.x-2.2,entity.position.y-1.5},{entity.position.x+2.2,entity.position.y-0.5}}}) do				
 				table.insert(loaders,{loader,entity,0})
 			end
-			for j,loader in pairs(entity.surface.find_entities_filtered{type={'loader-1x1','loader'},area={{entity.position.x-2.2,entity.position.y+0.5},{entity.position.x+2.2,entity.position.y+1.5}}}) do
+			for j,loader in pairs(entity.surface.find_entities_filtered{type={'loader-1x1','loader-1x2','loader'},area={{entity.position.x-2.2,entity.position.y+0.5},{entity.position.x+2.2,entity.position.y+1.5}}}) do
 				table.insert(loaders,{loader,entity,4})
 			end
 		end
@@ -94,7 +94,7 @@ local local_find_train_loaders = function(entity)
 
 local local_loader_added = function(entity)	
 		if is_valid(entity) ~= true then return end		
-		if entity.type == "loader-1x1" or entity.type == "loader" then 
+		if entity.type == "loader-1x1" or entity.type == "loader-1x2" or entity.type == "loader" then 
 			local_adjust_loader(entity)
 			local w=entity.surface.find_entities_filtered{type="cargo-wagon",area={{entity.position.x-2,entity.position.y-2},{entity.position.x+2,entity.position.y+2}}}
 			for a,b in pairs(w) do
@@ -219,7 +219,7 @@ local local_load = function()
 	end
 	
 local local_loader_removed = function(entity)
-	if entity.type == "loader-1x1" or entity.type == "loader" then				
+	if entity.type == "loader-1x1" or entity.type == "loader-1x2" or entity.type == "loader" then				
 		for index, loader in pairs(loaders) do
 			if  loader.entity == entity then
 				table.remove(loaders, index)				
@@ -230,8 +230,8 @@ local local_loader_removed = function(entity)
 end
 
 local local_on_entity_cloned = function(event)
-	if is_valid(event.source) then
-		if event.source.type == "loader-1x1" or event.source.type == "loader" then return end	
+	if is_valid(event.source) then 
+		if event.source.type == "loader-1x1" or event.source.type == "loader-1x2" or event.source.type == "loader" then return end	
 		for index, loader in pairs(loaders) do
 			if  loader.entity == event.source then
 				loader.entity = event.destination

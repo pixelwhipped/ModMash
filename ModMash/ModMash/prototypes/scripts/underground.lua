@@ -147,7 +147,7 @@ local generate_surface_area = function(x,y,r,surface, force_gen, force_ore)
 					surface.create_entity({name="copper-ore", amount=amt*m, position=pos})
 				elseif rnd<27 then
 					surface.create_entity({name="coal", amount=amt*m, position=pos})
-				elseif rnd<29 then
+				elseif rnd<30 then
 					surface.create_entity({name="alien-ore", amount=amt*m, position=pos})
 				end
 			  end
