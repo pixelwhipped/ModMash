@@ -21,7 +21,7 @@ local fishing = nil
 local starts_with  = modmash.util.starts_with
 local is_valid  = modmash.util.is_valid
 local distance  = modmash.util.distance
-local get_entities_around  = modmash.util.get_entities_around
+local get_entities_around  = modmash.util.entity.get_entities_around
 
 local local_init = function()	
 	if global.modmash.fishing == nil then global.modmash.fishing = {} end	
