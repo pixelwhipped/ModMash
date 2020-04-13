@@ -281,7 +281,7 @@ data:extend(
 		minable = {hardness = 0.2, mining_time = 0.5, result = "underground-access"},
 		max_health = 350,
 		corpse = "medium-small-remnants",
-		collision_box = {{-0.55, -0.55 }, {0.55, 0.55}},
+		collision_box = {{-0.8, -0.8 }, {0.8, 0.8}},
 		selection_box = {{-1, -1 }, {1, 1}},
 		enabled = false,
 		resistances =
