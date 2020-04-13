@@ -1,7 +1,11 @@
 ﻿---------------------------------------------------------------------------------------------------
 Version: 0.18.31
   Bug Fixes:
+<<<<<<< HEAD
     - fishing inserters work again
+=======
+    - compatibility fix for angels refining
+>>>>>>> pixelwhipped-general
   Changes:
     - moved graphics to seperate mod
     - reduce update frequency of underground accesses

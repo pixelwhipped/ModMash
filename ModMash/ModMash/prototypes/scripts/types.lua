@@ -77,16 +77,56 @@ local local_create_container = function(item,x)
 		}}
 	
 	local base_uncontain_icons = {}
+	--[[ debug
 	local check_item = nil
 	if check_item ~= nil and item.name == check_item then log(serpent.block(item)) end
+	]]
 	local contain_icons = create_icon(base_contain_icons, nil, {from = item, rescale = .5})
 	local tech_icons = create_icon(base_tech_icons,nil, {from = item, rescale = .5, type = "technology"})
 	local uncontain_icons = create_icon(base_uncontain_icons,nil,{from = item})
 	uncontain_icons = create_icon(base_uncontain_icons,{{icon = "__modmashgraphics__/graphics/icons/super-container.png", icon_size = 32, scale = .5, shift = {5,5}}})
 	if check_item ~= nil and item.name == check_item then log(serpent.block(contain_icons)) end
-	if check_item ~= nil and item.name == check_item then log(serpent.block(tech_icons)) end
-	if check_item ~= nil and item.name == check_item then log(serpent.block(uncontain_icons)) end
+	--if check_item ~= nil and item.name == check_item then log(serpent.block(tech_icons)) end
+	--if check_item ~= nil and item.name == check_item then log(serpent.block(uncontain_icons)) end
 
+--[[	for i=1, #contain_icons do 
+		if type(contain_icons[i].shift) ~= table then contain_icons[i].shift = {0,0} end
+	end
+	for i=1, #uncontain_icons do 
+		if type(uncontain_icons[i].shift) ~= table then uncontain_icons[i].shift = {0,0} end
+	end
+	for i=1, #tech_icons do 
+		if type(tech_icons[i].shift) ~= table then tech_icons[i].shift = {0,0} end
+	end]]
+	--[[
+		local has_barrel = function(ci)
+			if type(ci) ~= "table" then return false end
+			for n = 1, #ci do
+				if starts_with(ci[n].icon,"__base__/graphics/icons/fluid/barreling/") then return true end
+			end
+			return false
+		end
+		local remove_barrels = function(ci)
+			if type(ci) ~= "table" then return ci end
+			local ri = {}
+			for n = 1, #ci do
+				if not starts_with(ci[n].icon,"__base__/graphics/icons/fluid/barreling/") then 
+					table.insert(ri,ci[n])
+				end
+			end
+			return ri
+		end
+		if #contain_icons >= 4 and has_barrel(contain_icons) then
+		  contain_icons = remove_barrels(contain_icons)
+		  uncontain_icons = remove_barrels(uncontain_icons)
+		  tech_icons = remove_barrels(tech_icons)
+		end
+		if #contain_icons >= 4 then return end
+		if item.name == "lubricant-barrel" then 
+			log("ERROR: contain")
+			log(serpent.block(uncontain_icons))
+		end
+	]]
 
 	local container = {
 		type = "item",
@@ -438,7 +478,7 @@ local local_create_super_containers = function()
 						z = z + 1
 					end
 				else 
-					log("Skipping containers for " .. item.name)
+					--log("Skipping containers for " .. item.name)
 				end
 			end
 		end
@@ -534,7 +574,7 @@ local local_create_super_material_conversions = function()
 end
 
 local local_create_fluid_item = function(name, fluid)
-  log("Discharge and valve Fluid: dump-" .. fluid.name)
+  --log("Discharge and valve Fluid: dump-" .. fluid.name)
   local discharge_recipe =
   {
     type = "recipe",
@@ -846,7 +886,7 @@ local local_create_recycle_recipies = function(source)
 	    if recipe.hidden or recipe.hide_from_player_crafting 
 			or starts_with(recipe.name,"creative-mod") 
 			or starts_with(recipe.name,"deadlock-stack") then
-			log("Skipping recyling " .. recipe.name)
+			--log("Skipping recyling " .. recipe.name)
 		else
 			local_create_recylce_item(recipe)
 		end
