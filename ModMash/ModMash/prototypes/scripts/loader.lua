@@ -230,7 +230,7 @@ end
 
 local local_on_entity_cloned = function(event)
 	if is_valid(event.source) then 
-		if entity.source.type == "loader-1x1" or event.source.type == "loader" or entity.source.type == "loader-1x2" then return end	
+		if event.source.type == "loader-1x1" or event.source.type == "loader" or event.source.type == "loader-1x2" then return end	
 		for index, loader in pairs(loaders) do
 			if  loader.entity == event.source then
 				loader.entity = event.destination
