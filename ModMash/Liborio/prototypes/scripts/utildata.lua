@@ -97,7 +97,7 @@ local local_create_icon = function(base_icons, new_icons, options)
 	if type(options) ~= "table" then options = { } end
     local icon = nil
 	if not options.rescale then options.rescale = 1 end
-	if not options.origin then options.origin = { 0,0} end
+	if not options.origin then options.origin = {0,0} end
 	if not new_icons then
 		if options.from ~= nil and type(options.from) == "table" then
 			if options.from.icons then new_icons = options.from.icons
@@ -114,7 +114,10 @@ local local_create_icon = function(base_icons, new_icons, options)
     local icons = liborio.table.table_clone(new_icons)
 	for _, icon in pairs(base_icons) do
 		if not icon.scale then icon.scale = 1 end
-		if not icon.shift then icon.shift = { 0,0} end
+		if icon.shift ~= nil and type(icon.shift) ~= "table" then
+			icon.shift = {0,0} 
+		end
+		if not icon.shift then icon.shift = {0,0} end
 	end
 	if options.type == nil or options.type == "recipe" then
 		for _, icon in pairs(icons) do
@@ -124,7 +127,10 @@ local local_create_icon = function(base_icons, new_icons, options)
     local extra_scale
 	for _, icon in pairs(icons) do
 		if not icon.scale then icon.scale = 1 end
-		if not icon.shift then icon.shift = { 0,0} end
+		if icon.shift ~= nil and type(icon.shift) ~= "table" then
+			icon.shift = {0,0} 
+		end
+		if not icon.shift then icon.shift = {0,0} end
 		extra_scale = 1
 		if base_icons[1] then
 			if (base_icons[1].icon_size* base_icons[1].scale) ~= (icon.icon_size* icon.scale) then
@@ -144,6 +150,9 @@ local local_create_icon = function(base_icons, new_icons, options)
 	for _, icon in pairs(icons) do
         table.insert(base_icons, icon)
     end
+	for i=1, #base_icons do 
+		if type(base_icons[i].shift) ~= table then base_icons[i].shift = {0,0} end
+	end
 	return base_icons
 	end
 

@@ -1,5 +1,7 @@
 ﻿---------------------------------------------------------------------------------------------------
 Version: 0.18.31
+  Bug Fixes:
+    - compatibility fix for angels refining
   Changes:
     - moved graphics to seperate mod
     - reduce update frequency of underground accesses
