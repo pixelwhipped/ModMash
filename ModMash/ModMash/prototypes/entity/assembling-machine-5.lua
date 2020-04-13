@@ -6,7 +6,7 @@ data:extend(
   {
     type = "assembling-machine",
     name = "assembling-machine-5",
-    icon = "__modmash__/graphics/icons/assembling-machine-5.png",
+    icon = "__modmashgraphics__/graphics/icons/assembling-machine-5.png",
     icon_size = 32,
     flags = {"placeable-neutral","placeable-player", "player-creation"},
     minable = {hardness = 0.2, mining_time = 0.5, result = "assembling-machine-5"},
@@ -62,7 +62,7 @@ data:extend(
     fast_replaceable_group = "assembling-machine",
     animation =
     {
-          filename = "__modmash__/graphics/entity/assembling-machine-mask/assembling-machine-3.png",
+          filename = "__modmashgraphics__/graphics/entity/assembling-machine-mask/assembling-machine-3.png",
           priority = "high",
           width = 142,
           height = 113,

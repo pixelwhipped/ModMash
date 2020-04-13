@@ -6,7 +6,7 @@ data:extend(
   {
     type = "ammo",
     name = "titanium-rounds-magazine",
-    icon = "__modmash__/graphics/icons/titanium-rounds-magazine.png",
+    icon = "__modmashgraphics__/graphics/icons/titanium-rounds-magazine.png",
     icon_size = 32,    
     ammo_type =
     {
@@ -44,7 +44,7 @@ data:extend(
   {
     type = "ammo",
     name = "alien-rounds-magazine",
-    icon = "__modmash__/graphics/icons/alien-rounds-magazine.png",
+    icon = "__modmashgraphics__/graphics/icons/alien-rounds-magazine.png",
     icon_size = 32,
     ammo_type =
     {

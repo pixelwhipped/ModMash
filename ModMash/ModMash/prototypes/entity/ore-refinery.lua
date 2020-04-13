@@ -7,7 +7,7 @@ data:extend(
     {
         type = "sprite",
         name = "ore-refinery-spr",
-        filename = "__modmash__/graphics/icons/ore-refinery.png",
+        filename = "__modmashgraphics__/graphics/icons/ore-refinery.png",
         width = 32,
         height = 32,
 		scale = 1
@@ -19,7 +19,7 @@ data:extend(
 	{
 		type = "item",
 		name = "ore-refinery",
-		icon = "__modmash__/graphics/icons/ore-refinery.png",
+		icon = "__modmashgraphics__/graphics/icons/ore-refinery.png",
 		icon_size = 32,
 		subgroup = "production-machine",
 		order = "c[ore-refinery]",
@@ -29,7 +29,7 @@ data:extend(
 	{
 		type = "assembling-machine",
 		name = "ore-refinery",
-		icon = "__modmash__/graphics/icons/ore-refinery.png",
+		icon = "__modmashgraphics__/graphics/icons/ore-refinery.png",
 		icon_size = 32,
 		flags = {"placeable-neutral", "placeable-player", "player-creation"},
 		minable = {mining_time = 0.2, result = "ore-refinery"},
@@ -188,28 +188,28 @@ data.raw["gui-style"].default["ore-refinery-image-button-style"] = {
 	height = 34,
 	default_graphical_set = {
 		type = "composition",
-		filename = "__modmash__/graphics/icons/ore-refinery.png",
+		filename = "__modmashgraphics__/graphics/icons/ore-refinery.png",
 		priority = "extra-high-no-scale",
 		corner_size = 1,
 		position = {0, 0}
 	},
 	hovered_graphical_set = {
 		type = "composition",
-		filename = "__modmash__/graphics/icons/ore-refinery.png",
+		filename = "__modmashgraphics__/graphics/icons/ore-refinery.png",
 		priority = "extra-high-no-scale",
 		corner_size = 1,
 		position = {0, 0}
 	},
 	clicked_graphical_set = {
 		type = "composition",
-		filename = "__modmash__/graphics/icons/ore-refinery.png",
+		filename = "__modmashgraphics__/graphics/icons/ore-refinery.png",
 		priority = "extra-high-no-scale",
 		corner_size = 1,
 		position = {0, 0}
 	},
 	disabled_graphical_set = {
 		type = "composition",
-		filename = "__modmash__/graphics/icons/ore-refinery.png",
+		filename = "__modmashgraphics__/graphics/icons/ore-refinery.png",
 		priority = "extra-high-no-scale",
 		corner_size = 1,
 		position = {0, 0}

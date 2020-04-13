@@ -5,7 +5,7 @@ local recycling_state = {
     type = "simple-entity-with-force",
     name = "recycling-machine-indicator",
     flags = {"not-blueprintable", "not-deconstructable", "not-on-map", "placeable-off-grid"},
-    icon = "__modmash__/graphics/stickers/blank-icon.png",
+    icon = "__modmashgraphics__/graphics/stickers/blank-icon.png",
     icon_size = 32,
     max_health = 100,
     selectable_in_game = false,
@@ -19,7 +19,7 @@ local recycling_state = {
     pictures =
     {
         {
-            filename = "__modmash__/graphics/stickers/recycling-automatic.png",
+            filename = "__modmashgraphics__/graphics/stickers/recycling-automatic.png",
             priority = "extra-high",
             x = 0,
             y = 0,
@@ -28,7 +28,7 @@ local recycling_state = {
             scale = 1,
         },
         {
-            filename = "__modmash__/graphics/stickers/recycling-manual.png",
+            filename = "__modmashgraphics__/graphics/stickers/recycling-manual.png",
             priority = "extra-high",
             x = 0,
             y = 0,
@@ -47,7 +47,7 @@ data:extend(
 	stack_size = 50,
     name = "recycling-machine",
 	localised_description = {"item-description.recycling-machine",settings.startup["modmash-setting-adjust-binding"].value},
-    icon = "__modmash__/graphics/icons/recycling-machine.png",
+    icon = "__modmashgraphics__/graphics/icons/recycling-machine.png",
     icon_size = 32,	
     flags = {"placeable-neutral","placeable-player", "player-creation"},
     minable = {hardness = 0.2, mining_time = 0.5, result = "recycling-machine"},
@@ -86,7 +86,7 @@ data:extend(
       layers =
       {
         {
-          filename = "__modmash__/graphics/entity/recycling-machine/recycling-machine.png",
+          filename = "__modmashgraphics__/graphics/entity/recycling-machine/recycling-machine.png",
           priority = "high",
           width = 142,
           height = 113,

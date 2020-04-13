@@ -22,6 +22,35 @@
 		icon = "__coffee__/graphics/icons/coffee-beans.png",
 		icon_size = 32,
 		subgroup = "raw-resource",
+		capsule_action =
+		{
+			type = "use-on-self",
+			attack_parameters =
+			{
+			type = "projectile",
+			ammo_category = "capsule",
+			cooldown = 45,
+			range = 0,
+			ammo_type =
+			{
+				category = "capsule",
+				target_type = "position",
+				action =
+				{
+				type = "direct",
+				action_delivery =
+				{
+					type = "instant",
+					target_effects =
+					{
+					type = "damage",
+					damage = {type = "physical", amount = -1}
+					}
+				}
+				}
+			}
+			}
+		},
 		order = "a[grenade]-a[normal]-b[coffee-beans]",
 		stack_size = 100
 	}, 

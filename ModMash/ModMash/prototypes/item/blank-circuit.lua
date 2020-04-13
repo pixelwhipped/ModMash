@@ -4,7 +4,7 @@ removed old comments
 if not data.raw.item["sand"] then
   data:extend({
     {
-      icon = "__modmash__/graphics/icons/sand.png",
+      icon = "__modmashgraphics__/graphics/icons/sand.png",
       icon_size = 32,
       name = "sand",
       order = "a[wood]-b-b",
@@ -18,7 +18,7 @@ end
 if not data.raw.item["glass"] then
   data:extend({
     {
-      icon = "__modmash__/graphics/icons/glass.png",
+      icon = "__modmashgraphics__/graphics/icons/glass.png",
       icon_size = 64,
       name = "glass",
       order = "a[wood]-b-c",
@@ -64,7 +64,7 @@ data:extend(
 	{
 		type = "item",
 		name = "blank-circuit",
-		icon = "__modmash__/graphics/icons/blank-circuit.png",
+		icon = "__modmashgraphics__/graphics/icons/blank-circuit.png",
 		icon_size = 32,
 		subgroup = "intermediate-product",
 		order = "e[blank-circuit]",

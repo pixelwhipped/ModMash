@@ -18,7 +18,7 @@ data:extend(
     type = "recipe",
     name = "sludge-to-stone",
 	category = "crafting-with-fluid",
-	icon = "__modmash__/graphics/icons/sludge-to-stone.png",
+	icon = "__modmashgraphics__/graphics/icons/sludge-to-stone.png",
 	icon_size = 32,
 	subgroup = "intermediate-product",
 	order = "s[sludge-to-stone]",
@@ -31,7 +31,7 @@ data:extend(
   {
     type = "item",
     name = "dredge-pump",
-    icon = "__modmash__/graphics/icons/dredge-pump.png",
+    icon = "__modmashgraphics__/graphics/icons/dredge-pump.png",
     icon_size = 32,
     subgroup = "extraction-machine",
     order = "b[fluids]-a[offshore-pump-dredge]",
@@ -41,7 +41,7 @@ data:extend(
   {
     type = "offshore-pump",
     name = "dredge-pump",
-    icon = "__modmash__/graphics/icons/dredge-pump.png",
+    icon = "__modmashgraphics__/graphics/icons/dredge-pump.png",
     icon_size = 32,
     flags = {"placeable-neutral", "player-creation", "filter-directions"},
     collision_mask = { "ground-tile", "object-layer" },
@@ -88,7 +88,7 @@ data:extend(
     {
       north =
       {
-        filename = "__modmash__/graphics/entity/dredge-pump/dredge-pump.png",
+        filename = "__modmashgraphics__/graphics/entity/dredge-pump/dredge-pump.png",
         priority = "high",
         shift = {0.90625, 0.0625},
         width = 160,
@@ -96,7 +96,7 @@ data:extend(
       },
       east =
       {
-        filename = "__modmash__/graphics/entity/dredge-pump/dredge-pump.png",
+        filename = "__modmashgraphics__/graphics/entity/dredge-pump/dredge-pump.png",
         priority = "high",
         shift = {0.90625, 0.0625},
         x = 160,
@@ -105,7 +105,7 @@ data:extend(
       },
       south =
       {
-        filename = "__modmash__/graphics/entity/dredge-pump/dredge-pump.png",
+        filename = "__modmashgraphics__/graphics/entity/dredge-pump/dredge-pump.png",
         priority = "high",
         shift = {0.90625, 0.65625},
         x = 320,
@@ -114,7 +114,7 @@ data:extend(
       },
       west =
       {
-        filename = "__modmash__/graphics/entity/dredge-pump/dredge-pump.png",
+        filename = "__modmashgraphics__/graphics/entity/dredge-pump/dredge-pump.png",
         priority = "high",
         shift = {1.0, 0.0625},
         x = 480,

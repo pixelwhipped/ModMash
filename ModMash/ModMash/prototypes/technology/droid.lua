@@ -26,7 +26,7 @@ data:extend(
     name = "enhance-drone-targeting-1",
 	localised_name = {"technology-description.enhance-drone-targeting-1"},
 	localised_description =  {"technology-description.enhance-drone-targeting-1"},
-	icon = "__modmash__/graphics/icons/construction_drone_icon.png",
+	icon = "__modmashgraphics__/graphics/icons/construction_drone_icon.png",
     icon_size = 64,
     effects =
     {
@@ -57,7 +57,7 @@ local create_technology = function(level)
 		{
 			type = "technology",
 			name = "enhance-drone-targeting-"..level,
-			icon = "__modmash__/graphics/icons/construction_drone_icon.png",
+			icon = "__modmashgraphics__/graphics/icons/construction_drone_icon.png",
 			icon_size = 64,
 			localised_name = {"",{"technology-description.enhance-drone-targeting-1"}," ",level},-- get_name_for("enhance-drone-targeting-1",nil,(" "..level)),
 			localised_description =  {"technology-description.enhance-drone-targeting-1"},

@@ -11,7 +11,7 @@ local local_create_belt_animation_set = function(name)
 	{
 		animation_set =
 		{			
-			filename = "__modmash__/graphics/entity/logistics/" .. name ..".png",
+			filename = "__modmashgraphics__/graphics/entity/logistics/" .. name ..".png",
 			priority = "extra-high",
 			width = 64,
 			height = 64,
@@ -19,7 +19,7 @@ local local_create_belt_animation_set = function(name)
 			direction_count = 20,
 			hr_version =
 			{
-				filename = "__modmash__/graphics/entity/logistics/hr-" .. name .. ".png",
+				filename = "__modmashgraphics__/graphics/entity/logistics/hr-" .. name .. ".png",
 				priority = "extra-high",
 				width = 128,
 				height = 128,
@@ -61,7 +61,7 @@ local local_create_belt_animation_set = function(name)
 	return belt_animation_set end
 
 local local_create_mini_loader = function(name,max_health,filter_count,localised_name,localised_description,speed,belt_animation_set,order,ingredients,technology,next_upgrade,category)
-	local icon = "__modmash__/graphics/icons/" .. name .. "-structure.png"
+	local icon = "__modmashgraphics__/graphics/icons/" .. name .. "-structure.png"
 	local entity = {
 		type = "loader-1x1",
 		name = name,
@@ -99,7 +99,7 @@ local local_create_mini_loader = function(name,max_health,filter_count,localised
 		  {
 			sheet =
 			{
-			  filename = "__modmash__/graphics/entity/loader/".. name .. "-structure.png",
+			  filename = "__modmashgraphics__/graphics/entity/loader/".. name .. "-structure.png",
 			  priority = "extra-high",
 			  width    = 53,
 			  height   = 43,
@@ -107,7 +107,7 @@ local local_create_mini_loader = function(name,max_health,filter_count,localised
 			  y = 43,
 			  hr_version =
 				{
-				  filename = "__modmash__/graphics/entity/loader/hr-" .. name .. "-structure.png",
+				  filename = "__modmashgraphics__/graphics/entity/loader/hr-" .. name .. "-structure.png",
 				  priority = "extra-high",
 				  shift = {0.15625, 0.0703125},
 				  width = 106,
@@ -121,7 +121,7 @@ local local_create_mini_loader = function(name,max_health,filter_count,localised
 		  {
 			sheet =
 			{
-			  filename = "__modmash__/graphics/entity/loader/".. name .. "-structure.png",
+			  filename = "__modmashgraphics__/graphics/entity/loader/".. name .. "-structure.png",
 			  priority = "extra-high",
 			  width    = 53,
 			  height   = 43,
@@ -129,7 +129,7 @@ local local_create_mini_loader = function(name,max_health,filter_count,localised
 			  priority = "extra-high",
 			  hr_version =
 				{
-				  filename = "__modmash__/graphics/entity/loader/hr-" .. name .. "-structure.png",
+				  filename = "__modmashgraphics__/graphics/entity/loader/hr-" .. name .. "-structure.png",
 				  priority = "extra-high",
 				  shift = {0.15625, 0.0703125},				  
 				  width = 106,
@@ -167,7 +167,7 @@ local local_create_mini_loader = function(name,max_health,filter_count,localised
 end
 
 local local_create_loader = function(name,max_health,filter_count,localised_name,localised_description,speed,belt_animation_set,order,ingredients,technology,next_upgrade,category)
-	local icon = "__modmash__/graphics/icons/" .. name .. "-structure.png"
+	local icon = "__modmashgraphics__/graphics/icons/" .. name .. "-structure.png"
 	local entity = {
 		type = "loader",
 		name = name,
@@ -200,14 +200,14 @@ local local_create_loader = function(name,max_health,filter_count,localised_name
 		  {
 			sheet =
 			{
-				filename = "__modmash__/graphics/entity/loader/".. name .. "-structure.png",
+				filename = "__modmashgraphics__/graphics/entity/loader/".. name .. "-structure.png",
 				width    = 96,
 				height   = 64,
 				y        = 0,
 				priority = "extra-high",
 				hr_version = 
 				{
-					filename = "__modmash__/graphics/entity/loader/hr-" .. name .. "-structure.png",
+					filename = "__modmashgraphics__/graphics/entity/loader/hr-" .. name .. "-structure.png",
 					height   = 128,
 					priority = "extra-high",
 					scale    = 0.5,
@@ -216,14 +216,14 @@ local local_create_loader = function(name,max_health,filter_count,localised_name
 				}
 			},
 			{
-				filename = "__modmash__/graphics/entity/loader/".. name .. "-structure.png",
+				filename = "__modmashgraphics__/graphics/entity/loader/".. name .. "-structure.png",
 				width    = 96,
 				height   = 64,
 				y        = 0,
 				priority = "extra-high",
 				hr_version = 
 				{
-					filename = "__modmash__/graphics/entity/loader/hr-" .. name .. "-structure.png",
+					filename = "__modmashgraphics__/graphics/entity/loader/hr-" .. name .. "-structure.png",
 					height   = 128,
 					priority = "extra-high",
 					scale    = 0.5,
@@ -237,14 +237,14 @@ local local_create_loader = function(name,max_health,filter_count,localised_name
 		  {
 			sheet =
 			{
-				filename = "__modmash__/graphics/entity/loader/".. name .. "-structure.png",		
+				filename = "__modmashgraphics__/graphics/entity/loader/".. name .. "-structure.png",		
 				width    = 96,
 				height   = 64,
 				y        = 64,
 				priority = "extra-high",
 				hr_version = 
 				{
-					filename = "__modmash__/graphics/entity/loader/hr-" .. name .. "-structure.png",
+					filename = "__modmashgraphics__/graphics/entity/loader/hr-" .. name .. "-structure.png",
 					height   = 128,
 					priority = "extra-high",
 					scale    = 0.5,
@@ -253,14 +253,14 @@ local local_create_loader = function(name,max_health,filter_count,localised_name
 				}
 			},
 			{
-				filename = "__modmash__/graphics/entity/loader/".. name .. "-structure.png",
+				filename = "__modmashgraphics__/graphics/entity/loader/".. name .. "-structure.png",
 				width    = 96,
 				height   = 64,
 				y        = 64,
 				priority = "extra-high",
 				hr_version = 
 				{
-					filename = "__modmash__/graphics/entity/loader/hr-" .. name .. "-structure.png",
+					filename = "__modmashgraphics__/graphics/entity/loader/hr-" .. name .. "-structure.png",
 					height   = 128,
 					priority = "extra-high",
 					scale    = 0.5,
@@ -298,7 +298,7 @@ local local_create_loader = function(name,max_health,filter_count,localised_name
 end
 
 local local_create_splitter = function(name,max_health,localised_name,localised_description,next_upgrade,speed,belt_animation_set,order,ingredients,technology)
-	local icon = "__modmash__/graphics/icons/" .. name .. ".png"
+	local icon = "__modmashgraphics__/graphics/icons/" .. name .. ".png"
 	local entity = {
 		type = "splitter",
 		name = name,
@@ -330,7 +330,7 @@ local local_create_splitter = function(name,max_health,localised_name,localised_
 		{
 		  north =
 		  {
-			filename = "__modmash__/graphics/entity/logistics/" .. name .. "-north.png",
+			filename = "__modmashgraphics__/graphics/entity/logistics/" .. name .. "-north.png",
 			frame_count = 32,
 			line_length = 8,
 			priority = "extra-high",
@@ -339,7 +339,7 @@ local local_create_splitter = function(name,max_health,localised_name,localised_
 			shift = util.by_pixel(6, 0),
 			hr_version =
 			{
-			  filename = "__modmash__/graphics/entity/logistics/hr-" .. name .. "-north.png",
+			  filename = "__modmashgraphics__/graphics/entity/logistics/hr-" .. name .. "-north.png",
 			  frame_count = 32,
 			  line_length = 8,
 			  priority = "extra-high",
@@ -351,7 +351,7 @@ local local_create_splitter = function(name,max_health,localised_name,localised_
 		  },
 		  east =
 		  {
-			filename = "__modmash__/graphics/entity/logistics/" .. name .. "-east.png",
+			filename = "__modmashgraphics__/graphics/entity/logistics/" .. name .. "-east.png",
 			frame_count = 32,
 			line_length = 8,
 			priority = "extra-high",
@@ -360,7 +360,7 @@ local local_create_splitter = function(name,max_health,localised_name,localised_
 			shift = util.by_pixel(4, -6),
 			hr_version =
 			{
-			  filename = "__modmash__/graphics/entity/logistics/hr-" .. name .. "-east.png",
+			  filename = "__modmashgraphics__/graphics/entity/logistics/hr-" .. name .. "-east.png",
 			  frame_count = 32,
 			  line_length = 8,
 			  priority = "extra-high",
@@ -372,7 +372,7 @@ local local_create_splitter = function(name,max_health,localised_name,localised_
 		  },
 		  south =
 		  {
-			filename = "__modmash__/graphics/entity/logistics/" .. name .. "-south.png",
+			filename = "__modmashgraphics__/graphics/entity/logistics/" .. name .. "-south.png",
 			frame_count = 32,
 			line_length = 8,
 			priority = "extra-high",
@@ -381,7 +381,7 @@ local local_create_splitter = function(name,max_health,localised_name,localised_
 			shift = util.by_pixel(4, 0),
 			hr_version =
 			{
-			  filename = "__modmash__/graphics/entity/logistics/hr-" .. name .. "-south.png",
+			  filename = "__modmashgraphics__/graphics/entity/logistics/hr-" .. name .. "-south.png",
 			  frame_count = 32,
 			  line_length = 8,
 			  priority = "extra-high",
@@ -393,7 +393,7 @@ local local_create_splitter = function(name,max_health,localised_name,localised_
 		  },
 		  west =
 		  {
-			filename = "__modmash__/graphics/entity/logistics/" .. name .. "-west.png",
+			filename = "__modmashgraphics__/graphics/entity/logistics/" .. name .. "-west.png",
 			frame_count = 32,
 			line_length = 8,
 			priority = "extra-high",
@@ -402,7 +402,7 @@ local local_create_splitter = function(name,max_health,localised_name,localised_
 			shift = util.by_pixel(6, -4),
 			hr_version =
 			{
-			  filename = "__modmash__/graphics/entity/logistics/hr-" .. name .. "-west.png",
+			  filename = "__modmashgraphics__/graphics/entity/logistics/hr-" .. name .. "-west.png",
 			  frame_count = 32,
 			  line_length = 8,
 			  priority = "extra-high",
@@ -439,7 +439,7 @@ local local_create_splitter = function(name,max_health,localised_name,localised_
 end
 
 local local_create_belt_underground = function(name,max_health,max_distance,speed,localised_name,localised_description,next_upgrade,belt_animation_set,order,ingredients,technology)
-	local icon = "__modmash__/graphics/icons/" .. name .. ".png"
+	local icon = "__modmashgraphics__/graphics/icons/" .. name .. ".png"
 	local entity = {
 		type = "underground-belt",
 		name = name,
@@ -494,14 +494,14 @@ local local_create_belt_underground = function(name,max_health,max_distance,spee
 		  {
 			sheet =
 			{
-			  filename = "__modmash__/graphics/entity/logistics/" .. name .. ".png",
+			  filename = "__modmashgraphics__/graphics/entity/logistics/" .. name .. ".png",
 			  priority = "extra-high",
 			  width = 96,
 			  height = 96,
 			  y = 96,
 			  hr_version =
 			  {
-				filename = "__modmash__/graphics/entity/logistics/hr-" .. name .. ".png",
+				filename = "__modmashgraphics__/graphics/entity/logistics/hr-" .. name .. ".png",
 				priority = "extra-high",
 				width = 192,
 				height =192,
@@ -514,13 +514,13 @@ local local_create_belt_underground = function(name,max_health,max_distance,spee
 		  {
 			sheet =
 			{
-			  filename = "__modmash__/graphics/entity/logistics/" .. name .. ".png",
+			  filename = "__modmashgraphics__/graphics/entity/logistics/" .. name .. ".png",
 			  priority = "extra-high",
 			  width = 96,
 			  height = 96,
 			  hr_version =
 			  {
-				filename = "__modmash__/graphics/entity/logistics/hr-" .. name .. ".png",
+				filename = "__modmashgraphics__/graphics/entity/logistics/hr-" .. name .. ".png",
 				priority = "extra-high",
 				width = 192,
 				height = 192,
@@ -532,14 +532,14 @@ local local_create_belt_underground = function(name,max_health,max_distance,spee
 		  {
 			sheet =
 			{
-			  filename = "__modmash__/graphics/entity/logistics/" .. name .. ".png",
+			  filename = "__modmashgraphics__/graphics/entity/logistics/" .. name .. ".png",
 			  priority = "extra-high",
 			  width = 96,
 			  height = 96,
 			  y = 96*3,
 			  hr_version =
 			  {
-				filename = "__modmash__/graphics/entity/logistics/hr-" .. name .. ".png",
+				filename = "__modmashgraphics__/graphics/entity/logistics/hr-" .. name .. ".png",
 				priority = "extra-high",
 				width = 192,
 				height = 192,
@@ -552,14 +552,14 @@ local local_create_belt_underground = function(name,max_health,max_distance,spee
 		  {
 			sheet =
 			{
-			  filename = "__modmash__/graphics/entity/logistics/" .. name .. ".png",
+			  filename = "__modmashgraphics__/graphics/entity/logistics/" .. name .. ".png",
 			  priority = "extra-high",
 			  width = 96,
 			  height = 96,
 			  y = 96*2,
 			  hr_version =
 			  {
-				filename = "__modmash__/graphics/entity/logistics/hr-" .. name .. ".png",
+				filename = "__modmashgraphics__/graphics/entity/logistics/hr-" .. name .. ".png",
 				priority = "extra-high",
 				width = 192,
 				height = 192,
@@ -630,7 +630,7 @@ local local_create_belt_underground = function(name,max_health,max_distance,spee
 	end
 
 local local_create_belt = function(name,max_health,speed,localised_name,localised_description,order,ingredients,technology,next_upgrade)
-	local icon = "__modmash__/graphics/icons/" .. name .. ".png"
+	local icon = "__modmashgraphics__/graphics/icons/" .. name .. ".png"
 	local entity = {
 		type = "transport-belt",
 		name = name,

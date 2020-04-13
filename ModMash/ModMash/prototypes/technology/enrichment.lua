@@ -31,7 +31,7 @@
   {
     type = "technology",
     name = "enrichment",
-    icon = "__modmash__/graphics/technology/chemistry.png",
+    icon = "__modmashgraphics__/graphics/technology/chemistry.png",
     icon_size = 128,
     effects =
     {
@@ -73,7 +73,7 @@
     name = "enrichment-2",
 	--localised_name = "Enrichment 2",
 	localised_description = {"technology-description.enrichment"}, --"Refines materials to obtain more usefull components",
-    icon = "__modmash__/graphics/technology/chemistry.png",
+    icon = "__modmashgraphics__/graphics/technology/chemistry.png",
     icon_size = 128,
     effects =
     {
@@ -108,7 +108,7 @@
     type = "technology",
     name = "enrichment-3",
 	localised_description = {"technology-description.enrichment"},
-    icon = "__modmash__/graphics/technology/advanced-chemistry.png",
+    icon = "__modmashgraphics__/graphics/technology/advanced-chemistry.png",
     icon_size = 128,
     effects =
     {
@@ -151,7 +151,7 @@
     type = "technology",
     name = "enrichment-4",
 	localised_description = {"technology-description.enrichment"},
-    icon = "__modmash__/graphics/technology/advanced-chemistry.png",
+    icon = "__modmashgraphics__/graphics/technology/advanced-chemistry.png",
     icon_size = 128,
     effects =
     {
@@ -216,7 +216,7 @@
     type = "technology",
     name = "enrichment-5",
 	localised_description = {"technology-description.enrichment"},
-    icon = "__modmash__/graphics/technology/advanced-chemistry.png",
+    icon = "__modmashgraphics__/graphics/technology/advanced-chemistry.png",
     icon_size = 128,
     effects =
     {

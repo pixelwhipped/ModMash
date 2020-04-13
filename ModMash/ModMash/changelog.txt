@@ -2,6 +2,9 @@
 Version: 0.18.31
   Bug Fixes:
     - fishing inserters work again
+  Changes:
+    - moved graphics to seperate mod
+    - reduce update frequency of underground accesses
 ---------------------------------------------------------------------------------------------------
 Version: 0.18.30
   Bug Fixes:

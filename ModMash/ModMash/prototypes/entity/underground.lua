@@ -4,14 +4,14 @@ local local_get_alien_particle_shadow_pictures = function()
 	return
 	{
 	{
-		filename = "__modmash__/graphics/entity/alien-ore/alien-ore-particle-shadow-1.png",
+		filename = "__modmashgraphics__/graphics/entity/alien-ore/alien-ore-particle-shadow-1.png",
 		priority = "extra-high",
 		width = 16,
 		height = 16,
 		frame_count = 1,
 		hr_version =
 		{
-		filename = "__modmash__/graphics/entity/alien-ore/hr-alien-ore-particle-shadow-1.png",
+		filename = "__modmashgraphics__/graphics/entity/alien-ore/hr-alien-ore-particle-shadow-1.png",
 		priority = "extra-high",
 		width = 32,
 		height = 32,
@@ -20,14 +20,14 @@ local local_get_alien_particle_shadow_pictures = function()
 		}
 	},
 	{
-		filename = "__modmash__/graphics/entity/alien-ore/alien-ore-particle-shadow-2.png",
+		filename = "__modmashgraphics__/graphics/entity/alien-ore/alien-ore-particle-shadow-2.png",
 		priority = "extra-high",
 		width = 16,
 		height = 16,
 		frame_count = 1,
 		hr_version =
 		{
-		filename = "__modmash__/graphics/entity/alien-ore/hr-alien-ore-particle-shadow-2.png",
+		filename = "__modmashgraphics__/graphics/entity/alien-ore/hr-alien-ore-particle-shadow-2.png",
 		priority = "extra-high",
 		width = 32,
 		height = 32,
@@ -36,14 +36,14 @@ local local_get_alien_particle_shadow_pictures = function()
 		}
 	},
 	{
-		filename = "__modmash__/graphics/entity/alien-ore/alien-ore-particle-shadow-3.png",
+		filename = "__modmashgraphics__/graphics/entity/alien-ore/alien-ore-particle-shadow-3.png",
 		priority = "extra-high",
 		width = 16,
 		height = 16,
 		frame_count = 1,
 		hr_version =
 		{
-		filename = "__modmash__/graphics/entity/alien-ore/hr-alien-ore-particle-shadow-3.png",
+		filename = "__modmashgraphics__/graphics/entity/alien-ore/hr-alien-ore-particle-shadow-3.png",
 		priority = "extra-high",
 		width = 32,
 		height = 32,
@@ -52,14 +52,14 @@ local local_get_alien_particle_shadow_pictures = function()
 		}
 	},
 	{
-		filename = "__modmash__/graphics/entity/alien-ore/alien-ore-particle-shadow-4.png",
+		filename = "__modmashgraphics__/graphics/entity/alien-ore/alien-ore-particle-shadow-4.png",
 		priority = "extra-high",
 		width = 16,
 		height = 16,
 		frame_count = 1,
 		hr_version =
 		{
-		filename = "__modmash__/graphics/entity/alien-ore/hr-alien-ore-particle-shadow-4.png",
+		filename = "__modmashgraphics__/graphics/entity/alien-ore/hr-alien-ore-particle-shadow-4.png",
 		priority = "extra-high",
 		width = 32,
 		height = 32,
@@ -73,14 +73,14 @@ local local_get_alien_particle_pictures = function()
 	return
 	{
 		{
-		  filename = "__modmash__/graphics/entity/alien-ore/alien-ore-particle-1.png",
+		  filename = "__modmashgraphics__/graphics/entity/alien-ore/alien-ore-particle-1.png",
 		  priority = "extra-high",
 		  width = 16,
 		  height = 16,
 		  frame_count = 1,
 		  hr_version =
 		  {
-			filename = "__modmash__/graphics/entity/alien-ore/hr-alien-ore-particle-1.png",
+			filename = "__modmashgraphics__/graphics/entity/alien-ore/hr-alien-ore-particle-1.png",
 			priority = "extra-high",
 			width = 32,
 			height = 32,
@@ -89,14 +89,14 @@ local local_get_alien_particle_pictures = function()
 		  }
 		},
 		{
-		  filename = "__modmash__/graphics/entity/alien-ore/alien-ore-particle-2.png",
+		  filename = "__modmashgraphics__/graphics/entity/alien-ore/alien-ore-particle-2.png",
 		  priority = "extra-high",
 		  width = 16,
 		  height = 16,
 		  frame_count = 1,
 		  hr_version =
 		  {
-			filename = "__modmash__/graphics/entity/alien-ore/hr-alien-ore-particle-2.png",
+			filename = "__modmashgraphics__/graphics/entity/alien-ore/hr-alien-ore-particle-2.png",
 			priority = "extra-high",
 			width = 32,
 			height = 32,
@@ -105,14 +105,14 @@ local local_get_alien_particle_pictures = function()
 		  }
 		},
 		{
-		  filename = "__modmash__/graphics/entity/alien-ore/alien-ore-particle-3.png",
+		  filename = "__modmashgraphics__/graphics/entity/alien-ore/alien-ore-particle-3.png",
 		  priority = "extra-high",
 		  width = 16,
 		  height = 16,
 		  frame_count = 1,
 		  hr_version =
 		  {
-			filename = "__modmash__/graphics/entity/alien-ore/hr-alien-ore-particle-3.png",
+			filename = "__modmashgraphics__/graphics/entity/alien-ore/hr-alien-ore-particle-3.png",
 			priority = "extra-high",
 			width = 32,
 			height = 32,
@@ -121,14 +121,14 @@ local local_get_alien_particle_pictures = function()
 		  }
 		},
 		{
-		  filename = "__modmash__/graphics/entity/alien-ore/alien-ore-particle-4.png",
+		  filename = "__modmashgraphics__/graphics/entity/alien-ore/alien-ore-particle-4.png",
 		  priority = "extra-high",
 		  width = 16,
 		  height = 16,
 		  frame_count = 1,
 		  hr_version =
 		  {
-			filename = "__modmash__/graphics/entity/alien-ore/hr-alien-ore-particle-4.png",
+			filename = "__modmashgraphics__/graphics/entity/alien-ore/hr-alien-ore-particle-4.png",
 			priority = "extra-high",
 			width = 32,
 			height = 32,
@@ -163,7 +163,7 @@ function underground_accumulator_picture(tint, repeat_count)
     layers =
     {
       {
-        filename = "__modmash__/graphics/entity/underground/accumulator.png",
+        filename = "__modmashgraphics__/graphics/entity/underground/accumulator.png",
         priority = "high",
         width = 33,
         height = 94,
@@ -173,7 +173,7 @@ function underground_accumulator_picture(tint, repeat_count)
         tint = tint,
         hr_version =
         {
-          filename = "__modmash__/graphics/entity/underground/hr-accumulator.png",
+          filename = "__modmashgraphics__/graphics/entity/underground/hr-accumulator.png",
           priority = "high",
           width = 75,
           height = 189,
@@ -185,7 +185,7 @@ function underground_accumulator_picture(tint, repeat_count)
         }
       },
       {
-        filename = "__modmash__/graphics/entity/underground/accumulator-shadow.png",
+        filename = "__modmashgraphics__/graphics/entity/underground/accumulator-shadow.png",
         priority = "high",
         width = 120,
         height = 27,
@@ -195,7 +195,7 @@ function underground_accumulator_picture(tint, repeat_count)
 		repeat_count = repeat_count,
         hr_version =
         {
-          filename = "__modmash__/graphics/entity/underground/hr-accumulator-shadow.png",
+          filename = "__modmashgraphics__/graphics/entity/underground/hr-accumulator-shadow.png",
           priority = "high",
           width = 234,
           height = 53,
@@ -217,7 +217,7 @@ function underground_accumulator_charge()
     {
       underground_accumulator_picture({ r=1, g=1, b=1, a=1 } , 24),
       {
-        filename = "__modmash__/graphics/entity/underground/accumulator-charge.png",
+        filename = "__modmashgraphics__/graphics/entity/underground/accumulator-charge.png",
         width = 45,
         height = 100,
         line_length = 6,
@@ -226,7 +226,7 @@ function underground_accumulator_charge()
         shift = util.by_pixel(0, -22),
         hr_version =
         {
-          filename = "__modmash__/graphics/entity/underground/hr-accumulator-charge.png",
+          filename = "__modmashgraphics__/graphics/entity/underground/hr-accumulator-charge.png",
           width = 89,
           height = 206,
           line_length = 6,
@@ -247,7 +247,7 @@ function underground_accumulator_discharge()
     {
       underground_accumulator_picture({ r=1, g=1, b=1, a=1 } , 24),
       {
-        filename = "__modmash__/graphics/entity/underground/accumulator-discharge.png",
+        filename = "__modmashgraphics__/graphics/entity/underground/accumulator-discharge.png",
         width = 44,
         height = 104,
         line_length = 6,
@@ -256,7 +256,7 @@ function underground_accumulator_discharge()
         shift = util.by_pixel(-2, -22),
         hr_version =
         {
-          filename = "__modmash__/graphics/entity/underground/hr-accumulator-discharge.png",
+          filename = "__modmashgraphics__/graphics/entity/underground/hr-accumulator-discharge.png",
           width = 85,
           height = 210,
           line_length = 6,
@@ -275,13 +275,13 @@ data:extend(
 	{		
 		type = "container",
 		name = "underground-access",
-		icon = "__modmash__/graphics/icons/underground-access.png",
+		icon = "__modmashgraphics__/graphics/icons/underground-access.png",
 		icon_size = 32,
 		flags = {"placeable-player", "player-creation"},
 		minable = {hardness = 0.2, mining_time = 0.5, result = "underground-access"},
 		max_health = 350,
 		corpse = "medium-small-remnants",
-		collision_box = {{-0.55, -0.55 }, {0.55, 0.55}},
+		collision_box = {{-0.8, -0.8 }, {0.8, 0.8}},
 		selection_box = {{-1, -1 }, {1, 1}},
 		enabled = false,
 		resistances =
@@ -332,7 +332,7 @@ data:extend(
 	{
 		type = "accumulator",
 		name = "underground-accumulator",
-		icon = "__modmash__/graphics/icons/underground-accumulator.png",
+		icon = "__modmashgraphics__/graphics/icons/underground-accumulator.png",
 		icon_size = 32,
 		flags = {"placeable-neutral", "player-creation"},
 		minable = {mining_time = 0.1, result = "underground-accumulator"},
@@ -387,7 +387,7 @@ data:extend(
 	{
 		type = "resource",
 		name = "alien-ore",
-		icon = "__modmash__/graphics/icons/alien-ore.png",
+		icon = "__modmashgraphics__/graphics/icons/alien-ore.png",
 		icon_size = 32,
 		flags = {"placeable-neutral"},
 		order="a-b-z",
@@ -413,14 +413,14 @@ data:extend(
 		{
 		  sheet =
 		  {
-			filename = "__modmash__/graphics/entity/alien-ore/alien-ore.png",
+			filename = "__modmashgraphics__/graphics/entity/alien-ore/alien-ore.png",
 			priority = "extra-high",
 			size = 64,
 			frame_count = 8,
 			variation_count = 8,
 			hr_version =
 			{
-			  filename = "__modmash__/graphics/entity/alien-ore/hr-alien-ore.png",
+			  filename = "__modmashgraphics__/graphics/entity/alien-ore/hr-alien-ore.png",
 			  priority = "extra-high",
 			  size = 128,
 			  frame_count = 8,

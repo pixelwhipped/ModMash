@@ -11,7 +11,7 @@
 			icon = "__base__/graphics/technology/fluid-handling.png"
 		},
 		{
-			icon = "__modmash__/graphics/technology/super-material.png",
+			icon = "__modmashgraphics__/graphics/technology/super-material.png",
 			scale = 0.5,
 			shift = {48,48}
 		}},

@@ -6,7 +6,7 @@ data:extend(
   {
     type = "item",
     name = "spawner",
-    icon = "__modmash__/graphics/icons/spawner.png",
+    icon = "__modmashgraphics__/graphics/icons/spawner.png",
     icon_size = 32,
     subgroup = "raw-resource",
 	place_result = "biter-spawner",
@@ -16,7 +16,7 @@ data:extend(
     {
     type = "item",
     name = "spitter-spawner",
-    icon = "__modmash__/graphics/icons/spawner.png",
+    icon = "__modmashgraphics__/graphics/icons/spawner.png",
     icon_size = 32,
     subgroup = "raw-resource",
 	place_result = "biter-spawner",

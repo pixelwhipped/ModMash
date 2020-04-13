@@ -1,6 +1,30 @@
-﻿require("prototypes.scripts.defines")
+﻿log("LIBORIO SHAREDUTIL")
+require("prototypes.scripts.defines")
 
 if not liborio.log_enable then liborio.log_enable = true end
+
+local biome_types = {
+    {name = "basic", factor = 1},
+    {name = "water", factor = 1.5},
+    {name = "desert", factor = 0.5},
+    {name = "sand", factor = 0.5},
+    {name = "snow", factor = 0.75},
+    {name = "ice", factor = 0.75},
+    {name = "volcanic", factor = 0.25}} 
+
+local non_pollutant = {
+    { name= "water", polutant = true},
+    { name= "fish-oil", polutant = true},
+    { name= "steam", polutant = true}} 
+
+
+local local_get_biomes = function() return biome_types end
+local local_is_pollutant = function(surface)
+	for _, v in ipairs(non_pollutant) do  
+		if v.name == surface then return not v.polutant end
+	end
+	return true 
+	end 
 
 local local_convert_to_string = function (arg)
 	ToString = function(arg)
@@ -265,6 +289,8 @@ liborio.signal = {}
 
 liborio.distance = local_distance
 liborio.distance_squared = local_distance_squared
+liborio.is_pollutant = local_is_pollutant
+liborio.get_biomes = local_get_biomes
 
 if remote ~= nil then
 	require("utilcontrol")

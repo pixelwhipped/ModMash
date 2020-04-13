@@ -1,4 +1,5 @@
-﻿liborio.print = liborio.log --keep here as may be used
+﻿log("LIBORIO UTILDATA")
+liborio.print = liborio.log --keep here as may be used
 
 local local_is_valid = function(entity) return type(entity)=="table" end
 

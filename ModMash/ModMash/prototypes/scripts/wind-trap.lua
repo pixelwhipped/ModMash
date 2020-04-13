@@ -1,13 +1,6 @@
-﻿--[[dsync checking 
-ok only locals are constants
-]]
-
---[[code reviewed 11.10.19]]
+﻿--[[code reviewed 11.10.19]]
 log("wind-trap.lua")
 --[[check and import utils]]
-if modmash == nil or modmash.util == nil then require("prototypes.scripts.util") end
-if not modmash.defines then require ("prototypes.scripts.defines") end
-
 
 --[[defines]]
 local wind_trap  = modmash.defines.names.wind_trap 

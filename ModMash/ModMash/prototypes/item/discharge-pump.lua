@@ -6,7 +6,7 @@ data:extend(
   {
     type = "item",
     name = "mm-discharge-water-pump",
-    icon = "__modmash__/graphics/icons/discharge-pump.png",
+    icon = "__modmashgraphics__/graphics/icons/discharge-pump.png",
     icon_size = 32,
     subgroup = "extraction-machine",
     order = "b[fluids]-a[pffshore-pump]",

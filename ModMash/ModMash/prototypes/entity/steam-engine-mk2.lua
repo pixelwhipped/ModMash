@@ -6,7 +6,7 @@ data:extend(
   {
     type = "generator",
     name = "steam-engine-mk2",
-    icon = "__modmash__/graphics/icons/steam-engine-mk2.png",
+    icon = "__modmashgraphics__/graphics/icons/steam-engine-mk2.png",
     icon_size = 32,
     flags = {"placeable-neutral","player-creation"},
     minable = {mining_time = 0.3, result = "steam-engine-mk2"},
@@ -56,7 +56,7 @@ data:extend(
       layers =
       {
         {
-          filename = "__modmash__/graphics/entity/steam-engine-mk2/steam-engine-H.png",
+          filename = "__modmashgraphics__/graphics/entity/steam-engine-mk2/steam-engine-H.png",
           width = 176,
           height = 128,
           frame_count = 32,
@@ -64,7 +64,7 @@ data:extend(
           shift = util.by_pixel(1, -5),
           hr_version =
           {
-            filename = "__modmash__/graphics/entity/steam-engine-mk2/hr-steam-engine-H.png",
+            filename = "__modmashgraphics__/graphics/entity/steam-engine-mk2/hr-steam-engine-H.png",
             width = 352,
             height = 257,
             frame_count = 32,
@@ -100,7 +100,7 @@ data:extend(
       layers =
       {
         {
-          filename = "__modmash__/graphics/entity/steam-engine-mk2/steam-engine-V.png",
+          filename = "__modmashgraphics__/graphics/entity/steam-engine-mk2/steam-engine-V.png",
           width = 112,
           height = 195,
           frame_count = 32,
@@ -108,7 +108,7 @@ data:extend(
           shift = util.by_pixel(5, -6.5),
           hr_version =
           {
-            filename = "__modmash__/graphics/entity/steam-engine-mk2/hr-steam-engine-V.png",
+            filename = "__modmashgraphics__/graphics/entity/steam-engine-mk2/hr-steam-engine-V.png",
             width = 225,
             height = 391,
             frame_count = 32,

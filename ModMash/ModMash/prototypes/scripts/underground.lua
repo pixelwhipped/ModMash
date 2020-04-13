@@ -3,6 +3,7 @@
 --if modmash == nil or modmash.util == nil then require("prototypes.scripts.util") end
 --if not modmash.defines then require ("prototypes.scripts.defines") end
 
+local low_priority = modmash.events.low_priority
 local teleport_cooldown = 0
 local last_pos = nil
 
@@ -396,6 +397,7 @@ local local_access_process = function(access)
 				end
 			end
 		end			
+		if game.tick%60==0 then
 		local inventory = {}
 		local top = access.top_entity.get_inventory(defines.inventory.chest)
 		local bottom = access.bottom_entity.get_inventory(defines.inventory.chest)
@@ -419,6 +421,7 @@ local local_access_process = function(access)
 			end
 		end	
 		end	  
+		end
 		if game.tick%60==0 then
 			local moved = {}
 			local enemy = game.surfaces["underground"].find_enemy_units(access.bottom_entity.position,2.5)
@@ -444,9 +447,11 @@ local local_access_process = function(access)
 	end
 
 local local_underground_tick = function()		
-	for index=1, #accumulators do local accumulator = accumulators[index]
-		if is_valid_and_persistant(accumulator.bottom_entity) and is_valid_and_persistant(accumulator.top_entity)  then
-			local_accumulators_process(accumulator)
+	if game.tick%30==0 then
+		for index=1, #accumulators do local accumulator = accumulators[index]
+			if is_valid_and_persistant(accumulator.bottom_entity) and is_valid_and_persistant(accumulator.top_entity)  then
+				local_accumulators_process(accumulator)
+			end
 		end
 	end
 	for index=1, #accesses do local access = accesses[index]
@@ -479,10 +484,7 @@ local local_on_player_spawned = function(event)
 
 
 modmash.register_script({
-	on_tick = {
-		tick = local_underground_tick,
-		priority = low_priority
-		},
+	on_tick = local_underground_tick,
 	on_init = local_init,
 	on_load = local_load,
 	on_start = local_start,

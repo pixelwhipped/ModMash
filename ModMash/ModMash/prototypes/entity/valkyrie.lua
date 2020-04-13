@@ -45,7 +45,7 @@ data:extend(
   {
     type = "combat-robot",
     name = "valkyrie-robot-combat",
-    icon = "__modmash__/graphics/icons/valkyrie-robot.png",
+    icon = "__modmashgraphics__/graphics/icons/valkyrie-robot.png",
     icon_size = 32,
     flags = {"placeable-player", "player-creation", "placeable-off-grid", "not-on-map"},
 	minable = {mining_time = 0.1, result = "valkyrie-robot"},
@@ -107,7 +107,7 @@ data:extend(
     },
     idle =
     {
-      filename = "__modmash__/graphics/entity/valkyrie/valkyrie-robot.png",
+      filename = "__modmashgraphics__/graphics/entity/valkyrie/valkyrie-robot.png",
       priority = "high",
       line_length = 16,
       width = 32,
@@ -117,7 +117,7 @@ data:extend(
       direction_count = 16,
       hr_version =
       {
-        filename = "__modmash__/graphics/entity/valkyrie/hr-valkyrie-robot.png",
+        filename = "__modmashgraphics__/graphics/entity/valkyrie/hr-valkyrie-robot.png",
         priority = "high",
         line_length = 16,
         width = 66,
@@ -130,7 +130,7 @@ data:extend(
     },
     in_motion =
     {
-      filename = "__modmash__/graphics/entity/valkyrie/valkyrie-robot.png",
+      filename = "__modmashgraphics__/graphics/entity/valkyrie/valkyrie-robot.png",
       priority = "high",
       line_length = 16,
       width = 32,
@@ -141,7 +141,7 @@ data:extend(
       y = 36,
       hr_version =
       {
-        filename = "__modmash__/graphics/entity/valkyrie/hr-valkyrie-robot.png",
+        filename = "__modmashgraphics__/graphics/entity/valkyrie/hr-valkyrie-robot.png",
         priority = "high",
         line_length = 16,
         width = 66,
@@ -203,7 +203,7 @@ data:extend(
   {
     type = "construction-robot",
     name = "valkyrie-robot",
-    icon = "__modmash__/graphics/icons/valkyrie-robot.png",
+    icon = "__modmashgraphics__/graphics/icons/valkyrie-robot.png",
     icon_size = 32,
     flags = {"placeable-player", "player-creation", "placeable-off-grid", "not-on-map"},
     minable = {mining_time = 0.1, result = "valkyrie-robot"},
@@ -236,7 +236,7 @@ data:extend(
     working_light = {intensity = 0.8, size = 3, color = {r = 0.8, g = 0.8, b = 0.8}},
     idle =
     {
-      filename = "__modmash__/graphics/entity/valkyrie/valkyrie-robot.png",
+      filename = "__modmashgraphics__/graphics/entity/valkyrie/valkyrie-robot.png",
       priority = "high",
       line_length = 16,
       width = 32,
@@ -246,7 +246,7 @@ data:extend(
       direction_count = 16,
       hr_version =
       {
-        filename = "__modmash__/graphics/entity/valkyrie/hr-valkyrie-robot.png",
+        filename = "__modmashgraphics__/graphics/entity/valkyrie/hr-valkyrie-robot.png",
         priority = "high",
         line_length = 16,
         width = 66,
@@ -259,7 +259,7 @@ data:extend(
     },
     in_motion =
     {
-      filename = "__modmash__/graphics/entity/valkyrie/valkyrie-robot.png",
+      filename = "__modmashgraphics__/graphics/entity/valkyrie/valkyrie-robot.png",
       priority = "high",
       line_length = 16,
       width = 32,
@@ -270,7 +270,7 @@ data:extend(
       y = 36,
       hr_version =
       {
-        filename = "__modmash__/graphics/entity/valkyrie/hr-valkyrie-robot.png",
+        filename = "__modmashgraphics__/graphics/entity/valkyrie/hr-valkyrie-robot.png",
         priority = "high",
         line_length = 16,
         width = 66,
@@ -330,7 +330,7 @@ data:extend(
     },
     working =
     {
-      filename = "__modmash__/graphics/entity/valkyrie/valkyrie-robot-working.png",
+      filename = "__modmashgraphics__/graphics/entity/valkyrie/valkyrie-robot-working.png",
       priority = "high",
       line_length = 2,
       width = 28,
@@ -341,7 +341,7 @@ data:extend(
       animation_speed = 0.3,
       hr_version =
       {
-        filename = "__modmash__/graphics/entity/valkyrie/hr-valkyrie-robot-working.png",
+        filename = "__modmashgraphics__/graphics/entity/valkyrie/hr-valkyrie-robot-working.png",
         priority = "high",
         line_length = 2,
         width = 57,
@@ -474,7 +474,7 @@ data:extend(
     enable_drawing_with_mask = false,
     animation =
     {
-      filename = "__modmash__/graphics/entity/valkyrie/valkyrie-robot.png",
+      filename = "__modmashgraphics__/graphics/entity/valkyrie/valkyrie-robot.png",
       priority = "high",
       line_length = 16,
       width = 32,
@@ -484,7 +484,7 @@ data:extend(
       direction_count = 16,
       hr_version =
       {
-        filename = "__modmash__/graphics/entity/valkyrie/hr-valkyrie-robot.png",
+        filename = "__modmashgraphics__/graphics/entity/valkyrie/hr-valkyrie-robot.png",
         priority = "high",
         line_length = 16,
         width = 66,
@@ -546,7 +546,7 @@ data:extend(
     enable_drawing_with_mask = false,
     animation =
     {
-      filename = "__modmash__/graphics/entity/valkyrie/valkyrie-robot.png",
+      filename = "__modmashgraphics__/graphics/entity/valkyrie/valkyrie-robot.png",
       priority = "high",
       line_length = 16,
       width = 32,
@@ -556,7 +556,7 @@ data:extend(
       direction_count = 16,
       hr_version =
       {
-        filename = "__modmash__/graphics/entity/valkyrie/hr-valkyrie-robot.png",
+        filename = "__modmashgraphics__/graphics/entity/valkyrie/hr-valkyrie-robot.png",
         priority = "high",
         line_length = 16,
         width = 66,
@@ -594,7 +594,7 @@ data:extend(
   {
     type = "combat-robot",
     name = "valkyrie-robot-return",
-    icon = "__modmash__/graphics/icons/valkyrie-robot.png",
+    icon = "__modmashgraphics__/graphics/icons/valkyrie-robot.png",
     icon_size = 32,
     flags = {"placeable-player", "player-creation", "placeable-off-grid", "not-on-map"},
 	minable = {mining_time = 0.1, result = "valkyrie-robot"},
@@ -660,7 +660,7 @@ data:extend(
     },
     idle =
     {
-      filename = "__modmash__/graphics/entity/valkyrie/valkyrie-robot.png",
+      filename = "__modmashgraphics__/graphics/entity/valkyrie/valkyrie-robot.png",
       priority = "high",
       line_length = 16,
       width = 32,
@@ -670,7 +670,7 @@ data:extend(
       direction_count = 16,
       hr_version =
       {
-        filename = "__modmash__/graphics/entity/valkyrie/hr-valkyrie-robot.png",
+        filename = "__modmashgraphics__/graphics/entity/valkyrie/hr-valkyrie-robot.png",
         priority = "high",
         line_length = 16,
         width = 66,
@@ -683,7 +683,7 @@ data:extend(
     },
     in_motion =
     {
-      filename = "__modmash__/graphics/entity/valkyrie/valkyrie-robot.png",
+      filename = "__modmashgraphics__/graphics/entity/valkyrie/valkyrie-robot.png",
       priority = "high",
       line_length = 16,
       width = 32,
@@ -694,7 +694,7 @@ data:extend(
       y = 36,
       hr_version =
       {
-        filename = "__modmash__/graphics/entity/valkyrie/hr-valkyrie-robot.png",
+        filename = "__modmashgraphics__/graphics/entity/valkyrie/hr-valkyrie-robot.png",
         priority = "high",
         line_length = 16,
         width = 66,
@@ -780,7 +780,7 @@ data:extend(
     enable_drawing_with_mask = false,
     animation =
     {
-      filename = "__modmash__/graphics/entity/valkyrie/valkyrie-robot.png",
+      filename = "__modmashgraphics__/graphics/entity/valkyrie/valkyrie-robot.png",
       priority = "high",
       line_length = 16,
       width = 32,
@@ -790,7 +790,7 @@ data:extend(
       direction_count = 16,
       hr_version =
       {
-        filename = "__modmash__/graphics/entity/valkyrie/hr-valkyrie-robot.png",
+        filename = "__modmashgraphics__/graphics/entity/valkyrie/hr-valkyrie-robot.png",
         priority = "high",
         line_length = 16,
         width = 66,

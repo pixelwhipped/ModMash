@@ -6,7 +6,7 @@ data:extend(
   {
     type = "item",
     name = "regenerative-wall",
-    icon = "__modmash__/graphics/icons/regenerative-wall.png",
+    icon = "__modmashgraphics__/graphics/icons/regenerative-wall.png",
     icon_size = 32,
     subgroup = "defensive-structure",
     order = "a[stone-wall]-c[regenerative-wall]",

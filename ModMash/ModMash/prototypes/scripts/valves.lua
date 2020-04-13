@@ -1,9 +1,4 @@
-﻿--[[dsync checking 
-ok only locals are reference to globals or a constant
-]]
-if not modmash or not modmash.util then require("prototypes.scripts.util") end
-
-local is_valid  = modmash.util.is_valid
+﻿local is_valid  = modmash.util.is_valid
 local get_connected_input_fluid  = modmash.util.fluid.get_connected_input_fluid
 local set_new_signal  = modmash.util.signal.set_new_signal
 local try_set_recipe  = modmash.util.entity.try_set_recipe
