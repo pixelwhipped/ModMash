@@ -18,9 +18,14 @@ Version: 0.18.29
 
 ---------------------------------------------------------------------------------------------------
 Version: 0.18.28
+  Changes:
+    - changed option names and order a little bit. added a description to alien drop modifier
   Bug Fixes:
-    - Loader typo
-
+    - loader clone event would caused an error
+    - alien loot setting didn't do anything
+    - add 0.18.27 changes that were on the mod portal but not github
+  Writer:
+    - Honktown
 ---------------------------------------------------------------------------------------------------
 Version: 0.18.27
   Changes:
