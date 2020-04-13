@@ -6,7 +6,7 @@ data:extend(
 	{
 		type = "capsule",
 		name = "fish-juice",
-		icon = "__modmash__/graphics/icons/fish-juice.png",
+		icon = "__modmashgraphics__/graphics/icons/fish-juice.png",
 		icon_size = 32,
 		subgroup = "raw-resource",
 		capsule_action =
@@ -44,7 +44,7 @@ data:extend(
 	},{
 		type = "capsule",
 		name = "ooze-juice",
-		icon = "__modmash__/graphics/icons/ooze-juice.png",
+		icon = "__modmashgraphics__/graphics/icons/ooze-juice.png",
 		icon_size = 32,
 		subgroup = "raw-resource",
 		capsule_action =

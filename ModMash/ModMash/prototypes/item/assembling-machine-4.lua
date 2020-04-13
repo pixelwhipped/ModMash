@@ -6,7 +6,7 @@ data:extend(
   {
     type = "item",
     name = "assembling-machine-4",
-    icon = "__modmash__/graphics/icons/assembling-machine-4.png",
+    icon = "__modmashgraphics__/graphics/icons/assembling-machine-4.png",
     icon_size = 32,
 	subgroup = "production-machine",
     order = "c[assembling-machine-4]",

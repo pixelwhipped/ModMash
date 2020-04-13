@@ -1,6 +1,5 @@
-﻿--[[Code check 29.2.20
-no changes
---]]
+﻿modmash = { util = get_liborio() }
+modmash.util.log("brOKE")
 data_final_fixes = true
 require("prototypes.entity.logistics")
 require ("prototypes.scripts.types")

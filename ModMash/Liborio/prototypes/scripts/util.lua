@@ -1,4 +1,5 @@
-﻿require("defines")
+﻿log("LIBORIO UTIL")
+require("defines")
 require("sharedutil")
 
 function get_liborio()

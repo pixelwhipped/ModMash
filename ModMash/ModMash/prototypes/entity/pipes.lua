@@ -6,13 +6,13 @@ local local_modmash_pipepictures = function(pipe_type)
   {
     straight_vertical_single =
     {
-      filename = "__modmash__/graphics/entity/pipes/pipe-straight-vertical-single.png",
+      filename = "__modmashgraphics__/graphics/entity/pipes/pipe-straight-vertical-single.png",
       priority = "extra-high",
       width = 80,
       height = 80,
       hr_version =
       {
-        filename = "__modmash__/graphics/entity/pipes/hr-pipe-straight-vertical-single.png",
+        filename = "__modmashgraphics__/graphics/entity/pipes/hr-pipe-straight-vertical-single.png",
         priority = "extra-high",
         width = 160,
         height = 160,
@@ -21,13 +21,13 @@ local local_modmash_pipepictures = function(pipe_type)
     },
     straight_vertical =
     {
-      filename = "__modmash__/graphics/entity/pipes/pipe-straight-vertical.png",
+      filename = "__modmashgraphics__/graphics/entity/pipes/pipe-straight-vertical.png",
       priority = "extra-high",
       width = 64,
       height = 64,
       hr_version =
       {
-        filename = "__modmash__/graphics/entity/pipes/hr-pipe-straight-vertical.png",
+        filename = "__modmashgraphics__/graphics/entity/pipes/hr-pipe-straight-vertical.png",
         priority = "extra-high",
         width = 128,
         height = 128,
@@ -36,13 +36,13 @@ local local_modmash_pipepictures = function(pipe_type)
     },
     straight_vertical_window =
     {
-      filename = "__modmash__/graphics/entity/pipes/pipe-straight-vertical-window.png",
+      filename = "__modmashgraphics__/graphics/entity/pipes/pipe-straight-vertical-window.png",
       priority = "extra-high",
       width = 64,
       height = 64,
       hr_version =
       {
-        filename = "__modmash__/graphics/entity/pipes/hr-pipe-straight-vertical-window.png",
+        filename = "__modmashgraphics__/graphics/entity/pipes/hr-pipe-straight-vertical-window.png",
         priority = "extra-high",
         width = 128,
         height = 128,
@@ -51,13 +51,13 @@ local local_modmash_pipepictures = function(pipe_type)
     },
     straight_horizontal_window =
     {
-      filename = "__modmash__/graphics/entity/pipes/pipe-straight-horizontal-window.png",
+      filename = "__modmashgraphics__/graphics/entity/pipes/pipe-straight-horizontal-window.png",
       priority = "extra-high",
       width = 64,
       height = 64,
       hr_version =
       {
-        filename = "__modmash__/graphics/entity/pipes/hr-pipe-straight-horizontal-window.png",
+        filename = "__modmashgraphics__/graphics/entity/pipes/hr-pipe-straight-horizontal-window.png",
         priority = "extra-high",
         width = 128,
         height = 128,
@@ -66,13 +66,13 @@ local local_modmash_pipepictures = function(pipe_type)
     },
     straight_horizontal =
     {
-      filename = "__modmash__/graphics/entity/pipes/pipe-straight-horizontal.png",
+      filename = "__modmashgraphics__/graphics/entity/pipes/pipe-straight-horizontal.png",
       priority = "extra-high",
       width = 64,
       height = 64,
       hr_version =
       {
-        filename = "__modmash__/graphics/entity/pipes/hr-pipe-straight-horizontal.png",
+        filename = "__modmashgraphics__/graphics/entity/pipes/hr-pipe-straight-horizontal.png",
         priority = "extra-high",
         width = 128,
         height = 128,
@@ -81,13 +81,13 @@ local local_modmash_pipepictures = function(pipe_type)
     },
     corner_up_right =
     {
-      filename = "__modmash__/graphics/entity/pipes/pipe-corner-up-right.png",
+      filename = "__modmashgraphics__/graphics/entity/pipes/pipe-corner-up-right.png",
       priority = "extra-high",
       width = 64,
       height = 64,
       hr_version =
       {
-        filename = "__modmash__/graphics/entity/pipes/hr-pipe-corner-up-right.png",
+        filename = "__modmashgraphics__/graphics/entity/pipes/hr-pipe-corner-up-right.png",
         priority = "extra-high",
         width = 128,
         height = 128,
@@ -96,13 +96,13 @@ local local_modmash_pipepictures = function(pipe_type)
     },
     corner_up_left =
     {
-      filename = "__modmash__/graphics/entity/pipes/pipe-corner-up-left.png",
+      filename = "__modmashgraphics__/graphics/entity/pipes/pipe-corner-up-left.png",
       priority = "extra-high",
       width = 64,
       height = 64,
       hr_version =
       {
-        filename = "__modmash__/graphics/entity/pipes/hr-pipe-corner-up-left.png",
+        filename = "__modmashgraphics__/graphics/entity/pipes/hr-pipe-corner-up-left.png",
         priority = "extra-high",
         width = 128,
         height = 128,
@@ -111,13 +111,13 @@ local local_modmash_pipepictures = function(pipe_type)
     },
     corner_down_right =
     {
-      filename = "__modmash__/graphics/entity/pipes/pipe-corner-down-right.png",
+      filename = "__modmashgraphics__/graphics/entity/pipes/pipe-corner-down-right.png",
       priority = "extra-high",
       width = 64,
       height = 64,
       hr_version =
       {
-        filename = "__modmash__/graphics/entity/pipes/hr-pipe-corner-down-right.png",
+        filename = "__modmashgraphics__/graphics/entity/pipes/hr-pipe-corner-down-right.png",
         priority = "extra-high",
         width = 128,
         height = 128,
@@ -126,13 +126,13 @@ local local_modmash_pipepictures = function(pipe_type)
     },
     corner_down_left =
     {
-      filename = "__modmash__/graphics/entity/pipes/pipe-corner-down-left.png",
+      filename = "__modmashgraphics__/graphics/entity/pipes/pipe-corner-down-left.png",
       priority = "extra-high",
       width = 64,
       height = 64,
       hr_version =
       {
-        filename = "__modmash__/graphics/entity/pipes/hr-pipe-corner-down-left.png",
+        filename = "__modmashgraphics__/graphics/entity/pipes/hr-pipe-corner-down-left.png",
         priority = "extra-high",
         width = 128,
         height = 128,
@@ -141,13 +141,13 @@ local local_modmash_pipepictures = function(pipe_type)
     },
     t_up =
     {
-      filename = "__modmash__/graphics/entity/pipes/pipe-t-up.png",
+      filename = "__modmashgraphics__/graphics/entity/pipes/pipe-t-up.png",
       priority = "extra-high",
       width = 64,
       height = 64,
       hr_version =
       {
-        filename = "__modmash__/graphics/entity/pipes/hr-pipe-t-up.png",
+        filename = "__modmashgraphics__/graphics/entity/pipes/hr-pipe-t-up.png",
         priority = "extra-high",
         width = 128,
         height = 128,
@@ -156,13 +156,13 @@ local local_modmash_pipepictures = function(pipe_type)
     },
     t_down =
     {
-      filename = "__modmash__/graphics/entity/pipes/pipe-t-down.png",
+      filename = "__modmashgraphics__/graphics/entity/pipes/pipe-t-down.png",
       priority = "extra-high",
       width = 64,
       height = 64,
       hr_version =
       {
-        filename = "__modmash__/graphics/entity/pipes/hr-pipe-t-down.png",
+        filename = "__modmashgraphics__/graphics/entity/pipes/hr-pipe-t-down.png",
         priority = "extra-high",
         width = 128,
         height = 128,
@@ -171,13 +171,13 @@ local local_modmash_pipepictures = function(pipe_type)
     },
     t_right =
     {
-      filename = "__modmash__/graphics/entity/pipes/pipe-t-right.png",
+      filename = "__modmashgraphics__/graphics/entity/pipes/pipe-t-right.png",
       priority = "extra-high",
       width = 64,
       height = 64,
       hr_version =
       {
-        filename = "__modmash__/graphics/entity/pipes/hr-pipe-t-right.png",
+        filename = "__modmashgraphics__/graphics/entity/pipes/hr-pipe-t-right.png",
         priority = "extra-high",
         width = 128,
         height = 128,
@@ -186,13 +186,13 @@ local local_modmash_pipepictures = function(pipe_type)
     },
     t_left =
     {
-      filename = "__modmash__/graphics/entity/pipes/pipe-t-left.png",
+      filename = "__modmashgraphics__/graphics/entity/pipes/pipe-t-left.png",
       priority = "extra-high",
       width = 64,
       height = 64,
       hr_version =
       {
-        filename = "__modmash__/graphics/entity/pipes/hr-pipe-t-left.png",
+        filename = "__modmashgraphics__/graphics/entity/pipes/hr-pipe-t-left.png",
         priority = "extra-high",
         width = 128,
         height = 128,
@@ -201,13 +201,13 @@ local local_modmash_pipepictures = function(pipe_type)
     },
     cross =
     {
-      filename = "__modmash__/graphics/entity/pipes/pipe-cross.png",
+      filename = "__modmashgraphics__/graphics/entity/pipes/pipe-cross.png",
       priority = "extra-high",
       width = 64,
       height = 64,
       hr_version =
       {
-        filename = "__modmash__/graphics/entity/pipes/hr-pipe-cross.png",
+        filename = "__modmashgraphics__/graphics/entity/pipes/hr-pipe-cross.png",
         priority = "extra-high",
         width = 128,
         height = 128,
@@ -216,13 +216,13 @@ local local_modmash_pipepictures = function(pipe_type)
     },
     ending_up =
     {
-      filename = "__modmash__/graphics/entity/pipes/pipe-ending-up.png",
+      filename = "__modmashgraphics__/graphics/entity/pipes/pipe-ending-up.png",
       priority = "extra-high",
       width = 64,
       height = 64,
       hr_version =
       {
-        filename = "__modmash__/graphics/entity/pipes/hr-pipe-ending-up.png",
+        filename = "__modmashgraphics__/graphics/entity/pipes/hr-pipe-ending-up.png",
         priority = "extra-high",
         width = 128,
         height = 128,
@@ -231,13 +231,13 @@ local local_modmash_pipepictures = function(pipe_type)
     },
     ending_down =
     {
-      filename = "__modmash__/graphics/entity/pipes/pipe-ending-down.png",
+      filename = "__modmashgraphics__/graphics/entity/pipes/pipe-ending-down.png",
       priority = "extra-high",
       width = 64,
       height = 64,
       hr_version =
       {
-        filename = "__modmash__/graphics/entity/pipes/hr-pipe-ending-down.png",
+        filename = "__modmashgraphics__/graphics/entity/pipes/hr-pipe-ending-down.png",
         priority = "extra-high",
         width = 128,
         height = 128,
@@ -246,13 +246,13 @@ local local_modmash_pipepictures = function(pipe_type)
     },
     ending_right =
     {
-      filename = "__modmash__/graphics/entity/pipes/pipe-ending-right.png",
+      filename = "__modmashgraphics__/graphics/entity/pipes/pipe-ending-right.png",
       priority = "extra-high",
       width = 64,
       height = 64,
       hr_version =
       {
-        filename = "__modmash__/graphics/entity/pipes/hr-pipe-ending-right.png",
+        filename = "__modmashgraphics__/graphics/entity/pipes/hr-pipe-ending-right.png",
         priority = "extra-high",
         width = 128,
         height = 128,
@@ -261,13 +261,13 @@ local local_modmash_pipepictures = function(pipe_type)
     },
     ending_left =
     {
-      filename = "__modmash__/graphics/entity/pipes/pipe-ending-left.png",
+      filename = "__modmashgraphics__/graphics/entity/pipes/pipe-ending-left.png",
       priority = "extra-high",
       width = 64,
       height = 64,
       hr_version =
       {
-        filename = "__modmash__/graphics/entity/pipes/hr-pipe-ending-left.png",
+        filename = "__modmashgraphics__/graphics/entity/pipes/hr-pipe-ending-left.png",
         priority = "extra-high",
         width = 128,
         height = 128,
@@ -276,13 +276,13 @@ local local_modmash_pipepictures = function(pipe_type)
     },
     horizontal_window_background =
     {
-      filename = "__modmash__/graphics/entity/pipes/pipe-horizontal-window-background.png",
+      filename = "__modmashgraphics__/graphics/entity/pipes/pipe-horizontal-window-background.png",
       priority = "extra-high",
       width = 64,
       height = 64,
       hr_version =
       {
-        filename = "__modmash__/graphics/entity/pipes/hr-pipe-horizontal-window-background.png",
+        filename = "__modmashgraphics__/graphics/entity/pipes/hr-pipe-horizontal-window-background.png",
         priority = "extra-high",
         width = 128,
         height = 128,
@@ -291,13 +291,13 @@ local local_modmash_pipepictures = function(pipe_type)
     },
     vertical_window_background =
     {
-      filename = "__modmash__/graphics/entity/pipes/pipe-vertical-window-background.png",
+      filename = "__modmashgraphics__/graphics/entity/pipes/pipe-vertical-window-background.png",
       priority = "extra-high",
       width = 64,
       height = 64,
       hr_version =
       {
-        filename = "__modmash__/graphics/entity/pipes/hr-pipe-vertical-window-background.png",
+        filename = "__modmashgraphics__/graphics/entity/pipes/hr-pipe-vertical-window-background.png",
         priority = "extra-high",
         width = 128,
         height = 128,
@@ -370,13 +370,13 @@ end
   {
     up =
     {
-      filename = "__modmash__/graphics/entity/pipes/pipe-to-ground-up.png",
+      filename = "__modmashgraphics__/graphics/entity/pipes/pipe-to-ground-up.png",
       priority = "high",
       width = 64,
       height = 64,
       hr_version =
       {
-        filename = "__modmash__/graphics/entity/pipes/hr-pipe-to-ground-up.png",
+        filename = "__modmashgraphics__/graphics/entity/pipes/hr-pipe-to-ground-up.png",
         priority = "extra-high",
         width = 128,
         height = 128,
@@ -385,13 +385,13 @@ end
     },
     down =
     {
-      filename = "__modmash__/graphics/entity/pipes/pipe-to-ground-down.png",
+      filename = "__modmashgraphics__/graphics/entity/pipes/pipe-to-ground-down.png",
       priority = "high",
       width = 64,
       height = 64,
       hr_version =
       {
-        filename = "__modmash__/graphics/entity/pipes/hr-pipe-to-ground-down.png",
+        filename = "__modmashgraphics__/graphics/entity/pipes/hr-pipe-to-ground-down.png",
         priority = "extra-high",
         width = 128,
         height = 128,
@@ -400,13 +400,13 @@ end
     },
     left =
     {
-      filename = "__modmash__/graphics/entity/pipes/pipe-to-ground-left.png",
+      filename = "__modmashgraphics__/graphics/entity/pipes/pipe-to-ground-left.png",
       priority = "high",
       width = 64,
       height = 64,
       hr_version =
       {
-        filename = "__modmash__/graphics/entity/pipes/hr-pipe-to-ground-left.png",
+        filename = "__modmashgraphics__/graphics/entity/pipes/hr-pipe-to-ground-left.png",
         priority = "extra-high",
         width = 128,
         height = 128,
@@ -415,13 +415,13 @@ end
     },
     right =
     {
-      filename = "__modmash__/graphics/entity/pipes/pipe-to-ground-right.png",
+      filename = "__modmashgraphics__/graphics/entity/pipes/pipe-to-ground-right.png",
       priority = "high",
       width = 64,
       height = 64,
       hr_version =
       {
-        filename = "__modmash__/graphics/entity/pipes/hr-pipe-to-ground-right.png",
+        filename = "__modmashgraphics__/graphics/entity/pipes/hr-pipe-to-ground-right.png",
         priority = "extra-high",
         width = 128,
         height = 128,
@@ -439,13 +439,13 @@ local local_modmash_pipecoverspictures = function(pipe_type)
       layers =
       {
         {
-          filename = "__modmash__/graphics/entity/pipes/pipe-cover-north.png",
+          filename = "__modmashgraphics__/graphics/entity/pipes/pipe-cover-north.png",
           priority = "extra-high",
           width = 64,
           height = 64,
           hr_version =
           {
-            filename = "__modmash__/graphics/entity/pipes/hr-pipe-cover-north.png",
+            filename = "__modmashgraphics__/graphics/entity/pipes/hr-pipe-cover-north.png",
             priority = "extra-high",
             width = 128,
             height = 128,
@@ -475,13 +475,13 @@ local local_modmash_pipecoverspictures = function(pipe_type)
       layers =
       {
         {
-          filename = "__modmash__/graphics/entity/pipes/pipe-cover-east.png",
+          filename = "__modmashgraphics__/graphics/entity/pipes/pipe-cover-east.png",
           priority = "extra-high",
           width = 64,
           height = 64,
           hr_version =
           {
-            filename = "__modmash__/graphics/entity/pipes/hr-pipe-cover-east.png",
+            filename = "__modmashgraphics__/graphics/entity/pipes/hr-pipe-cover-east.png",
             priority = "extra-high",
             width = 128,
             height = 128,
@@ -511,13 +511,13 @@ local local_modmash_pipecoverspictures = function(pipe_type)
       layers =
       {
         {
-          filename = "__modmash__/graphics/entity/pipes/pipe-cover-south.png",
+          filename = "__modmashgraphics__/graphics/entity/pipes/pipe-cover-south.png",
           priority = "extra-high",
           width = 64,
           height = 64,
           hr_version =
           {
-            filename = "__modmash__/graphics/entity/pipes/hr-pipe-cover-south.png",
+            filename = "__modmashgraphics__/graphics/entity/pipes/hr-pipe-cover-south.png",
             priority = "extra-high",
             width = 128,
             height = 128,
@@ -547,13 +547,13 @@ local local_modmash_pipecoverspictures = function(pipe_type)
       layers =
       {
         {
-          filename = "__modmash__/graphics/entity/pipes/pipe-cover-west.png",
+          filename = "__modmashgraphics__/graphics/entity/pipes/pipe-cover-west.png",
           priority = "extra-high",
           width = 64,
           height = 64,
           hr_version =
           {
-            filename = "__modmash__/graphics/entity/pipes/hr-pipe-cover-west.png",
+            filename = "__modmashgraphics__/graphics/entity/pipes/hr-pipe-cover-west.png",
             priority = "extra-high",
             width = 128,
             height = 128,
@@ -586,7 +586,7 @@ data:extend(
   {
     type = "pipe",	
     name = "titanium-pipe",
-    icon = "__modmash__/graphics/icons/titanium-pipe.png",
+    icon = "__modmashgraphics__/graphics/icons/titanium-pipe.png",
     icon_size = 32,
     flags = {"placeable-neutral", "player-creation"},
     minable = {hardness = 0.4, mining_time = 0.5, result = "titanium-pipe"},
@@ -632,7 +632,7 @@ data:extend(
   {
     type = "pipe-to-ground",
     name = "titanium-pipe-to-ground",
-    icon = "__modmash__/graphics/icons/titanium-pipe-to-ground.png",
+    icon = "__modmashgraphics__/graphics/icons/titanium-pipe-to-ground.png",
     icon_size = 32,
     flags = {"placeable-neutral", "player-creation"},
     minable = {hardness = 0.4, mining_time = 0.5, result = "titanium-pipe-to-ground"},

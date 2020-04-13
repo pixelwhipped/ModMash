@@ -11,7 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coffee", "Coffee\Coffee.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiniNukes", "MiniNukes\MiniNukes.csproj", "{B0087E30-7492-4FC9-BA5A-5FB00E281E9D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wiki", "Wiki\Wiki.csproj", "{D040888B-327F-470D-8917-491B4082751D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wiki", "Wiki\Wiki.csproj", "{D040888B-327F-470D-8917-491B4082751D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModMashGraphics", "ModMashGraphics\ModMashGraphics.csproj", "{6D5A2D31-2A67-4820-B99F-B8B77EF94FB4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liborio", "Liborio\Liborio.csproj", "{495DE997-DF79-4654-88EE-A6D2FD276A14}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +43,14 @@ Global
 		{D040888B-327F-470D-8917-491B4082751D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D040888B-327F-470D-8917-491B4082751D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D040888B-327F-470D-8917-491B4082751D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D5A2D31-2A67-4820-B99F-B8B77EF94FB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D5A2D31-2A67-4820-B99F-B8B77EF94FB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D5A2D31-2A67-4820-B99F-B8B77EF94FB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D5A2D31-2A67-4820-B99F-B8B77EF94FB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{495DE997-DF79-4654-88EE-A6D2FD276A14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{495DE997-DF79-4654-88EE-A6D2FD276A14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{495DE997-DF79-4654-88EE-A6D2FD276A14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{495DE997-DF79-4654-88EE-A6D2FD276A14}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

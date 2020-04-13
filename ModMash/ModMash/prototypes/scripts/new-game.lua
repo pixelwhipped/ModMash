@@ -1,25 +1,10 @@
-﻿--[[dsync checking 
-Welcome screen will not pause game not 100% but seems iffy
-]]
-
-log("new-game.lua")
+﻿log("new-game.lua")
 --[[check and import utils]]
-if modmash == nil or modmash.util == nil then require("prototypes.scripts.util") end
-if not modmash.defines then require ("prototypes.scripts.defines") end
-
---[[defines]]
-	
+--[[defines]]	
 --[[create local references]]
 --[[util]]
 local starts_with  = modmash.util.starts_with
 local table_contains = modmash.util.table.contains
-
-
-local local_on_gui_click = function(event)
-  if event.element and event.element.valid and starts_with(event.element.name, "modmash-show-welcome-btn") then    
-	game.players[event.player_index].gui.center["modmash-show-welcome"].destroy()
-  end
-end
 
 local local_on_player_spawned = function(event)
 	local player = game.get_player(event.player_index)

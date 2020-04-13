@@ -3,7 +3,7 @@
   {
     type = "technology",
     name = "recycling-machine",
-    icon = "__modmash__/graphics/item-group/recycling.png",
+    icon = "__modmashgraphics__/graphics/item-group/recycling.png",
     icon_size = 64,
     effects =
     {

@@ -8,7 +8,7 @@ data:extend(
   {
     type = "item",
     name = modmash.defines.names.titanium_ore_name,
-    icon = "__modmash__/graphics/icons/titanium-ore.png",
+    icon = "__modmashgraphics__/graphics/icons/titanium-ore.png",
     icon_size = 32,    
     subgroup = "raw-resource",
     order = "g[titanium-ore]",
@@ -17,7 +17,7 @@ data:extend(
   {
     type = "item",
     name = "alien-ore",
-    icon = "__modmash__/graphics/icons/alien-ore.png",
+    icon = "__modmashgraphics__/graphics/icons/alien-ore.png",
     icon_size = 32,    
     subgroup = "raw-resource",
     order = "h[alien-ore]",
@@ -26,7 +26,7 @@ data:extend(
   {
     type = "item",
     name = "titanium-plate",
-    icon = "__modmash__/graphics/icons/titanium-plate.png",
+    icon = "__modmashgraphics__/graphics/icons/titanium-plate.png",
     icon_size = 32,   
     subgroup = "raw-material",
     order = "d[titanium-plate]",
@@ -35,7 +35,7 @@ data:extend(
   {
     type = "item",
     name = "alien-plate",
-    icon = "__modmash__/graphics/icons/alien-plate.png",
+    icon = "__modmashgraphics__/graphics/icons/alien-plate.png",
     icon_size = 32,    
     subgroup = "raw-material",
     order = "d[alien-plate]",
@@ -43,7 +43,7 @@ data:extend(
   },{
     type = "item",
     name = "alien-artifact",
-    icon = "__modmash__/graphics/icons/alien-artifact.png",
+    icon = "__modmashgraphics__/graphics/icons/alien-artifact.png",
     icon_size = 32,    
     subgroup = "raw-resource",
     order = "z",

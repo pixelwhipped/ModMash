@@ -6,7 +6,7 @@ data:extend(
 	 {
     type = "wall",
     name = "regenerative-wall",
-    icon = "__modmash__/graphics/icons/regenerative-wall.png",
+    icon = "__modmashgraphics__/graphics/icons/regenerative-wall.png",
     icon_size = 32,
     flags = {"placeable-neutral", "player-creation"},
     collision_box = {{-0.29, -0.29}, {0.29, 0.29}},
@@ -64,7 +64,7 @@ data:extend(
         layers =
         {
           {
-            filename = "__modmash__/graphics/entity/regenerative-wall/wall-single.png",
+            filename = "__modmashgraphics__/graphics/entity/regenerative-wall/wall-single.png",
             priority = "extra-high",
             width = 32,
             height = 46,
@@ -73,7 +73,7 @@ data:extend(
             shift = util.by_pixel(0, -6),
             hr_version =
             {
-              filename = "__modmash__/graphics/entity/regenerative-wall/hr-wall-single.png",
+              filename = "__modmashgraphics__/graphics/entity/regenerative-wall/hr-wall-single.png",
               priority = "extra-high",
               width = 64,
               height = 86,
@@ -110,7 +110,7 @@ data:extend(
         layers =
         {
           {
-            filename = "__modmash__/graphics/entity/regenerative-wall/wall-vertical.png",
+            filename = "__modmashgraphics__/graphics/entity/regenerative-wall/wall-vertical.png",
             priority = "extra-high",
             width = 32,
             height = 68,
@@ -119,7 +119,7 @@ data:extend(
             shift = util.by_pixel(0, 8),
             hr_version =
             {
-              filename = "__modmash__/graphics/entity/regenerative-wall/hr-wall-vertical.png",
+              filename = "__modmashgraphics__/graphics/entity/regenerative-wall/hr-wall-vertical.png",
               priority = "extra-high",
               width = 64,
               height = 134,
@@ -156,7 +156,7 @@ data:extend(
         layers =
         {
           {
-            filename = "__modmash__/graphics/entity/regenerative-wall/wall-horizontal.png",
+            filename = "__modmashgraphics__/graphics/entity/regenerative-wall/wall-horizontal.png",
             priority = "extra-high",
             width = 32,
             height = 50,
@@ -165,7 +165,7 @@ data:extend(
             shift = util.by_pixel(0, -4),
             hr_version =
             {
-              filename = "__modmash__/graphics/entity/regenerative-wall/hr-wall-horizontal.png",
+              filename = "__modmashgraphics__/graphics/entity/regenerative-wall/hr-wall-horizontal.png",
               priority = "extra-high",
               width = 64,
               height = 92,
@@ -202,7 +202,7 @@ data:extend(
         layers =
         {
           {
-            filename = "__modmash__/graphics/entity/regenerative-wall/wall-corner-right.png",
+            filename = "__modmashgraphics__/graphics/entity/regenerative-wall/wall-corner-right.png",
             priority = "extra-high",
             width = 32,
             height = 64,
@@ -211,7 +211,7 @@ data:extend(
             shift = util.by_pixel(0, 6),
             hr_version =
             {
-              filename = "__modmash__/graphics/entity/regenerative-wall/hr-wall-corner-right.png",
+              filename = "__modmashgraphics__/graphics/entity/regenerative-wall/hr-wall-corner-right.png",
               priority = "extra-high",
               width = 64,
               height = 128,
@@ -248,7 +248,7 @@ data:extend(
         layers =
         {
           {
-            filename = "__modmash__/graphics/entity/regenerative-wall/wall-corner-left.png",
+            filename = "__modmashgraphics__/graphics/entity/regenerative-wall/wall-corner-left.png",
             priority = "extra-high",
             width = 32,
             height = 68,
@@ -257,7 +257,7 @@ data:extend(
             shift = util.by_pixel(0, 6),
             hr_version =
             {
-              filename = "__modmash__/graphics/entity/regenerative-wall/hr-wall-corner-left.png",
+              filename = "__modmashgraphics__/graphics/entity/regenerative-wall/hr-wall-corner-left.png",
               priority = "extra-high",
               width = 64,
               height = 134,
@@ -294,7 +294,7 @@ data:extend(
         layers =
         {
           {
-            filename = "__modmash__/graphics/entity/regenerative-wall/wall-t.png",
+            filename = "__modmashgraphics__/graphics/entity/regenerative-wall/wall-t.png",
             priority = "extra-high",
             width = 32,
             height = 68,
@@ -303,7 +303,7 @@ data:extend(
             shift = util.by_pixel(0, 6),
             hr_version =
             {
-              filename = "__modmash__/graphics/entity/regenerative-wall/hr-wall-t.png",
+              filename = "__modmashgraphics__/graphics/entity/regenerative-wall/hr-wall-t.png",
               priority = "extra-high",
               width = 64,
               height = 134,
@@ -340,7 +340,7 @@ data:extend(
         layers =
         {
           {
-            filename = "__modmash__/graphics/entity/regenerative-wall/wall-ending-right.png",
+            filename = "__modmashgraphics__/graphics/entity/regenerative-wall/wall-ending-right.png",
             priority = "extra-high",
             width = 32,
             height = 48,
@@ -349,7 +349,7 @@ data:extend(
             shift = util.by_pixel(0, -4),
             hr_version =
             {
-              filename = "__modmash__/graphics/entity/regenerative-wall/hr-wall-ending-right.png",
+              filename = "__modmashgraphics__/graphics/entity/regenerative-wall/hr-wall-ending-right.png",
               priority = "extra-high",
               width = 64,
               height = 92,
@@ -386,7 +386,7 @@ data:extend(
         layers =
         {
           {
-            filename = "__modmash__/graphics/entity/regenerative-wall/wall-ending-left.png",
+            filename = "__modmashgraphics__/graphics/entity/regenerative-wall/wall-ending-left.png",
             priority = "extra-high",
             width = 32,
             height = 48,
@@ -395,7 +395,7 @@ data:extend(
             shift = util.by_pixel(0, -4),
             hr_version =
             {
-              filename = "__modmash__/graphics/entity/regenerative-wall/hr-wall-ending-left.png",
+              filename = "__modmashgraphics__/graphics/entity/regenerative-wall/hr-wall-ending-left.png",
               priority = "extra-high",
               width = 64,
               height = 92,
@@ -429,7 +429,7 @@ data:extend(
       },
       filling =
       {
-        filename = "__modmash__/graphics/entity/regenerative-wall/wall-filling.png",
+        filename = "__modmashgraphics__/graphics/entity/regenerative-wall/wall-filling.png",
           priority = "extra-high",
           width = 24,
           height = 30,
@@ -438,7 +438,7 @@ data:extend(
           shift = util.by_pixel(0, -2),
           hr_version =
           {
-            filename = "__modmash__/graphics/entity/regenerative-wall/hr-wall-filling.png",
+            filename = "__modmashgraphics__/graphics/entity/regenerative-wall/hr-wall-filling.png",
             priority = "extra-high",
             width = 48,
             height = 56,
@@ -453,14 +453,14 @@ data:extend(
         sheets =
         {
           {
-            filename = "__modmash__/graphics/entity/regenerative-wall/wall-patch.png",
+            filename = "__modmashgraphics__/graphics/entity/regenerative-wall/wall-patch.png",
             priority = "extra-high",
             width = 58,
             height = 64,
             shift = util.by_pixel(0, -2),
             hr_version =
             {
-              filename = "__modmash__/graphics/entity/regenerative-wall/hr-wall-patch.png",
+              filename = "__modmashgraphics__/graphics/entity/regenerative-wall/hr-wall-patch.png",
               priority = "extra-high",
               width = 116,
               height = 128,
@@ -493,14 +493,14 @@ data:extend(
         sheets =
         {
           {
-            filename = "__modmash__/graphics/entity/regenerative-wall/wall-gate.png",
+            filename = "__modmashgraphics__/graphics/entity/regenerative-wall/wall-gate.png",
             priority = "extra-high",
             width = 42,
             height = 56,
             shift = util.by_pixel(0, -8),
             hr_version =
             {
-              filename = "__modmash__/graphics/entity/regenerative-wall/hr-wall-gate.png",
+              filename = "__modmashgraphics__/graphics/entity/regenerative-wall/hr-wall-gate.png",
               priority = "extra-high",
               width = 82,
               height = 108,

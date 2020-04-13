@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>C:\Users\TarrantFamily\AppData\Roaming\Factorio\mods\coffee_0.18.07\</OutputPath>
+    <OutputPath>C:\Users\TarrantFamily\AppData\Roaming\Factorio\mods\coffee_0.18.08\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -73,6 +73,10 @@
     <None Update="thumbnail.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="graphics\stickers\" />
   </ItemGroup>
 
 </Project>

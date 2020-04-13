@@ -11,7 +11,7 @@
 			{				
 				type = "image", 
 				name = "mm-topic-main-img-1",
-				filepath = "__modmash__/graphics/wiki/thumbnail.png",
+				filepath = "__modmashgraphics__/graphics/wiki/thumbnail.png",
 				width = 144,
 				height = 144,
 				scale = 1
@@ -28,7 +28,7 @@
 			{				
 				type = "image", 
 				name = "mm-topic-underground-img-1",
-				filepath = "__modmash__/graphics/wiki/underground.png",
+				filepath = "__modmashgraphics__/graphics/wiki/underground.png",
 				width = 350,
 				height = 196,
 				scale = 1
@@ -63,7 +63,7 @@
 			{				
 				type = "image", 
 				name = "mm-topic-underground-img-1",
-				filepath = "__modmash__/graphics/wiki/alien-ore.png",
+				filepath = "__modmashgraphics__/graphics/wiki/alien-ore.png",
 				width = 350,
 				height = 196,
 				scale = 1

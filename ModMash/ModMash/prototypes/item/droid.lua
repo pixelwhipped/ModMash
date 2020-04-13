@@ -6,7 +6,7 @@ data:extend(
   {
     type = "item",
     name = "droid",
-	icon = "__modmash__/graphics/icons/construction_drone_icon.png",
+	icon = "__modmashgraphics__/graphics/icons/construction_drone_icon.png",
     icon_size = 64,
     subgroup = "logistic-network",
     order = "b[robot]-z[droid]",
@@ -15,7 +15,7 @@ data:extend(
   },  {
     type = "item",
     name = "droid-chest",
-    icon = "__modmash__/graphics/icons/droid-chest.png",
+    icon = "__modmashgraphics__/graphics/icons/droid-chest.png",
     icon_size = 32,
     subgroup = "logistic-network",
     order = "b[robot]-z[droid-chest]",

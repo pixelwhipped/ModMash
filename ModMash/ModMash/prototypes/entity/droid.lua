@@ -103,7 +103,7 @@ local tint7 = {r=1, g=1, b=1, a=1} -- white
 
 local good_icon =
     {
-      filename = "__modmash__/graphics/good-alert.png",
+      filename = "__modmashgraphics__/graphics/good-alert.png",
       priority = "extra-high-no-scale",
       width = 64,
       height = 64,
@@ -115,7 +115,7 @@ data:extend(
   {
     type = "item",
     name = "good-alert",
-    icon = "__modmash__/graphics/good-alert.png",
+    icon = "__modmashgraphics__/graphics/good-alert.png",
     icon_size = 64,
 	subgroup = "production-machine",
     order = "alerts",
@@ -133,7 +133,7 @@ data:extend(
 			width = 40,
 			priority = "extra-high",
 			animation_speed = 0.0001,
-			filename =  "__modmash__/graphics/stickers/droid-attack-sticker.png",
+			filename =  "__modmashgraphics__/graphics/stickers/droid-attack-sticker.png",
 			height= 52,
 			shift = util.by_pixel(0.0, -14.0),
 		},
@@ -150,7 +150,7 @@ data:extend(
 			width = 40,
 			priority = "extra-high",
 			animation_speed = 0.0001,
-			filename =  "__modmash__/graphics/stickers/droid-build-sticker.png",
+			filename =  "__modmashgraphics__/graphics/stickers/droid-build-sticker.png",
 			height= 52,
 			shift = util.by_pixel(0.0, -14.0),
 		},
@@ -167,7 +167,7 @@ data:extend(
 			width = 40,
 			priority = "extra-high",
 			animation_speed = 0.0001,
-			filename =  "__modmash__/graphics/stickers/droid-repair-sticker.png",
+			filename =  "__modmashgraphics__/graphics/stickers/droid-repair-sticker.png",
 			height= 52,
 			shift = util.by_pixel(0.0, -14.0),
 		},
@@ -184,7 +184,7 @@ data:extend(
 			width = 40,
 			priority = "extra-high",
 			animation_speed = 0.0001,
-			filename =  "__modmash__/graphics/stickers/droid-scout-sticker.png",
+			filename =  "__modmashgraphics__/graphics/stickers/droid-scout-sticker.png",
 			height= 52,
 			shift = util.by_pixel(0.0, -14.0),
 		},
@@ -200,7 +200,7 @@ data:extend(
 			width = 40,
 			priority = "extra-high",
 			animation_speed = 0.0001,
-			filename =  "__modmash__/graphics/stickers/droid-collect-sticker.png",
+			filename =  "__modmashgraphics__/graphics/stickers/droid-collect-sticker.png",
 			height= 52,
 			shift = util.by_pixel(0.0, -14.0),
 		},
@@ -213,7 +213,7 @@ data:extend(
 		type = "unit",
 		name = "droid",
 		icon_size = 64,
-		icon = "__modmash__/graphics/icons/construction_drone_icon.png",
+		icon = "__modmashgraphics__/graphics/icons/construction_drone_icon.png",
 		flags = {"placeable-player", "player-creation", "placeable-off-grid"},
 		max_health = 450,
 		subgroup="creatures",
@@ -307,7 +307,7 @@ data:extend(
 	{		
 		type = "container",
 		name = "droid-chest",
-		icon = "__modmash__/graphics/icons/droid-chest.png",
+		icon = "__modmashgraphics__/graphics/icons/droid-chest.png",
 		icon_size = 32,
 		flags = {"placeable-player", "player-creation"},
 		minable = {hardness = 0.2, mining_time = 0.5, result = "droid-chest"},
@@ -338,14 +338,14 @@ data:extend(
 		  layers =
 		  {
 			{
-			  filename = "__modmash__/graphics/entity/droid/droid-chest-storage-s.png",
+			  filename = "__modmashgraphics__/graphics/entity/droid/droid-chest-storage-s.png",
 			  priority = "extra-high",
 			  width = 32,
 			  height = 36,
 			  shift = util.by_pixel(0.5, -2),
 			  hr_version =
 			  {
-				filename = "__modmash__/graphics/entity/droid/hr-droid-chest-storage-s.png",
+				filename = "__modmashgraphics__/graphics/entity/droid/hr-droid-chest-storage-s.png",
 				priority = "extra-high",
 				width = 64,
 				height = 80,

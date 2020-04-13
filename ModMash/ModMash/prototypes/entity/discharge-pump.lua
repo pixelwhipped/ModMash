@@ -6,7 +6,7 @@ data:extend(
   	{
     type = "offshore-pump",
     name = "mm-discharge-water-pump",
-    icon = "__modmash__/graphics/icons/discharge-pump.png",
+    icon = "__modmashgraphics__/graphics/icons/discharge-pump.png",
     icon_size = 32,
     flags = {"placeable-neutral", "player-creation", "filter-directions"},
     collision_mask = { "ground-tile", "object-layer" },
@@ -51,7 +51,7 @@ data:extend(
     {
       north =
       {
-        filename = "__modmash__/graphics/entity/discharge-pump/discharge-pump.png",
+        filename = "__modmashgraphics__/graphics/entity/discharge-pump/discharge-pump.png",
         priority = "high",
         shift = {0.90625, 0.0625},
         width = 160,
@@ -59,7 +59,7 @@ data:extend(
       },
       east =
       {
-        filename = "__modmash__/graphics/entity/discharge-pump/discharge-pump.png",
+        filename = "__modmashgraphics__/graphics/entity/discharge-pump/discharge-pump.png",
         priority = "high",
         shift = {0.90625, 0.0625},
         x = 160,
@@ -68,7 +68,7 @@ data:extend(
       },
       south =
       {
-        filename = "__modmash__/graphics/entity/discharge-pump/discharge-pump.png",
+        filename = "__modmashgraphics__/graphics/entity/discharge-pump/discharge-pump.png",
         priority = "high",
         shift = {0.90625, 0.65625},
         x = 320,
@@ -77,7 +77,7 @@ data:extend(
       },
       west =
       {
-        filename = "__modmash__/graphics/entity/discharge-pump/discharge-pump.png",
+        filename = "__modmashgraphics__/graphics/entity/discharge-pump/discharge-pump.png",
         priority = "high",
         shift = {1.0, 0.0625},
         x = 480,

@@ -10,7 +10,7 @@ data:extend(
 	{
 		type = "item",
 		name = "super-material",
-		icon = "__modmash__/graphics/icons/super-material.png",
+		icon = "__modmashgraphics__/graphics/icons/super-material.png",
 		icon_size = 32,
 		fuel_category = "advanced-alien",
 		fuel_value = "1GJ",
@@ -33,7 +33,7 @@ data:extend(
 	  {
 		type = "recipe",
 		name = "super-material-235",	
-		icon = "__modmash__/graphics/icons/super-to-235.png",
+		icon = "__modmashgraphics__/graphics/icons/super-to-235.png",
 		icon_size = 32,
 		enabled = "false",
 		category = "crafting-with-fluid",
@@ -51,7 +51,7 @@ data:extend(
 	  {
 		type = "recipe",
 		name = "super-material-crude",	
-		icon = "__modmash__/graphics/icons/super-to-crude.png",
+		icon = "__modmashgraphics__/graphics/icons/super-to-crude.png",
 		icon_size = 32,
 		enabled = false,
 		hide_from_player_crafting = true,

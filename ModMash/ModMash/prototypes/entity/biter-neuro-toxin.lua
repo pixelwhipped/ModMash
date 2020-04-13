@@ -9,7 +9,7 @@ data:extend({
   {
     type = "ammo",
     name = "biter-neuro-toxin-artillery-shell",
-    icon = "__modmash__/graphics/icons/biter-neuro-toxin.png",
+    icon = "__modmashgraphics__/graphics/icons/biter-neuro-toxin.png",
 
     icon_size = 32,
     ammo_type =

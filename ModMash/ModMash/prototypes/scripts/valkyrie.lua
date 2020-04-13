@@ -1,12 +1,4 @@
-﻿--[[Code check 29.2.20
-removed old comments
---]]
-
-
-log("valkyrie.lua")
---if not modmash or not modmash.util then require("prototypes.scripts.util") end
---if not modmash.defines then require ("prototypes.scripts.defines") end
-
+﻿log("valkyrie.lua")
 local low_priority = modmash.events.low_priority
 
 local distance  = modmash.util.distance

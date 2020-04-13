@@ -6,7 +6,7 @@ data:extend(
 	{
 		type = "item",
 		name = "valkyrie-robot",
-		icon = "__modmash__/graphics/icons/valkyrie-robot.png",
+		icon = "__modmashgraphics__/graphics/icons/valkyrie-robot.png",
 		icon_size = 32,    
 		subgroup = "logistic-network",
 		order = "a[robot]-c[valkyrie-robot]",

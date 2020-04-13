@@ -6,7 +6,7 @@ data:extend(
   {
     type = "item",
     name = "steam-engine-mk2",
-    icon = "__modmash__/graphics/icons/steam-engine-mk2.png",
+    icon = "__modmashgraphics__/graphics/icons/steam-engine-mk2.png",
     icon_size = 32,
     subgroup = "energy",
     order = "b[steam-power]-b[steam-engine-mk2]",

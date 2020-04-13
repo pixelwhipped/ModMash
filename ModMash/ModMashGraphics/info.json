@@ -1,12 +1,12 @@
 {
-  "name": "liborio",
-  "version": "0.18.02",
-  "title": "Liborio",
+  "name": "modmashgraphics",
+  "version": "0.18.01",
+  "title": "ModMashGraphics",
   "author": "PixelWhipped",
   "contact": "",
   "homepage": "https://www.patreon.com/user?u=15367757",
   "factorio_version": "0.18",
-  "description": "Common library for various factorio mods",
+  "description": "Graphics compnent for ModMash",
   "dependencies": [
     "base >= 0.18.0"
   ]

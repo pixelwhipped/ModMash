@@ -6,7 +6,7 @@ data:extend(
   {
     type = "item",
     name = "recycling-machine",
-    icon = "__modmash__/graphics/icons/recycling-machine.png",
+    icon = "__modmashgraphics__/graphics/icons/recycling-machine.png",
     icon_size = 32,
     subgroup = "production-machine",
     order = "c[recycling-machine]",

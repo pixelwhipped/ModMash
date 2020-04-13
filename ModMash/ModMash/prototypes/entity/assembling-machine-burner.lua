@@ -5,7 +5,7 @@ data:extend({
 	{
 		type = "assembling-machine",
 		name = "assembling-machine-burner",
-		icon = "__modmash__/graphics/icons/assembling-machine-0.png",
+		icon = "__modmashgraphics__/graphics/icons/assembling-machine-0.png",
 		icon_size = 32,
 		flags = {"placeable-neutral", "placeable-player", "player-creation"},
 		minable = {mining_time = 0.2, result = "assembling-machine-burner"},
@@ -27,7 +27,7 @@ data:extend({
 		  layers =
 		  {
 			{
-			  filename = "__modmash__/graphics/entity/assembling-machine-0/assembling-machine-0.png",
+			  filename = "__modmashgraphics__/graphics/entity/assembling-machine-0/assembling-machine-0.png",
 			  priority="high",
 			  width = 108,
 			  height = 114,
@@ -37,7 +37,7 @@ data:extend({
 			  shift = util.by_pixel(0, 2),
 			  hr_version =
 			  {
-				filename = "__modmash__/graphics/entity/assembling-machine-0/hr-assembling-machine-0.png",
+				filename = "__modmashgraphics__/graphics/entity/assembling-machine-0/hr-assembling-machine-0.png",
 				priority="high",
 				width = 214,
 				height = 226,
@@ -48,7 +48,7 @@ data:extend({
 			  }
 			},
 			{
-			  filename = "__modmash__/graphics/entity/assembling-machine-0/assembling-machine-0-shadow.png",
+			  filename = "__modmashgraphics__/graphics/entity/assembling-machine-0/assembling-machine-0-shadow.png",
 			  priority="high",
 			  width = 95,
 			  height = 83,
@@ -60,7 +60,7 @@ data:extend({
 			  scale= 0.5,
 			  hr_version =
 			  {
-				filename = "__modmash__/graphics/entity/assembling-machine-0/hr-assembling-machine-0-shadow.png",
+				filename = "__modmashgraphics__/graphics/entity/assembling-machine-0/hr-assembling-machine-0-shadow.png",
 				priority="high",
 				width = 190,
 				height = 165,
@@ -116,7 +116,7 @@ data:extend({
 	{
 		type = "item",
 		name = "assembling-machine-burner",
-		icon = "__modmash__/graphics/icons/assembling-machine-0.png",
+		icon = "__modmashgraphics__/graphics/icons/assembling-machine-0.png",
 		icon_size = 32,
 		subgroup = "production-machine",
 		order = "c[assembling-machine-burner]",

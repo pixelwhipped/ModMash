@@ -6,7 +6,7 @@ data:extend(
 {
     type = "assembling-machine",
     name = "wind-trap",
-    icon = "__modmash__/graphics/icons/wind-trap.png",
+    icon = "__modmashgraphics__/graphics/icons/wind-trap.png",
     icon_size = 32,
     flags = {"placeable-neutral", "placeable-player", "player-creation"},
     minable = {mining_time = 1, result = "wind-trap"},
@@ -68,7 +68,7 @@ data:extend(
       layers =
       {
         {
-          filename = "__modmash__/graphics/entity/wind-trap/wind-trap.png",
+          filename = "__modmashgraphics__/graphics/entity/wind-trap/wind-trap.png",
           priority = "high",
           width = 142,
           height = 113,

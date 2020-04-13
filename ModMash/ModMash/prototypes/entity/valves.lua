@@ -6,7 +6,7 @@ local valve_levels = {
     type = "simple-entity-with-force",
     name = "valve-indicator",
     flags = {"not-blueprintable", "not-deconstructable", "not-on-map", "placeable-off-grid"},
-    icon = "__modmash__/graphics/stickers/blank-icon.png",
+    icon = "__modmashgraphics__/graphics/stickers/blank-icon.png",
     icon_size = 32,
     max_health = 100,
     selectable_in_game = false,
@@ -20,7 +20,7 @@ local valve_levels = {
     pictures =
     {
         {
-            filename = "__modmash__/graphics/stickers/valve-25.png",
+            filename = "__modmashgraphics__/graphics/stickers/valve-25.png",
             priority = "extra-high",
             x = 0,
             y = 0,
@@ -29,7 +29,7 @@ local valve_levels = {
             scale = 1,
         },
         {
-            filename = "__modmash__/graphics/stickers/valve-50.png",
+            filename = "__modmashgraphics__/graphics/stickers/valve-50.png",
             priority = "extra-high",
             x = 0,
             y = 0,
@@ -38,7 +38,7 @@ local valve_levels = {
             scale = 1,
         },
         {
-            filename = "__modmash__/graphics/stickers/valve-75.png",
+            filename = "__modmashgraphics__/graphics/stickers/valve-75.png",
             priority = "extra-high",
             x = 0,
             y = 0,
@@ -51,7 +51,7 @@ local valve_levels = {
 data:extend({valve_levels})
 
 local local_create_valve = function(name,localised_name,localised_description,order,ingredients,technology, source, usage,fixed_recipe,light)
-	local icon = "__modmash__/graphics/icons/" .. name .. ".png"
+	local icon = "__modmashgraphics__/graphics/icons/" .. name .. ".png"
 	if source == nil then
 		source = {type = "burner", effectivity = 1, fuel_inventory_size = 0, render_no_power_icon = false}
 	end
@@ -104,7 +104,7 @@ local local_create_valve = function(name,localised_name,localised_description,or
 		{
 			north =
 			{
-				filename = "__modmash__/graphics/entity/"..name.."/small-pump-up.png",
+				filename = "__modmashgraphics__/graphics/entity/"..name.."/small-pump-up.png",
 				width = 46,
 				height = 56,
 				frame_count = 8,
@@ -113,7 +113,7 @@ local local_create_valve = function(name,localised_name,localised_description,or
 			},
 			east =
 			{
-				filename = "__modmash__/graphics/entity/"..name.."/small-pump-right.png",
+				filename = "__modmashgraphics__/graphics/entity/"..name.."/small-pump-right.png",
 				width = 51,
 				height = 56,
 				frame_count = 8,
@@ -122,7 +122,7 @@ local local_create_valve = function(name,localised_name,localised_description,or
 			},
 			south =
 			{
-				filename = "__modmash__/graphics/entity/"..name.."/small-pump-down.png",
+				filename = "__modmashgraphics__/graphics/entity/"..name.."/small-pump-down.png",
 				width = 61,
 				height = 58,
 				frame_count = 8,
@@ -131,7 +131,7 @@ local local_create_valve = function(name,localised_name,localised_description,or
 			},
 			west =
 			{
-				filename = "__modmash__/graphics/entity/"..name.."/small-pump-left.png",
+				filename = "__modmashgraphics__/graphics/entity/"..name.."/small-pump-left.png",
 				width = 56,
 				height = 44,
 				frame_count = 8,

@@ -1,26 +1,5 @@
-﻿require("defines")
-
-local biome_types = {
-    {name = "basic", factor = 1},
-    {name = "water", factor = 1.5},
-    {name = "desert", factor = 0.5},
-    {name = "sand", factor = 0.5},
-    {name = "snow", factor = 0.75},
-    {name = "ice", factor = 0.75},
-    {name = "volcanic", factor = 0.25}} 
-
-local non_pollutant = {
-    { name= "water", polutant = true},
-    { name= "fish-oil", polutant = true},
-    { name= "steam", polutant = true}} 
-
-
-local local_is_pollutant = function(surface)
-	for _, v in ipairs(non_pollutant) do  
-		if v.name == surface then return not v.polutant end
-	end
-	return true 
-	end 
+﻿log("LIBORIO UTILCONTROL")
+require("defines")
 
 local local_get_biome = function(entity)
     local r = 10
@@ -30,7 +9,7 @@ local local_get_biome = function(entity)
 	local counts = { }
     counts["basic"] = #tiles
 	for _,tile in pairs(tiles) do
-		for type,fac in pairs(biome_types) do
+		for type,fac in pairs(liborio.local_get_biomes()) do
 			if type ~= "basic" and string.find(tile.name, type) then
                 counts["basic"] = counts["basic"] - 1
                 counts[type] = counts[type] and counts[type]+1 or 1
@@ -338,7 +317,7 @@ local local_change_fluidbox_fluid = function(entity, amount, pollution_source)
                 end
                 used = used + innerDelta 
 				if pollution_source ~= nil then
-					if local_is_pollutant(current_fluid) == true then
+					if liborio.is_pollutant(current_fluid) == true then
                         pollution_source.surface.pollute(pollution_source.position,0.01)
                     end
                 end
@@ -403,5 +382,4 @@ liborio.fluid.change_fluidbox_fluid = local_change_fluidbox_fluid
 liborio.signal.get_posistion_from = local_get_signal_position_from
 liborio.signal.set_new_signal = local_set_new_signal
 
-liborio.is_pollutant = local_is_pollutant
 liborio.get_biome = local_get_biome

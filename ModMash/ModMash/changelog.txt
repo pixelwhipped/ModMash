@@ -1,4 +1,10 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.18.31
+  Changes:
+    - moved graphics to seperate mod
+    - reduce update frequency of underground accesses
+
+---------------------------------------------------------------------------------------------------
 Version: 0.18.30
   Bug Fixes:
     - changelog can be seen in-game again (Honktown)

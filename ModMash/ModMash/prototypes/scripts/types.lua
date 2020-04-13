@@ -1,10 +1,5 @@
-﻿--[[Code check 29.2.20
-changed red and green wire result count to 2
---]]
-
-if not modmash or not modmash.util then require("prototypes.scripts.util") end
+﻿log("Creating Types")
 if not modmash.defines then require ("prototypes.scripts.defines") end
-
 local super_container_stack_size = modmash.defines.defaults.super_container_stack_size
 
 
@@ -15,41 +10,11 @@ local get_name_for = modmash.util.get_name_for
 local table_contains = modmash.util.table.contains
 local create_icon = modmash.util.create_icon
 local convert_to_string = modmash.util.convert_to_string
+local get_biomes = modmash.util.get_biomes
 
-local biome_types = nil
-local non_pollutant = nil
 
-log("Creating Types")
 
-local local_set_types_biome = function() 
-  biome_types = {
-    {name = "basic", factor = 1},
-    {name = "water", factor = 1.5},
-    {name = "desert", factor = 0.5},
-    {name = "sand", factor = 0.5},
-    {name = "snow", factor = 0.75},
-    {name = "ice", factor = 0.75},
-    {name = "volcanic", factor = 0.25}
-  } 
-  modmash.util.types.biome_types = biome_types
-end
  
-local local_set_types_non_pollutant = function ()
-  non_pollutant = {
-    { name= "water", polutant = true},
-    { name= "fish-oil", polutant = true},
-    { name= "steam", polutant = true}
-  } 
-  modmash.util.types.non_pollutant = non_pollutant
-end
- 
-local local_is_polutant = function(surface)
-  for _, v in ipairs(non_pollutant) do  
-    if v.name == surface then return not v.polutant end
-  end
-  return true 
-end 
-
 local local_create_biome_recipies = function()
 	local create_recipe_for_biome = function(name, factor)
 		local smooth = 25
@@ -67,7 +32,7 @@ local local_create_biome_recipies = function()
 			hidden = true
 		}
     end  
-	for _,biome in pairs(biome_types) do
+	for _,biome in pairs(get_biomes()) do
 		data:extend({create_recipe_for_biome(biome.name, biome.factor)})
 	end 
 end
@@ -101,32 +66,23 @@ local containers = {}
 local local_create_container = function(item,x)
 	local base_contain_icons = {
 		{
-			icon = "__modmash__/graphics/icons/super-container.png",
+			icon = "__modmashgraphics__/graphics/icons/super-container.png",
 			icon_size = 32
 		}}
 	local base_tech_icons = {
---[[		{
-			icon = "__modmash__/graphics/technology/super-material.png",
-			icon_size = 128,
-			scale = 0.5,
-			shift = {-48,-48}
-		},
---]]
 		{
-			icon = "__modmash__/graphics/icons/super-container.png",
+			icon = "__modmashgraphics__/graphics/icons/super-container.png",
 			icon_size = 32,
 			scale = 0.5,
---			shift = {-24,12}
 		}}
 	
 	local base_uncontain_icons = {}
-	--log("item: "..item.name)
 	local check_item = nil
 	if check_item ~= nil and item.name == check_item then log(serpent.block(item)) end
 	local contain_icons = create_icon(base_contain_icons, nil, {from = item, rescale = .5})
 	local tech_icons = create_icon(base_tech_icons,nil, {from = item, rescale = .5, type = "technology"})
 	local uncontain_icons = create_icon(base_uncontain_icons,nil,{from = item})
-	uncontain_icons = create_icon(base_uncontain_icons,{{icon = "__modmash__/graphics/icons/super-container.png", icon_size = 32, scale = .5, shift = {5,5}}})
+	uncontain_icons = create_icon(base_uncontain_icons,{{icon = "__modmashgraphics__/graphics/icons/super-container.png", icon_size = 32, scale = .5, shift = {5,5}}})
 	if check_item ~= nil and item.name == check_item then log(serpent.block(contain_icons)) end
 	if check_item ~= nil and item.name == check_item then log(serpent.block(tech_icons)) end
 	if check_item ~= nil and item.name == check_item then log(serpent.block(uncontain_icons)) end
@@ -226,7 +182,7 @@ local local_create_subspace_transport = function()
 		layers =
 		{
 			{
-				filename = "__modmash__/graphics/entity/subspace-transport/lab.png",
+				filename = "__modmashgraphics__/graphics/entity/subspace-transport/lab.png",
 				width = 98,
 				height = 87,
 				frame_count = 33,
@@ -235,7 +191,7 @@ local local_create_subspace_transport = function()
 				shift = util.by_pixel(0, 1.5),
 				hr_version =
 				{
-					filename = "__modmash__/graphics/entity/subspace-transport/hr-lab.png",
+					filename = "__modmashgraphics__/graphics/entity/subspace-transport/hr-lab.png",
 					width = 194,
 					height = 174,
 					frame_count = 33,
@@ -297,7 +253,7 @@ local local_create_subspace_transport = function()
 		{
 			type = "item",
 			name = "subspace-transport",
-			icon = "__modmash__/graphics/icons/lab.png",
+			icon = "__modmashgraphics__/graphics/icons/lab.png",
 			icon_size = 32,
 			subgroup = "production-machine",
 			order = "g[subspace-lab]",
@@ -324,7 +280,7 @@ local local_create_subspace_transport = function()
 			type = "technology",
 			name = "subspace-transport",
 			icon_size = 128,
-			icon = "__modmash__/graphics/technology/subspace-transport.png",
+			icon = "__modmashgraphics__/graphics/technology/subspace-transport.png",
 			prerequisites = {"fluid-handling-3","automation-4"},
 			effects =
 			{
@@ -349,7 +305,7 @@ local local_create_subspace_transport = function()
 		{
 			type = "lab",
 			name = "subspace-transport",
-			icon = "__modmash__/graphics/icons/lab.png",
+			icon = "__modmashgraphics__/graphics/icons/lab.png",
 			icon_size = 32,
 			flags = {"placeable-player", "player-creation"},
 			minable = {mining_time = 0.2, result = "subspace-transport"},
@@ -393,7 +349,7 @@ local local_create_super_containers = function()
 		localised_name = "Super Container",
 		localised_description = "Super Material",
 		icon = false,
-		icons = {{icon = "__modmash__/graphics/icons/super-container.png"}},
+		icons = {{icon = "__modmashgraphics__/graphics/icons/super-container.png"}},
 		icon_size = 32,
 		subgroup = "intermediate-product",
 		order = "zz[super-container]",
@@ -402,7 +358,7 @@ local local_create_super_containers = function()
 		type = "recipe",
 		name = "empty-super-container",
 		icon = false,
-		icons = {{icon = "__modmash__/graphics/icons/super-container.png"}},
+		icons = {{icon = "__modmashgraphics__/graphics/icons/super-container.png"}},
 		icon_size = 32,
 		localised_name = "Empty Super Container",
 		localised_description = "Empty Super Container",
@@ -417,12 +373,12 @@ local local_create_super_containers = function()
 
 	local tech_icons = {
 		{
-			icon = "__modmash__/graphics/technology/super-material.png",
+			icon = "__modmashgraphics__/graphics/technology/super-material.png",
 			icon_size = 128,
 			scale = 0.5,
 			},
 		{
-			icon = "__modmash__/graphics/icons/super-container.png",
+			icon = "__modmashgraphics__/graphics/icons/super-container.png",
 			icon_size = 32,
 			shift = {16,16}
 		}}
@@ -497,21 +453,19 @@ local local_create_super_material_conversions = function()
 				and ((data.raw["item"][item.name] ~= nil) or (data.raw["tool"][item.name] ~= nil)) then
 			local base_icons = {
 			{
-				icon = "__modmash__/graphics/icons/super-material.png",
+				icon = "__modmashgraphics__/graphics/icons/super-material.png",
 				icon_size = 32,
 				shift = {-1,0}
 			}}
 			local base_tech_icons = {
 			{
-				icon = "__modmash__/graphics/technology/super-material.png",
+				icon = "__modmashgraphics__/graphics/technology/super-material.png",
 				icon_size = 128,
 				shift = {0,8},
 				scale = 0.5
 			}}
 			local icons = create_icon(base_icons,nil,{from = item, rescale = 0.5, origin = {.5 , .5}})
 			local tech_icons = create_icon(base_tech_icons,nil,{from = item, rescale = .5, origin = {.5, .5}, type = "technology"})
---			local m = data.raw["item"][item.name].stack_size
-			--if m == nil then m = 50 end
 			local m = nil
 			if data.raw["item"][item.name] then m = data.raw["item"][item.name].stack_size
 			elseif data.raw["tool"][item.name] then m = data.raw["tool"][item.name].stack_size end
@@ -617,7 +571,7 @@ local local_create_fluid_item = function(name, fluid)
     enabled = true,
     --icon = fluid.icon,	
     --icon_size = 32,
-	icon = "__modmash__/graphics/blank64.png",	
+	icon = "__modmashgraphics__/graphics/blank64.png",	
 	icon_size = 64,
 	hide_from_stats = true,
     ingredients = {{type = "fluid", name = fluid.name, amount = 100}},
@@ -648,7 +602,7 @@ local local_create_fluid_recipies = function()
 		hidden = false,
 		order = "z[valve-water-steam]",
 		enabled = true,
-		icon = "__modmash__/graphics/blank64.png",	
+		icon = "__modmashgraphics__/graphics/blank64.png",	
 		icon_size = 64,
 		hide_from_stats = true,
 		ingredients = {{type = "fluid", name = "water", amount = 100}},
@@ -671,7 +625,7 @@ local local_create_fluid_recipies = function()
 		hidden = false,
 		order = "z[valve-steam-water]",
 		enabled = true,
-		icon = "__modmash__/graphics/blank64.png", --"__base__/graphics/icons/fluid/water.png",	
+		icon = "__modmashgraphics__/graphics/blank64.png", --"__base__/graphics/icons/fluid/water.png",	
 		icon_size = 64,
 		hide_from_stats = true,
 		ingredients = {{type = "fluid", name = "steam", amount = 100}},
@@ -1117,13 +1071,6 @@ local local_update_recipies = function()
 	end
 end
 
-if not modmash.util.types then   
-    modmash.util.types = {}
-    modmash.util.types.is_polutant = local_is_polutant
-    local_set_types_biome()
-    local_set_types_non_pollutant() 
-end
-
 local add_missing_ooze = function()
 	local added = {}
 	local exclude_ooze = {"coal",modmash.defines.names.titanium_ore_name,"copper-ore","stone","iron-ore","uranium-ore"}	
@@ -1141,7 +1088,7 @@ local add_missing_ooze = function()
 			name = "enrichment-e",
 			localised_name = "Enrichment Extended",
 			localised_description = "Refines Etended materials to obtain more usefull components",
-			icon = "__modmash__/graphics/technology/advanced-chemistry.png",
+			icon = "__modmashgraphics__/graphics/technology/advanced-chemistry.png",
 			icon_size = 128,
 			effects =
 			{
@@ -1166,7 +1113,7 @@ local add_missing_ooze = function()
 	for name,item in pairs(added) do
 		local base_icons = {
 		{
-			icon = "__modmash__/graphics/icons/alien-ooze.png",
+			icon = "__modmashgraphics__/graphics/icons/alien-ooze.png",
 			icon_size = 32,
 			scale = 0.75,
 			shift = {-8,-8}
@@ -1446,8 +1393,6 @@ local local_get_normal_results = function(recipe)
 	return recipe.results
 end
 
-
-
 local local_create_ore_refinements = function()
 	for name, recipe in pairs(data.raw.recipe) do
 		if recipe ~= nil and recipe.name ~= nil and recipe.category=="smelting" then
@@ -1553,8 +1498,6 @@ local local_create_ore_refinements = function()
 end
 
 if data ~= nil and data_final_fixes == true then
-    local_set_types_biome() --Dexy Edit
-    local_set_types_non_pollutant() --Dexy Edit
     local_create_biome_recipies()
     local_create_fluid_recipies()
     local_update_recipies()	
