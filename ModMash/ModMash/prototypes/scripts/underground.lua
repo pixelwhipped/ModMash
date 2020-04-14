@@ -397,7 +397,7 @@ local local_access_process = function(access)
 				end
 			end
 		end			
-		if game.tick%60==0 then
+		if game.tick%20==0 then
 		local inventory = {}
 		local top = access.top_entity.get_inventory(defines.inventory.chest)
 		local bottom = access.bottom_entity.get_inventory(defines.inventory.chest)

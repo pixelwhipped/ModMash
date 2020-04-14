@@ -1,4 +1,12 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.18.33
+  Bug Fixes:
+    - update references to is valid and persistant
+  Changes:
+    - updated underground access update speed
+    - updated underground access graphic
+
+---------------------------------------------------------------------------------------------------
 Version: 0.18.32
   Bug Fixes:
     - update dependancy

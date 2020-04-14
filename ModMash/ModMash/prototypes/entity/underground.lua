@@ -304,7 +304,7 @@ data:extend(
 		vehicle_impact_sound =  { filename = "__base__/sound/car-metal-impact.ogg", volume = 0.65 },
 		picture =
 		{
-			  filename = "__base__/graphics/entity/gun-turret/gun-turret-base.png",
+			  filename = "__modmashgraphics__/graphics/entity/underground/access01.png",
 			  priority = "high",
 			  width = 76,
 			  height = 60,
@@ -314,7 +314,7 @@ data:extend(
 			  shift = util.by_pixel(1, -1),
 			  hr_version =
 			  {
-				filename = "__base__/graphics/entity/gun-turret/hr-gun-turret-base.png",
+				filename = "__modmashgraphics__/graphics/entity/underground/hr-access01.png",
 				priority = "high",
 				width = 150,
 				height = 118,

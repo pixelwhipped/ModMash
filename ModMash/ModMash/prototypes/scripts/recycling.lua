@@ -5,8 +5,8 @@ ok only locals are reference to globals or a constant
 --[[code reviewed 13.10.19]]
 log("recycling.lua")
 --[[check and import utils]]
-if modmash == nil or modmash.util == nil then require("prototypes.scripts.util") end
-if not modmash.defines then require ("prototypes.scripts.defines") end
+--if modmash == nil or modmash.util == nil then require("prototypes.scripts.util") end
+--if not modmash.defines then require ("prototypes.scripts.defines") end
 
 
 --[[defines]]
