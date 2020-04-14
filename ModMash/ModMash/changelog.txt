@@ -4,6 +4,7 @@ Version: 0.18.34
     - added next level underground
     - was still not happy with underground update
     - changed valkrie attack range visibility in roboports to outline.
+    - added more resources to level 2, will use from other mods
 
 ---------------------------------------------------------------------------------------------------
 Version: 0.18.33

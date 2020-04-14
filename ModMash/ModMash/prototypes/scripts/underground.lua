@@ -19,6 +19,7 @@ local spawn_radius = 10
 --[[create local references]]
 --[[util]]
 local is_valid = modmash.util.is_valid
+local starts_with = modmash.util.starts_with
 local table_contains = modmash.util.table.contains
 local is_valid_and_persistant = modmash.util.entity.is_valid_and_persistant
 local distance = modmash.util.distance
@@ -110,12 +111,37 @@ local get_sorted_lines = function(circle)
 		return {ret,tkeys[1],tkeys[#tkeys],min,max}
 	end
 
-local local_is_valid_autoplace = function(surface,name,pos)
-	for k, v in pairs(game.entity_prototypes) do 
-		if v.type=="resource" and v.name ==name then return surface.can_place_entity{name=name, position=pos} end
+local resources = nil
+local local_build_resources = function()
+	if resources == nil then
+		resources = {}
+		for k, v in pairs(game.entity_prototypes) do 
+			if v.type == "resource" and starts_with(v.name,"creative") == false then
+				if v.mineable_properties ~= nil and v.mineable_properties.minable == true and v.mineable_properties.mining_particle ~= nil then
+					local pass = 0
+					for _, product in pairs(v.mineable_properties.products) do
+						if product.type == "fluid" then pass = 2 end
+						if product.type == "item" and pass ~= 2 then
+							pass = 1
+						end
+					end
+					--log("resource "..k.. " "..pass)
+					if pass == 1 then
+						if v.map_color ~= nil then
+							--log("adding resource "..k)
+							table.insert(resources,k)
+						end
+					end
+				end
+			end					
+		end
+	end 
 	end
-	return false
-end
+		
+local local_is_valid_autoplace = function(surface,name,pos)
+	if resources == nil then local_build_resources() end
+	return table_contains(resources,name)
+	end
 
 local generate_surface_area = function(x,y,r,surface, force_gen, force_ore)	
 	if force_gen == nil then
@@ -193,9 +219,8 @@ local generate_surface_area2 = function(x,y,r,surface, force_gen, force_ore)
 	local d = get_sorted_lines(p)
 	
     local amt = math.random(800, 3200)
-	local resources = {}
-	for k, v in pairs(game.entity_prototypes) do 
-		if v.type=="resource" then table.insert(resources,v.name) end
+	if resources == nil then
+		local_build_resources()
 	end
 	local rnd = math.random(1, #resources+25)
 
@@ -329,7 +354,7 @@ local init_surface = function(surface,parent)
 		}
 	}
 	surface.peaceful_mode = parent.map_gen_settings.peaceful_mode	
-	surface.daytime = 0.3
+	surface.daytime = 0.34
 	surface.freeze_daytime = true
 	return surface
 	end
@@ -367,7 +392,7 @@ local init_surface2 = function(surface,parent)
 		}
 	}
 	surface.peaceful_mode = parent.map_gen_settings.peaceful_mode
-	surface.daytime = 0.5
+	surface.daytime = 0.42
 	surface.freeze_daytime = true
 	
 	return surface

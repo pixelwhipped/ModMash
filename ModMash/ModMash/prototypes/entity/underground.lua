@@ -491,6 +491,165 @@ data:extend(
 	}
 })
 
+if not data.raw["resource"][modmash.defines.names.titanium_ore_name] then
+data:extend(
+{
+	{
+		type = "resource",
+		name = modmash.defines.names.titanium_ore_name,
+		icon = "__modmashgraphics__/graphics/icons/titanium-ore.png",
+		icon_size = 32,
+		flags = {"placeable-neutral"},
+		order="a-b-z",
+		tree_removal_probability = 0.8,
+		tree_removal_max_distance = 32 * 32,
+		minable =
+		{
+		  mining_particle = "iron-ore-particle",
+		  mining_time = 1.5,
+		  result = modmash.defines.names.titanium_ore_name
+		},
+		collision_box = {{ -0.1, -0.1}, {0.1, 0.1}},
+		selection_box = {{ -0.5, -0.5}, {0.5, 0.5}},
+		autoplace = 
+		{
+			create = false,
+			starting_area = false,
+			richness = 0.0,
+			size = 0.0
+		},
+		stage_counts = {15000, 9500, 5500, 2900, 1300, 400, 150, 80},
+		stages =
+		{
+		  sheet =
+		  {
+			filename = "__modmashgraphics__/graphics/entity/ores/titanium-ore.png",
+			priority = "extra-high",
+			size = 64,
+			frame_count = 8,
+			variation_count = 8,
+			hr_version =
+			{
+			  filename = "__modmashgraphics__/graphics/entity/ores/hr-titanium-ore.png",
+			  priority = "extra-high",
+			  size = 128,
+			  frame_count = 8,
+			  variation_count = 8,
+			  scale = 0.5
+			}
+		  }
+		},
+		map_color = {0.315, 0.425, 0.480}
+	}
+})
+end
+
+if not data.raw["resource"]["sand"] then
+data:extend(
+{
+	{
+		type = "resource",
+		name = "sand",
+		icon = "__modmashgraphics__/graphics/icons/sand.png",
+		icon_size = 32,
+		flags = {"placeable-neutral"},
+		order="a-b-z",
+		tree_removal_probability = 0.8,
+		tree_removal_max_distance = 32 * 32,
+		minable =
+		{
+		  mining_particle = "stone-particle",
+		  mining_time = 0.75,
+		  result = "sand"
+		},
+		collision_box = {{ -0.1, -0.1}, {0.1, 0.1}},
+		selection_box = {{ -0.5, -0.5}, {0.5, 0.5}},
+		autoplace = 
+		{
+			create = false,
+			starting_area = false,
+			richness = 0.0,
+			size = 0.0
+		},
+		stage_counts = {15000, 9500, 5500, 2900, 1300, 400, 150, 80},
+		stages =
+		{
+		  sheet =
+		  {
+			filename = "__modmashgraphics__/graphics/entity/ores/sand.png",
+			priority = "extra-high",
+			size = 64,
+			frame_count = 8,
+			variation_count = 8,
+			hr_version =
+			{
+			  filename = "__modmashgraphics__/graphics/entity/ores/hr-sand.png",
+			  priority = "extra-high",
+			  size = 128,
+			  frame_count = 8,
+			  variation_count = 8,
+			  scale = 0.5
+			}
+		  }
+		},
+		map_color = {r=0.9, g=0.9, b=0.9}
+	}
+	})
+end
+
+if not data.raw["resource"]["sulfur"] then
+data:extend(
+{
+	{
+		type = "resource",
+		name = "sulfur",
+		icon = "__base__/graphics/icons/sulfur.png",
+		icon_size = 64, icon_mipmaps = 4,
+		flags = {"placeable-neutral"},
+		order="a-b-z",
+		tree_removal_probability = 0.8,
+		tree_removal_max_distance = 32 * 32,
+		minable =
+		{
+		  mining_particle = "stone-particle",
+		  mining_time = 1.75,
+		  result = "sulfur"
+		},
+		collision_box = {{ -0.1, -0.1}, {0.1, 0.1}},
+		selection_box = {{ -0.5, -0.5}, {0.5, 0.5}},
+		autoplace = 
+		{
+			create = false,
+			starting_area = false,
+			richness = 0.0,
+			size = 0.0
+		},
+		stage_counts = {15000, 9500, 5500, 2900, 1300, 400, 150, 80},
+		stages =
+		{
+		  sheet =
+		  {
+			filename = "__modmashgraphics__/graphics/entity/ores/sulfur-ore.png",
+			priority = "extra-high",
+			size = 64,
+			frame_count = 8,
+			variation_count = 8,
+			hr_version =
+			{
+			  filename = "__modmashgraphics__/graphics/entity/ores/hr-sulfur-ore.png",
+			  priority = "extra-high",
+			  size = 128,
+			  frame_count = 8,
+			  variation_count = 8,
+			  scale = 0.5
+			}
+		  }
+		},
+		map_color = {r=0.95, g=0.75, b=0.0}
+	}
+	})
+end
+
 local rock_names = {
   "rock-huge",
   "rock-big",
@@ -527,7 +686,6 @@ local r = table.deepcopy(data.raw["simple-entity"][rock_names[k]])
       results = {{name = "stone", amount_min = 1, amount_max = 8}, {name = "sand", amount_min = 1, amount_max = 5}},
     }
 	for j=1, #r.pictures do
-		log("adding tint")
 		r.pictures[j].tint = {0.15,0.15,0.15,1}
 		if r.pictures[j].hr_version then
 			r.pictures[j].hr_version.tint = {0.15,0.15,0.15,1}
