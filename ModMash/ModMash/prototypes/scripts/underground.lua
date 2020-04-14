@@ -191,9 +191,13 @@ local generate_surface_area2 = function(x,y,r,surface, force_gen, force_ore)
 	end
 	local p = get_circle_lines(x,y,r)
 	local d = get_sorted_lines(p)
-	local rnd = math.random(1, 50)
-    local amt = math.random(500, 1200)
-
+	
+    local amt = math.random(800, 3200)
+	local resources = {}
+	for k, v in pairs(game.entity_prototypes) do 
+		if v.type=="resource" then table.insert(resources,v.name) end
+	end
+	local rnd = math.random(1, #resources+25)
 
 	p = d[1]
 	for i=d[2],d[3] do
@@ -221,18 +225,10 @@ local generate_surface_area2 = function(x,y,r,surface, force_gen, force_ore)
 				local create = nil
 				if force_ore ~= nil then
 					create = {name=force_ore, amount=amt*m, position=pos}
-				elseif rnd<6 and x == j and y == i then	
+				elseif rnd <= #resources then
+					create = {name=resources[rnd], amount=amt*m, position=pos}
+				elseif rnd<(#resources+15) and x == j and y == i then	
 					create = { name = enemy_spawns[math.random(#enemy_spawns)], position = pos }					
-				elseif rnd<12 then
-					create = {name="uranium-ore", amount=amt*m, position=pos}
-				elseif rnd<17 then
-					create = {name="iron-ore", amount=amt*m, position=pos}
-				elseif rnd<23 then
-					create = {name="copper-ore", amount=amt*m, position=pos}
-				elseif rnd<27 then
-					create = {name="coal", amount=amt*m, position=pos}
-				elseif rnd<30 then
-					create = {name="alien-ore", amount=amt*m, position=pos}
 				end
 				if create ~= nil and local_is_valid_autoplace(surface,create.name,create.position) then surface.create_entity(create) end
 			  end
