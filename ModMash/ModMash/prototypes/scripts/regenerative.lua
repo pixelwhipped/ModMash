@@ -3,14 +3,14 @@ ok only locals are reference to globals
 ]]
 
 log("regenerative.lua")
-if not modmash or not modmash.util then require("prototypes.scripts.util") end
-if not modmash.defines then require ("prototypes.scripts.defines") end
+--if not modmash or not modmash.util then require("prototypes.scripts.util") end
+--if not modmash.defines then require ("prototypes.scripts.defines") end
 
 --[[defines]]
 local medium_priority = modmash.events.medium_priority
 local starts_with  = modmash.util.starts_with
 local is_valid  = modmash.util.is_valid
-local is_valid_and_persistant = modmash.util.is_valid_and_persistant
+local is_valid_and_persistant = modmash.util.entity.is_valid_and_persistant
 local table_remove = modmash.util.table.remove
 
 --[[unitialized globals]]

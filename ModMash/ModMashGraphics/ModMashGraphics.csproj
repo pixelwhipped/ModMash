@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>C:\Users\TarrantFamily\AppData\Roaming\Factorio\mods\modmashgraphics_0.18.01\</OutputPath>
+    <OutputPath>C:\Users\TarrantFamily\AppData\Roaming\Factorio\mods\modmashgraphics_0.18.02\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -667,6 +667,12 @@
     <None Update="graphics\entity\titanium-wall\wall-vertical.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="graphics\entity\underground\access01.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\entity\underground\access02.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="graphics\entity\underground\accumulator-charge.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -677,6 +683,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="graphics\entity\underground\accumulator.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\entity\underground\hr-access01.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\entity\underground\hr-access02.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="graphics\entity\underground\hr-accumulator-charge.png">

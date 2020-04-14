@@ -1,4 +1,17 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.18.33
+  Bug Fixes:
+    - update references to is valid and persistant
+  Changes:
+    - updated underground access update speed
+    - updated underground access graphic
+
+---------------------------------------------------------------------------------------------------
+Version: 0.18.32
+  Bug Fixes:
+    - update dependancy
+
+---------------------------------------------------------------------------------------------------
 Version: 0.18.31
   Bug Fixes:
     - fix error for underground having no autoplace control for vanilla resources
@@ -6,6 +19,7 @@ Version: 0.18.31
 Version: 0.18.31
   Bug Fixes:
     - fishing inserters work again
+    - compatibility fix for angels refining
   Changes:
     - moved graphics to seperate mod
     - reduce update frequency of underground accesses

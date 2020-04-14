@@ -8,7 +8,7 @@ local table_index_of  = modmash.util.table.index_of
 local table_contains = modmash.util.table.contains
 local starts_with  = modmash.util.starts_with
 local local_table_remove = modmash.util.table.remove
-local is_valid_and_persistant = modmash.util.is_valid_and_persistant
+local is_valid_and_persistant = modmash.util.entity.is_valid_and_persistant
 
 local targets = nil
 local return_targets = nil
