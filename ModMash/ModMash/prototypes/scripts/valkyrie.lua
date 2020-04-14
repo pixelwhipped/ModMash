@@ -398,6 +398,8 @@ local local_on_entity_selected = function(player,entity)
 			filled = true,
 			color = {r = 1, g = 0.1, b = 0, a = 0.1},
 			draw_on_ground = true,
+			width = 64,
+			filled = false,
 			target = entity,
 			only_in_alt_mode = false,
 			radius = max_distance

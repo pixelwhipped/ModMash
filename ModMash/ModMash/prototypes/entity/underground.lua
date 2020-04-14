@@ -1,4 +1,8 @@
-﻿if not modmash or not modmash.util then require("prototypes.scripts.util") end
+﻿--if not modmash or not modmash.util then require("prototypes.scripts.util") end
+require("prototypes.scripts.defines") 
+local underground_accumulator  = modmash.defines.names.underground_accumulator
+local underground_access  = modmash.defines.names.underground_access
+local underground_access2  = modmash.defines.names.underground_access2
 
 local local_get_alien_particle_shadow_pictures = function()
 	return
@@ -274,11 +278,11 @@ data:extend(
 {
 	{		
 		type = "container",
-		name = "underground-access",
+		name = underground_access,
 		icon = "__modmashgraphics__/graphics/icons/underground-access.png",
 		icon_size = 32,
 		flags = {"placeable-player", "player-creation"},
-		minable = {hardness = 0.2, mining_time = 0.5, result = "underground-access"},
+		minable = {hardness = 0.2, mining_time = 0.5, result = underground_access},
 		max_health = 350,
 		corpse = "medium-small-remnants",
 		collision_box = {{-0.8, -0.8 }, {0.8, 0.8}},
@@ -329,13 +333,67 @@ data:extend(
 		circuit_connector_sprites = circuit_connector_definitions["chest"].sprites,
 		circuit_wire_max_distance = default_circuit_wire_max_distance
 	},
+	{		
+		type = "container",
+		name = underground_access2,
+		icon = "__modmashgraphics__/graphics/icons/underground-access2.png",
+		icon_size = 32,
+		flags = {"placeable-player", "player-creation"},
+		minable = {hardness = 0.2, mining_time = 0.5, result = underground_access2},
+		max_health = 350,
+		corpse = "medium-small-remnants",
+		collision_box = {{-0.8, -0.8 }, {0.8, 0.8}},
+		selection_box = {{-1, -1 }, {1, 1}},
+		enabled = false,
+		resistances =
+		{
+		  {
+			type = "fire",
+			percent = 90
+		  },
+		  {
+			type = "impact",
+			percent = 60
+		  }
+		},
+		inventory_size = 14,
+		open_sound = { filename = "__base__/sound/metallic-chest-open.ogg", volume=0.65 },
+		close_sound = { filename = "__base__/sound/metallic-chest-close.ogg", volume = 0.7 },
+		vehicle_impact_sound =  { filename = "__base__/sound/car-metal-impact.ogg", volume = 0.65 },
+		picture =
+		{
+			  filename = "__modmashgraphics__/graphics/entity/underground/access02.png",
+			  priority = "high",
+			  width = 76,
+			  height = 60,
+			  axially_symmetrical = false,
+			  direction_count = 1,
+			  frame_count = 1,
+			  shift = util.by_pixel(1, -1),
+			  hr_version =
+			  {
+				filename = "__modmashgraphics__/graphics/entity/underground/hr-access02.png",
+				priority = "high",
+				width = 150,
+				height = 118,
+				axially_symmetrical = false,
+				direction_count = 1,
+				frame_count = 1,
+				shift = util.by_pixel(0.5, -1),
+				scale = 0.5
+			  }
+		},
+		circuit_wire_connection_point = circuit_connector_definitions["chest"].points,
+		circuit_connector_sprites = circuit_connector_definitions["chest"].sprites,
+		circuit_wire_max_distance = default_circuit_wire_max_distance
+	},
 	{
 		type = "accumulator",
-		name = "underground-accumulator",
+		name = underground_accumulator,
 		icon = "__modmashgraphics__/graphics/icons/underground-accumulator.png",
 		icon_size = 32,
 		flags = {"placeable-neutral", "player-creation"},
-		minable = {mining_time = 0.1, result = "underground-accumulator"},
+		minable = {mining_time = 0.1, result = underground_accumulator},
 		max_health = 150,
 		corpse = "small-remnants",
 		dying_explosion = "accumulator-explosion",
@@ -453,4 +511,35 @@ local r = table.deepcopy(data.raw["simple-entity"][rock_names[k]])
       results = {{name = "stone", amount_min = 1, amount_max = 8}, {name = "sand", amount_min = 1, amount_max = 5}},
     }
 	data:extend({r})
+end
+
+for k=1, #rock_names do
+local r = table.deepcopy(data.raw["simple-entity"][rock_names[k]])
+	local desc = modmash.util.get_name_for(r.name)
+	r.name = "mm_dark-"..r.name
+	r.loot = nil
+	r.localised_name = desc
+	r.max_health = r.max_health/3
+	r.minable =
+    {
+      mining_particle = "stone-particle",
+      mining_time = 0.75,
+      results = {{name = "stone", amount_min = 1, amount_max = 8}, {name = "sand", amount_min = 1, amount_max = 5}},
+    }
+	for j=1, #r.pictures do
+		log("adding tint")
+		r.pictures[j].tint = {0.15,0.15,0.15,1}
+		if r.pictures[j].hr_version then
+			r.pictures[j].hr_version.tint = {0.15,0.15,0.15,1}
+		end
+	end
+	data:extend({r})
+end
+
+for k=1, 7 do
+local t = table.deepcopy(data.raw["tile"]["dirt-"..k])
+	t.name = "mm_dark-"..t.name
+	if t.autoplace ~= nil then t.autoplace.default_enabled = false end
+	t.tint = {0.15,0.15,0.15,1}
+	data:extend({t})
 end

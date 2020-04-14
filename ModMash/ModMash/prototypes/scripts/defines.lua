@@ -28,6 +28,7 @@ modmash.defines.names.allow_fishing = "allow-fishing"
 modmash.defines.names.recycling_machine = "recycling-machine"
 modmash.defines.names.subspace_transport = "subspace-transport"
 modmash.defines.names.underground_access = "underground-access"
+modmash.defines.names.underground_access2 = "underground-access2"
 modmash.defines.names.underground_accumulator = "underground-accumulator"
 
 modmash.defines.names.wind_trap = "wind-trap"
