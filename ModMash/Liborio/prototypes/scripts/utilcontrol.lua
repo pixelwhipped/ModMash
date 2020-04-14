@@ -9,7 +9,7 @@ local local_get_biome = function(entity)
 	local counts = { }
     counts["basic"] = #tiles
 	for _,tile in pairs(tiles) do
-		for type,fac in pairs(liborio.local_get_biomes()) do
+		for type,fac in pairs(liborio.get_biomes()) do
 			if type ~= "basic" and string.find(tile.name, type) then
                 counts["basic"] = counts["basic"] - 1
                 counts[type] = counts[type] and counts[type]+1 or 1
