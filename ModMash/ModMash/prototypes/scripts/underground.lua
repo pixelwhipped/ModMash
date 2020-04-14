@@ -211,21 +211,11 @@ end
 
 local init_surface = function(surface,parent)
 	surface.map_gen_settings = {
-		autoplace_controls = {
-			["enemy-base"] = { frequency = "none" },
-			["iron-ore"] = { richness = "none"},
-			["copper-ore"] = { richness = "none"},
-			["stone"] = { richness = "none"},
-			["coal"] = { richness = "none"},
-			["uranium-ore"] = { richness = "none"},
-			["crude-oil"] = { richness = "none"},
-			--["alien-ore"] = { richness = "none"}
-		},
-		default_enable_all_autoplace_controls = false,
+		--default_enable_all_autoplace_controls = false, -- think this ends up putting grass everywhere
 		autoplace_settings = {
-			entity = { frequency = "none" },
-			tile = { frequency = "none" },
-			decorative = { frequency = "none" }
+			entity = { frequency = "none", treat_missing_as_default = false },
+			tile = { frequency = "none", treat_missing_as_default = false },
+			decorative = { frequency = "none", treat_missing_as_default = false }
 		},
 		water = "none",
 		peaceful_mode = false,
