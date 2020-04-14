@@ -1,6 +1,10 @@
 ﻿---------------------------------------------------------------------------------------------------
 Version: 0.18.31
   Bug Fixes:
+    - fix error for underground having no autoplace control for vanilla resources
+---------------------------------------------------------------------------------------------------
+Version: 0.18.31
+  Bug Fixes:
     - fishing inserters work again
   Changes:
     - moved graphics to seperate mod
