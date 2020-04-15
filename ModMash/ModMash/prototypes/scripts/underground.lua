@@ -323,9 +323,6 @@ local local_chunk_generated = function(event)
 
 local init_surface = function(surface,parent)
 	surface.map_gen_settings = {
-<<<<<<< HEAD
-		--default_enable_all_autoplace_controls = false, -- think this ends up putting grass everywhere
-=======
 		autoplace_controls = {--[[
 			["enemy-base"] = { frequency = "none" },
 			["iron-ore"] = { richness = "none"},
@@ -375,7 +372,6 @@ local init_surface2 = function(surface,parent)
 			--["alien-ore"] = { richness = "none"}]]
 		},
 		default_enable_all_autoplace_controls = false,
->>>>>>> pixelwhipped-general
 		autoplace_settings = {
 			entity = { frequency = "none", treat_missing_as_default = false },
 			tile = { frequency = "none", treat_missing_as_default = false },
