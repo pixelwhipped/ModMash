@@ -10,7 +10,7 @@ table.insert(
  {
   {
 	type = "technology",
-    name = "underground-2",
+    name = "underground",
     icon = "__base__/graphics/technology/logistics.png",
     icon_size = 128,
     effects = {

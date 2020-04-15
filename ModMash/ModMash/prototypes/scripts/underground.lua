@@ -128,7 +128,7 @@ local local_build_resources = function()
 					--log("resource "..k.. " "..pass)
 					if pass == 1 then
 						if v.map_color ~= nil then
-							--log("adding resource "..k)
+							log("Resource identified "..k)
 							table.insert(resources,k)
 						end
 					end
@@ -222,7 +222,7 @@ local generate_surface_area2 = function(x,y,r,surface, force_gen, force_ore)
 	if resources == nil then
 		local_build_resources()
 	end
-	local rnd = math.random(1, #resources+25)
+	local rnd = math.random(1, #resources+8)
 
 	p = d[1]
 	for i=d[2],d[3] do
@@ -241,7 +241,7 @@ local generate_surface_area2 = function(x,y,r,surface, force_gen, force_ore)
 			  --edge
 			  if current_tile.name == "out-of-map" then 
 			    surface.set_tiles({{ name = tile, position = pos }})
-				surface.create_entity({ name = rock_names[math.random(#rock_names2)], position = pos })
+				surface.create_entity({ name = rock_names2[math.random(#rock_names2)], position = pos })
 			  end			  			  
 			else
 			  --inside
@@ -252,7 +252,7 @@ local generate_surface_area2 = function(x,y,r,surface, force_gen, force_ore)
 					create = {name=force_ore, amount=amt*m, position=pos}
 				elseif rnd <= #resources then
 					create = {name=resources[rnd], amount=amt*m, position=pos}
-				elseif rnd<(#resources+15) and x == j and y == i then	
+				elseif rnd<(#resources+5) and x == j and y == i then	
 					create = { name = enemy_spawns[math.random(#enemy_spawns)], position = pos }					
 				end
 				if create ~= nil and local_is_valid_autoplace(surface,create.name,create.position) then surface.create_entity(create) end
@@ -262,7 +262,7 @@ local generate_surface_area2 = function(x,y,r,surface, force_gen, force_ore)
 		    --edge
 			  if current_tile.name == "out-of-map" then 
 			    surface.set_tiles({{ name = tile, position = pos }})
-				surface.create_entity({ name = rock_names[math.random(#rock_names2)], position = pos })
+				surface.create_entity({ name = rock_names2[math.random(#rock_names2)], position = pos })
 			  end	
 		  else 
 			--nothing
@@ -439,7 +439,7 @@ local local_ensure_can_place_entity_inner = function(entity,event)
 			end
 		elseif entity.surface.name == "underground2" then			
 			if entity.name == underground_access2 then
-				local rocks = game.surfaces["underground1"].find_entities_filtered{area = {{entity.position.x-2.5, entity.position.y-2.5}, {entity.position.x+2.5, entity.position.y+2.5}}, name = rock_names1}			
+				local rocks = game.surfaces["underground"].find_entities_filtered{area = {{entity.position.x-2.5, entity.position.y-2.5}, {entity.position.x+2.5, entity.position.y+2.5}}, name = rock_names}			
 				for index=1, #rocks do local r = rocks[index]
 					if is_valid(r) then 
 						r.destroy({raise_destroy = true}) 
@@ -551,7 +551,7 @@ local local_underground_removed = function(entity)
 			end
 		end
 	elseif entity.name == underground_access2 then				
-		for index, access2 in pairs(accesses2) do
+		for index, access in pairs(accesses2) do
 			if access.top_entity == entity then
 				access.bottom_entity.destroy()
 				table.remove(accesses, index)				
