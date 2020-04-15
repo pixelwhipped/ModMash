@@ -1,13 +1,27 @@
-﻿data:extend(
+﻿require("prototypes.scripts.defines") 
+local underground_accumulator  = modmash.defines.names.underground_accumulator
+local underground_access  = modmash.defines.names.underground_access
+local underground_access2  = modmash.defines.names.underground_access2
+data:extend(
 {
   {
     type = "item",
-    name = "underground-access",
+    name = underground_access,
     icon = "__modmashgraphics__/graphics/icons/underground-access.png",
     icon_size = 32,
     subgroup = "production-machine",
     order = "u[underground-access]",
-    place_result = "underground-access",
+    place_result = underground_access,
+    stack_size = 10
+  },
+  {
+    type = "item",
+    name = underground_access2,
+    icon = "__modmashgraphics__/graphics/icons/underground-access2.png",
+    icon_size = 32,
+    subgroup = "production-machine",
+    order = "v[underground-access2]",
+    place_result = underground_access2,
     stack_size = 10
   },
   {
@@ -16,7 +30,7 @@
     icon = "__modmashgraphics__/graphics/icons/underground-accumulator.png",
     icon_size = 32,
     subgroup = "production-machine",
-    order = "u[underground-accumulator]",
+    order = "w[underground-accumulator]",
     place_result = "underground-accumulator",
     stack_size = 10
   }
