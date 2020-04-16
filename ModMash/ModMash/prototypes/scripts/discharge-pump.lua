@@ -73,7 +73,7 @@ local local_on_entity_cloned = function(event)
 	end
 end
 
-modmash.register_script({
+local control = {
 	names = {discharge_water_pump},
 	on_init = local_init,
 	on_load = local_load,
@@ -83,4 +83,10 @@ modmash.register_script({
 		auto_add_remove = {discharge_water_pump}
 		},
 	on_entity_cloned = local_on_entity_cloned
-})
+}
+
+if modmash.profiler == true then
+	local profiler = modmash.util.get_profiler(discharge_water_pump)
+	control.on_tick.tick = function() profiler:update(local_discharge_pump_tick)	end
+end
+modmash.register_script(control)

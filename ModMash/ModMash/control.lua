@@ -51,6 +51,11 @@ require("prototypes.scripts.defines")
 --require("prototypes.scripts.util") 
 require '__liborio__/prototypes/scripts/util'
 modmash.util = get_liborio()
+
+modmash.profiler = true
+require("prototypes.scripts.profiler") 
+
+
 local table_contains = modmash.util.table.contains
 local table_index_of = modmash.util.table.index_of
 local starts_with  = modmash.util.starts_with

@@ -257,7 +257,7 @@ local local_on_configuration_changed = function(f)
 	end
 
 
-modmash.register_script({
+local control = {
 	on_tick = local_loader_tick,
 	on_init = local_init,
 	on_load = local_load,
@@ -266,4 +266,12 @@ modmash.register_script({
 	on_train_changed_state = local_on_train_changed_state,
 	on_configuration_changed = local_on_configuration_changed,
 	on_entity_cloned = local_on_entity_cloned
-})
+}
+
+if modmash.profiler == true then
+	local profiler = modmash.util.get_profiler("loader")
+	control.on_tick = function() 
+		profiler:update(local_loader_tick) 
+	end
+end
+modmash.register_script(control)

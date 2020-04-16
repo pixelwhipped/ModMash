@@ -293,7 +293,7 @@ local local_on_configuration_changed = function(f)
 	end
 	end
 
-modmash.register_script({
+local control = {
 	names = {recycling_machine},
 	on_init = local_init,
 	on_start = local_start,
@@ -307,4 +307,10 @@ modmash.register_script({
 	on_adjust_by_name = local_recycling_adjust,
 	on_configuration_changed = local_on_configuration_changed,
 	on_entity_cloned = local_on_entity_cloned
-})
+}
+
+if modmash.profiler == true then
+	local profiler = modmash.util.get_profiler("recycling")
+	control.on_tick.tick = function() profiler:update(local_recycling_tick)	end
+end
+modmash.register_script(control)

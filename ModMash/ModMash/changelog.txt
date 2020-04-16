@@ -1,4 +1,10 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.18.35
+  Changes:
+    - built profiler to identify ups issues
+    - biter spawner improvment before 0.012884ms,0.004200ms,0.009237ms after 
+
+---------------------------------------------------------------------------------------------------
 Version: 0.18.34
   Changes:
     - added next level underground

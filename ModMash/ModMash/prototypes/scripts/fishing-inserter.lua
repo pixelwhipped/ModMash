@@ -325,7 +325,7 @@ local local_on_entity_cloned = function(event)
 	end
 end
 
-modmash.register_script({
+local control = {
 	on_tick = {
 		priority = high_priority,
 		tick = local_fishing_inserter_tick
@@ -340,4 +340,10 @@ modmash.register_script({
 	on_research = local_on_research,
 	on_configuration_changed = local_on_configuration_changed,
 	on_entity_cloned = local_on_entity_cloned
-})
+}
+
+if modmash.profiler == true then
+	local profiler = modmash.util.get_profiler("fishing inserter")
+	control.on_tick.tick = function() profiler:update(local_fishing_inserter_tick)	end
+end
+modmash.register_script(control)
