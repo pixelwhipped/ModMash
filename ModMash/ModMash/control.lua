@@ -54,7 +54,7 @@ require("prototypes.scripts.defines")
 require '__liborio__/prototypes/scripts/util'
 modmash.util = get_liborio()
 
-modmash.profiler = false
+modmash.profiler = true
 require("prototypes.scripts.profiler") 
 
 

@@ -300,7 +300,7 @@ local local_create_loot_table = function()
 	for _,i in pairs(game.item_prototypes) do
 		if i.subgroup.name == "raw-resource" and table_contains(exclude_loot,i.name) == false 
 			and starts_with(i.name,"deadlock-stack") == false then
-			log(i.name)
+			--log(i.name)
 			table.insert(loot_table,i) 
 		end
 	end

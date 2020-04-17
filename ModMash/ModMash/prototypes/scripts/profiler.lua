@@ -63,7 +63,7 @@ local local_profiler_create = function(name)
 	p.name = name
 	p.ticks = 0 
 	p.do_dump = false
-	p.dump = function() p.dump = true end
+	p.dump = function() p.do_dump = true end
 	p.update = function(tick)
 		p.ticks = p.ticks + 1
 		if p.profile == nil then
@@ -73,7 +73,7 @@ local local_profiler_create = function(name)
 		end
 		if type(tick) == "function" then tick() end
 		p.profiler.stop()
-		if p.do_dump == true  and p.ticks >= 100 then
+		if p.do_dump == true  and p.ticks >= 1 then
 			p.profiler.divide(p.ticks)
 			log{"recipe-name.concatenationstring","PROFILER: "..p.name.."=",p.profiler}
 			p.do_dump = false
