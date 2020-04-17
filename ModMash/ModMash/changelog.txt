@@ -2,7 +2,9 @@
 Version: 0.18.35
   Changes:
     - built profiler to identify ups issues
-    - biter spawner improvment before 0.012884ms,0.004200ms,0.009237ms after 
+    - biter spawner improvment before 0.012884ms,0.004200ms,0.009237ms after 0.000382,0.000250ms
+    - updated biter neural toxing graphics and effects, spawners become neutral and spitters, biters player force
+    - adjusted toxin logic for spitters. Artillery still target other turret types even if force changed.	 
 
 ---------------------------------------------------------------------------------------------------
 Version: 0.18.34

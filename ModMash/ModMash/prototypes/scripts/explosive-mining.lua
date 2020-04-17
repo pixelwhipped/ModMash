@@ -67,7 +67,7 @@ local control = {
 if modmash.profiler == true then
 	local profiler = modmash.util.get_profiler("explosive mining")
 	control.on_tick = function() 
-		profiler:update(local_init) 
+		profiler.update(local_init) 
 	end
 end
 modmash.register_script(control)

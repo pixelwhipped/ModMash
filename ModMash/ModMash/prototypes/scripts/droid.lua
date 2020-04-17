@@ -1155,6 +1155,6 @@ local control = {
 
 if modmash.profiler == true then
 	local profiler = modmash.util.get_profiler("droid")
-	control.on_tick.tick = function() profiler:update(local_droid_tick)	end
+	control.on_tick.tick = function() profiler.update(local_droid_tick)	end
 end
 modmash.register_script(control)

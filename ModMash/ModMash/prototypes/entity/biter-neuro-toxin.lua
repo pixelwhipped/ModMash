@@ -150,10 +150,10 @@ data:extend({
     slow_down_factor = 0,
     affected_by_wind = true,
     cyclic = true,
-    duration = 60 * 50,
-    fade_away_duration = 2 * 60,
+    duration = 1,
+    fade_away_duration = 1,
     spread_duration = 15,
-    color = { r = 0.1, g = 0.0, b = 0.45 },
+    color = { r = 0.1, g = 0.0, b = 0.45, a = 0},
     action =
 	{
 		{
@@ -218,7 +218,175 @@ data:extend({
 	},
     action_cooldown = 30
   },
-    
+  {
+      affected_by_wind = false,
+      animation = {
+        animation_speed = 0.25,
+        filename = "__base__/graphics/entity/smoke/smoke.png",
+        flags = {
+          "smoke"
+        },
+        frame_count = 60,
+        height = 120,
+        line_length = 5,
+        priority = "high",
+        shift = {
+          -0.53125,
+          -0.4375
+        },
+        width = 152
+      },
+      color = { r = 0.1, g = 0.0, b = 0.45, a = 0.5},
+      cyclic = true,
+      duration = 1440,
+      fade_away_duration = 180,
+      flags = {
+        "not-on-map"
+      },
+      name = "toxin-poison-cloud-visual-dummy",
+      particle_count = 24,
+      particle_distance_scale_factor = 0.5,
+      particle_duration_variation = 180,
+      particle_scale_factor = {
+        1,
+        0.70699999999999994
+      },
+      particle_spread = {
+        3.7800000000000002,
+        2.2680000000000002
+      },
+      render_layer = "object",
+      show_when_smoke_off = true,
+      spread_duration = 140,
+      spread_duration_variation = 280,
+      type = "smoke-with-trigger",
+      wave_distance = {
+        1,
+        0.5
+      },
+      wave_speed = {
+        0.00625,
+        0.0083333333333333321
+      }
+  },
+  {
+		action = {
+		action_delivery = {
+			target_effects = {
+			action = {
+				action_delivery = {
+				target_effects = {
+					damage = {
+					amount = 0,
+					type = "poison"
+					},
+					type = "damage"
+				},
+				type = "instant"
+				},
+				entity_flags = {
+				"breaths-air"
+				},
+				radius = 11,
+				type = "area"
+			},
+			type = "nested-result"
+			},
+			type = "instant"
+		},
+		type = "direct"
+		},
+		action_cooldown = 30,
+		affected_by_wind = false,
+		animation = {
+		animation_speed = 0.25,
+		filename = "__base__/graphics/entity/smoke/smoke.png",
+		flags = {
+			"smoke"
+		},
+		frame_count = 60,
+		height = 120,
+		line_length = 5,
+		priority = "high",
+		shift = {
+			-0.53125,
+			-0.4375
+		},
+		width = 152
+		},
+		color = { r = 0.1, g = 0.0, b = 0.45, a = 0.5},
+		created_effect = {
+		{
+			action_delivery = {
+			target_effects = {
+				entity_name = "toxin-poison-cloud-visual-dummy",
+				initial_height = 0,
+				show_in_tooltip = false,
+				type = "create-smoke"
+			},
+			type = "instant"
+			},
+			cluster_count = 10,
+			distance = 4,
+			distance_deviation = 5,
+			type = "cluster"
+		},
+		{
+			action_delivery = 
+			{
+				target_effects = {
+					entity_name = "toxin-poison-cloud-visual-dummy",
+					initial_height = 0,
+					show_in_tooltip = false,
+					type = "create-smoke"
+				},
+				type = "instant"
+			},
+			cluster_count = 11,
+			distance = 8.8000000000000007,
+			distance_deviation = 2,
+			type = "cluster"
+		}
+		},
+		cyclic = true,
+		duration = 1200,
+		fade_away_duration = 120,
+		flags = {
+			"not-on-map"
+		},
+		name = "toxin-poison-cloud",
+		particle_count = 16,
+		particle_distance_scale_factor = 0.5,
+		particle_duration_variation = 180,
+		particle_scale_factor = {
+			1,
+			0.70699999999999994
+		},
+		particle_spread = {
+			3.7800000000000002,
+			2.2680000000000002
+		},
+		render_layer = "object",
+		show_when_smoke_off = true,
+		spread_duration = 20,
+		spread_duration_variation = 20,
+		type = "smoke-with-trigger",
+		wave_distance = {
+			0.3,
+			0.2
+		},
+		wave_speed = {
+			0.0125,
+			0.016666666666666665
+		},
+		working_sound = 
+		{
+			sound = {
+				filename = "__base__/sound/fight/poison-cloud.ogg",
+				volume = 0.7
+			}
+		}
+	},
   
   -- technology
   {

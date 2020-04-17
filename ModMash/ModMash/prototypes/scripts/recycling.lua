@@ -311,6 +311,6 @@ local control = {
 
 if modmash.profiler == true then
 	local profiler = modmash.util.get_profiler("recycling")
-	control.on_tick.tick = function() profiler:update(local_recycling_tick)	end
+	control.on_tick.tick = function() profiler.update(local_recycling_tick)	end
 end
 modmash.register_script(control)

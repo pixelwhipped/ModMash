@@ -112,6 +112,6 @@ local control = {
 
 if modmash.profiler == true then
 	local profiler = modmash.util.get_profiler("subspace transports")
-	control.on_tick.tick = function() profiler:update(local_subspace_transports_tick)	end
+	control.on_tick.tick = function() profiler.update(local_subspace_transports_tick)	end
 end
 modmash.register_script(control)

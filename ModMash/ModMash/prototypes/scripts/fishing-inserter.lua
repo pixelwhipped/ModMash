@@ -344,6 +344,6 @@ local control = {
 
 if modmash.profiler == true then
 	local profiler = modmash.util.get_profiler("fishing inserter")
-	control.on_tick.tick = function() profiler:update(local_fishing_inserter_tick)	end
+	control.on_tick.tick = function() profiler.update(local_fishing_inserter_tick)	end
 end
 modmash.register_script(control)

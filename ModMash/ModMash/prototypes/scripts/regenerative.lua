@@ -126,6 +126,6 @@ local control = {
 
 if modmash.profiler == true then
 	local profiler = modmash.util.get_profiler("regenerative")
-	control.on_tick.tick = function() profiler:update(local_regenerative_tick)	end
+	control.on_tick.tick = function() profiler.update(local_regenerative_tick)	end
 end
 modmash.register_script(control)

@@ -87,6 +87,6 @@ local control = {
 
 if modmash.profiler == true then
 	local profiler = modmash.util.get_profiler(discharge_water_pump)
-	control.on_tick.tick = function() profiler:update(local_discharge_pump_tick)	end
+	control.on_tick.tick = function() profiler.update(local_discharge_pump_tick)	end
 end
 modmash.register_script(control)

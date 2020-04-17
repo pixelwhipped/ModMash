@@ -867,7 +867,7 @@ local control = {
 if modmash.profiler == true then
 	local profiler = modmash.util.get_profiler("underground")
 	control.on_tick = function() 
-		profiler:update(local_underground_tick) 
+		profiler.update(local_underground_tick) 
 	end
 end
 modmash.register_script(control)

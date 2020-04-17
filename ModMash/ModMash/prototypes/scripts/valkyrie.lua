@@ -430,6 +430,6 @@ local control = {
 
 if modmash.profiler == true then
 	local profiler = modmash.util.get_profiler("valkyrie")
-	control.on_tick.tick = function() profiler:update(local_valkyrie_tick)	end
+	control.on_tick.tick = function() profiler.update(local_valkyrie_tick)	end
 end
 modmash.register_script(control)

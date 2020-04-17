@@ -20,7 +20,6 @@ local starts_with  = modmash.util.starts_with
 local ends_with  = modmash.util.ends_with
 
 local local_on_added = function(entity)		
-	modmash.util.print(entity.name)
 	entity.force = game.forces[force_neutral]
 	end
 
@@ -38,30 +37,35 @@ local local_on_post_entity_died = function(event)
 	end
 	end
 
-local local_update_alert_type = function(k,alerts)
+local local_update_alert_type = function(alerts_id)
+	
+	local alerts = game.players[1].get_alerts{type=alerts_id}
+	alerts = alerts[alerts_id]
+	if alerts == nil then return end
+		
 	local numiter = 0			
 	local updates = math.min(#alerts,alerts_per_tick)
-	for k=global.modmash.spawner_update_type_index[k], #alerts do 
-		for j=1, #v do local w = alerts[j] 
-			for l=1, #w do local x = w[l] 
-				if  x~= nil and x.target~=nil then							
-					if (x.target.name ~= nil and starts_with(x.target.name,"biter")) or x.target.prototype.subgroup.name=="enemies" then
-						game.players[1].remove_alert{entity = x.target}
-					end							
-				end
+	for k=global.modmash.spawner_update_type_index[alerts_id], #alerts do 
+		local j = alerts[k] 
+		for w=1,#j do x=j[w]
+			if  x~= nil and x.target~=nil then			
+				if (x.target.name ~= nil and (starts_with(x.target.name,"biter") or ends_with(x.target.name,"biter"))) or x.target.prototype.subgroup.name=="enemies" then
+					game.players[1].remove_alert{entity = x.target}
+					
+				end							
 			end
-		end
-		if k >= #alerts then k = 1 end
-		numiter = numiter + 1
-		if numiter >= updates then 
-			global.modmash.spawner_update_type_index[k] = k
-			return
+			if k >= #alerts then k = 1 end
+			numiter = numiter + 1
+			if numiter >= updates then 
+				global.modmash.spawner_update_type_index[k] = k
+				return
+			end
 		end
 	end
 end
 local local_tick = function()	
-	local_update_alert_type(game.players[1].get_alerts{type=defines.alert_type.entity_destroyed})
-	local_update_alert_type(game.players[1].get_alerts{type=defines.alert_type.entity_under_attack})
+	local_update_alert_type(defines.alert_type.entity_destroyed)
+	local_update_alert_type(defines.alert_type.entity_under_attack)
 	end
 
 local local_on_configuration_changed = function(f)
@@ -93,7 +97,7 @@ local control = {
 if modmash.profiler == true then
 	local profiler = modmash.util.get_profiler("biter spawner")
 	control.on_tick = function() 
-		profiler:update(local_tick) 
+		profiler.update(local_tick) 
 	end
 end
 modmash.register_script(control)
