@@ -1136,7 +1136,7 @@ local local_on_entity_cloned = function(event)
 	end
 end
 
-modmash.register_script({
+local control = {
 	on_tick = {
 		priority = med_priority,
 		tick = local_droid_tick
@@ -1151,4 +1151,10 @@ modmash.register_script({
 	on_configuration_changed = local_on_configuration_changed,
 	on_ai_command_completed = local_on_ai_command_completed,
 	on_entity_cloned = local_on_entity_cloned
-})
+}
+
+if modmash.profiler == true then
+	local profiler = modmash.util.get_profiler("droid")
+	control.on_tick.tick = function() profiler.update(local_droid_tick)	end
+end
+modmash.register_script(control)

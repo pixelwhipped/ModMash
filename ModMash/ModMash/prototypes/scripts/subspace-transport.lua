@@ -96,7 +96,7 @@ local local_on_entity_cloned = function(event)
 	end
 end
 
-modmash.register_script({
+local control = {
 	names = {subspace_transport},
 	on_init = local_init,
 	on_load = local_load,
@@ -108,4 +108,10 @@ modmash.register_script({
 		auto_add_remove = {subspace_transport}
 		},
 	on_entity_cloned = local_on_entity_cloned
-})
+}
+
+if modmash.profiler == true then
+	local profiler = modmash.util.get_profiler("subspace transports")
+	control.on_tick.tick = function() profiler.update(local_subspace_transports_tick)	end
+end
+modmash.register_script(control)

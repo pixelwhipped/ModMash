@@ -412,7 +412,7 @@ local local_on_entity_selected = function(player,entity)
 	end
 end
 
-modmash.register_script({
+local control = {
 	on_tick = {
 		tick = local_valkyrie_tick,
 		priority = low_priority
@@ -426,4 +426,10 @@ modmash.register_script({
 	on_configuration_changed = local_on_configuration_changed,
 	on_entity_cloned = local_on_entity_cloned,
 	on_selected = local_on_entity_selected
-})
+}
+
+if modmash.profiler == true then
+	local profiler = modmash.util.get_profiler("valkyrie")
+	control.on_tick.tick = function() profiler.update(local_valkyrie_tick)	end
+end
+modmash.register_script(control)

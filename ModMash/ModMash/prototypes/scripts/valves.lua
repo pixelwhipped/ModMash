@@ -344,11 +344,19 @@ local local_valve_adjust = function(entity)
 	end
 end
 
-modmash.register_script({
-	on_tick = local_valves_tick,
-	on_init = local_init,
-	on_start = local_start,
-	on_added = local_valve_added,
-	on_removed = local_valve_removed,
-	on_adjust = local_valve_adjust
-})
+local control = {
+		on_tick = local_valves_tick,
+		on_init = local_init,
+		on_start = local_start,
+		on_added = local_valve_added,
+		on_removed = local_valve_removed,
+		on_adjust = local_valve_adjust
+	}
+
+if modmash.profiler == true then
+	local profiler = modmash.util.get_profiler("valves")
+	control.on_tick = function() 
+		profiler.update(local_valves_tick) 
+	end
+end
+modmash.register_script(control)

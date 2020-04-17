@@ -852,7 +852,7 @@ local local_on_player_spawned = function(event)
 	end	
 
 
-modmash.register_script({
+local control = {
 	on_tick = local_underground_tick,
 	on_init = local_init,
 	on_load = local_load,
@@ -862,4 +862,12 @@ modmash.register_script({
 	on_configuration_changed = local_on_configuration_changed,
 	on_chunk_generated = local_chunk_generated,
 	on_player_spawned = local_on_player_spawned	
-})
+}
+
+if modmash.profiler == true then
+	local profiler = modmash.util.get_profiler("underground")
+	control.on_tick = function() 
+		profiler.update(local_underground_tick) 
+	end
+end
+modmash.register_script(control)

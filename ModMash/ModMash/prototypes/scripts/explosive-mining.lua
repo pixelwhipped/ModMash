@@ -58,8 +58,16 @@ local local_action_mining =function (event)
 	end
 end
 
-modmash.register_script({
+local control = {
 	on_init = local_init,
 	on_player_cursor_stack_changed = local_action_mining,
 	on_tick = local_check_resource
-})
+}
+
+if modmash.profiler == true then
+	local profiler = modmash.util.get_profiler("explosive mining")
+	control.on_tick = function() 
+		profiler.update(local_init) 
+	end
+end
+modmash.register_script(control)

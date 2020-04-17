@@ -102,8 +102,16 @@ local local_check_pollution = function()
 end
 
 
-modmash.register_script({
+local control = {
 	on_init = local_init,
 	local_load = local_load,
 	on_tick = local_check_pollution,
-})
+}
+
+if modmash.profiler == true then
+	local profiler = modmash.util.get_profiler("pollution")
+	control.on_tick = function() 
+		profiler.update(local_check_pollution) 
+	end
+end
+modmash.register_script(control)

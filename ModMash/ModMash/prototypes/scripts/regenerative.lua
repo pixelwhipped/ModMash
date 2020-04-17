@@ -110,7 +110,7 @@ local local_on_configuration_changed = function(f)
 	end
 	end
 
-modmash.register_script({
+local control = {
 	on_tick = {
 		priority = medium_priority,
 		tick = local_regenerative_tick
@@ -122,4 +122,10 @@ modmash.register_script({
 	on_research = local_regenerative_research,
 	on_configuration_changed = local_on_configuration_changed,
 	on_entity_cloned = local_on_entity_cloned
-})
+}
+
+if modmash.profiler == true then
+	local profiler = modmash.util.get_profiler("regenerative")
+	control.on_tick.tick = function() profiler.update(local_regenerative_tick)	end
+end
+modmash.register_script(control)

@@ -4,7 +4,9 @@ no changes
 log("Entering control.lua")
 --[[Setup volatile structures]]
 if not modmash then modmash = {} end
+
 --potential desync issue
+
 if not modmash.force_configuration_change then modmash.force_configuration_change = false end
 if not modmash.ticks then modmash.ticks = {} end
 if not modmash.ticks_low then modmash.ticks_low = {} end
@@ -51,6 +53,11 @@ require("prototypes.scripts.defines")
 --require("prototypes.scripts.util") 
 require '__liborio__/prototypes/scripts/util'
 modmash.util = get_liborio()
+
+modmash.profiler = false
+require("prototypes.scripts.profiler") 
+
+
 local table_contains = modmash.util.table.contains
 local table_index_of = modmash.util.table.index_of
 local starts_with  = modmash.util.starts_with
@@ -257,8 +264,6 @@ modmash.register_script = function(script)
 	end
 
 --chunks should possibly be global
-
-
 
 
 --[[Called first time mod is added to current game instance. Called Once]]
