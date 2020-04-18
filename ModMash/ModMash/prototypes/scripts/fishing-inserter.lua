@@ -36,7 +36,7 @@ local local_init = function()
 
 local local_load = function()	
 	fishing = global.modmash.fishing
-	fishing_inserters = fishingfishing_inserters
+	fishing_inserters = fishing.fishing_inserters
 	fishing_transferers = fishing.fishing_transferers
 	fishing_fish_cache = fishing.fishing_fish_cache
 	end

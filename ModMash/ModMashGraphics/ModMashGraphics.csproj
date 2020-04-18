@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>C:\Users\TarrantFamily\AppData\Roaming\Factorio\mods\modmashgraphics_0.18.03\</OutputPath>
+    <OutputPath>C:\Users\TarrantFamily\AppData\Roaming\Factorio\mods\modmashgraphics_0.18.04\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -91,7 +91,19 @@
     <None Update="graphics\entity\assembling-machine-4\assembling-machine-4.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="graphics\entity\assembling-machine-mask\assembling-machine-3.png">
+    <None Update="graphics\entity\assembling-machine-4\assembling-machine-5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\entity\assembling-machine-4\assembling-machine-shadow.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\entity\assembling-machine-4\hr-assembling-machine-4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\entity\assembling-machine-4\hr-assembling-machine-5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\entity\assembling-machine-4\hr-assembling-machine-shadow.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="graphics\entity\condenser-valve\small-pump-down.png">

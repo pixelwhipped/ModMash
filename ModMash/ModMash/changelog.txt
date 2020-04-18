@@ -1,4 +1,10 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.18.36
+  Changes:
+    - updated assembling machine 4 and 5 graphics
+	- updated assembling machine 5 recipe
+
+---------------------------------------------------------------------------------------------------
 Version: 0.18.35
   Changes:
     - built profiler to identify ups issues
