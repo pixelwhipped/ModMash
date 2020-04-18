@@ -78,16 +78,24 @@ local local_on_configuration_changed = function(f)
 			end
 		end
 	end
-	if f.mod_changes["modmash"].old_version < "0.18.35" then	
+	if f.mod_changes["modmash"].old_version < "0.18.37" then	
 		if not global.modmash.spawner_update_type_index then global.modmash.spawner_update_type_index = {} end
 		if not global.modmash.spawner_update_type_index[defines.alert_type.entity_destroyed] then  global.modmash.spawner_update_type_index[defines.alert_type.entity_destroyed] = 1 end
 		if not global.modmash.spawner_update_type_index[defines.alert_type.entity_under_attack] then  global.modmash.spawner_update_type_index[defines.alert_type.entity_under_attack] = 1 end
 	end
 	end
 
+local local_init = function()	
+	if global.modmash == nil then global.modmash = {} end
+	if not global.modmash.spawner_update_type_index then global.modmash.spawner_update_type_index = {} end
+	if not global.modmash.spawner_update_type_index[defines.alert_type.entity_destroyed] then  global.modmash.spawner_update_type_index[defines.alert_type.entity_destroyed] = 1 end
+	if not global.modmash.spawner_update_type_index[defines.alert_type.entity_under_attack] then  global.modmash.spawner_update_type_index[defines.alert_type.entity_under_attack] = 1 end
+	end
+
 local control = {
 	names = {"biter-spawner"},
 	on_tick = local_tick,
+	on_init = local_init,
 	on_added_by_name = local_on_added,
 	on_spawned = local_on_spawned,
 	on_post_entity_died = local_on_post_entity_died,
