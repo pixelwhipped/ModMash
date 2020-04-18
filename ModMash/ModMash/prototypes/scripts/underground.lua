@@ -223,7 +223,7 @@ local generate_surface_area2 = function(x,y,r,surface, force_gen, force_ore)
 		local_build_resources()
 	end
 	local rnd = math.random(1, #resources+8)
-
+	local mixed = math.random(1,6)
 	p = d[1]
 	for i=d[2],d[3] do
 	  local str = ""
@@ -251,9 +251,13 @@ local generate_surface_area2 = function(x,y,r,surface, force_gen, force_ore)
 				if force_ore ~= nil then
 					create = {name=force_ore, amount=amt*m, position=pos}
 				elseif rnd <= #resources then
-					create = {name=resources[rnd], amount=amt*m, position=pos}
+					if mixed == 1 then
+						create = {name=resources[math.random(1,#resources)], amount=(amt*m)*2, position=pos}
+					else
+						create = {name=resources[rnd], amount=amt*m, position=pos}
+					end
 				elseif rnd<(#resources+5) and x == j and y == i then	
-					create = { name = enemy_spawns[math.random(#enemy_spawns)], position = pos }					
+					create = { name = enemy_spawns[math.random(#enemy_spawns)], position = pos }	
 				end
 				if create ~= nil and local_is_valid_autoplace(surface,create.name,create.position) then surface.create_entity(create) end
 			  end

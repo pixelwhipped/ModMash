@@ -93,7 +93,8 @@ local local_get_random_stack = function(group)
 	end
 
 local local_add_tech_loot = function(surface_index, area)
-	if settings.startup["modmash-setting-tech-loot"].value == "Disabled" then return end
+	if settings.startup["modmash-setting-tech-loot"].value == "Disabled" then return end	
+	global.modmash.loot.loot_tech_modifier = global.modmash.loot.loot_tech_modifier + 0.2
 	local surface = game.surfaces[surface_index]
 	local position = {x=area.left_top.x+math.random(0, 30),y=area.left_top.y+math.random(0, 30)}
 	local name = loot_science_a
@@ -197,9 +198,12 @@ end
 local local_add_loot = function(surface_index, area )
 	if not loot_table then return end
 	if distance(0,0,area.left_top.x,area.left_top.y) < loot_exclude_distance_from_origin then return end
-	if math.random(1, loot_tech_probability) == 2 then local_add_tech_loot(surface_index, area) end
+	if not global.modmash.loot.loot_tech_modifier then global.modmash.loot.loot_tech_modifier = 0 end
+	if math.random(1, loot_tech_probability+math.floor(global.modmash.loot.loot_tech_modifier)) == 2 then local_add_tech_loot(surface_index, area) end
 	if settings.startup["modmash-setting-item-loot"].value == "Disabled" then return end
-	if math.random(1, loot_probability) ~= 1 then return end
+	if global.modmash.loot.loot_modifier == nil then global.modmash.loot.loot_modifier = 0 end
+	if math.random(1, loot_probability+math.floor(global.modmash.loot.loot_modifier)) ~= 1 then return end
+	global.modmash.loot.loot_modifier = global.modmash.loot.loot_modifier + 0.2
 	local stack = nil
 
 	local surface = game.surfaces[surface_index]
