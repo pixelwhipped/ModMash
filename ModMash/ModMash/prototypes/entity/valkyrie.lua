@@ -818,7 +818,7 @@ data:extend(
 		  shift = {1.09375, 0.59375},
 		  direction_count = 32
 		}
-	}
+	},
 	--valkyrie-robot-return-projectile is projectile
 	{
 		type = "projectile",
