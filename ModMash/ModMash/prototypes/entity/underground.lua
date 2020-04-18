@@ -683,12 +683,18 @@ local r = table.deepcopy(data.raw["simple-entity"][rock_names[k]])
     {
       mining_particle = "stone-particle",
       mining_time = 0.75,
-      results = {{name = "stone", amount_min = 1, amount_max = 8}, {name = "sand", amount_min = 1, amount_max = 5}},
+      results = {
+		{name = "stone", amount_min = 1, amount_max = 8, probability = 0.5}, 
+		{name = "sand", amount_min = 1, amount_max = 5, probability = 0.5},
+		{name = "alien-ore", amount_min = 0, amount_max = 5, probability = 0.5},
+		{name = modmash.defines.names.titanium_ore_name, amount_min = 0, amount_max = 5, probability = 0.5},
+		{name = "super-material", amount_min = 0, amount_max = 1, probability = 0.005},
+		},
     }
 	for j=1, #r.pictures do
-		r.pictures[j].tint = {0.15,0.15,0.15,1}
+		r.pictures[j].tint = {0.25,0.25,0.25,1}
 		if r.pictures[j].hr_version then
-			r.pictures[j].hr_version.tint = {0.15,0.15,0.15,1}
+			r.pictures[j].hr_version.tint = {0.25,0.25,0.25,1}
 		end
 	end
 	data:extend({r})

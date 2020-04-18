@@ -43,16 +43,66 @@ data:extend(
     collision_box = {{-1.2, -1.2}, {1.2, 1.2}},
     selection_box = {{-1.5, -1.5}, {1.5, 1.5}},
     fast_replaceable_group = "assembling-machine",
-    animation =
-    {
-      filename = "__modmashgraphics__/graphics/entity/assembling-machine-4/assembling-machine-4.png",
-      priority = "high",
-      width = 113,
-      height = 99,
-      frame_count = 32,
-      line_length = 8,
-      shift = {0.4, -0.06}
-    },
+	alert_icon_shift = {
+        -0.09375,
+        -0.375
+      },
+      animation = {
+        layers = {
+          {
+            filename = "__modmashgraphics__/graphics/entity/assembling-machine-4/assembling-machine-4.png",
+            frame_count = 32,
+            height = 124,
+            hr_version = {
+              filename = "__modmashgraphics__/graphics/entity/assembling-machine-4/hr-assembling-machine-4.png",
+              frame_count = 32,
+              height = 247,
+              line_length = 8,
+              priority = "high",
+              scale = 0.5,
+              shift = {
+                0,
+                -0.0234375
+              },
+              width = 214
+            },
+            line_length = 8,
+            priority = "high",
+            shift = {
+              0,
+              -0.015625
+            },
+            width = 108
+          },
+          {
+            draw_as_shadow = true,
+            filename = "__modmashgraphics__/graphics/entity/assembling-machine-4/assembling-machine-shadow.png",
+            frame_count = 32,
+            height = 87,
+            hr_version = {
+              draw_as_shadow = true,
+              filename = "__modmashgraphics__/graphics/entity/assembling-machine-4/hr-assembling-machine-shadow.png",
+              frame_count = 32,
+              height = 172,
+              line_length = 8,
+              priority = "high",
+              scale = 0.5,
+              shift = {
+                0.875,
+                0.125
+              },
+              width = 260
+            },
+            line_length = 8,
+            priority = "high",
+            shift = {
+              0.875,
+              0.125
+            },
+            width = 130
+          }
+        }
+      },
     open_sound = { filename = "__base__/sound/machine-open.ogg", volume = 0.85 },
     close_sound = { filename = "__base__/sound/machine-close.ogg", volume = 0.75 },
     working_sound =

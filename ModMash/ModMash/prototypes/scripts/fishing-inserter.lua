@@ -26,15 +26,22 @@ local get_entities_around  = modmash.util.entity.get_entities_around
 local local_init = function()	
 	if global.modmash.fishing == nil then global.modmash.fishing = {} end	
 	if global.modmash.fishing.fishing_inserters == nil then global.modmash.fishing.fishing_inserters = {} end	
-	if global.modmash.fishing.fishing_transferers == nil then global.modmash.fishing.fishing_transferers = {} end		
+	if global.modmash.fishing.fishing_transferers == nil then global.modmash.fishing.fishing_transferers = {} end	
+	if global.modmash.fishing.fishing_fish_cache == nil then global.modmash.fishing.fishing_fish_cache = {} end
 	fishing = global.modmash.fishing
+	fishing_inserters = fishing.fishing_inserters
+	fishing_transferers = fishing.fishing_transferers
+	fishing_fish_cache = fishing.fishing_fish_cache
 	end
 
 local local_load = function()	
 	fishing = global.modmash.fishing
+	fishing_inserters = fishing.fishing_inserters
+	fishing_transferers = fishing.fishing_transferers
+	fishing_fish_cache = fishing.fishing_fish_cache
 	end
 
-local local_try_pickup_fish_at_position = function(inserter,entity)	
+--[[local local_try_pickup_fish_at_position = function(inserter,entity)	
 	if inserter.held_stack.valid_for_read == false and distance(inserter.position.x,inserter.position.y,entity.position.x,entity.position.y) <= 2 then
 		inserter.pickup_position = {
 			x = entity.position.x,
@@ -44,8 +51,10 @@ local local_try_pickup_fish_at_position = function(inserter,entity)
 		if distance(inserter.held_stack_position.x,inserter.held_stack_position.y,entity.position.x,entity.position.y) <= 0.2 then
 			entity.destroy()
 			inserter.held_stack.set_stack({name="raw-fish", count=1})
+			return inserter.pickup_position
 		end
 	end end
+	]]
 
 local local_fishing_transferer_process = function(entity)
 	
@@ -65,31 +74,63 @@ local local_fishing_transferer_process = function(entity)
 
 end
 --add check for frop position held position and over water
-local local_fishing_inserter_process = function(entity)    	
-
-	local fish = get_entities_around(entity,8, "fish")
+--[[local local_fishing_inserter_process = function(entity)    		
+	local fish = nil
+	local fish_tbl = fishing_fish_cache[entity]
+	if fish_tbl == nil then
+		fishing_fish_cache[entity] = 
+			{
+				fish = get_entities_around(entity,8,"fish"),
+				coundown = 200
+			}
+	else
+		fish_tbl.coundown = fish_tbl.coundown - 1
+		if fish_tbl.coundown <=0 then
+			fishing_fish_cache[entity] = 
+			{
+				fish = get_entities_around(entity,8,"fish"),
+				coundown = 200
+			}
+		end		
+	end
+	fish = get_entities_around(entity,8,"fish") --fishing_fish_cache[entity].fish
 	
 	local fish_count = 0
 	local spawner = nil
 	local target = nil
 	local current_dist = 0
 	local target_dist = 100
-	if fish ~= nil then
-		for i, ent in pairs(fish) do					
-			fish_count = fish_count + 1	
-			local dist = distance(entity.held_stack_position.x,entity.held_stack_position.y,ent.position.x,ent.position.y)
-			if dist > current_dist then
-				current_dist = dist
-				spawner = ent
-			end
-			if dist < target_dist then
-				target_dist = dist
-				target = ent
+	if fish ~= nil then		
+		for i = #fish, 1 do	local ent = fish[i]		
+			if is_valid(ent) then
+				fish_count = fish_count + 1	
+				local dist = distance(entity.held_stack_position.x,entity.held_stack_position.y,ent.position.x,ent.position.y)
+				if dist > current_dist then
+					current_dist = dist
+					spawner = ent
+				end
+				if dist < target_dist then
+					target_dist = dist
+					target = ent
+				end
+			else	
+				table.remove(fish,i)
+				fish_count = fish_count + 1	
 			end
 		end
 	end
 	if target ~= nil then	
-		local_try_pickup_fish_at_position(entity,target)
+		local spawner = local_try_pickup_fish_at_position(entity,target)
+		if spawner ~= nil then
+			fish = get_entities_around(entity,8,"fish")
+			modmash.util.print(#fish)
+			if #fish < 10 then
+				local r = math.random()
+				if r < 0.5 and entity.surface.can_place_entity({name="fish", amount=1, position=spawner.position}) then
+					entity.surface.create_entity({name="fish", amount=2, position=spawner})
+				end
+			end
+		end
 	end
 	if spawner ~= nil and spawner.valid and fish_count < 10 then	
 		local r = math.random()
@@ -104,22 +145,120 @@ local local_fishing_inserter_process = function(entity)
 				tile.surface.create_entity({name="fish", amount=1, position={tile.position.x+.5, tile.position.y+.5}})
 			end
 		end
+	end
+	end]]
+
+local local_try_pickup_fish_at_position = function(inserter,entity)	
+	if inserter.held_stack.valid_for_read == false and distance(inserter.position.x,inserter.position.y,entity.position.x,entity.position.y) <= 2 then
+		inserter.pickup_position = {
+			x = entity.position.x,
+			y = entity.position.y
+		}
+		inserter.direction = inserter.direction
+		if distance(inserter.held_stack_position.x,inserter.held_stack_position.y,entity.position.x,entity.position.y) <= 0.2 then			
+			entity.destroy()
+			inserter.held_stack.set_stack({name="raw-fish", count=1})
+		end
 	end end
 
+
+local local_fishing_inserter_process = function(entity)    	
+
+	--local fish = get_entities_around(entity,8,"fish")	
+
+	local fish = nil
+	local fish_tbl = fishing_fish_cache[entity]
+	if fish_tbl == nil then
+		fishing_fish_cache[entity] = 
+			{
+				fish = get_entities_around(entity,8,"fish"),
+				coundown = 200
+			}
+	else
+		fish_tbl.coundown = fish_tbl.coundown - 1
+		if fish_tbl.coundown <=0 then
+			fishing_fish_cache[entity] = 
+			{
+				fish = get_entities_around(entity,8,"fish"),
+				coundown = 200
+			}
+		end		
+	end
+	fish = fishing_fish_cache[entity].fish
+
+	local fish_count = #fish
+
+	--local spawner = nil
+	local target = nil
+	local current_dist = 0
+	local target_dist = 100
+	if fish ~= nil then
+		for i=1, #fish do local ent = fish[i]		
+			if is_valid(ent) then
+				--fish_count = fish_count + 1	
+				local dist = distance(entity.held_stack_position.x,entity.held_stack_position.y,ent.position.x,ent.position.y)
+				if dist > current_dist then
+					current_dist = dist
+					spawner = ent
+				end
+				if dist < target_dist then
+					target_dist = dist
+					target = ent
+				end
+			end
+		end
+	end
+	if target ~= nil then	
+		local_try_pickup_fish_at_position(entity,target)
+	end
+	if fish_count < 10 and spawner ~= nil and spawner.valid then	
+		local r = math.random()
+		if r < 0.05 and entity.surface.can_place_entity({name="fish", amount=1, position=spawner.position}) then
+			entity.surface.create_entity({name="fish", amount=1, position=spawner.position})
+		end
+	elseif fish_count == 0 then
+		local box = {{entity.pickup_position.x-0.5, entity.pickup_position.y-0.5}, {entity.pickup_position.x+0.5, entity.pickup_position.y+0.5}}
+		local tiles = entity.surface.find_tiles_filtered{area=box}
+		for i = 1, #tiles do local tile = tiles[i]
+			if tile.name == "water" and tile.surface.can_place_entity({name="fish", amount=1, position={tile.position.x+.5, tile.position.y+.5}}) then
+				tile.surface.create_entity({name="fish", amount=1, position={tile.position.x+.5, tile.position.y+.5}})
+			end
+			fishing_fish_cache[entity] = 
+			{
+				fish = get_entities_around(entity,8,"fish"),
+				coundown = 200
+			}
+			return
+		end
+	end end
+
+local update_index = 1	
 local local_fishing_inserter_tick = function()	
 	if fishing.allow_fishing  == true then 		
 		local fishing_inserters = fishing.fishing_inserters	
-		for index=1, #fishing.fishing_inserters do local fishing_inserter = fishing.fishing_inserters[index]
+		local numiter = 0
+		local updates = math.min(#fishing_inserters,10)
+
+		for index=update_index, #fishing_inserters do local fishing_inserter = fishing_inserters[index]
 			if fishing_inserter.valid and fishing_inserter.energy ~= 0 then
 				if not fishing_inserter.to_be_deconstructed(fishing_inserter.force) then					
 					local_fishing_inserter_process(fishing_inserter)				
 				end
 			end
+			if index >= #fishing_inserters then index = 1 end
+			numiter = numiter + 1
+			if numiter >= updates then 
+				update_index = index
+				break
+			end
 		end 
-		for index=1, #fishing.fishing_transferers do local fishing_transferer = fishing.fishing_transferers[index]
-			if fishing_transferer.valid and fishing_transferer.energy ~= 0 then
-				if not fishing_transferer.to_be_deconstructed(fishing_transferer.force) then					
-					local_fishing_transferer_process(fishing_transferer)				
+
+		if game.tick % 30 then
+			for index=1, #fishing_transferers do local fishing_transferer = fishing_transferers[index]
+				if fishing_transferer.valid and fishing_transferer.energy ~= 0 then
+					if not fishing_transferer.to_be_deconstructed(fishing_transferer.force) then					
+						local_fishing_transferer_process(fishing_transferer)				
+					end
 				end
 			end
 		end
@@ -129,20 +268,22 @@ local local_fishing_inserter_tick = function()
 local local_check_fishing_inserter = function(entity)	
 	local box = {{entity.pickup_position.x-0.5, entity.pickup_position.y-0.5}, {entity.pickup_position.x+0.5, entity.pickup_position.y+0.5}}
 	local tiles = entity.surface.find_tiles_filtered{area=box}
-	local water = false
 	for _,tile in pairs(tiles) do
-		if starts_with(tile.name, "water") then water = true end
+		if starts_with(tile.name, "water") then
+			table.insert(fishing_inserters, entity)
+			return true
+		end
 	end
-	if water == false then return end
+	return false
 	--entity.operable = false
-	table.insert(fishing.fishing_inserters, entity)
+	
 end
 
 local local_check_fishing_transferer = function(entity)			
 	local tile = entity.surface.get_tile(entity.drop_position.x, entity.drop_position.y)
 	if starts_with(tile.name, "water") then
 		--entity.operable = false
-		table.insert(fishing.fishing_transferers, entity)
+		table.insert(fishing_transferers, entity)
 	end
 end
 
@@ -155,20 +296,20 @@ local local_fishing_inserter_added = function(entity)
 
 local local_fishing_inserter_removed = function(entity)
 	if entity.type == "inserter" then		
-		for index, fishing_inserter in ipairs(fishing.fishing_inserters) do
+		for index, fishing_inserter in ipairs(fishing_inserters) do
 			if fishing_inserter.valid and fishing_inserter == entity then
 				entity.operable = true
-				table.remove(fishing.fishing_inserters, index)
+				table.remove(fishing_inserters, index)
 				return
 			end
 		end
-		for index, fishing_transferer in ipairs(fishing.fishing_transferers) do
+		for index, fishing_transferer in ipairs(fishing_transferers) do
 			if fishing_transferer.valid and fishing_transferer == entity then
 				entity.operable = true
-				table.remove(fishing.fishing_transferers, index)
+				table.remove(fishing_transferers, index)
 				return
 			end
-		end		
+		end	
 	end
 	end
 
@@ -313,6 +454,13 @@ local local_on_configuration_changed = function(f)
 			end
 		end
 	end
+	if f.mod_changes["modmash"].old_version < "0.18.36" then
+		global.modmash.fishing.fishing_fish_cache = {}
+		fishing = global.modmash.fishing
+		fishing_inserters = fishing.fishing_inserters
+		fishing_transferers = fishing.fishing_transferers
+		fishing_fish_cache = fishing.fishing_fish_cache
+	end
 	end
 
 local local_on_entity_cloned = function(event)
@@ -339,7 +487,7 @@ local control = {
 	on_player_rotated_entity = local_on_player_rotated_entity,
 	on_research = local_on_research,
 	on_configuration_changed = local_on_configuration_changed,
-	on_entity_cloned = local_on_entity_cloned
+	on_entity_cloned = local_on_entity_cloned,
 }
 
 if modmash.profiler == true then

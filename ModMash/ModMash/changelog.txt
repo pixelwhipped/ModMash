@@ -1,4 +1,13 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.18.36
+  Changes:
+    - updated assembling machine 4 and 5 graphics
+	- updated assembling machine 5 recipe
+    - added modifier to loot to reduce chance the more you find
+    - changed minable properties of level 2 rocks, and color
+    - added chance for mixed or in underground level 2, twice the ore
+
+---------------------------------------------------------------------------------------------------
 Version: 0.18.35
   Changes:
     - built profiler to identify ups issues

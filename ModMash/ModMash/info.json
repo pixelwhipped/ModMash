@@ -1,6 +1,6 @@
 {
   "name": "modmash",
-  "version": "0.18.35",
+  "version": "0.18.36",
   "title": "ModMash",
   "author": "PixelWhipped",
   "contact": "",
@@ -10,7 +10,7 @@
   "dependencies": [
     "base >= 0.18.0",
     "wiki >= 0.18.05",
-    "modmashgraphics >= 0.18.03",
+    "modmashgraphics >= 0.18.04",
     "liborio >= 0.18.03",
     "? coffee >= 0.18.08",
     "? biterbullets >= 0.18.4",
