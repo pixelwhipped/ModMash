@@ -23,6 +23,7 @@ local starts_with = modmash.util.starts_with
 local table_contains = modmash.util.table.contains
 local is_valid_and_persistant = modmash.util.entity.is_valid_and_persistant
 local distance = modmash.util.distance
+local get_entities_around  = modmash.util.entity.get_entities_around
 
 local rock_names = {
   "mm_rock-huge",
@@ -36,9 +37,18 @@ local rock_names2 = {
   "mm_dark-sand-rock-big"
 }
 
+local all_rock_names = {
+  "mm_rock-huge",
+  "mm_rock-big",
+  "mm_sand-rock-big",
+  "mm_dark-rock-huge",
+  "mm_dark-rock-big",
+  "mm_dark-sand-rock-big"
+}
+
 local enemy_spawns = {
   "biter-spawner",
-  "spitter-spawner"
+  "spitter-spawner",
 }
 
 
@@ -47,6 +57,7 @@ local accumulators = nil
 local accesses = nil
 local accesses2 = nil
 local underground_origins = nil
+local diggers = nil
 --[[ensure globals]]
 local local_init = function() 
 	log("underground.local_init")
@@ -54,6 +65,8 @@ local local_init = function()
 	if global.modmash.underground_accesses == nil then global.modmash.underground_accesses = {} end
 	if global.modmash.underground_accesses2 == nil then global.modmash.underground_accesses2 = {} end
 	if global.modmash.underground_origins == nil then global.modmash.underground_origins = {} end
+	if global.modmash.diggers == nil then global.modmash.diggers = {} end
+	diggers = global.modmash.diggers
 	accumulators = global.modmash.underground_accumulators
 	accesses = global.modmash.underground_accesses
 	accesses2 = global.modmash.underground_accesses2
@@ -66,6 +79,7 @@ local local_load = function()
 	accesses = global.modmash.underground_accesses
 	accesses2 = global.modmash.underground_accesses2
 	underground_origins = global.modmash.underground_origins 
+	diggers = global.modmash.diggers
 	end
 
 local get_circle_lines = function( centerX, centerY, radius)
@@ -179,18 +193,22 @@ local generate_surface_area = function(x,y,r,surface, force_gen, force_ore)
 				local create = nil
 				if force_ore ~= nil then
 					create = {name=force_ore, amount=amt*m, position=pos}
-				elseif rnd<6 and x == j and y == i then	
-					create = { name = enemy_spawns[math.random(#enemy_spawns)], position = pos }					
-				elseif rnd<12 then
-					create = {name="uranium-ore", amount=amt*m, position=pos}
-				elseif rnd<17 then
-					create = {name="iron-ore", amount=amt*m, position=pos}
-				elseif rnd<23 then
-					create = {name="copper-ore", amount=amt*m, position=pos}
-				elseif rnd<27 then
-					create = {name="coal", amount=amt*m, position=pos}
-				elseif rnd<30 then
-					create = {name="alien-ore", amount=amt*m, position=pos}
+				else
+					if rnd<6 and x == j and y == i then	
+						surface.create_entity({ name = "digger-spawner", position = pos })	
+						rnd = math.random(1, 50)
+					end
+					if rnd<12 then
+						create = {name="uranium-ore", amount=amt*m, position=pos}
+					elseif rnd<17 then
+						create = {name="iron-ore", amount=amt*m, position=pos}
+					elseif rnd<23 then
+						create = {name="copper-ore", amount=amt*m, position=pos}
+					elseif rnd<27 then
+						create = {name="coal", amount=amt*m, position=pos}
+					elseif rnd<30 then
+						create = {name="alien-ore", amount=amt*m, position=pos}
+					end
 				end
 				if create ~= nil and local_is_valid_autoplace(surface,create.name,create.position) then surface.create_entity(create) end
 			  end
@@ -224,6 +242,7 @@ local generate_surface_area2 = function(x,y,r,surface, force_gen, force_ore)
 	end
 	local rnd = math.random(1, #resources+8)
 	local mixed = math.random(1,6)
+	local biter = math.random(1,45)
 	p = d[1]
 	for i=d[2],d[3] do
 	  local str = ""
@@ -256,10 +275,17 @@ local generate_surface_area2 = function(x,y,r,surface, force_gen, force_ore)
 					else
 						create = {name=resources[rnd], amount=amt*m, position=pos}
 					end
-				elseif rnd<(#resources+5) and x == j and y == i then	
-					create = { name = enemy_spawns[math.random(#enemy_spawns)], position = pos }	
+				end 						
+				if create ~= nil and local_is_valid_autoplace(surface,create.name,create.position) then 
+					surface.create_entity(create)
+					if biter < 6 and x == j and y == i then	
+						surface.create_entity({ name = "digger-spawner", position = pos })
+					end
+				else
+					if biter < 6  and x == j and y == i then	
+						surface.create_entity({ name = "digger-spawner", position = pos })
+					end
 				end
-				if create ~= nil and local_is_valid_autoplace(surface,create.name,create.position) then surface.create_entity(create) end
 			  end
 			end
 		  elseif j==s or j == e then
@@ -296,6 +322,8 @@ local local_on_configuration_changed = function(f)
 			end			
 		end
 	end	
+	if global.modmash.diggers == nil then global.modmash.diggers = {} end
+	diggers = global.modmash.diggers
 	if global.modmash.underground_accesses2 == nil then global.modmash.underground_accesses2 = {} end
 	accesses2 = global.modmash.underground_accesses2
 	end
@@ -541,8 +569,84 @@ local local_underground_added = function(entity,event)
 		end
 	end
 
+local diggers_per_tick = 2
+
+local local_update_diggers = function()
+		if not global.modmash.digger_update_index then global.modmash.digger_update_index = 1 end --fix order
+		local index = global.modmash.digger_update_index	
+		local numiter = 0
+		local updates = math.min(#diggers,diggers_per_tick)
+		for k=index, #diggers do local digger = diggers[k];					
+			if is_valid(digger.entity) and is_valid(digger.target) == false then	
+				local e = get_entities_around(digger.entity,3,"simple-entity",all_rock_names)
+				
+				if e ~= nil and #e > 0 then
+					digger.target = e[math.random(1,#e)]
+					digger.entity.set_command({type=defines.command.attack, target=digger.target, distraction=defines.distraction.none})	
+				end
+			else
+				table.remove(diggers, index)				
+				return
+			end
+			if k >= #diggers then k = 1 end
+			numiter = numiter + 1
+			if numiter >= updates then 
+				global.modmash.digger_update_index	= k
+				return
+			end
+		end
+		--[[else  --retire
+			local p = entity.position
+			local f = entity.force
+			local surface = entity.surface
+			entity.destroy()
+			surface.create_entity{name="small-biter",position=p,force=f}
+		end]]
+end
+
+
+local local_on_spawned = function(entity)		
+	if is_valid(entity) and entity.name == "digger-biter" then
+		table.insert(diggers, {entity=entity})
+	end
+end
+
+
+
+--[[local local_on_ai_command_completed = function(event)
+	local digger = diggers["d"..event.unit_number]	
+	if is_valid(digger.target) then return end
+	local entity = digger.entity
+	if is_valid(entity) then
+		local e = get_entities_around(entity,8,nil,all_rock_names)
+		if e ~= nil and #e > 0 then
+			e = e[math.random(1,#e)]
+			modmash.util.print("attack again " .. entity.unit_number)
+			entity.set_command({type=defines.command.attack, target=e, distraction=defines.distraction.none})	
+		else
+			modmash.util.print("retire " .. entity.unit_number)
+			diggers["d"..event.unit_number]	= nil
+			local p = entity.position
+			local f = entity.force
+			local surface = entity.surface
+			entity.destroy()
+			surface.create_entity{name="small-biter",position=p,force=f}
+		end
+	else
+		diggers["d"..event.unit_number]	= nil
+	end
+end]]
+
+
 local local_underground_removed = function(entity)
-	if entity.name == underground_access then				
+	if entity.name == "digger-biter" then
+		for index, digger in pairs(diggers) do
+			if  digger.entity == entity then
+				table.remove(diggers, index)				
+				return
+			end
+		end
+	elseif entity.name == underground_access then				
 		for index, access in pairs(accesses) do
 			if access.top_entity == entity then
 				access.bottom_entity.destroy()
@@ -599,7 +703,9 @@ local local_accumulators_process = function(accumulator)
 local local_bitter_follow = function(entity)
 	local enemy = entity.surface.find_enemy_units(entity.position, 5)
 	for i = 1, #enemy do local e = enemy[i]
-		e.set_command({type=defines.command.go_to_location, destination=entity.position, distraction=defines.distraction.none})
+		if e.name ~= "digger-biter" then
+			e.set_command({type=defines.command.go_to_location, destination=entity.position, distraction=defines.distraction.none})
+		end
 	end
 end
 
@@ -613,26 +719,30 @@ local local_safe_teleport = function(player, surface, position)
 end
 
 local flip = true
-local local_access_process = function(access)
+local local_access_process = function(access,pollution)
+	
 	teleport_cooldown = teleport_cooldown -1
-	if teleport_cooldown > 0 then return end
-	for i = 1, #game.players do local p = game.players[i]
-		if is_valid(p.character) and p.character.surface.name == "nauvis" and last_pos ~= p.character.position then
-			if distance(p.character.position.x,p.character.position.y,access.top_entity.position.x,access.top_entity.position.y) < 1.5 then				
-				local_safe_teleport(p, game.surfaces["underground"],p.character.position)
-				teleport_cooldown = 60*3
-				last_pos = p.character.position
-				local_bitter_follow(access.top_entity)
+	if teleport_cooldown <= 0 then 
+		for i = 1, #game.players do local p = game.players[i]
+			if is_valid(p.character) and p.character.surface.name == "nauvis" and last_pos ~= p.character.position then
+				if distance(p.character.position.x,p.character.position.y,access.top_entity.position.x,access.top_entity.position.y) < 1.5 then				
+					local_safe_teleport(p, game.surfaces["underground"],p.character.position)
+					teleport_cooldown = 60*3
+					last_pos = p.character.position
+					local_bitter_follow(access.top_entity)
+				end
+			elseif is_valid(p.character) and p.character.surface.name == "underground" and last_pos ~= p.character.position then
+				if distance(p.character.position.x,p.character.position.y,access.bottom_entity.position.x,access.bottom_entity.position.y) < 1.5 then				
+					local_safe_teleport(p, game.surfaces["nauvis"],p.character.position)
+					teleport_cooldown = 60*3
+					last_pos = p.character.position
+					local_bitter_follow(access.bottom_entity)
+				end
 			end
-		elseif is_valid(p.character) and p.character.surface.name == "underground" and last_pos ~= p.character.position then
-			if distance(p.character.position.x,p.character.position.y,access.bottom_entity.position.x,access.bottom_entity.position.y) < 1.5 then				
-				local_safe_teleport(p, game.surfaces["nauvis"],p.character.position)
-				teleport_cooldown = 60*3
-				last_pos = p.character.position
-				local_bitter_follow(access.bottom_entity)
-			end
-		end
-	end			
+		end		
+	end
+	if pollution > 0 then game.surfaces["nauvis"].pollute(access.top_entity.position, pollution)  end
+
 	local inventory = {}
 	if flip then
 		flip = false
@@ -688,20 +798,24 @@ local local_access_process = function(access)
 		local moved = {}
 		local enemy = game.surfaces["underground"].find_enemy_units(access.bottom_entity.position,2.5)
 		for i = 1, #enemy do local e = enemy[i]
-			if game.surfaces["nauvis"].can_place_entity{name=e.name, position=e.position, direction=e.direction, force=e.force} then
-				local ne = game.surfaces["nauvis"].create_entity{name=e.name, position=e.position, direction=e.direction, force=e.force}
-				ne.health = e.health
-				table.insert(moved,ne)
-				e.destroy()
+			if e.name ~= "digger-biter" then
+				if game.surfaces["nauvis"].can_place_entity{name=e.name, position=e.position, direction=e.direction, force=e.force} then
+					local ne = game.surfaces["nauvis"].create_entity{name=e.name, position=e.position, direction=e.direction, force=e.force}
+					ne.health = e.health
+					table.insert(moved,ne)
+					e.destroy()
+				end
 			end
 		end
 
 		enemy = game.surfaces["nauvis"].find_enemy_units(access.bottom_entity.position,2.5)
 		for i = 1, #enemy do local e = enemy[i]
-			if table_contains(moved,e) == false and game.surfaces["underground"].can_place_entity{name=e.name, position=e.position, direction=e.direction, force=e.force} then
-				local ne = game.surfaces["underground"].create_entity{name=e.name, position=e.position, direction=e.direction, force=e.force}
-				ne.health = e.health
-				e.destroy()
+			if e.name ~= "digger-biter" then
+				if table_contains(moved,e) == false and game.surfaces["underground"].can_place_entity{name=e.name, position=e.position, direction=e.direction, force=e.force} then
+					local ne = game.surfaces["underground"].create_entity{name=e.name, position=e.position, direction=e.direction, force=e.force}
+					ne.health = e.health
+					e.destroy()
+				end
 			end
 		end
 	end		
@@ -783,36 +897,56 @@ local local_access_process2 = function(access)
 		local moved = {}
 		local enemy = game.surfaces["underground2"].find_enemy_units(access.bottom_entity.position,2.5)
 		for i = 1, #enemy do local e = enemy[i]
-			if game.surfaces["underground"].can_place_entity{name=e.name, position=e.position, direction=e.direction, force=e.force} then
-				local ne = game.surfaces["underground"].create_entity{name=e.name, position=e.position, direction=e.direction, force=e.force}
-				ne.health = e.health
-				table.insert(moved,ne)
-				e.destroy()
+			if e.name ~= "digger-biter" then
+				if game.surfaces["underground"].can_place_entity{name=e.name, position=e.position, direction=e.direction, force=e.force} then
+					local ne = game.surfaces["underground"].create_entity{name=e.name, position=e.position, direction=e.direction, force=e.force}
+					ne.health = e.health
+					table.insert(moved,ne)
+					e.destroy()
+				end
 			end
 		end
 
 		enemy = game.surfaces["underground"].find_enemy_units(access.bottom_entity.position,2.5)
 		for i = 1, #enemy do local e = enemy[i]
-			if table_contains(moved,e) == false and game.surfaces["underground2"].can_place_entity{name=e.name, position=e.position, direction=e.direction, force=e.force} then
-				local ne = game.surfaces["underground2"].create_entity{name=e.name, position=e.position, direction=e.direction, force=e.force}
-				ne.health = e.health
-				e.destroy()
+			if e.name ~= "digger-biter" then
+				if table_contains(moved,e) == false and game.surfaces["underground2"].can_place_entity{name=e.name, position=e.position, direction=e.direction, force=e.force} then
+					local ne = game.surfaces["underground2"].create_entity{name=e.name, position=e.position, direction=e.direction, force=e.force}
+					ne.health = e.health
+					e.destroy()
+				end
 			end
 		end
+
+		
+
 	end		
 	end
 
 local local_underground_tick = function()		
 	if game.tick%30==0 then
+		local_update_diggers()
 		for index=1, #accumulators do local accumulator = accumulators[index]
 			if is_valid_and_persistant(accumulator.bottom_entity) and is_valid_and_persistant(accumulator.top_entity)  then
 				local_accumulators_process(accumulator)
 			end
 		end
 	end
+
+	local p = 0
+	if game.surfaces["underground2"] then 
+		p = p + game.surfaces["underground2"].get_total_pollution()
+		game.surfaces["underground2"].clear_pollution()
+	end
+	if game.surfaces["underground"] then 
+		p = p + game.surfaces["underground"].get_total_pollution()
+		game.surfaces["underground"].clear_pollution()
+	end
+	if p > 0 and #accesses > 0 then p = p/#accesses end
+
 	for index=1, #accesses do local access = accesses[index]
 		if is_valid_and_persistant(access.bottom_entity) and is_valid_and_persistant(access.top_entity)  then
-			local_access_process(access)
+			local_access_process(access,p)
 		end
 	end
 	for index=1, #accesses2 do local access = accesses2[index]
@@ -865,7 +999,9 @@ local control = {
 	on_removed = local_underground_removed,
 	on_configuration_changed = local_on_configuration_changed,
 	on_chunk_generated = local_chunk_generated,
-	on_player_spawned = local_on_player_spawned	
+	on_player_spawned = local_on_player_spawned,
+	on_spawned = local_on_spawned,
+	--on_ai_command_completed = local_on_ai_command_completed
 }
 
 if modmash.profiler == true then

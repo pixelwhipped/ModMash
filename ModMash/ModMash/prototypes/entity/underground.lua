@@ -707,3 +707,32 @@ local t = table.deepcopy(data.raw["tile"]["dirt-"..k])
 	t.tint = {0.15,0.15,0.15,1}
 	data:extend({t})
 end
+
+local digger_biter = table.deepcopy(data.raw["unit"]["small-biter"])
+digger_biter.name = "digger-biter"
+digger_biter.attack_parameters.ammo_type = make_unit_melee_ammo_type(30)
+data:extend({digger_biter})
+
+local digger_spawner = table.deepcopy(data.raw["unit-spawner"]["biter-spawner"])
+digger_spawner.name = "digger-spawner"
+
+--[[
+unit :: string: Prototype name of the unit that would be spawned
+spawn_points :: array of SpawnPoint: Each SpawnPoint is a table: 
+evolution_factor :: double: Evolution factor for which this weight applies.
+weight :: double: Probability of spawning this unit at this evolution fac
+]]
+digger_spawner.result_units = 
+{
+	{"digger-biter", {{0.0, 0.4}}},
+	{"small-biter", {{0.0, 0.3}, {0.6, 0.0}}},
+	{"small-spitter", {{0.25, 0.0}, {0.5, 0.3}, {0.7, 0.0}}},
+	{"medium-biter", {{0.2, 0.0}, {0.6, 0.3}, {0.7, 0.1}}},
+	{"medium-spitter", {{0.4, 0.0}, {0.7, 0.3}, {0.9, 0.1}}},
+	{"big-spitter", {{0.5, 0.0}, {1.0, 0.4}}},
+	{"big-biter", {{0.5, 0.0}, {1.0, 0.4}}},
+	{"behemoth-biter", {{0.9, 0.0}, {1.0, 0.3}}},
+	{"behemoth-spitter", {{0.9, 0.0}, {1.0, 0.3}}},
+}
+
+data:extend({digger_spawner})

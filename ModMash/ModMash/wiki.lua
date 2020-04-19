@@ -34,6 +34,15 @@
 				scale = 1
 			},
 			{type = "text", text = {"gui.modmash-wiki-topic-underground-text2"}},
+			{type = "text", text = {"gui.modmash-wiki-topic-underground-text3"}},
+			{				
+				type = "image", 
+				name = "mm-topic-underground-img-2",
+				filepath = "__modmashgraphics__/graphics/wiki/underground2.png",
+				width = 350,
+				height = 196,
+				scale = 1
+			},
 		}
 	},{
 		name = {"gui.modmash-wiki-topic-valkyrie"},
@@ -42,6 +51,14 @@
 			{type = "line"},
 			{type = "text", text = {"gui.modmash-wiki-topic-valkyrie-text1"} },
 			{type = "text", text = {"gui.modmash-wiki-topic-valkyrie-text2"}},
+			{				
+				type = "image", 
+				name = "mm-topic-valkyries-img",
+				filepath = "__modmashgraphics__/graphics/wiki/valkyries.png",
+				width = 350,
+				height = 196,
+				scale = 1
+			},
 		}
 	},{
 		name = {"gui.modmash-wiki-topic-inserters"},
@@ -69,6 +86,52 @@
 				scale = 1
 			},
 			{type = "text", text = {"gui.modmash-wiki-topic-alien-ore-text2"}},
+		}
+	},{
+		name = {"gui.modmash-wiki-topic-loot"},
+		topic = {
+			{type = "title", title = {"gui.modmash-wiki-topic-loot-title"} },
+			{type = "line"},
+			{type = "text", text = {"gui.modmash-wiki-topic-loot-text1"} },
+			{				
+				type = "image", 
+				name = "mm-topic-loot-img",
+				filepath = "__modmashgraphics__/graphics/wiki/loot.png",
+				width = 350,
+				height = 196,
+				scale = 1
+			},
+		}
+	},{
+		name = {"gui.modmash-wiki-topic-assemblers"},
+		topic = {
+			{type = "title", title = {"gui.modmash-wiki-topic-assemblers-title"} },
+			{type = "line"},			
+			{				
+				type = "image", 
+				name = "mm-topic-assemblers-img",
+				filepath = "__modmashgraphics__/graphics/wiki/assemblers.png",
+				width = 350,
+				height = 84,
+				scale = 1
+			},
+			{type = "text", text = {"gui.modmash-wiki-topic-assemblers-text1"} },
+			{type = "text", text = {"gui.modmash-wiki-topic-assemblers-text2"} },
+		}
+	},{
+		name = {"gui.modmash-wiki-topic-toxins"},
+		topic = {
+			{type = "title", title = {"gui.modmash-wiki-topic-toxins-title"} },
+			{type = "line"},	
+			{type = "text", text = {"gui.modmash-wiki-topic-toxins-text1"} },
+			{				
+				type = "image", 
+				name = "mm-topic-toxins-img",
+				filepath = "__modmashgraphics__/graphics/wiki/toxins.png",
+				width = 350,
+				height = 196,
+				scale = 1
+			}
 		}
 	}
 }
