@@ -156,7 +156,7 @@ local local_create_container = function(item,x)
 		ingredients =
 		{
 			{"empty-super-container", 1},
-			{item.name, item.stack_size}
+			{item.name, math.min(item.stack_size,1000)}
 		},
 		result = "super-container-for-"..item.name}
 	local uncontain = {	
@@ -178,7 +178,7 @@ local local_create_container = function(item,x)
 		},
 		results = {
 			{name = "empty-super-container", amount = 1},
-			{name = item.name, amount = item.stack_size}
+			{name = item.name, amount = math.min(item.stack_size,1000)}
 		}}	
 	local tech = {
 		type = "technology",
@@ -509,6 +509,7 @@ local local_create_super_material_conversions = function()
 			local m = nil
 			if data.raw["item"][item.name] then m = data.raw["item"][item.name].stack_size
 			elseif data.raw["tool"][item.name] then m = data.raw["tool"][item.name].stack_size end
+			m = math.min(m,1000)
 			local recipe = {
 				type = "recipe",
 				name = "modmash-supermaterial-to-"..item.name,
@@ -1086,8 +1087,16 @@ local local_update_recipies = function()
 	
 
 	
-	add_ingredient_to_recipe("construction-robot",{name = "droid", amount = 1})	
-	add_ingredient_to_recipe("logistic-robot",{name = "droid", amount = 1})	
+	add_ingredient_to_recipe("construction-robot",{name = modmash.defines.names.droid_name , amount = 1})	
+	add_ingredient_to_recipe("logistic-robot",{name = modmash.defines.names.droid_name, amount = 1})	
+
+	if modmash.defines.names.droid_name ~= "droid" then
+		add_ingredient_to_recipe(modmash.defines.names.droid_name,{name = "radar", amount = 1})
+		remove_ingredient_from_recipie(modmash.defines.names.droid_name,"iron-plate")
+		remove_ingredient_from_recipie(modmash.defines.names.droid_name,"iron-gear-wheel")
+		remove_ingredient_from_recipie(modmash.defines.names.droid_name,"electronic-circuit")
+		add_ingredient_to_recipe(modmash.defines.names.droid_name,{name = "electronic-circuit", amount = 1})
+	end
 	remove_ingredient_from_recipie("construction-robot","electronic-circuit")
 	remove_ingredient_from_recipie("logistic-robot","advanced-circuit")
 

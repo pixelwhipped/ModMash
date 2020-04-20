@@ -111,3 +111,57 @@ data:extend({
 })
 require("wiki") 
 wiki_register_mod_wiki(modmash_wiki)
+
+data:extend(
+{
+	{
+		type     = "sprite",
+		name     = "landmine-button-gui",
+		filename = "__modmash__/boom.png",
+		width    = 128,
+		height   = 128
+	}
+})
+
+local styles = data.raw["gui-style"]["default"]
+
+styles["landmine-icon-button"] =
+{
+	type = "button_style",
+	horizontal_align = "center",
+	vertical_align = "center",
+	icon_horizontal_align = "center",
+	minimal_width = 36,
+	height = 36,
+	padding = 0,
+	stretch_image_to_widget_size = true,
+	default_graphical_set = base_icon_button_grahphical_set,
+	hovered_graphical_set =
+    {
+		base = {position = {34, 17}, corner_size = 2, draw_type = "outer", opacity = 0.5},
+        shadow = default_dirt,
+        glow = default_glow(default_glow_color, 0.5)
+	},
+	clicked_graphical_set =
+	{
+		base   = {position = {51, 17}, corner_size = 2, draw_type = "outer", opacity = 0.5},
+        shadow = default_dirt
+	},
+	selected_graphical_set =
+	{
+		base   = {position = {225, 17}, corner_size = 2, draw_type = "outer", opacity = 0.5},
+		shadow = default_dirt
+	},
+	selected_hovered_graphical_set =
+	{
+		base   = {position = {369, 17}, corner_size = 2, draw_type = "outer", opacity = 0.5},
+		shadow = default_dirt
+	},
+	strikethrough_color = {0.5, 0.5, 0.5},
+	pie_progress_color = {1, 1, 1},
+	left_click_sound =
+	{
+		{ filename = "__core__/sound/gui-click.ogg" }
+	},
+	draw_shadow_under_picture = true
+}

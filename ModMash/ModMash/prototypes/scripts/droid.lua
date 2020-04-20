@@ -1136,22 +1136,31 @@ local local_on_entity_cloned = function(event)
 	end
 end
 
-local control = {
-	on_tick = {
-		priority = med_priority,
-		tick = local_droid_tick
-		},
-	on_init = local_init,
-	on_load = local_load,
-	on_start = local_start,
-	on_added = local_droid_added,
-	on_removed = local_droid_removed,
-	on_adjust = local_droid_adjust,
-	on_research = local_droid_research,
-	on_configuration_changed = local_on_configuration_changed,
-	on_ai_command_completed = local_on_ai_command_completed,
-	on_entity_cloned = local_on_entity_cloned
-}
+local control = nil
+if modmash.defines.names.droid_name ~= "droid" then 
+	control = {
+		on_init = local_init,
+		on_load = local_load,
+		on_start = local_start
+	}
+else
+	control = {
+		on_tick = {
+			priority = med_priority,
+			tick = local_droid_tick
+			},
+		on_init = local_init,
+		on_load = local_load,
+		on_start = local_start,
+		on_added = local_droid_added,
+		on_removed = local_droid_removed,
+		on_adjust = local_droid_adjust,
+		on_research = local_droid_research,
+		on_configuration_changed = local_on_configuration_changed,
+		on_ai_command_completed = local_on_ai_command_completed,
+		on_entity_cloned = local_on_entity_cloned
+	}
+end
 
 if modmash.profiler == true then
 	local profiler = modmash.util.get_profiler("droid")

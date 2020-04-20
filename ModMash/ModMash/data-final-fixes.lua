@@ -42,3 +42,31 @@ local_create_entity_loot()
 
 --adjusting healing properties of fish as superseded by juice
 data.raw["capsule"]["raw-fish"].capsule_action.attack_parameters.ammo_type.action.action_delivery.target_effects.damage = {type = "physical", amount = -20}
+--[[]
+table.insert(data.raw["capsule"]["land-mine"].action.action_delivery.source_effects,
+	{
+		action = 
+		{
+			action_delivery = 
+			{
+				target_effects = {
+					{
+						damage = {
+						amount = 250,
+						type = "explosion"
+						},
+						type = "damage"
+					},
+					{
+						sticker = "stun-sticker",
+						type = "create-sticker"
+					}
+				},
+				type = "instant"
+			},
+			force = "neutral",
+			radius = 6,
+			type = "area"
+		}
+	})
+	]]

@@ -50,9 +50,9 @@ data:extend(
       animation = {
         layers = {
           {
-            filename = "__modmashgraphics__/graphics/entity/assembling-machine-4/assembling-machine-4.png",
+            --[[filename = "__modmashgraphics__/graphics/entity/assembling-machine-4/assembling-machine-4.png",
             frame_count = 32,
-            height = 124,
+            height = 114, --124,
             hr_version = {
               filename = "__modmashgraphics__/graphics/entity/assembling-machine-4/hr-assembling-machine-4.png",
               frame_count = 32,
@@ -72,7 +72,20 @@ data:extend(
               0,
               -0.015625
             },
-            width = 108
+            width = 108]]
+			--hr_version = {
+              filename = "__modmashgraphics__/graphics/entity/assembling-machine-4/hr-assembling-machine-4.png",
+              frame_count = 32,
+              height = 247,
+              line_length = 8,
+              priority = "high",
+              scale = 0.5,
+              shift = {
+                0,
+                -0.0234375
+              },
+              width = 214
+           -- },
           },
           {
             draw_as_shadow = true,

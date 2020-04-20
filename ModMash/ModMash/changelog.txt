@@ -1,4 +1,15 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.18.39
+  Compatibility:
+    - compatibility for stack size modifier mods
+    - added option to use Klonan Construction Droids instead of Modmash Droids
+  Changes:
+    - modified setting belt snapping to only apply for belts
+    - removed old setting show welcome screen
+  Bug Fixes:
+    - sprite size fix
+
+---------------------------------------------------------------------------------------------------
 Version: 0.18.38
   Changes:
     - updated valkyrie graphics

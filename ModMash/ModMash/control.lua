@@ -320,6 +320,7 @@ script.on_configuration_changed(function(f)
 	end
 	end)
 
+require("prototypes.scripts.boom")
 require("prototypes.scripts.loot")
 require("prototypes.scripts.regenerative")
 require("prototypes.scripts.explosive-mining")
@@ -553,3 +554,5 @@ script.on_event(defines.events.on_player_rotated_entity,local_on_player_rotated_
 script.on_event("automate-target",local_on_adjust)
 
 script.on_event(defines.events.on_entity_cloned,local_on_entity_cloned) 
+
+script.on_event(defines.events.on_gui_click, landmine_on_gui_click)

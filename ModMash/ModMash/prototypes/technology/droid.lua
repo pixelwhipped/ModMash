@@ -1,4 +1,5 @@
-﻿--[[Code check 29.2.20
+﻿if modmash.defines.names.droid_name ~= "droid" then return end
+--[[Code check 29.2.20
 no changes
 --]]
 if not modmash or not modmash.util then require("prototypes.scripts.util") end

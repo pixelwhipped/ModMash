@@ -3,7 +3,6 @@ removed old comments
 added references for loader-1x1
 --]]
 
-if settings.startup["modmash-setting-loader-snapping"].value == "Disabled" then return end
 
 --if not modmash or not modmash.util then require("prototypes.scripts.util") end
 --require ("prototypes.scripts.defines")
@@ -104,7 +103,9 @@ local local_loader_added = function(entity)
 				local_find_train_loaders(b)
 			end
 		elseif table_contains(beltTypes, entity.type) then
-			local_find_loaders (entity)
+			if settings.startup["modmash-setting-loader-snapping"].value ~= "Disabled" then
+				local_find_loaders (entity)
+			end
 		elseif entity.type=="cargo-wagon" or entity.type=="locomotive" then
 			local_find_train_loaders(entity)
 		end

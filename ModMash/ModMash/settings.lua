@@ -2,13 +2,13 @@
 --]]
 data:extend(
 {
-	{
+	--[[{
 		type = "bool-setting",
 		name = "modmash-show-welcome",
 		setting_type = "startup",
 		default_value = false,
 		order = "aa" -- important settings at top
-	},
+	},]]
 	{
 		type = "bool-setting",
 		name = "modmash-setting-show-adjustable",
@@ -132,10 +132,18 @@ data:extend(
 		allowed_values = {"Yes", "No"},
 		order = "od"
 	},{
+		type = "string-setting",
+		name = "modmash-droid-support",
+		setting_type = "startup",
+		default_value = "ModMash",
+		allowed_values = {"ModMash", "Construction Drone"},
+		order = "oe"
+	}
+	,{
 		type = "bool-setting",
 		name = "modmash-allow-air-filter-below",
 		setting_type = "startup",
 		default_value = false,
-		order = "oe"
+		order = "of"
 	}
 })

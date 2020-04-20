@@ -11,6 +11,15 @@ modmash.defines.names.titanium_ore_name = "titanium-ore"
 if settings.startup["modmash-bob-support"].value == "Yes" then
 	modmash.defines.names.titanium_ore_name = "rutile-ore" 
 end
+
+modmash.defines.names.droid_name = "droid" --add
+if settings.startup["modmash-droid-support"].value == "Construction Drone" then
+	if mods ~= nil and mods["Construction_Drones"] then
+		modmash.defines.names.droid_name = "Construction Drone" 
+	elseif game ~= nil and game.active_mods["Construction_Drones"] then
+		modmash.defines.names.droid_name = "Construction Drone" 
+	end
+end
  
 
 modmash.defines.names.force_player = "player"
