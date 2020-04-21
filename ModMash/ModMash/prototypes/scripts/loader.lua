@@ -242,10 +242,11 @@ local local_on_entity_cloned = function(event)
 end
 
 local local_on_configuration_changed = function(f)
+	global.modmash.loader = {}	
+	global.modmash.loader.loaders = {}	
+	loaders = global.modmash.loader.loaders
 	if f.mod_changes["modmash"].old_version < "0.17.62" then	
-		global.modmash.loader = {}	
-		global.modmash.loader.loaders = {}	
-		loaders = global.modmash.loader.loaders
+		
 		for _, surface in pairs(game.surfaces) do
 			for c in surface.get_chunks() do
 				local entities = surface.find_entities_filtered{area = c.area}

@@ -1,4 +1,13 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.18.40
+  Compatibility:
+    - ensured crashed loot only placed on nauvis
+  Changes:
+    - made mines do damage to other entites
+  Bug Fixes:
+    - loader snapping disabled cause issues when loading old saves.
+
+---------------------------------------------------------------------------------------------------
 Version: 0.18.39
   Compatibility:
     - compatibility for stack size modifier mods

@@ -1,5 +1,7 @@
 ﻿require("__core__/lualib/mod-gui")
 
+local is_valid  = modmash.util.is_valid
+
 local landmines = nil
 
 local local_init = function()	
@@ -88,6 +90,16 @@ local local_landmine_removed = function(entity)
 	local_update_gui()
 end
 
+local local_damage_table = {}
+local_damage_table["land-mine"] = {damage=250,area=1.75}
+local_damage_table["nuclear-land-mine"] = {damage=400,area=4}
+
+
+local local_get_damage = function(landmine)
+	if local_damage_table[landmine.name] ~= nil then return local_damage_table[landmine.name] end
+	return {damage=250,area=1.75}
+end
+
 function landmine_on_gui_click(event)
 	if event.element.name == "landmine-toggle-button" then
 		local copy = {}
@@ -98,11 +110,22 @@ function landmine_on_gui_click(event)
 		local_update_gui()
 
 		for k = 1, #copy do local landmine = copy[k]
-			--if landmine ~= nil then
-			local p = landmine.position
-			local s = landmine.surface
-			landmine.die()
-			s.create_entity({ name = "grenade-explosion" , position = p })
+			if is_valid(landmine) then
+				local p = landmine.position
+				local s = landmine.surface
+				local d = local_get_damage(landmine)
+				landmine.die()
+				local entities = s.find_entities({{p.x-d.area, p.y-d.area}, {p.x+d.area, p.y+d.area}}) 			
+				for j = 1, #entities do local e = entities[j]
+					if is_valid(e) and e.type ~= "land-mine" then
+						if e.health and e.health-d.damage>0 then 
+							e.health = e.health - d.damage
+						elseif e.type ~= "land-mine" then
+							e.die()
+						end
+					end
+				end
+			end
 			--end
 		end
 		

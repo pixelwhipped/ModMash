@@ -327,7 +327,7 @@ local local_load = function()
 
 local local_on_chunk_charted = function(event)	   
 	local id = event.surface_index.."_"..event.position.x.."_"..event.position.y
-	if game.surfaces[event.surface_index].name == "underground" or game.surfaces[event.surface_index].name == "underground2" then return end
+	if game.surfaces[event.surface_index].name ~= "nauvis" then return end
 	if not global.modmash.last_chunk then global.modmash.last_chunk = nil end
 	if global.modmash.last_chunk == id then return end
 	if table_index_of(chunks,id) == nil then

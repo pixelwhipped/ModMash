@@ -42,6 +42,106 @@ local_create_entity_loot()
 
 --adjusting healing properties of fish as superseded by juice
 data.raw["capsule"]["raw-fish"].capsule_action.attack_parameters.ammo_type.action.action_delivery.target_effects.damage = {type = "physical", amount = -20}
+
+data.raw["land-mine"]["land-mine"] = 
+{
+    type = "land-mine",
+    name = "land-mine",
+    icon = "__base__/graphics/icons/land-mine.png",
+    icon_size = 64, icon_mipmaps = 4,
+	create_ghost_on_death = false,
+    flags =
+    {
+      "placeable-player",
+      "placeable-enemy",
+      "player-creation",
+      "placeable-off-grid",
+      "not-on-map",
+	  "not-repairable"
+    },
+    minable = {mining_time = 0.5, result = "land-mine"},
+    mined_sound = { filename = "__core__/sound/deconstruct-small.ogg" },
+    max_health = 15,
+    corpse = "small-remnants",
+    dying_explosion = "land-mine-explosion",
+    collision_box = {{-0.4,-0.4}, {0.4, 0.4}},
+    selection_box = {{-0.5, -0.5}, {0.5, 0.5}},
+	damaged_trigger_effect = {
+		type = "create-entity",
+		entity_name = "spark-explosion",
+		offset_deviation = {{-0.5, -0.5}, {0.5, 0.5}},
+		offsets = {{0, 1}},
+		damage_type_filters = "fire"
+	  },
+    picture_safe =
+    {
+      filename = "__base__/graphics/entity/land-mine/land-mine.png",
+      priority = "medium",
+      width = 32,
+      height = 32
+    },
+    picture_set =
+    {
+      filename = "__base__/graphics/entity/land-mine/land-mine-set.png",
+      priority = "medium",
+      width = 32,
+      height = 32
+    },
+    picture_set_enemy =
+    {
+      filename = "__base__/graphics/entity/land-mine/land-mine-set-enemy.png",
+      priority = "medium",
+      width = 32,
+      height = 32
+    },
+    trigger_radius = 2.5,
+    ammo_category = "landmine",
+    action =
+    {
+      type = "direct",
+      action_delivery =
+      {
+        type = "instant",
+        source_effects =
+        {
+          {
+            type = "nested-result",
+            affects_target = true,
+            action =
+            {
+              type = "area",
+              radius = 2.5,
+              force = "enemy",
+              action_delivery =
+              {
+                type = "instant",
+                target_effects =
+                {
+                  {
+                    type = "damage",
+                    damage = { amount = 250, type = "explosion"}
+                  },
+                  {
+                    type = "create-sticker",
+                    sticker = "stun-sticker"
+                  }
+                }
+              }
+            }
+          },
+          {
+            type = "create-entity",
+            entity_name = "explosion"
+          },
+          {
+            type = "damage",
+            damage = { amount = 1000, type = "explosion"}
+          }
+        }
+      }
+    }
+}
+
 --[[]
 table.insert(data.raw["capsule"]["land-mine"].action.action_delivery.source_effects,
 	{
