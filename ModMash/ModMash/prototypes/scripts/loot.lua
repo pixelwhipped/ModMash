@@ -220,7 +220,7 @@ local local_add_loot = function(surface_index, area )
 			local fill = local_is_loot_fill_item(group[1])		
 			local item = local_get_random_stack(group)
 			local full_stack = {name=item.name, count=local_get_stack_restriction(item)}
-			local stack = {name=item.name, count=math.random(1,local_get_stack_restriction(item))}
+			local stack = {name=item.name, count=math.random(1,local_get_stack_restriction(item))}			
 			if fill then				
 				if settings.startup["modmash-setting-loot-fill"].value == "Disabled" then
 					local stacks = math.random(3, 10)
@@ -327,7 +327,7 @@ local local_load = function()
 
 local local_on_chunk_charted = function(event)	   
 	local id = event.surface_index.."_"..event.position.x.."_"..event.position.y
-	if game.surfaces[event.surface_index].name ~= "nauvis" then return end
+	if game.surfaces[event.surface_index].name ~= "nauvis" and settings.startup["modmash-setting-loot-planet"].value == "Nauvis" then return end
 	if not global.modmash.last_chunk then global.modmash.last_chunk = nil end
 	if global.modmash.last_chunk == id then return end
 	if table_index_of(chunks,id) == nil then

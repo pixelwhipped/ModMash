@@ -3,6 +3,8 @@ data_final_fixes = true
 require("prototypes.entity.logistics")
 require ("prototypes.scripts.types")
 
+local table_contains = modmash.util.table.contains
+
 local local_add_loot_to_entity = function(entityType, entityName, probability, countMin, countMax)
     if data.raw[entityType] ~= nil then
         if data.raw[entityType][entityName] ~= nil then
@@ -43,6 +45,51 @@ local_create_entity_loot()
 --adjusting healing properties of fish as superseded by juice
 data.raw["capsule"]["raw-fish"].capsule_action.attack_parameters.ammo_type.action.action_delivery.target_effects.damage = {type = "physical", amount = -20}
 
+function make_kill_all(obj)
+  if type(obj) ~= 'table' then return obj end
+  local s = {}
+  local res = setmetatable({}, getmetatable(obj))
+  s[obj] = res
+  for k, v in pairs(obj) do
+      if not (k == "force" or k == "affects_target") then
+        res[make_kill_all(k)] = make_kill_all(v)
+      end
+  end
+  return res
+end
+local local_convert_source_effect = function(landmine)
+	if landmine.action == nil then return nil end
+	if landmine.action.action_delivery == nil then return nil end
+	if landmine.action.action_delivery.source_effects == nil then return nil end
+	local effects = table.deepcopy(landmine.action.action_delivery.source_effects)
+	effects = make_kill_all(effects)
+	return effects
+end
+
+
+
+
+for _,landmine in pairs(data.raw["land-mine"]) do
+	local e = local_convert_source_effect(landmine)
+	if e ~= nil then 
+		log("Updating "..landmine.name)
+		--log(serpent.block(landmine))
+		if landmine.flags ~= nil then
+			if not table_contains(landmine.flags,"not-repairable") then table.insert(landmine.flags,"not-repairable") end	
+		else 
+			landmine.flags = {"not-repairable"}
+		end
+		landmine.create_ghost_on_death = false
+		landmine.dying_explosion = nil
+	--	log(serpent.block(e))
+		landmine.dying_trigger_effect = e
+		data.raw["land-mine"][landmine.name] = landmine
+	else
+		--modmash.util.log("Cannot Update "..landmine.name)
+	end
+end
+
+--[[
 data.raw["land-mine"]["land-mine"] = 
 {
     type = "land-mine",
@@ -72,7 +119,43 @@ data.raw["land-mine"]["land-mine"] =
 		offset_deviation = {{-0.5, -0.5}, {0.5, 0.5}},
 		offsets = {{0, 1}},
 		damage_type_filters = "fire"
-	  },
+	},
+	
+	dying_trigger_effect = {
+		{
+            type = "nested-result",
+            --affects_target = true,
+            action =
+            {
+              type = "area",
+              radius = 2.5,
+              --force = "enemy",
+              action_delivery =
+              {
+                type = "instant",
+                target_effects =
+                {
+                  {
+                    type = "damage",
+                    damage = { amount = 250, type = "explosion"}
+                  },
+                  {
+                    type = "create-sticker",
+                    sticker = "stun-sticker"
+                  }
+                }
+              }
+            }
+          },
+          {
+            type = "create-entity",
+            entity_name = "explosion"
+          },
+          {
+            type = "damage",
+            damage = { amount = 1000, type = "explosion"}
+          }
+		},
     picture_safe =
     {
       filename = "__base__/graphics/entity/land-mine/land-mine.png",
@@ -141,6 +224,7 @@ data.raw["land-mine"]["land-mine"] =
       }
     }
 }
+]]
 
 --[[]
 table.insert(data.raw["capsule"]["land-mine"].action.action_delivery.source_effects,

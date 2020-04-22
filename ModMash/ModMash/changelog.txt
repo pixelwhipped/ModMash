@@ -1,4 +1,10 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.18.41
+  Changes:
+    - Added setting to allow loot to be places on other surface other than nauvis
+    - Added setting for setting max recipie stack size for containers and super material
+
+---------------------------------------------------------------------------------------------------
 Version: 0.18.40
   Compatibility:
     - ensured crashed loot only placed on nauvis

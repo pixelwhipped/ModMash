@@ -156,7 +156,7 @@ local local_create_container = function(item,x)
 		ingredients =
 		{
 			{"empty-super-container", 1},
-			{item.name, math.min(item.stack_size,1000)}
+			{item.name, math.min(item.stack_size,settings.startup["modmash-setting-max-recipie-stack"].value)}
 		},
 		result = "super-container-for-"..item.name}
 	local uncontain = {	
@@ -178,7 +178,7 @@ local local_create_container = function(item,x)
 		},
 		results = {
 			{name = "empty-super-container", amount = 1},
-			{name = item.name, amount = math.min(item.stack_size,1000)}
+			{name = item.name, amount = math.min(item.stack_size,settings.startup["modmash-setting-max-recipie-stack"].value)}
 		}}	
 	local tech = {
 		type = "technology",
@@ -509,7 +509,7 @@ local local_create_super_material_conversions = function()
 			local m = nil
 			if data.raw["item"][item.name] then m = data.raw["item"][item.name].stack_size
 			elseif data.raw["tool"][item.name] then m = data.raw["tool"][item.name].stack_size end
-			m = math.min(m,1000)
+			m = math.min(m,settings.startup["modmash-setting-max-recipie-stack"].value)
 			local recipe = {
 				type = "recipe",
 				name = "modmash-supermaterial-to-"..item.name,

@@ -10,6 +10,15 @@ data:extend(
 		order = "aa" -- important settings at top
 	},]]
 	{
+		type = "int-setting",
+		name = "modmash-setting-max-recipie-stack",
+		setting_type = "startup",
+		default_value = 1000,
+		minimum_value = 100,
+		maximum_value = 1000,
+		order = "aa"
+	},
+	{
 		type = "bool-setting",
 		name = "modmash-setting-show-adjustable",
 		setting_type = "startup",
@@ -39,6 +48,14 @@ data:extend(
 		default_value = "Enabled",
 		allowed_values = {"Enabled", "Disabled"},
 		order = "bb"
+	},
+	{
+		type = "string-setting",
+		name = "modmash-setting-loot-planet",
+		setting_type = "startup",
+		default_value = "Nauvis",
+		allowed_values = {"Nauvis", "Any"},
+		order = "bb2" 
 	},
 	{
 		type = "string-setting",

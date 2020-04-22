@@ -115,18 +115,7 @@ function landmine_on_gui_click(event)
 				local s = landmine.surface
 				local d = local_get_damage(landmine)
 				landmine.die()
-				local entities = s.find_entities({{p.x-d.area, p.y-d.area}, {p.x+d.area, p.y+d.area}}) 			
-				for j = 1, #entities do local e = entities[j]
-					if is_valid(e) and e.type ~= "land-mine" then
-						if e.health and e.health-d.damage>0 then 
-							e.health = e.health - d.damage
-						elseif e.type ~= "land-mine" then
-							e.die()
-						end
-					end
-				end
 			end
-			--end
 		end
 		
 	end
