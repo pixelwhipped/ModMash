@@ -96,19 +96,29 @@ local local_on_entity_cloned = function(event)
 	end
 end
 
-local control = {
-	names = {subspace_transport},
-	on_init = local_init,
-	on_load = local_load,
-	on_start = local_init,
-	on_tick = {
-		priority = priority,
-		tick = local_subspace_transports_tick,		
-		table = function() return transports end,
-		auto_add_remove = {subspace_transport}
-		},
-	on_entity_cloned = local_on_entity_cloned
-}
+local control = nil
+if settings.startup["modmash-setting-subspace"].value == "Off" then
+	control = {
+		names = {subspace_transport},
+		on_init = local_init,
+		on_load = local_load,
+		on_start = local_init
+	}
+else
+	control = {
+		names = {subspace_transport},
+		on_init = local_init,
+		on_load = local_load,
+		on_start = local_init,
+		on_tick = {
+			priority = priority,
+			tick = local_subspace_transports_tick,		
+			table = function() return transports end,
+			auto_add_remove = {subspace_transport}
+			},
+		on_entity_cloned = local_on_entity_cloned
+	}
+end
 
 if modmash.profiler == true then
 	local profiler = modmash.util.get_profiler("subspace transports")

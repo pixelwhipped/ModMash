@@ -983,6 +983,15 @@ local local_load = function()
 
 local local_start = function()
 	local_rebuild_ghosts()
+	--check to see if change back from klonans construction bots back to modmash
+	if modmash.defines.names.droid_name() == "droid" then
+		for k = 1, #game.players do local player = game.players[k]
+			if player.force.technologies["electronics"] and player.force.technologies["electronics"].researched then
+				player.force.recipes["droid"].enabled=true
+				player.force.recipes["droid-chest"].enabled=true
+			end
+		end
+	end
 	end
 
 local local_droid_tick = function()		
@@ -1137,7 +1146,7 @@ local local_on_entity_cloned = function(event)
 end
 
 local control = nil
-if modmash.defines.names.droid_name ~= "droid" then 
+if modmash.defines.names.droid_name() ~= "droid" then 
 	control = {
 		on_init = local_init,
 		on_load = local_load,

@@ -1,4 +1,4 @@
-﻿if modmash.defines.names.droid_name ~= "droid" then return end
+﻿if modmash.defines.names.droid_name() ~= "droid" then return end
 
 function compilatron_animations(tint1)
 	return

@@ -162,5 +162,12 @@ data:extend(
 		setting_type = "startup",
 		default_value = false,
 		order = "of"
-	}
+	},{
+		type = "string-setting",
+		name = "modmash-setting-subspace",
+		setting_type = "startup",
+		default_value = "Items",
+		allowed_values = {"Items", "Off", "Resource Only"}, --"Category"
+		order = "p"
+	},
 })

@@ -1,8 +1,16 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.18.42
+  Changes:
+    - Added options for subspace transport
+  Bug Fixes:
+    - added test to see if modmash drones re-enabled and unlock recipies if required.
+
+---------------------------------------------------------------------------------------------------
 Version: 0.18.41
   Changes:
     - Added setting to allow loot to be places on other surface other than nauvis
     - Added setting for setting max recipie stack size for containers and super material
+    - Added 3 new land mine types to worth with the detonator button
 
 ---------------------------------------------------------------------------------------------------
 Version: 0.18.40
