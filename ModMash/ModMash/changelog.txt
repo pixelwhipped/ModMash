@@ -1,4 +1,11 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.18.44
+  Changes:
+    - Added blast radius indicator to nuclear landmines
+  Bug Fixes:
+    - noticed references to placed mines not being regesitered on re-load of saves
+
+---------------------------------------------------------------------------------------------------
 Version: 0.18.43
   Changes:
     - Migrated graphics over to graphics mod
