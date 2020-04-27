@@ -6,10 +6,13 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>C:\Users\TarrantFamily\AppData\Roaming\Factorio\mods\modmashgraphics_0.18.05\</OutputPath>
+    <OutputPath>C:\Users\TarrantFamily\AppData\Roaming\Factorio\mods\modmashgraphics_0.18.06\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Update="boom.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="changelog.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -128,6 +131,24 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="graphics\entity\droid\hr-droid-chest-storage-s.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\entity\land-mine\land-mine-a.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\entity\land-mine\land-mine-b.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\entity\land-mine\land-mine-c.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\entity\land-mine\land-mine-set-a.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\entity\land-mine\land-mine-set-b.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\entity\land-mine\land-mine-set-c.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="graphics\entity\loader\express-loader-structure.png">
@@ -950,6 +971,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="graphics\icons\stone-conversion.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\icons\sulfur-coal-conversion.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\icons\sulfur-titanium-conversion.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="graphics\icons\super-container.png">

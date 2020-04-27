@@ -1386,7 +1386,7 @@ local add_missing_ooze = function()
 	if #tech.effects > 0 then data:extend({tech}) end
 end
 
-local add_missing_materials_to_stone_and_uranium = function()
+local add_missing_materials_to_stone_and_uranium_coal_titanium = function()
 	local ingredients_missing_in = function(recipe,material)
 		for rz = 1, #recipe.results do local res = recipe.results[rz]	
 			if res.name == material then return false end
@@ -1396,6 +1396,8 @@ local add_missing_materials_to_stone_and_uranium = function()
 	local stone = data.raw["recipe"]["stone-enrichment-process"]
 	local uranium = data.raw["recipe"]["uranium-enrichment-process"]
 	local alien = data.raw["recipe"]["alien-enrichment-process"]
+	local titanium = data.raw["recipe"]["sulfur-titanium-conversion"]
+	local coal = data.raw["recipe"]["sulfur-coal-conversion"]
 	local added = {}	
 	for name,item in pairs(data.raw["resource"]) do	
 		
@@ -1429,6 +1431,20 @@ local add_missing_materials_to_stone_and_uranium = function()
 		end
 		if ingredients_missing_in(alien,item.name) then
 			table.insert(alien.results,{
+				name = item.name,
+				probability = prob,
+				amount = 1,
+			})	
+		end
+		if ingredients_missing_in(titanium,item.name) then
+			table.insert(titanium.results,{
+				name = item.name,
+				probability = prob,
+				amount = 1,
+			})	
+		end
+		if ingredients_missing_in(coal,item.name) then
+			table.insert(coal.results,{
 				name = item.name,
 				probability = prob,
 				amount = 1,
@@ -1748,7 +1764,7 @@ if data ~= nil and data_final_fixes == true then
 		end
 		
 	end
-	add_missing_materials_to_stone_and_uranium()
+	add_missing_materials_to_stone_and_uranium_coal_titanium()
 	add_missing_ooze()
 	local_create_ore_refinements()
 

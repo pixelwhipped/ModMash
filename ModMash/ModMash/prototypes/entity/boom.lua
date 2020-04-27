@@ -3,7 +3,7 @@
 	{
 		type     = "sprite",
 		name     = "landmine-button-gui",
-		filename = "__modmash__/boom.png",
+		filename = "__modmashgraphics__/boom.png",
 		width    = 128,
 		height   = 128
 	}
@@ -57,7 +57,7 @@ data:extend(
 	{
 		type = "land-mine",
 		name = "nuclear-land-mine",
-		icon = "__modmash__/graphics/land-mine-a.png",
+		icon = "__modmashgraphics__/graphics/entity/land-mine/land-mine-a.png",
 		icon_size = 32, 
 		create_ghost_on_death = false,
 		flags =
@@ -77,14 +77,14 @@ data:extend(
 		selection_box = {{-0.5, -0.5}, {0.5, 0.5}},
 		picture_safe =
 		{
-		  filename = "__modmash__/graphics/land-mine-a.png",
+		  filename = "__modmashgraphics__/graphics/entity/land-mine/land-mine-a.png",
 		  priority = "medium",
 		  width = 32,
 		  height = 32
 		},
 		picture_set =
 		{
-		  filename = "__modmash__/graphics/land-mine-set-a.png",
+		  filename = "__modmashgraphics__/graphics/entity/land-mine/land-mine-set-a.png",
 		  priority = "medium",
 		  width = 32,
 		  height = 32
@@ -175,7 +175,7 @@ data:extend(
 		}
 	},
 	{
-      icon = "__modmash__/graphics/land-mine-a.png",
+      icon = "__modmashgraphics__/graphics/entity/land-mine/land-mine-a.png",
 	  icon_size = 32, 
       name = "nuclear-land-mine",
       order = "f[nuclear-land-mine]",
@@ -245,7 +245,7 @@ data:extend(
 	{
 		type = "land-mine",
 		name = "bigger-land-mine",
-		icon = "__modmash__/graphics/land-mine-b.png",
+		icon = "__modmashgraphics__/graphics/entity/land-mine/land-mine-b.png",
 		icon_size = 32, 
 		create_ghost_on_death = false,
 		flags =
@@ -265,14 +265,14 @@ data:extend(
 		selection_box = {{-0.5, -0.5}, {0.5, 0.5}},
 		picture_safe =
 		{
-		  filename = "__modmash__/graphics/land-mine-b.png",
+		  filename = "__modmashgraphics__/graphics/entity/land-mine/land-mine-b.png",
 		  priority = "medium",
 		  width = 32,
 		  height = 32
 		},
 		picture_set =
 		{
-		  filename = "__modmash__/graphics/land-mine-set-b.png",
+		  filename = "__modmashgraphics__/graphics/entity/land-mine/land-mine-set-b.png",
 		  priority = "medium",
 		  width = 32,
 		  height = 32
@@ -337,7 +337,7 @@ data:extend(
 		}
 	},
 	{
-      icon = "__modmash__/graphics/land-mine-b.png",
+      icon = "__modmashgraphics__/graphics/entity/land-mine/land-mine-b.png",
 	  icon_size = 32, 
       name = "bigger-land-mine",
       order = "f[bigger-land-mine]",
@@ -406,7 +406,7 @@ data:extend(
 	{
 		type = "land-mine",
 		name = "toxin-land-mine",
-		icon = "__modmash__/graphics/land-mine-c.png",
+		icon = "__modmashgraphics__/graphics/entity/land-mine/land-mine-c.png",
 		icon_size = 32, 
 		create_ghost_on_death = false,
 		flags =
@@ -426,14 +426,14 @@ data:extend(
 		selection_box = {{-0.5, -0.5}, {0.5, 0.5}},
 		picture_safe =
 		{
-		  filename = "__modmash__/graphics/land-mine-c.png",
+		  filename = "__modmashgraphics__/graphics/entity/land-mine/land-mine-c.png",
 		  priority = "medium",
 		  width = 32,
 		  height = 32
 		},
 		picture_set =
 		{
-		  filename = "__modmash__/graphics/land-mine-set-c.png",
+		  filename = "__modmashgraphics__/graphics/entity/land-mine/land-mine-set-c.png",
 		  priority = "medium",
 		  width = 32,
 		  height = 32
@@ -470,7 +470,7 @@ data:extend(
 		}
 	},
 	{
-      icon = "__modmash__/graphics/land-mine-c.png",
+      icon = "__modmashgraphics__/graphics/entity/land-mine/land-mine-c.png",
 	  icon_size = 32, 
       name = "toxin-land-mine",
       order = "f[toxin-land-mine]",

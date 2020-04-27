@@ -127,6 +127,14 @@
 	  {
         type = "unlock-recipe",
         recipe = "light-oil-conversion-crude-oil"
+      },
+	  {
+        type = "unlock-recipe",
+        recipe = "sulfur-coal-conversion"
+      },
+	  {
+        type = "unlock-recipe",
+        recipe = "sulfur-titanium-conversion"
       }
     },
     prerequisites =

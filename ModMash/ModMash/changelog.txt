@@ -1,4 +1,10 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.18.43
+  Changes:
+    - Migrated graphics over to graphics mod
+    - Added new recipies
+
+---------------------------------------------------------------------------------------------------
 Version: 0.18.42
   Changes:
     - Added options for subspace transport

@@ -5,6 +5,53 @@ data:extend(
 {
 	{
 		type = "recipe",
+		name = "sulfur-titanium-conversion",
+		energy_required = 1.5,
+		enabled = false,
+		category = "crafting-with-fluid",
+		ingredients = {{"sulfur", 8},{modmash.defines.names.titanium_ore_name, 5},{type="fluid", name="steam", amount=50}},
+		icon = "__modmashgraphics__/graphics/icons/sulfur-titanium-conversion.png",
+		icon_size = 32,
+		subgroup = "intermediate-product",
+		order = "c[sulfur-titanium-conversion]",
+		main_product = "",
+		results =
+		{
+			{
+				name = "stone",      
+				probability = 0.3,
+				amount = 1
+			},
+			{
+				name = "iron-ore",				
+				amount = 1,
+			},
+		},
+		allow_decomposition = false,
+	},
+	{
+		type = "recipe",
+		name = "sulfur-coal-conversion",
+		energy_required = 1.5,
+		enabled = false,
+		category = "crafting-with-fluid",
+		ingredients = {{"sulfur", 8},{"coal", 5},{type="fluid", name="steam", amount=50}},
+		icon = "__modmashgraphics__/graphics/icons/sulfur-coal-conversion.png",
+		icon_size = 32,
+		subgroup = "intermediate-product",
+		order = "c[sulfur-titanium-conversion]",
+		main_product = "",
+		results =
+		{
+			{
+				name = "stone",      
+				amount = 1
+			}
+		},
+		allow_decomposition = false,
+	},
+	{
+		type = "recipe",
 		name = "light-oil-conversion-crude-oil",
 		energy_required = 1.5,
 		enabled = false,
@@ -239,7 +286,8 @@ data:extend(
 			}
 		},
 		allow_decomposition = false,
-	},{
+	},
+	{
 		type = "recipe",
 		name = "titanium-extraction-process",
 		energy_required = 1.5,
@@ -456,7 +504,6 @@ data:extend(
 		},
 		allow_decomposition = false,
 	},
-
 	{
 		type = "recipe",
 		name = "alien-enrichment-process-to-artifact",
@@ -503,29 +550,29 @@ data:extend(
 		allow_decomposition = false,
 	},
 	{
-    type = "recipe",
-    name = "petroleum-gas-from-solid-fuel",
-    category = "chemistry",
-    energy_required = 2,
-    ingredients =
-    {
-      {type="item", name="solid-fuel", amount=1}
-    },
-    results=
-    {
-		{type="fluid", name="petroleum-gas", amount=20}      
-    },
-    icon = "__modmashgraphics__/graphics/icons/petroleum-gas-from-solid-fuel.png",
-    icon_size = 32,
-    subgroup = "fluid-recipes",
-    enabled = false,
-    order = "b[fluid-chemistry]-d[petroleum-gas-from-solid-fuel]",
-    crafting_machine_tint =
-    {
-      primary = {r = 0.331, g = 0.075, b = 0.510, a = 0.000},
-      secondary = {r = 0.589, g = 0.540, b = 0.615, a = 0.361},
-      tertiary = {r = 0.469, g = 0.145, b = 0.695, a = 0.000},
-    }
-  },
+		type = "recipe",
+		name = "petroleum-gas-from-solid-fuel",
+		category = "chemistry",
+		energy_required = 2,
+		ingredients =
+		{
+			{type="item", name="solid-fuel", amount=1}
+		},
+		results=
+		{
+			{type="fluid", name="petroleum-gas", amount=20}      
+		},
+		icon = "__modmashgraphics__/graphics/icons/petroleum-gas-from-solid-fuel.png",
+		icon_size = 32,
+		subgroup = "fluid-recipes",
+		enabled = false,
+		order = "b[fluid-chemistry]-d[petroleum-gas-from-solid-fuel]",
+		crafting_machine_tint =
+		{
+			primary = {r = 0.331, g = 0.075, b = 0.510, a = 0.000},
+			secondary = {r = 0.589, g = 0.540, b = 0.615, a = 0.361},
+			tertiary = {r = 0.469, g = 0.145, b = 0.695, a = 0.000},
+		}
+	},
 }
 )

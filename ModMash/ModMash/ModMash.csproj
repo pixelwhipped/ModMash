@@ -8,13 +8,10 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>C:\Users\TarrantFamily\AppData\Roaming\Factorio\mods\modmash_0.18.42\</OutputPath>
+    <OutputPath>C:\Users\TarrantFamily\AppData\Roaming\Factorio\mods\modmash_0.18.43\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="boom.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="changelog.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -28,24 +25,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="data.lua">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="graphics\land-mine-a.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="graphics\land-mine-b.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="graphics\land-mine-c.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="graphics\land-mine-set-a.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="graphics\land-mine-set-b.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="graphics\land-mine-set-c.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="info.json">
@@ -181,6 +160,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="locale\zh-TW\locale.cfg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="migrations\modmash_0.18.43.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="migrations\modmash_0.18.20.lua">
