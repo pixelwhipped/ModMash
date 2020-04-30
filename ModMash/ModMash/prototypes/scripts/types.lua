@@ -1783,10 +1783,10 @@ if data ~= nil and data_final_fixes == true then
 	if settings.startup["modmash-check-tech"].value == "Enabled" then
 		check_duplicate_tech()
 	end
-
+	--https://mods.factorio.com/mod/modmash/discussion/5eaaec6b2a44ba000b1935ab item.crafting_speed
 	for name,item in pairs(data.raw["assembling-machine"]) do			
 		if item ~= nil and item.name ~= nil then	
-			if (starts_with(item.name,"assembling-machine") and item.crafting_speed > 1.25)
+			if (starts_with(item.name,"assembling-machine") and (type(item.crafting_speed) == "number" and item.crafting_speed > 1.25))
 			or starts_with(item.name,"centrifuge") then
 				if table_contains(item.crafting_categories,"containment") == false then
 					table.insert(item.crafting_categories,"containment")

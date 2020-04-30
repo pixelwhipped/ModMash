@@ -90,16 +90,7 @@ data:extend({
     type = "custom-input",
     name = "automate-target",
     key_sequence = "CONTROL + A",
-    consuming = "script-only"
-  },
-})
-
-data:extend({
-  {
-    type = "custom-input",
-    name = "automate-target",
-    key_sequence = "CONTROL + A",
-    consuming = "script-only"
+    consuming = "game-only"
   },
 })
 
@@ -108,7 +99,7 @@ data:extend({
     type = "custom-input",
     name = "profiler-dump",
     key_sequence = "CONTROL + L",
-    consuming = "script-only"
+    consuming = "game-only"
   },
 })
 require("wiki") 

@@ -662,11 +662,11 @@ local local_underground_removed = function(entity)
 		for index, access in pairs(accesses2) do
 			if access.top_entity == entity then
 				access.bottom_entity.destroy()
-				table.remove(accesses, index)				
+				table.remove(accesses2, index)				
 				return
 			elseif access.bottom_entity == entity then
 				access.top_entity.destroy()
-				table.remove(accesses, index)				
+				table.remove(accesses2, index)				
 				return
 			end
 		end

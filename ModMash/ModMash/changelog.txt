@@ -1,4 +1,15 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.18.46
+  Bug Fixes:
+    - possible case of other mod setting crafting_speed to a string
+    - updates for factorio version 0.18.22
+
+---------------------------------------------------------------------------------------------------
+Version: 0.18.45
+  Bug Fixes:
+    - underground access2 referenceing wrong table add/remove
+
+---------------------------------------------------------------------------------------------------
 Version: 0.18.44
   Changes:
     - Added blast radius indicator to nuclear landmines
