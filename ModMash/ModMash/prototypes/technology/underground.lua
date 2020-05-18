@@ -18,6 +18,14 @@ table.insert(
         type = "unlock-recipe",
         recipe = underground_access2
       },
+	  {
+        type = "unlock-recipe",
+        recipe = "recharged-battery-cell"
+      },
+	  {
+        type = "unlock-recipe",
+        recipe = "battery-cell"
+      }
 	},
     prerequisites = {"logistics-3"},
     unit =

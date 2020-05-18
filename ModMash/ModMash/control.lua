@@ -363,7 +363,11 @@ end
 
 --[[done]]
 local local_on_added = function(event)	
-	local_on_standard_entity_event(event.created_entity,modmash.on_added,modmash.on_added_by_name,event)
+	if event.created_entity ~= nil then
+		local_on_standard_entity_event(event.created_entity,modmash.on_added,modmash.on_added_by_name,event)
+	elseif event.entity ~= nil then
+		local_on_standard_entity_event(event.entity,modmash.on_added,modmash.on_added_by_name,event)
+	end
 	end
 --[[done]]
 local local_on_spawned = function(event)

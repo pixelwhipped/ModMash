@@ -30,6 +30,7 @@ local distance  = modmash.util.distance
 local starts_with  = modmash.util.starts_with
 local print = modmash.util.print
 local get_name_for = modmash.util.get_name_for
+local is_valid  = modmash.util.is_valid
 
 --[[locals]]
 local exclude_loot = {"player-port","spawner","spitter-spawner"}
@@ -38,12 +39,87 @@ local loot_table = nil
 --[[unitialized globals]]
 local chunks = nil
 
+local local_get_item = function(name)
+  if name == nil then return nil end
+  local items = game.item_prototypes 
+  if items then
+    return items[name]
+  end
+  return nil 
+  end
+
+local local_create_loot_table = function()
+	local tbl = {}
+	if settings.startup["modmash-setting-item-loot"].value == "Disabled" then
+		if settings.startup["modmash-setting-tech-loot"].value ~= "Science" then return end
+	end
+
+	for _,r in pairs(game.recipe_prototypes) do
+		if starts_with(r.name,"craft-") and table_contains(exclude_loot,r.name) == false then
+			if r.ingredients[1]~= nil and r.ingredients[1].name ~= nil then
+				local i = local_get_item(r.ingredients[1].name)
+				if i ~= nil and starts_with(i.name,"creative-mod") == false
+					and starts_with(i.name,"deadlock-stack") == false then
+					table.insert(tbl,i)
+				end
+			end
+		end
+	end
+	for _,i in pairs(game.item_prototypes) do
+		if i.subgroup.name == "raw-resource" and table_contains(exclude_loot,i.name) == false 
+			and starts_with(i.name,"deadlock-stack") == false then
+			--log(i.name)
+			table.insert(tbl,i) 
+		end
+	end
+	return tbl
+	end
+
 --[[ensure globals]]
 local local_init = function()	
 	log("loot.local_init")
 	if global.modmash.loot == nil then global.modmash.loot = {} end
+	if global.modmash.loot.table == nil then global.modmash.loot.table = local_create_loot_table() end
 	if global.modmash.loot.chunks == nil then global.modmash.loot.chunks = {} end
 	chunks = global.modmash.loot.chunks
+	loot_table = global.modmash.loot.table
+	end
+
+local local_load = function()	
+	log("loot.local_load")
+	chunks = global.modmash.loot.chunks
+	loot_table = global.modmash.loot.table
+	end
+
+
+
+local local_start = function()
+	log("loot.local_start")
+	--chunks = global.modmash.loot.chunks	
+	--local_create_loot_table() 
+	local percent = settings.startup["modmash-setting-loot-chance"].value/100
+	loot_probability = (modmash.defines.defaults.loot_probability)-((modmash.defines.defaults.loot_probability-3)*percent)
+	loot_tech_probability = (modmash.defines.defaults.loot_tech_probability)-((modmash.defines.defaults.loot_tech_probability-3)*percent)
+	
+	end
+
+local local_on_configuration_changed = function(f)
+	log("loot.local_on_configuration_changed")
+	if f.mod_changes["modmash"].old_version < "0.18.47" or chunks == nil then	
+		local_init()
+	end
+
+	if f.mod_changes["modmash"].old_version < "0.17.61" or chunks == nil then	
+		if chunks == nil then local_init() end
+		for _, surface in pairs(game.surfaces) do
+			for c in surface.get_chunks() do
+				if #surface.find_entities_filtered{area = c.area, name={"loot_science_a","loot_science_b","crash-site-chest-1","crash-site-chest-2"}} > 0 then
+					local i = surface.index.."_".. (c.area.left_top.x/32).."_"..(c.area.left_top.y/32)
+					table.insert(global.modmash.loot.chunks,i)
+				end
+			end
+		end
+	end
 	end
 	
 local local_get_stack_restriction = function(item)
@@ -86,9 +162,11 @@ local local_is_loot_fill_item = function(group) return table_contains(loot_fill_
 
 local local_get_random_stack = function(group) 
 	local item = nil
+	local valid = false
 	repeat 
 		item = loot_table[math.random(1, #loot_table)]
-	until(table_contains(group, item.subgroup.name))
+		valid = (is_valid(item) and table_contains(group, item.subgroup.name))
+	until(valid)
 	return item
 	end
 
@@ -214,7 +292,7 @@ local local_add_loot = function(surface_index, area )
 			  name = name,
 			  position = position,
 			  force = force_neutral}
-		if ent ~= nil then
+		if is_valid(ent) then
 			local inv = ent.get_inventory(defines.inventory.chest)
 			local group = loot_groups[math.random(1, #loot_groups)]
 			local fill = local_is_loot_fill_item(group[1])		
@@ -268,61 +346,6 @@ local local_add_loot = function(surface_index, area )
 			
 		end
 	end
-	end
-
-local local_get_item = function(name)
-  if name == nil then return nil end
-  local items = game.item_prototypes 
-  if items then
-    return items[name]
-  end
-  return nil 
-  end
-
-local local_create_loot_table = function()
-	loot_table = {}
-	if settings.startup["modmash-setting-item-loot"].value == "Disabled" then
-		if settings.startup["modmash-setting-tech-loot"].value ~= "Science" then return end
-	end
-
-	for _,r in pairs(game.recipe_prototypes) do
-		if starts_with(r.name,"craft-") and table_contains(exclude_loot,r.name) == false then
-			if r.ingredients[1]~= nil and r.ingredients[1].name ~= nil then
-				local i = local_get_item(r.ingredients[1].name)
-
-				--[[ FAIL if i ~= nil and i.type ~= ammo and i.place_result == nil then 
-					log("Skipping Loot Item "..i.name)
-					i = nil
-				end]]
-				if i ~= nil and starts_with(i.name,"creative-mod") == false
-					and starts_with(i.name,"deadlock-stack") == false then
-					table.insert(loot_table,i)
-				end
-			end
-		end
-	end
-	for _,i in pairs(game.item_prototypes) do
-		if i.subgroup.name == "raw-resource" and table_contains(exclude_loot,i.name) == false 
-			and starts_with(i.name,"deadlock-stack") == false then
-			--log(i.name)
-			table.insert(loot_table,i) 
-		end
-	end
-	end
-
-local local_start = function()
-	log("loot.local_start")
-	chunks = global.modmash.loot.chunks	
-	local_create_loot_table() 
-	local percent = settings.startup["modmash-setting-loot-chance"].value/100
-	loot_probability = (modmash.defines.defaults.loot_probability)-((modmash.defines.defaults.loot_probability-3)*percent)
-	loot_tech_probability = (modmash.defines.defaults.loot_tech_probability)-((modmash.defines.defaults.loot_tech_probability-3)*percent)
-	
-	end
-
-local local_load = function()	
-	log("loot.local_load")
-	chunks = global.modmash.loot.chunks
 	end
 
 local local_on_chunk_charted = function(event)	   
@@ -403,20 +426,7 @@ local local_on_selected = function(player,entity)
 	end
 	end
 
-local local_on_configuration_changed = function(f)
-	log("loot.local_on_configuration_changed")
-	if f.mod_changes["modmash"].old_version < "0.17.61" or chunks == nil then	
-		if chunks == nil then local_init() end
-		for _, surface in pairs(game.surfaces) do
-			for c in surface.get_chunks() do
-				if #surface.find_entities_filtered{area = c.area, name={"loot_science_a","loot_science_b","crash-site-chest-1","crash-site-chest-2"}} > 0 then
-					local i = surface.index.."_".. (c.area.left_top.x/32).."_"..(c.area.left_top.y/32)
-					table.insert(global.modmash.loot.chunks,i)
-				end
-			end
-		end
-	end
-	end
+
 
 modmash.register_script({
 	names = {loot_science_a},

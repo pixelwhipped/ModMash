@@ -443,9 +443,14 @@ local local_ensure_underground_environment = function()
 
 
 local local_ensure_can_place_entity_inner = function(entity,event)
-	if entity.name == underground_access or entity.name == underground_access2 or entity.name == underground_accumulator then 		
+	local etype = entity.type
+	local ename = entity.name
+	if entity.type == "entity-ghost" then etype = entity.ghost_prototype.type end
+	if entity.type == "entity-ghost" then ename = entity.ghost_prototype.name end
+
+	if ename == underground_access or ename == underground_access2 or ename == underground_accumulator then 		
 		if entity.surface.name == "nauvis" then			
-			if entity.name == underground_access2 then return false end
+			if ename == underground_access2 then return false end
 			local rocks = game.surfaces["underground"].find_entities_filtered{area = {{entity.position.x-2.5, entity.position.y-2.5}, {entity.position.x+2.5, entity.position.y+2.5}}, name = rock_names}			
 			for index=1, #rocks do local r = rocks[index]
 				if is_valid(r) then 
@@ -453,13 +458,13 @@ local local_ensure_can_place_entity_inner = function(entity,event)
 				end			
 			end			
 			generate_surface_area(entity.position.x, entity.position.y,5,game.surfaces["underground"])
-			return game.surfaces["underground"].can_place_entity{name=entity.name, position=entity.position, direction=entity.direction, force=entity.force}	
+			return game.surfaces["underground"].can_place_entity{name=ename, position=entity.position, direction=entity.direction, force=entity.force}	
 		elseif entity.surface.name == "underground" then
-			if entity.name == underground_access or entity.name == underground_accumulator then
-				if game.surfaces["nauvis"].can_place_entity{name=entity.name, position=entity.position, direction=entity.direction, force=entity.force} then
+			if ename == underground_access or ename == underground_accumulator then
+				if game.surfaces["nauvis"].can_place_entity{name=ename, position=entity.position, direction=entity.direction, force=entity.force} then
 					return true
 				end
-			elseif entity.name == underground_access2 then
+			elseif ename == underground_access2 then
 				local rocks = game.surfaces["underground2"].find_entities_filtered{area = {{entity.position.x-2.5, entity.position.y-2.5}, {entity.position.x+2.5, entity.position.y+2.5}}, name = rock_names2}			
 				for index=1, #rocks do local r = rocks[index]
 					if is_valid(r) then 
@@ -467,10 +472,10 @@ local local_ensure_can_place_entity_inner = function(entity,event)
 					end			
 				end		
 				generate_surface_area2(entity.position.x, entity.position.y,5,game.surfaces["underground2"])
-				return game.surfaces["underground2"].can_place_entity{name=entity.name, position=entity.position, direction=entity.direction, force=entity.force}	
+				return game.surfaces["underground2"].can_place_entity{name=ename, position=entity.position, direction=entity.direction, force=entity.force}	
 			end
 		elseif entity.surface.name == "underground2" then			
-			if entity.name == underground_access2 then
+			if ename == underground_access2 then
 				local rocks = game.surfaces["underground"].find_entities_filtered{area = {{entity.position.x-2.5, entity.position.y-2.5}, {entity.position.x+2.5, entity.position.y+2.5}}, name = rock_names}			
 				for index=1, #rocks do local r = rocks[index]
 					if is_valid(r) then 
@@ -478,64 +483,69 @@ local local_ensure_can_place_entity_inner = function(entity,event)
 					end			
 				end		
 				generate_surface_area(entity.position.x, entity.position.y,5,game.surfaces["underground"])
-				return game.surfaces["underground"].can_place_entity{name=entity.name, position=entity.position, direction=entity.direction, force=entity.force}	
+				return game.surfaces["underground"].can_place_entity{name=ename, position=entity.position, direction=entity.direction, force=entity.force}	
 			end
 		end		
 	end
 	return true
 	end
 
+local local_fail_place_entity = function(entity,event)
+	local etype = entity.type
+	local ename = entity.name
+	if entity.name == "entity-ghost" then etype = entity.ghost_prototype.type end
+	if entity.name == "entity-ghost" then ename = entity.ghost_prototype.name end
+	local stack = {name=ename, count=1}
+	if entity.type == "entity-ghost" then
+		--dont actuall do anything entity destroyed later
+	elseif event.player_index ~= nil then
+		local player = game.get_player(event.player_index)
+		local inv = player.get_inventory(defines.inventory.character_main)
+		if inv and inv.can_insert(stack) then
+			inv.insert(stack) 
+		else
+			entity.surface.spill_item_stack(entity.position, {name=entity.name, count=1})
+			entity.order_deconstruction(entity.force, player)
+		end
+	elseif event.robot ~= nil then
+		entity.surface.spill_item_stack(entity.position, {name=entity.name, count=1})
+		entity.order_deconstruction(entity.force, player)
+	else
+		entity.surface.spill_item_stack(entity.position, {name=entity.name, count=1})
+	end
+	entity.surface.create_entity{name="flying-text", position = entity.position, text={"modmash.underground-placement-disallowed"} , color={r=1,g=0.25,b=0.5}}
+	entity.destroy()
+	end
+
 local local_ensure_can_place_entity = function(entity,event)
 	if local_ensure_can_place_entity_inner(entity,event) then	
-		if entity.surface.name == "underground" and (entity.type=="solar-panel" or entity.type == "rocket-silo" or (entity.name == "wind-trap" and settings.startup["modmash-allow-air-filter-below"].value == false)) then
-			if event.stack ~= nil then
-				event.stack.count = event.stack.count + 1
-			else
-				entity.surface.spill_item_stack(entity.position, {name=entity.name, count=1})
-			end
-			entity.surface.create_entity{name="flying-text", position = entity.position, text={"modmash.underground-placement-disallowed"} , color={r=1,g=0.25,b=0.5}}
-			entity.destroy()
+		local etype = entity.type
+		local ename = entity.name
+		if entity.type == "entity-ghost" then etype = entity.ghost_prototype.type end
+		if entity.type == "entity-ghost" then ename = entity.ghost_prototype.name end
+		if entity.surface.name == "underground" and (etype=="solar-panel" or etype == "rocket-silo" or (ename == "wind-trap" and settings.startup["modmash-allow-air-filter-below"].value == false)) then		
+			local_fail_place_entity(entity,event)
 			return false
-		end
-		if entity.surface.name == "underground2" and (entity.name == underground_accumulator or entity.name == underground_access or entity.type=="solar-panel" or entity.type == "rocket-silo" or (entity.name == "wind-trap" and settings.startup["modmash-allow-air-filter-below"].value == false)) then
-			if event.stack ~= nil then
-				event.stack.count = event.stack.count + 1
-			else
-				entity.surface.spill_item_stack(entity.position, {name=entity.name, count=1})
-			end
-			entity.surface.create_entity{name="flying-text", position = entity.position, text={"modmash.underground-placement-disallowed"} , color={r=1,g=0.25,b=0.5}}
-			entity.destroy()
+		elseif entity.surface.name == "underground2" and (entity.name == underground_accumulator or entity.name == underground_access or entity.type=="solar-panel" or entity.type == "rocket-silo" or (entity.name == "wind-trap" and settings.startup["modmash-allow-air-filter-below"].value == false)) then
+			local_fail_place_entity(entity,event)
 			return false
-		end
-		if entity.surface.name == "nauvis" and entity.name == underground_access2 then
-			if event.stack ~= nil then
-				event.stack.count = event.stack.count + 1
-			else
-				entity.surface.spill_item_stack(entity.position, {name=entity.name, count=1})
-			end
-			entity.surface.create_entity{name="flying-text", position = entity.position, text={"modmash.underground-placement-disallowed"} , color={r=1,g=0.25,b=0.5}}
-			entity.destroy()
+		elseif entity.surface.name == "nauvis" and entity.name == underground_access2 then
+			local_fail_place_entity(entity,event)
 			return false
 		end
 	else
-		if event.stack ~= nil then
-			event.stack.count = event.stack.count + 1
-		else
-			entity.surface.spill_item_stack(entity.position, {name=entity.name, count=1})
-		end
-		entity.surface.create_entity{name="flying-text", position = entity.position, text={"modmash.underground-placement-disallowed"} , color={r=1,g=0.25,b=0.5}}
-		entity.destroy()
+		local_fail_place_entity(entity,event)
 		return false
 	end
 	return true
 	end
 
-
 local local_underground_added = function(entity,event)			
 		if is_valid(entity) ~= true then return end	
 		-- should  have been called by spawn		
 		local_ensure_underground_environment()
-		if entity.surface.name == "nauvis" or entity.surface.name == "underground" or entity.surface.name == "underground2" then
+
+		if entity.surface.name == "nauvis" or entity.surface.name == "underground" or entity.surface.name == "underground2" then			
 			if local_ensure_can_place_entity(entity,event) == false then 
 				return
 			end		
@@ -566,6 +576,8 @@ local local_underground_added = function(entity,event)
 				local u = game.surfaces["nauvis"].create_entity{name = entity.name, position = entity.position, force = entity.force}
 				table.insert(accumulators,{bottom_entity = entity, top_entity = u})
 			end
+		elseif entity.name == "battery-cell" then	
+			entity.energy = 10000000
 		end
 	end
 
@@ -638,7 +650,7 @@ end
 end]]
 
 
-local local_underground_removed = function(entity)
+local local_underground_removed = function(entity)	
 	if entity.name == "digger-biter" then
 		for index, digger in pairs(diggers) do
 			if  digger.entity == entity then
@@ -682,8 +694,8 @@ local local_underground_removed = function(entity)
 				return
 			end
 		end
-	elseif entity.surface.name == "underground" then
-		if table_contains(rock_names, entity.name) then
+	elseif entity.surface.name == "underground" then		
+		if table_contains(rock_names, entity.name) then			
 			generate_surface_area(entity.position.x, entity.position.y,2,entity.surface)
 		end		
 	elseif entity.surface.name == "underground2" then
@@ -843,8 +855,8 @@ local local_access_process2 = function(access)
 		end
 	end			
 	local inventory = {}
-	if flip then
-		flip = false
+	if flip2 then
+		flip2 = false
 		local top = access.top_entity.get_inventory(defines.inventory.chest)
 		local bottom = access.bottom_entity.get_inventory(defines.inventory.chest)
 		if top ~= nil and bottom ~= nil then
@@ -868,7 +880,7 @@ local local_access_process2 = function(access)
 			end	
 		end
 	else
-		flip = true
+		flip2 = true
 		local bottom = access.top_entity.get_inventory(defines.inventory.chest)
 		local top = access.bottom_entity.get_inventory(defines.inventory.chest)
 		if top ~= nil and bottom ~= nil then

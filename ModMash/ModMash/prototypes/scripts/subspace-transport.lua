@@ -39,6 +39,13 @@ local local_load = function()
 	transports = global.modmash.subspace_transports
 	end
 
+local local_on_configuration_changed = function(f)
+	log("subspace-transport.local_on_configuration_changed")
+	if f.mod_changes["modmash"].old_version < "0.18.47" or chunks == nil then	
+		local_init()
+	end
+	end
+
 local local_subspace_transports_share = function(name,stock,entity)
 	for index=1, #transports do local transport = transports[index]
 		if transport ~= entity and is_valid_and_persistant(transport) and transport.energy > 0 then
@@ -102,14 +109,16 @@ if settings.startup["modmash-setting-subspace"].value == "Off" then
 		names = {subspace_transport},
 		on_init = local_init,
 		on_load = local_load,
-		on_start = local_init
+		on_configuration_changed = local_on_configuration_changed
+		--on_start = local_init
 	}
 else
 	control = {
 		names = {subspace_transport},
 		on_init = local_init,
 		on_load = local_load,
-		on_start = local_init,
+		on_configuration_changed = local_on_configuration_changed,
+		--on_start = local_init,
 		on_tick = {
 			priority = priority,
 			tick = local_subspace_transports_tick,		

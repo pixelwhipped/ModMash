@@ -20,18 +20,15 @@ local roboports_per_tick = 5
 local targets_per_tick = 10
 local return_targets_per_tick = 5
 
-local local_active = function()
-	if global.modmash.valkyries.projectiles == nil then global.modmash.valkyries.projectiles = 0 end
+local local_active = function()	
 	return #return_targets + #targets + global.modmash.valkyries.projectiles
 end
 
-local local_add_projectile = function()
-	if global.modmash.valkyries.projectiles == nil then global.modmash.valkyries.projectiles = 0 end
+local local_add_projectile = function()	
 	global.modmash.valkyries.projectiles = global.modmash.valkyries.projectiles + 1
 end
 
 local local_remove_projectile = function()
-	if global.modmash.valkyries.projectiles == nil then global.modmash.valkyries.projectiles = 0 end
 	global.modmash.valkyries.projectiles = math.max(global.modmash.valkyries.projectiles - 1,0)
 end
 
@@ -46,6 +43,8 @@ local local_init = function()
 	if global.modmash.valkyries.max_distance == nil then global.modmash.valkyries.max_distance = 55 end
 	if global.modmash.valkyries.projectiles == nil then global.modmash.valkyries.projectiles = 0 end
 	if global.modmash.valkyries.highlights == nil then global.modmash.valkyries.highlights = {} end
+
+	if global.modmash.valkyries.projectiles == nil then global.modmash.valkyries.projectiles = 0 end
 
 	targets = global.modmash.valkyries.targets
 	all_roboports = global.modmash.valkyries.all_roboports
@@ -367,6 +366,8 @@ local local_on_configuration_changed = function(f)
 	if f.mod_changes["modmash"].old_version < "0.18.30" then	
 		if global.modmash.valkyries.highlights == nil then global.modmash.valkyries.highlights = {} end
 	end
+
+	if global.modmash.valkyries.projectiles == nil then global.modmash.valkyries.projectiles = 0 end
 	end
 
 

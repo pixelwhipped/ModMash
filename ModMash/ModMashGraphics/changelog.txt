@@ -1,4 +1,10 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.18.07
+  Changes:
+    - updated low res assembling machine 4,5 graphics
+    - added batteries
+
+---------------------------------------------------------------------------------------------------
 Version: 0.18.06
   Changes:
     - moved mines over and new recipies

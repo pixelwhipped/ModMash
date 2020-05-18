@@ -1,4 +1,28 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.18.50
+  Bug Fixes:
+    - mods removing items which makes them invalid loot.
+
+---------------------------------------------------------------------------------------------------
+Version: 0.18.49
+  Bug Fixes:
+    - on chunk charted fix in loot script
+    - fixing issues with ghosts
+    - checks for deconstruction of rocks
+    - fixed blueprint underground.  was making them neutral but no longer
+
+---------------------------------------------------------------------------------------------------
+Version: 0.18.48
+  Changes:
+    - Added batteries for jump starting level 2 power
+
+---------------------------------------------------------------------------------------------------
+Version: 0.18.47
+  Changes:
+    - Made crashed loot weaker
+    - Moved creation of loot table to only occour on init or config change, was big process and mat be case of desync
+
+---------------------------------------------------------------------------------------------------
 Version: 0.18.46
   Bug Fixes:
     - possible case of other mod setting crafting_speed to a string

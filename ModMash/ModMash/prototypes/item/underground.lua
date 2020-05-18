@@ -33,5 +33,25 @@ data:extend(
     order = "w[underground-accumulator]",
     place_result = "underground-accumulator",
     stack_size = 10
+  },
+  {
+    type = "item",
+    name = "battery-cell",
+    icon = "__modmashgraphics__/graphics/icons/battery-cell.png",
+    icon_size = 32,
+    subgroup = "production-machine",
+    order = "w[battery-cell]",
+    place_result = "battery-cell",
+    stack_size = 10
+  },
+   {
+    type = "item",
+    name = "used-battery-cell",
+    icon = "__modmashgraphics__/graphics/icons/used-battery-cell.png",
+    icon_size = 32,
+    subgroup = "production-machine",
+    order = "w[used-battery-cell]",
+    place_result = "used-battery-cell",
+    stack_size = 10
   }
 })
