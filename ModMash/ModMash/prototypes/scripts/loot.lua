@@ -163,10 +163,13 @@ local local_is_loot_fill_item = function(group) return table_contains(loot_fill_
 local local_get_random_stack = function(group) 
 	local item = nil
 	local valid = false
+	local x = 0
 	repeat 
 		item = loot_table[math.random(1, #loot_table)]
 		valid = (is_valid(item) and table_contains(group, item.subgroup.name))
-	until(valid)
+		x = x + 1
+	until(valid or x > 10)
+	if valid ~= true then item = nil end
 	return item
 	end
 
@@ -297,53 +300,54 @@ local local_add_loot = function(surface_index, area )
 			local group = loot_groups[math.random(1, #loot_groups)]
 			local fill = local_is_loot_fill_item(group[1])		
 			local item = local_get_random_stack(group)
-			local full_stack = {name=item.name, count=local_get_stack_restriction(item)}
-			local stack = {name=item.name, count=math.random(1,local_get_stack_restriction(item))}			
-			if fill then				
-				if settings.startup["modmash-setting-loot-fill"].value == "Disabled" then
-					local stacks = math.random(3, 10)
-					for s=1, stacks do
-						if inv.can_insert(stack) then inv.insert(stack) end
-					end
-				else
-					local chance = math.random(1, 5)
-					if chance == 3 then
-						repeat
-							if inv.can_insert(full_stack) then inv.insert(full_stack) end
-						until(inv.can_insert(full_stack) == false)
-					else
+			if item ~= nil then
+				local full_stack = {name=item.name, count=local_get_stack_restriction(item)}
+				local stack = {name=item.name, count=math.random(1,local_get_stack_restriction(item))}			
+				if fill then
+					if settings.startup["modmash-setting-loot-fill"].value == "Disabled" then
 						local stacks = math.random(3, 10)
 						for s=1, stacks do
-							if inv.can_insert(full_stack) then inv.insert(full_stack) end
+							if inv.can_insert(stack) then inv.insert(stack) end
+						end
+					else
+						local chance = math.random(1, 5)
+						if chance == 3 then
+							repeat
+								if inv.can_insert(full_stack) then inv.insert(full_stack) end
+							until(inv.can_insert(full_stack) == false)
+						else
+							local stacks = math.random(3, 10)
+							for s=1, stacks do
+								if inv.can_insert(full_stack) then inv.insert(full_stack) end
+							end
 						end
 					end
-				end
-			else
-				-- Test total
-				local stacks = math.random(3, 10)
-				--log("Adding ".. item.name.. " to loot initial stacks "..stacks)
-				local s_r = local_get_recipe(item.name)
-				if s_r ~= nil then
-					local t_i = get_total_ingredients(s_r)
-					if t_i > 50 then stacks = math.min(stacks,8) end
-					if t_i > 150 then stacks = math.min(stacks,6) end
-					if t_i > 400 then stacks = math.min(stacks,4) end
-					if t_i > 600 then stacks = math.min(stacks,2) end
-					if t_i > 1000 then stacks = math.min(stacks,1) end
-					--log("Modified to " .. stacks .. " total raw " .. t_i)
-				end
-				
-				
-				for s=1, stacks do
-					if item.name == "droid" and global.modmash.droids_looted ~= true then
-						global.modmash.droids_looted = true
-						if inv.can_insert(stack) then inv.insert(stack) end
-					else
-						if inv.can_insert(stack) then inv.insert(stack) end
+				else
+					-- Test total
+					local stacks = math.random(3, 10)
+					--log("Adding ".. item.name.. " to loot initial stacks "..stacks)
+					local s_r = local_get_recipe(item.name)
+					if s_r ~= nil then
+						local t_i = get_total_ingredients(s_r)
+						if t_i > 50 then stacks = math.min(stacks,8) end
+						if t_i > 150 then stacks = math.min(stacks,6) end
+						if t_i > 400 then stacks = math.min(stacks,4) end
+						if t_i > 600 then stacks = math.min(stacks,2) end
+						if t_i > 1000 then stacks = math.min(stacks,1) end
+						--log("Modified to " .. stacks .. " total raw " .. t_i)
 					end
-				end	
+				
+				
+					for s=1, stacks do
+						if item.name == "droid" and global.modmash.droids_looted ~= true then
+							global.modmash.droids_looted = true
+							if inv.can_insert(stack) then inv.insert(stack) end
+						else
+							if inv.can_insert(stack) then inv.insert(stack) end
+						end
+					end	
+				end
 			end
-			
 		end
 	end
 	end
@@ -385,13 +389,15 @@ local local_on_selected = function(player,entity)
 		local stacks = math.random(3, 10)
 		for s=1, stacks do
 			local item = local_get_random_stack({"science-pack"})
-			local stack = {name=item.name, count=local_get_stack_restriction(item)}
+			if item ~= nil then
+				local stack = {name=item.name, count=local_get_stack_restriction(item)}
 
-			if player.can_insert(stack) then
-				player.insert(stack)
-				print("Science")
-			else
-				surface.spill_item_stack(	position, {name=stack.name, count=stack.count})
+				if player.can_insert(stack) then
+					player.insert(stack)
+					--print("Science")
+				else
+					surface.spill_item_stack(	position, {name=stack.name, count=stack.count})
+				end
 			end
 		end	
 	else

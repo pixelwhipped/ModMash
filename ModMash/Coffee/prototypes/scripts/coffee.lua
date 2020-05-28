@@ -113,6 +113,10 @@ local local_on_player_used_capsule = function(event)
 			players[i].value = 100
 		end
 	end	
+	--modmash.util.print(event.item.name)
+	if event.item.name == "coffee-beans" then		
+		players[event.player_index].value = math.min(math.max(players[event.player_index].value+2,0),100)
+	end	
 	if event.item.name == "coffee-low-grade" then
 		players[event.player_index].value = math.min(math.max(players[event.player_index].value+5,0),100)		
 	end

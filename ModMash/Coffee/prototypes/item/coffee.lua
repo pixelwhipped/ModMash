@@ -17,7 +17,7 @@
 		name = "coffee-blank-sticker"
 	},
 	{
-		type = "item",
+		type = "capsule",
 		name = "coffee-beans",
 		icon = "__coffee__/graphics/icons/coffee-beans.png",
 		icon_size = 32,
