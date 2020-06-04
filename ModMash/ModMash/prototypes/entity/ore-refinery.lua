@@ -138,7 +138,7 @@ data:extend(
 		{
 			type = "electric",
 			usage_priority = "secondary-input",
-			emissions = 0.04
+			emissions_per_minute = 3
 		},
 		energy_usage = "75kW",
 		open_sound = { filename = "__base__/sound/machine-open.ogg", volume = 0.85 },

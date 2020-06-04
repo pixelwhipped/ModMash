@@ -238,7 +238,7 @@ local local_valves = {
 		{
 			  type = "electric",
 			  usage_priority = "secondary-input",
-			  emissions = 0,
+			  emissions_per_minute  = 0,
 			  drain = "25kW",
 		},
 		light = nil,
@@ -287,7 +287,7 @@ local local_valves = {
 		{
 			  type = "electric",
 			  usage_priority = "secondary-input",
-			  emissions = 0,
+			  emissions_per_minute  = 0,
 			  drain = "25kW",
 		},
 		light = nil,

@@ -115,7 +115,7 @@ local local_create_icon = function(base_icons, new_icons, options)
 	for _, icon in pairs(base_icons) do
 		if not icon.scale then icon.scale = 1 end
 		if icon.shift ~= nil and type(icon.shift) ~= "table" then
-			icon.shift = {0,0} 
+			icon.shift = {0,0}
 		end
 		if not icon.shift then icon.shift = {0,0} end
 	end
@@ -130,7 +130,7 @@ local local_create_icon = function(base_icons, new_icons, options)
 		if icon.shift ~= nil and type(icon.shift) ~= "table" then
 			icon.shift = {0,0} 
 		end
-		if not icon.shift then icon.shift = {0,0} end
+		if (not icon.shift) or (not icon.shift[1]) then icon.shift = {0,0} end
 		extra_scale = 1
 		if base_icons[1] then
 			if (base_icons[1].icon_size* base_icons[1].scale) ~= (icon.icon_size* icon.scale) then
@@ -141,6 +141,7 @@ local local_create_icon = function(base_icons, new_icons, options)
 				extra_scale = (icons[1].icon_size * icons[1].scale) / (icon.icon_size)
 			end
         end
+
         icon.shift[1] = icon.shift[1] / icon.scale
         icon.shift[2] = icon.shift[2] / icon.scale
         icon.scale = icon.scale * options.rescale * extra_scale
