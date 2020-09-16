@@ -403,15 +403,26 @@ local local_on_entity_selected = function(player,entity)
 			filled = false,
 			target = entity,
 			only_in_alt_mode = false,
+			time_to_live = 240,
 			radius = max_distance
 			--left_top = area[1],
 			--right_bottom = area[2]
 		}
 		global.modmash.valkyries.highlights[player_index] = id
 	elseif global.modmash.valkyries.highlights[player_index] ~= nil then
-		rendering.destroy(global.modmash.valkyries.highlights[player_index])
+		rendering.destroy(global.modmash.valkyries.highlights[player_index])	
 	end
 end
+
+local local_start = function()	
+	local targets = rendering.get_all_ids("modmash")
+	for k = 1, #targets do  local id = targets[k]
+		local target = get_target(id)
+		if target ~= nil and target.type == "roboport" then
+			rendering.destroy(global.modmash.valkyries.highlights[player_index])
+		end
+	end
+	end
 
 local control = {
 	on_tick = {
@@ -419,6 +430,7 @@ local control = {
 		priority = low_priority
 		},
 	on_init = local_init,
+	on_start = local_start,
 	on_load = local_load,
 	on_added = local_roboport_added,
 	on_trigger_created_entity = local_valkyrie_added,

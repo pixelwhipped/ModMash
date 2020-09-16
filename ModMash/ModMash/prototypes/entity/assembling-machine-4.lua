@@ -141,3 +141,7 @@ data:extend(
   }
 }
 )
+
+if data_final_fixes then
+	data.raw["assembling-machine"]["assembling-machine-3"].next_upgrade = "assembling-machine-4"
+end

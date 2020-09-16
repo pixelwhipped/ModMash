@@ -6,7 +6,7 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>C:\Users\TarrantFamily\AppData\Roaming\Factorio\mods\spaghetti_0.18.01\</OutputPath>
+    <OutputPath>C:\Users\tarra\AppData\Roaming\Factorio\mods\spaghetti_0.18.01\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>

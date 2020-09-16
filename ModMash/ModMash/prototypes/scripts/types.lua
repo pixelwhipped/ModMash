@@ -19,6 +19,10 @@ local local_create_biome_recipies = function()
 	local create_recipe_for_biome = function(name, factor)
 		local smooth = 25
 		log("Creating Biome Recipe: wind-trap-action-" .. name)
+		local res = {type = "fluid", name = "water", amount = math.floor(100/smooth*factor+0.5)}
+		if settings.startup["modmash-setting-wind-trap-output"].value == "sludge" then
+			res = {type = "fluid", name = "sludge", amount = math.floor(100/smooth*(1.5-factor)+0.5)}
+		end
 		return {
 			type = "recipe",        
 			name = "wind-trap-action-" .. name,
@@ -26,10 +30,12 @@ local local_create_biome_recipies = function()
 			enabled = true,
 			category = "wind-trap",
 			ingredients = {},
-			results = {
-				{type = "fluid", name = "water", amount = math.floor(100/smooth*factor+0.5)},			
-			},
-			hidden = true
+			results = { res	},
+			hidden = true,
+			--subgroup = "other",
+			-- icon = "__base__/graphics/icons/fluid/water.png",
+			-- icon_mipmaps = 4,
+			-- icon_size = 64
 		}
     end  
 	for _,biome in pairs(get_biomes()) do
@@ -1272,19 +1278,20 @@ local local_update_recipies = function()
 	add_ingredient_to_recipe("solar-panel",{name = "glass", amount = 1})
 	
 
-	
-	add_ingredient_to_recipe("construction-robot",{name = modmash.defines.names.droid_name() , amount = 1})	
-	add_ingredient_to_recipe("logistic-robot",{name = modmash.defines.names.droid_name(), amount = 1})	
+	if settings.startup["modmash-droid-support"].value ~= "Off" then
+		add_ingredient_to_recipe("construction-robot",{name = modmash.defines.names.droid_name() , amount = 1})	
+		add_ingredient_to_recipe("logistic-robot",{name = modmash.defines.names.droid_name(), amount = 1})	
 
-	if modmash.defines.names.droid_name() ~= "droid" then
-		add_ingredient_to_recipe(modmash.defines.names.droid_name(),{name = "radar", amount = 1})
-		remove_ingredient_from_recipie(modmash.defines.names.droid_name(),"iron-plate")
-		remove_ingredient_from_recipie(modmash.defines.names.droid_name(),"iron-gear-wheel")
-		remove_ingredient_from_recipie(modmash.defines.names.droid_name(),"electronic-circuit")
-		add_ingredient_to_recipe(modmash.defines.names.droid_name(),{name = "electronic-circuit", amount = 1})
+		if modmash.defines.names.droid_name() ~= "droid" then
+			add_ingredient_to_recipe(modmash.defines.names.droid_name(),{name = "radar", amount = 1})
+			remove_ingredient_from_recipie(modmash.defines.names.droid_name(),"iron-plate")
+			remove_ingredient_from_recipie(modmash.defines.names.droid_name(),"iron-gear-wheel")
+			remove_ingredient_from_recipie(modmash.defines.names.droid_name(),"electronic-circuit")
+			add_ingredient_to_recipe(modmash.defines.names.droid_name(),{name = "electronic-circuit", amount = 1})
+		end
+		remove_ingredient_from_recipie("construction-robot","electronic-circuit")
+		remove_ingredient_from_recipie("logistic-robot","advanced-circuit")
 	end
-	remove_ingredient_from_recipie("construction-robot","electronic-circuit")
-	remove_ingredient_from_recipie("logistic-robot","advanced-circuit")
 
 	add_ingredient_to_recipe("inserter",{name = "burner-inserter", amount = 1})	
 	remove_ingredient_from_recipie("inserter","iron-gear-wheel")
@@ -1767,6 +1774,10 @@ if data ~= nil and data_final_fixes == true then
 	add_missing_materials_to_stone_and_uranium_coal_titanium()
 	add_missing_ooze()
 	local_create_ore_refinements()
+	if table_contains(data.raw["assembling-machine"]["ore-refinery"].crafting_categories,"ore-refining") == false then
+		table.insert(data.raw["assembling-machine"]["ore-refinery"].crafting_categories,"ore-refining")
+	end
+
 
 	local loot_science_a = table.deepcopy(data.raw["simple-entity"]["crash-site-lab-broken"])
 	loot_science_a.name = "loot_science_a"

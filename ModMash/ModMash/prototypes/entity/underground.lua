@@ -923,7 +923,7 @@ local r = table.deepcopy(data.raw["simple-entity"][rock_names[k]])
 end
 
 for k=1, 7 do
-local t = table.deepcopy(data.raw["tile"]["dirt-"..k])
+	local t = table.deepcopy(data.raw["tile"]["dirt-"..k])
 	t.name = "mm_dark-"..t.name
 	if t.autoplace ~= nil then t.autoplace.default_enabled = false end
 	t.tint = {0.15,0.15,0.15,1}

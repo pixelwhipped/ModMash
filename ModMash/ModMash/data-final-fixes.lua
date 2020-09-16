@@ -1,4 +1,14 @@
-﻿modmash = { util = get_liborio() }
+﻿--af ,f2,cc fail
+--af,f2 pass
+--af cc pass
+--f2, af pass
+--cc, f2 pass
+--af pass
+--f2 pass
+--cc pass
+
+
+modmash = { util = get_liborio() }
 data_final_fixes = true
 require("prototypes.entity.logistics")
 require ("prototypes.scripts.types")
@@ -6,6 +16,7 @@ require ("prototypes.scripts.types")
 local table_contains = modmash.util.table.contains
 
 local local_add_loot_to_entity = function(entityType, entityName, probability, countMin, countMax)
+	if settings.startup["modmash-alien-loot-chance"].value == 0 then return end
     if data.raw[entityType] ~= nil then
         if data.raw[entityType][entityName] ~= nil then
             if data.raw[entityType][entityName].loot == nil then
@@ -26,6 +37,7 @@ local local_add_loot_to_entity = function(entityType, entityName, probability, c
     end end
 
 local local_create_entity_loot = function()
+	if settings.startup["modmash-alien-loot-chance"].value == 0 then return end
 	local max_health = 0
 	for i,unit in pairs(data.raw["unit"]) do
 		if unit.subgroup == "enemies" and unit.max_health then
@@ -69,7 +81,16 @@ local local_convert_source_effect = function(landmine)
 	return effects
 end
 
-
+--[[
+for k=1, 7 do
+	if data.raw["tile"]["mm_dark-dirt-"..k] == nil then
+		local t = table.deepcopy(data.raw["tile"]["dirt-"..k])
+		t.name = "mm_dark-"..t.name
+		if t.autoplace ~= nil then t.autoplace.default_enabled = false end
+		t.tint = {0.15,0.15,0.15,1}
+		data:extend({t})
+	end
+end]]
 
 
 for _,landmine in pairs(data.raw["land-mine"]) do
@@ -89,5 +110,27 @@ for _,landmine in pairs(data.raw["land-mine"]) do
 		data.raw["land-mine"][landmine.name] = landmine
 	else
 		--modmash.util.log("Cannot Update "..landmine.name)
+	end
+end
+
+--allow productivity for recipes
+	
+	
+if settings.startup["modmash-setting-allow-production"].value == true then
+	if mods["space-exploration"] then return end
+	local add_productivity_recipes = {"light-oil-conversion-crude-oil"}
+	for k, v in pairs(data.raw.module) do
+		if v.name:find("productivity%-module") then
+			if v.limitation ~= nil then
+				for r = 1, #add_productivity_recipes do local prod = add_productivity_recipes[r]	
+					table.insert(v.limitation,prod)
+				end
+			end
+		end
+	end
+
+
+	for k, v in pairs(data.raw.beacon) do
+		table.insert(v.allowed_effects, "productivity")
 	end
 end

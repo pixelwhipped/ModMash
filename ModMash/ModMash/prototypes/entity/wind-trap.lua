@@ -38,7 +38,11 @@ data:extend(
 			{
 				position = {0, 2},
 				type = "output"
-			}
+			},
+          --[[  {
+				position = {0, -2},
+				type = "output"
+			}]]
 		},		
       },
 	  off_when_no_fluid_recipe = false
@@ -70,11 +74,27 @@ data:extend(
         {
           filename = "__modmashgraphics__/graphics/entity/wind-trap/wind-trap.png",
           priority = "high",
-          width = 142,
+          width = 107,
           height = 113,
           frame_count = 8,
           line_length = 8,
-          shift = {0.84, -0.09},
+          shift = {
+              0,
+              0.0625
+          },
+          hr_version = {
+              filename = "__modmashgraphics__/graphics/entity/wind-trap/hr-wind-trap.png",
+              priority = "high",              
+              width = 214,
+              height = 226,
+              frame_count = 8,
+              line_length = 8,              
+              scale = 0.5,
+              shift = {
+                0,
+                0.0625
+              },          
+          },
         },
       }
     },

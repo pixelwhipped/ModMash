@@ -53,7 +53,13 @@ if not data.raw.recipe["glass-from-sand"] then
         { "sand", 1 }
       },
       name = "glass-from-sand",
-      result = "glass",
+      results =
+	  {
+		{
+			name = "glass",      
+			amount = 2
+		}
+	  },
       type = "recipe",
     },
   })
@@ -78,10 +84,16 @@ data:extend(
 		{
 		  ingredients =
 		  {
-			{"glass", 1},
+			{"glass", 2},
 			{"red-wire", 1}
 		  },
-		  result = "blank-circuit"
+          results =
+	      {
+		    {
+			    name = "blank-circuit",      
+			    amount = 2
+		    }
+	      },
 		},
 	}
 })

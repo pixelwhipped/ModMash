@@ -1,4 +1,38 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.18.58
+  Changes:
+    - Added setting description for allow production modules in beacons will chage to speed where possible
+    - Default setting for allow production modules now false and always false if se exists
+
+---------------------------------------------------------------------------------------------------
+Version: 0.18.57
+  Changes:
+    - Added setting to allow production modules in beacons, se compat
+
+---------------------------------------------------------------------------------------------------
+Version: 0.18.56
+  Changes:
+    - Added check to remove valkyrie radius visualization,  appears some events wern't working
+
+---------------------------------------------------------------------------------------------------
+Version: 0.18.55
+  Changes:
+    - Added option to disble droids
+    - Tweaked glass recipe
+    - Tweaked blank circuit recipe
+    - added missing next_upgrade
+    - wind trap option now output water or sludge
+    - allowed productivity on beacons
+    - allowed productivity on various recipes
+    - updated wind trap graphics
+
+---------------------------------------------------------------------------------------------------
+Version: 0.18.54
+  Changes:
+    - Added setting to disable alien loot if loot chance = 0.
+    - Added missing recipe names for fish and ooze juice
+
+---------------------------------------------------------------------------------------------------
 Version: 0.18.53
   Changes:
     - updated for liborio 0.18.04

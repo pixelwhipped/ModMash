@@ -1,0 +1,41 @@
+﻿---------------------------------------------------------------------------------------------------
+Version: 0.1.24
+  Changes:
+    - Added artillery
+  Bug Fixes:
+    - image layer shifting
+    - noticed issue with prepair range
+
+---------------------------------------------------------------------------------------------------
+Version: 0.1.23
+  Bug Fixes:
+    - fix expected entity type.
+
+---------------------------------------------------------------------------------------------------
+Version: 0.1.22
+  Changes:
+    - Added startup options to modify rank buff and level up
+    - Added generals
+    - Added buff to prepair range
+  Bug Fixes:
+    - laser range 0 dmg issue
+
+---------------------------------------------------------------------------------------------------
+Version: 0.1.21
+  Changes:
+    - Updated to allow fluid turrets
+    - Updated fast replace, upgrades
+    - Turrest now retain ammo and fluid
+    - Tech buffs now applied
+
+---------------------------------------------------------------------------------------------------
+Version: 0.1.2
+  Bug Fixes:
+    - check condition max_heath
+    - removed profiler
+
+---------------------------------------------------------------------------------------------------
+Version: 0.1.1
+  Changes:
+    - Initial Release
+

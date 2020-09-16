@@ -159,7 +159,14 @@ data:extend(
 			},
 			idle_sound = { filename = "__base__/sound/idle1.ogg", volume = 0.6 },
 			apparent_volume = 1.5
-		}
+		},
+		module_specification =
+		{
+		  module_slots = 1,
+		  module_info_icon_shift = {0, 0.5},
+		  module_info_multi_row_initial_height_modifier = -0.3
+		},
+		allowed_effects = {"consumption", "speed", "productivity", "pollution"},
 	},
 	{
 		type = "recipe",

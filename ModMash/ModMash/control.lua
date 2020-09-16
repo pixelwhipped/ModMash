@@ -289,6 +289,35 @@ script.on_load(function()
 	end)	
 
 script.on_configuration_changed(function(f) 
+	if f.mod_startup_settings_changed == true then
+		if settings.startup["modmash-setting-allow-production"].value == false or game.active_mods["space-exploration"] then
+			log("control.on_configuration_changed checking beacons ")
+			local modules = {
+				--{name="productivity-module-z",replace="speed-module-z"},
+				{name="productivity-module",replace="speed-module"},
+				{name="productivity-module-2",replace="speed-module-2"},
+				{name="productivity-module-3",replace="speed-module-3"}
+			}
+
+		
+			for _, surface in pairs(game.surfaces) do
+				for _, f in pairs(surface.find_entities_filtered{type={"beacon"}}) do
+					local inv = f.get_module_inventory()
+					if inv.is_empty() == false then
+						for k=1, #modules do
+							if game.item_prototypes[modules[k].name] ~= nil then
+								local c = inv.get_item_count(modules[k].name)
+								if c > 0 then c=inv.remove({name=modules[k].name, count=c}) end
+								if c > 0 and game.item_prototypes[modules[k].replace] ~= nil then
+									inv.insert({name=modules[k].replace, count=c})
+								end
+							end
+						end					
+					end
+				end
+			end	
+		end
+	end
 	if f.mod_changes["modmash"] == nil or f.mod_changes["modmash"].old_version == nil then
 		if modmash.force_configuration_change == true then
 			log("Forcing update to " .. game.active_mods["modmash"])
@@ -303,6 +332,8 @@ script.on_configuration_changed(function(f)
 	end
 
 	log("control.on_configuration_changed " .. f.mod_changes["modmash"].old_version .. " -> " .. f.mod_changes["modmash"].new_version)
+	
+
 	global.modmash.shown_welcome = false 
 	if f.mod_changes["modmash"].old_version < "0.17.61" then	
 		log("control.on_configuration_changed(repair needed)")

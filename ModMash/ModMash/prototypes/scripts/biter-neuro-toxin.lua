@@ -68,12 +68,12 @@ local local_toxin_added = function(event)
 		})
 		for _, enemy in ipairs(enemies) do
 			if enemy.prototype.subgroup.name=="enemies" then
-				if enemy.type == "unit-spawner" then
-					--enemy.force = game.forces[force_neutral]
-					local p = enemy.position
+				if enemy.type == "unit-spawner" then local p = enemy.position
 					local n = enemy.name
 					enemy.destroy()
 					entity.surface.create_entity{name=n, position=p, force = game.forces[force_neutral]}
+					--enemy.force = game.forces[force_neutral]
+					
 
 				elseif enemy.type == "turret" then
 					--enemy.force = game.forces[force_neutral] dose not work need to remove and add back

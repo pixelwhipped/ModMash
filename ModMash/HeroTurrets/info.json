@@ -1,0 +1,15 @@
+{
+  "name": "heroturrets",
+  "version": "0.1.24",
+  "title": "HeroTurrets",
+  "author": "PixelWhipped",
+  "contact": "",
+  "homepage": "https://www.patreon.com/user?u=15367757",
+  "factorio_version": "1.0",
+  "description": "Extends turrets via ranking system based on kills. Turrets generated so not limited to vanilla, identifiable by overlaid rank insignia. turrets via ranking system based on kills.  rank buffs individual turrets.",
+  "dependencies": [
+    "base >= 1.0.0",
+    "liborio >= 0.18.04",
+    "? mininukes >= 0.18.02"
+  ]
+}

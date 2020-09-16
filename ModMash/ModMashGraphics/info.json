@@ -1,6 +1,6 @@
 {
   "name": "modmashgraphics",
-  "version": "0.18.07",
+  "version": "0.18.08",
   "title": "ModMashGraphics",
   "author": "PixelWhipped",
   "contact": "",
@@ -8,6 +8,6 @@
   "factorio_version": "0.18",
   "description": "Graphics compnent for ModMash",
   "dependencies": [
-    "base >= 0.18.0"
+    "base >= 0.1.0"
   ]
 }

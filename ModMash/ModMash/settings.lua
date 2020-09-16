@@ -77,7 +77,7 @@ data:extend(
 		type = "int-setting",
 		name = "modmash-alien-loot-chance",
 		setting_type = "startup",
-		default_value = 100,
+		default_value = 20,
 		minimum_value = 0,
 		maximum_value = 100,
 		order = "be"
@@ -86,7 +86,7 @@ data:extend(
 		type = "string-setting",
 		name = "modmash-setting-loaders",
 		setting_type = "startup",
-		default_value = "Enabled",
+		default_value = "Disabled",
 		allowed_values = {"Enabled", "Disabled"},
 		order = "la" -- logistic
 	},
@@ -152,8 +152,8 @@ data:extend(
 		type = "string-setting",
 		name = "modmash-droid-support",
 		setting_type = "startup",
-		default_value = "ModMash",
-		allowed_values = {"ModMash", "Construction Drone"},
+		default_value = "Off",
+		allowed_values = {"ModMash", "Construction Drone","Off"},
 		order = "oe"
 	}
 	,{
@@ -166,8 +166,21 @@ data:extend(
 		type = "string-setting",
 		name = "modmash-setting-subspace",
 		setting_type = "startup",
-		default_value = "Items",
+		default_value = "Resource Only",
 		allowed_values = {"Items", "Off", "Resource Only"}, --"Category"
 		order = "p"
-	},
+	},{
+		type = "string-setting",
+		name = "modmash-setting-wind-trap-output",
+		setting_type = "startup",
+		default_value = "water",
+		allowed_values = {"sludge", "water"},
+		order = "p"
+	},{
+		type = "bool-setting",
+		name = "modmash-setting-allow-production",
+		setting_type = "startup",
+		default_value = false,
+		order = "q"
+	}
 })
