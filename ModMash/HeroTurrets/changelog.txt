@@ -1,5 +1,10 @@
 ﻿---------------------------------------------------------------------------------------------------
-Version: 0.1.25
+Version: 0.1.27
+Date: 9/30/2020
+  Bug Fixes:
+    - Rolled in updates from Kingdud to let other mods know when we replace their entities. Reduces mod conflcits.
+---------------------------------------------------------------------------------------------------
+Version: 0.1.26
   Bug Fixes:
     - Added nil check for fluidboxes on entity died
 
