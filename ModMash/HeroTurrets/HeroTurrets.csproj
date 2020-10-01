@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\..\..\AppData\Roaming\Factorio\mods\heroturrets_0.1.24\</OutputPath>
+    <OutputPath>..\..\..\..\..\..\AppData\Roaming\Factorio\mods\heroturrets_0.1.26\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -268,6 +268,7 @@
     <Content Include="graphics\technology\hero-tech-3.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="notes.txt" />
     <Content Include="thumbnail.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

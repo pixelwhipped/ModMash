@@ -1,13 +1,13 @@
 {
   "name": "coffee",
-  "version": "0.18.09",
+  "version": "1.0.01",
   "title": "I NEED COFFEE",
   "author": "PixelWhipped",
   "contact": "",
   "homepage": "https://www.patreon.com/user?u=15367757",
-  "factorio_version": "0.18",
+  "factorio_version": "1.0",
   "description": "Coffee gives you a boost! lack of it makes you tired.",
   "dependencies": [
-    "base >= 0.18.0"
+    "base >= 1.0.0"
   ]
 }

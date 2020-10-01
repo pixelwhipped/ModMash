@@ -240,8 +240,10 @@ local local_mini_boiler_process = function(valve)
 			entity.fluidbox[2] = t
 		end
 		local t = outpipe.entity.fluidbox[outpipe.box]
-		t.temperature = 90
-		outpipe.entity.fluidbox[outpipe.box] = t
+		if t ~= nil then 
+			t.temperature = 90
+			outpipe.entity.fluidbox[outpipe.box] = t
+		end
 	end
 	end
 
@@ -257,8 +259,10 @@ local local_super_boiler_process = function(valve)
 			entity.fluidbox[2] = t
 		end
 		local t = outpipe.entity.fluidbox[outpipe.box]
-		t.temperature = 400
-		outpipe.entity.fluidbox[outpipe.box] = t
+		if t ~= nil then 
+			t.temperature = 400
+			outpipe.entity.fluidbox[outpipe.box] = t
+		end
 	end
 	end
 

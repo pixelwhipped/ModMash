@@ -326,6 +326,7 @@ script.on_init(local_on_init)
 --[[Called subsequent times mod is loaded. Called each time except first instance]]
 script.on_load(function()
 	log("control.on_load")
+	
 --[[	if remote.interfaces["heroturrets"] == nil then
 		remote.add_interface("heroturrets",
 		{hero_1_detail = hero_1_detail,
@@ -340,6 +341,8 @@ script.on_load(function()
 	end)	
 
 script.on_configuration_changed(function(f) 
+
+	
 	if f.mod_changes["heroturrets"] == nil or f.mod_changes["heroturrets"].old_version == nil then
 		if heroturrets.force_configuration_change == true then
 			log("Forcing update to " .. game.active_mods["heroturrets"])
@@ -354,21 +357,18 @@ script.on_configuration_changed(function(f)
 	end
 
 	log("control.on_configuration_changed " .. f.mod_changes["heroturrets"].old_version .. " -> " .. f.mod_changes["heroturrets"].new_version)
-	global.heroturrets.shown_welcome = false 
-	if f.mod_changes["heroturrets"].old_version < "0.17.61" then	
-		log("control.on_configuration_changed(repair needed)")
-		local_on_init()
-		for k=1, #heroturrets.on_configuration_changed do local v = heroturrets.on_configuration_changed[k]		
-			v(f)
-		end
-		for k=1, #heroturrets.on_load do local v = heroturrets.on_load[k]		
-			v()
-		end 
-	else
-		for k=1, #heroturrets.on_configuration_changed do local v = heroturrets.on_configuration_changed[k]		
-			v(f)
-		end
+
+	for k=1, #heroturrets.on_configuration_changed do local v = heroturrets.on_configuration_changed[k]		
+		v(f)
 	end
+
+	--[[if f.mod_changes["heroturrets"].old_version < "0.1.25" then	
+		for i = 1, #game.players do local p = game.players[i]
+			p.force.reset_technologies() -- not working as hoped
+		end
+	
+	end]]
+	
 	end)
 
 
@@ -420,6 +420,7 @@ local local_on_damage = function(event)
 local local_item_pick_up = function(event)
 	if is_map_editor == true then return end
 	local stack = event.item_stack
+	if stack == nil then stack = event.buffer end
 	if stack ~= nil then				
 		for k=1, #heroturrets.on_pick_up do local v = heroturrets.on_pick_up[k]		
 			v(stack,event)

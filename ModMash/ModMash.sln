@@ -19,6 +19,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liborio", "Liborio\Liborio.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HeroTurrets", "HeroTurrets\HeroTurrets.csproj", "{7F8A37A4-39BB-48B9-8097-EB10850DC1FE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Splinter", "Splinter", "{D7B0BC2C-CCC1-48E9-8025-CD4E2632FF8C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModMashSplinterAirPurifier", "ModMashSplinterAirPurifier\ModMashSplinterAirPurifier.csproj", "{D95EC89D-B6A0-4835-8249-146983E5AEF0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,9 +61,16 @@ Global
 		{7F8A37A4-39BB-48B9-8097-EB10850DC1FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F8A37A4-39BB-48B9-8097-EB10850DC1FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F8A37A4-39BB-48B9-8097-EB10850DC1FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D95EC89D-B6A0-4835-8249-146983E5AEF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D95EC89D-B6A0-4835-8249-146983E5AEF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D95EC89D-B6A0-4835-8249-146983E5AEF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D95EC89D-B6A0-4835-8249-146983E5AEF0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D95EC89D-B6A0-4835-8249-146983E5AEF0} = {D7B0BC2C-CCC1-48E9-8025-CD4E2632FF8C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B16926D6-3B1B-4B40-9225-A9261A0E28AD}

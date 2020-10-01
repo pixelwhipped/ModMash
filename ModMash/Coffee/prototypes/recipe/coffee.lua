@@ -88,5 +88,29 @@
 		  },
 		  result = "coffee-high-grade"
 		}
+	},
+	{
+		type = "recipe",
+		name = "coffee-tree",
+		energy_required = 1.5,
+		enabled = true,
+		category = "crafting-with-fluid",
+		icon = "__base__/graphics/icons/tree-01.png",
+		icon_mipmaps = 4,
+		icon_size = 64,
+		main_product = "",
+		subgroup = "capsule",
+		allow_decomposition = false,
+		normal =
+		{
+		  enabled = true,
+		  ingredients =
+		  {
+			{type="fluid", name="water", amount=50},
+			{"coffee-beans", 1},
+			{"stone", 10},
+		  },
+		  result = "coffee-tree"
+		}
 	}
 })

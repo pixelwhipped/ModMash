@@ -1,6 +1,6 @@
 {
   "name": "modmash",
-  "version": "0.18.58",
+  "version": "0.18.60",
   "title": "ModMash",
   "author": "PixelWhipped",
   "contact": "",
@@ -14,6 +14,7 @@
     "liborio >= 0.18.04",
     "? coffee >= 0.18.08",
     "? biterbullets >= 0.18.4",
-    "? mininukes >= 0.18.02"
+    "? mininukes >= 0.18.02",
+    "? heroturrets >= 0.1.25"    
   ]
 }

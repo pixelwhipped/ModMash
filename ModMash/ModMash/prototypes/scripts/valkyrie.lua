@@ -417,7 +417,7 @@ end
 local local_start = function()	
 	local targets = rendering.get_all_ids("modmash")
 	for k = 1, #targets do  local id = targets[k]
-		local target = get_target(id)
+		local target = rendering.get_target(id)
 		if target ~= nil and target.type == "roboport" then
 			rendering.destroy(global.modmash.valkyries.highlights[player_index])
 		end

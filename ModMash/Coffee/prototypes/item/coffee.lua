@@ -130,5 +130,17 @@
 		subgroup = "capsule",
 		order = "a[grenade]-a[normal]-d[coffee-high-grade]",
 		stack_size = 100
+	},
+	{
+		type = "item",
+		name = "coffee-tree",
+		icon = "__base__/graphics/icons/tree-01.png",
+		icon_mipmaps = 4,
+		icon_size = 64,
+		subgroup = "raw-resource",
+		subgroup = "capsule",
+		order = "a[grenade]-a[normal]-e[coffee-tree]",
+		place_result = "tree-01",
+		stack_size = 100
 	}
 	})

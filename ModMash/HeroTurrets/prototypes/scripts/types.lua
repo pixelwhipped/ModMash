@@ -6,6 +6,7 @@ local ends_with  = heroturrets.util.ends_with
 local ends_with  = heroturrets.util.ends_with
 local get_name_for = heroturrets.util.get_name_for
 local table_contains = heroturrets.util.table.contains
+local table_remove = heroturrets.util.table.remove
 local create_icon = heroturrets.util.create_icon
 local convert_to_string = heroturrets.util.convert_to_string
 
@@ -32,7 +33,7 @@ local local_get_item = function(name)
 		end
 	end
 	return item_list[name]
-end
+    end
 
 local is_nesw = function(entity)
 	if entity == nil then return false end
@@ -46,63 +47,94 @@ local is_nesw = function(entity)
     if entity.base_picture.west == nil then return false end
     if entity.base_picture.west.layers == nil then return false end
     return true
-end
-
-local get_badge = function(rank,top,left)
-        local img = {
-                        filename = "__heroturrets__/graphics/entity/turret/hero-"..rank.."-base.png",
-                        priority = "high",
-                        width = 23,
-                        height = 24,
-                        direction_count = 1,
-                        frame_count = 1,
-                        shift = util.by_pixel((left)*-1,top+(24/3)),
-                        hr_version =
-                        {
-                            filename = "__heroturrets__/graphics/entity/turret/hr-hero-"..rank.."-base.png",
-                            priority = "high",
-                            line_length = 1,
-                            width = 46,
-                            height = 48,
-                            frame_count = 1,
-                            direction_count = 1,
-                            shift = util.by_pixel((left)*-1,top+(48/3)),
-                            scale = 0.5
-                        }
-                    }
-        return img
     end
 
-local update_fluid_turret_tech = function(entity, name)
+local get_badge = function(rank,top,left)
+    local img = {
+                    filename = "__heroturrets__/graphics/entity/turret/hero-"..rank.."-base.png",
+                    priority = "high",
+                    width = 23,
+                    height = 24,
+                    direction_count = 1,
+                    frame_count = 1,
+                    shift = util.by_pixel((left)*-1,top+(24/3)),
+                    hr_version =
+                    {
+                        filename = "__heroturrets__/graphics/entity/turret/hr-hero-"..rank.."-base.png",
+                        priority = "high",
+                        line_length = 1,
+                        width = 46,
+                        height = 48,
+                        frame_count = 1,
+                        direction_count = 1,
+                        shift = util.by_pixel((left)*-1,top+(48/3)),
+                        scale = 0.5
+                    }
+                }
+    return img
+    end
+
+--[[
+   Update as military upgrades effect adds 
+      {
+        type = "turret-attack",
+        turret_id = "flamethrower-turret",
+        modifier = x
+      } 
+      note the turret-id
+]]
+local update_fluid_turret_tech = function(entity, name,rank)
+    log("Updating tech for refined flammables" .. " for "..entity.name)
     for _, tech in pairs(tech) do
-        if tech.name:match("^refined%-flammables%-") and tech.effects then
+        if tech.name:match("^refined%-flammables%-") and tech.effects then            
             local effect = nil
             for _, eff in pairs(tech.effects) do
                 if eff.type == "turret-attack" and eff.turret_id == entity.name then
-                    effect = eff
+                    effect = table.deepcopy(eff)
                 end
             end
             if effect ~= nil then 
-                table.insert(tech.effects, {type="turret-attack", turret_id = name, modifier = effect.modifier})
+                log("Adding tech for "..tech.name .. " for "..entity.name)
+                table.insert(tech.effects, {type="turret-attack", turret_id = name, modifier = effect.modifier*(1+(0.25*rank)) })
+            else
+                log("Missing tech for "..tech.name .. " for "..entity.name)
             end
         end
     end
     end
 
-local update_ammo_turret_tech = function(entity, name)
+local update_ammo_turret_tech = function(entity, name, rank)
+    log("Updating tech for physical projectile damage")
     for _, tech in pairs(tech) do
         if tech.name:match("^physical%-projectile%-damage%-") and tech.effects then
             local effect = nil
             for _, eff in pairs(tech.effects) do
                 if eff.type == "turret-attack" and eff.turret_id == entity.name then
-                    effect = eff
+                    effect = table.deepcopy(eff)
                 end
             end
             if effect ~= nil then 
-                table.insert(tech.effects, {type="turret-attack", turret_id = name, modifier = effect.modifier})
+                log("Adding tech for "..tech.name .. " for "..entity.name)
+                table.insert(tech.effects, {type="turret-attack", turret_id = name, modifier = effect.modifier*(1+(0.25*rank))})
+            else 
+                log("Missing tech for "..tech.name .. " for "..entity.name)
             end
         end
     end
+    end
+
+local local_create_turret_with_tags = function(turret)
+    local name_with_tags = turret.item.name.."-with-tags"
+    
+    local item_with_tags = table.deepcopy(turret.item)
+    item_with_tags.type = "item-with-tags"
+    item_with_tags.name = name_with_tags
+    item_with_tags.localised_name = turret.item.localised_name
+    item_with_tags.localised_description = turret.item.localised_desc
+    item_with_tags.localised_description = turret.item.localised_desc
+    item_with_tags.order = turret.item.order..".tag"
+    turret.entity.minable.result = name_with_tags
+    data:extend({item_with_tags})
     end
 
 local local_create_turret = function(turret,rank,rank_string,mod)
@@ -123,6 +155,7 @@ local local_create_turret = function(turret,rank,rank_string,mod)
         end
         new_icon = rev
         local name = "hero-turret-"..rank.."-for-"..turret.item.name
+        local name_with_tags = name.."-with-tags"
         local item = {
             type = "item",
             name = name,
@@ -136,7 +169,21 @@ local local_create_turret = function(turret,rank,rank_string,mod)
             subgroup = turret.item.subgroup,
             order = turret.item.order.."["..rank.."]",
             place_result = name,
-            stack_size = 50
+            stack_size = turret.item.stack_size 
+        }
+        local item_with_tags = {
+            type = "item-with-tags",
+            name = name_with_tags,
+            localised_name = localised_name,
+            localised_description = localised_desc,
+            icon = false,
+            icons = new_icon,
+            icon_size = 64,
+            hide_from_player_crafting = true,
+            subgroup = turret.item.subgroup,
+            order = turret.item.order.."["..rank.."].tag",
+            place_result = name,
+            stack_size = turret.item.stack_size
         }
         local recipe = {
             type = "recipe",
@@ -193,7 +240,7 @@ local local_create_turret = function(turret,rank,rank_string,mod)
         end
         entity.localised_name = localised_name
         entity.localised_description = localised_desc
-        entity.minable.result = name
+        
         local left = nil        
         local top = nil
 
@@ -236,14 +283,18 @@ local local_create_turret = function(turret,rank,rank_string,mod)
             if turret.entity.next_upgrade == nil then turret.entity.next_upgrade = name end
         end
         
-        if entity.type == "ammo-turret" then update_ammo_turret_tech(turret.entity, name) end
-        if entity.type == "fluid-turret" then update_fluid_turret_tech(turret.entity, name) end
-        
-        data:extend({item,recipe,entity})
+        if entity.type == "ammo-turret" then update_ammo_turret_tech(turret.entity, name, rank) end
+        if entity.type == "fluid-turret" then update_fluid_turret_tech(turret.entity, name, rank) end
+        if settings.startup["heroturrets-kill-counter"].value == "Exact" then        
+            entity.minable.result = name_with_tags
+            data:extend({item_with_tags,item,recipe,entity})
+        else
+        entity.minable.result = name
+            data:extend({item,recipe,entity})
+        end
    end
 
 local local_create_turrets = function()
-    --fluid wont work yet add artillery later
     local turret_types = {"ammo-turret", "fluid-turret","electric-turret", "artillery-turret"}
     local guns = {}
     for at = 1, #turret_types do local tt = turret_types[at]
@@ -252,10 +303,12 @@ local local_create_turrets = function()
 				    and starts_with(entity.name,"creative-mod") == false
 				    and entity.subgroup~="enemies" 
                     and (is_nesw(entity) or (entity.base_picture ~= nil and entity.base_picture.layers ~= nil))
-                    and entity.max_health > 1 then
+                    and entity.max_health > 1 
+                    and entity.minable ~= nil and entity.minable.result ~= nil then
                     
                     local recipe = data.raw["recipe"][entity.name]
                     local item = local_get_item(entity.name)
+                    
                     if recipe == nil then log(entity.name.." nil recipe") end
                     if item == nil then log(entity.name.." nil item") end
 
@@ -274,7 +327,9 @@ local local_create_turrets = function()
 
     local percent = 1 + (settings.startup["heroturrets-setting-level-buff-modifier"].value/100)
     for k = 1, #guns do local item = guns[k]
-        --log("creating "..item.item.name)
+        if settings.startup["heroturrets-kill-counter"].value == "Exact" then     
+            local_create_turret_with_tags(item)
+        end
         local_create_turret(item,1,"Private 1st Class",1.125*percent)
         local_create_turret(item,2,"Corporal",1.25*percent)
         local_create_turret(item,3,"Sergeant",1.375*percent)

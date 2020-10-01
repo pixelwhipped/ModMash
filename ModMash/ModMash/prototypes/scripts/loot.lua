@@ -160,7 +160,7 @@ local loot_fill_item_groups = {"raw-material","raw-resource"} --,"terrain","scie
 
 local local_is_loot_fill_item = function(group) return table_contains(loot_fill_item_groups, group) end
 
-local local_get_random_stack = function(group) 
+local local_get_random_stack_group = function(group) 
 	local item = nil
 	local valid = false
 	local x = 0
@@ -169,8 +169,30 @@ local local_get_random_stack = function(group)
 		valid = (is_valid(item) and table_contains(group, item.subgroup.name))
 		x = x + 1
 	until(valid or x > 10)
-	if valid ~= true then item = nil end
+	if valid ~= true then
+		item = nil		
+	end
 	return item
+	end
+
+local local_get_random_stack_any = function() 
+	local item = nil
+	local valid = false
+	local x = 0
+	repeat 
+		item = loot_table[math.random(1, #loot_table)]
+		valid = is_valid(item)
+		x = x + 1
+	until(valid or x > 10)
+	if valid ~= true then
+		item = nil		
+	end
+	return item
+	end
+
+local local_get_random_stack = function(group) 
+	if group == nil then return local_get_random_stack_any() end
+	return local_get_random_stack_group(group)
 	end
 
 local local_add_tech_loot = function(surface_index, area)
@@ -285,10 +307,11 @@ local local_add_loot = function(surface_index, area )
 	if global.modmash.loot.loot_modifier == nil then global.modmash.loot.loot_modifier = 0 end
 	if math.random(1, loot_probability+math.floor(global.modmash.loot.loot_modifier)) ~= 1 then return end
 	global.modmash.loot.loot_modifier = global.modmash.loot.loot_modifier + 0.2
-	local stack = nil
+	local stack = nil	
 
 	local surface = game.surfaces[surface_index]
 	local position = {x=area.left_top.x+math.random(0, 30),y=area.left_top.y+math.random(0, 30)}
+	local distance_mod = math.max((distance(0,0,position.x,position.y)/1024.0),0.0) + 1.0
 	local name = crash_site_prefix..math.random(1, 2)
 	if surface.can_place_entity{name=name,position=position} then
 		local ent = surface.create_entity{
@@ -299,13 +322,18 @@ local local_add_loot = function(surface_index, area )
 			local inv = ent.get_inventory(defines.inventory.chest)
 			local group = loot_groups[math.random(1, #loot_groups)]
 			local fill = local_is_loot_fill_item(group[1])		
-			local item = local_get_random_stack(group)
+			local item = nil
+			if fill == true then 
+				item = local_get_random_stack(group)
+			else
+				item = local_get_random_stack(nil)
+			end
 			if item ~= nil then
 				local full_stack = {name=item.name, count=local_get_stack_restriction(item)}
 				local stack = {name=item.name, count=math.random(1,local_get_stack_restriction(item))}			
 				if fill then
 					if settings.startup["modmash-setting-loot-fill"].value == "Disabled" then
-						local stacks = math.random(3, 10)
+						local stacks = math.random(3, math.ceil(10*distance_mod))
 						for s=1, stacks do
 							if inv.can_insert(stack) then inv.insert(stack) end
 						end
@@ -316,26 +344,28 @@ local local_add_loot = function(surface_index, area )
 								if inv.can_insert(full_stack) then inv.insert(full_stack) end
 							until(inv.can_insert(full_stack) == false)
 						else
-							local stacks = math.random(3, 10)
+							local stacks = math.random(3, math.ceil(10*distance_mod))
 							for s=1, stacks do
 								if inv.can_insert(full_stack) then inv.insert(full_stack) end
 							end
 						end
 					end
 				else
+					
 					-- Test total
-					local stacks = math.random(3, 10)
+					local stacks = math.random(3, math.ceil(10*distance_mod))
 					--log("Adding ".. item.name.. " to loot initial stacks "..stacks)
 					local s_r = local_get_recipe(item.name)
 					if s_r ~= nil then
 						local t_i = get_total_ingredients(s_r)
-						if t_i > 50 then stacks = math.min(stacks,8) end
-						if t_i > 150 then stacks = math.min(stacks,6) end
-						if t_i > 400 then stacks = math.min(stacks,4) end
-						if t_i > 600 then stacks = math.min(stacks,2) end
-						if t_i > 1000 then stacks = math.min(stacks,1) end
+						if t_i > math.ceil(50*distance_mod) then stacks = math.min(stacks,math.ceil(8*distance_mod)) end
+						if t_i > math.ceil(150*distance_mod) then stacks = math.min(stacks,math.ceil(6*distance_mod)) end
+						if t_i > math.ceil(400*distance_mod) then stacks = math.min(stacks,math.ceil(4*distance_mod)) end
+						if t_i > math.ceil(600*distance_mod) then stacks = math.min(stacks,math.ceil(2*distance_mod)) end
+						if t_i > math.ceil(1000*distance_mod) then stacks = math.min(stacks,math.ceil(1*distance_mod)) end
 						--log("Modified to " .. stacks .. " total raw " .. t_i)
 					end
+
 				
 				
 					for s=1, stacks do

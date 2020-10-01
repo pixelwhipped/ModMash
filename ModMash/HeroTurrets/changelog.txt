@@ -1,4 +1,19 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.1.25
+  Bug Fixes:
+    - Added nil check for fluidboxes on entity died
+
+---------------------------------------------------------------------------------------------------
+Version: 0.1.25
+  Changes:
+    - Added option to record kill counts with items mined
+    - Killed entites leave the base turret not the ranked version, setting available
+    - Updated minable to mine correct item depending on kill count setting
+    - projectile and fluid ammo buffs now increase per rank, requires tech reset or new game
+  Bug Fixes:
+    - Added local for modifier descriptions, not for other modded entites as yet
+
+---------------------------------------------------------------------------------------------------
 Version: 0.1.24
   Changes:
     - Added artillery

@@ -1,4 +1,16 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.18.60
+  Bug Fixes:
+    - Valkryrie on start quick fix
+
+---------------------------------------------------------------------------------------------------
+Version: 0.18.59
+  Changes:
+    - Modified loot to be more plentifull the further out
+  Compat
+    - Making compat with space exploration
+
+---------------------------------------------------------------------------------------------------
 Version: 0.18.58
   Changes:
     - Added setting description for allow production modules in beacons will chage to speed where possible
