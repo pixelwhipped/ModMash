@@ -45,8 +45,8 @@ local local_replace_turret = function(entity,recipe)
 		c = i.get_contents()		
 	end
 	
-	entity.destroy()
-	local new_entity = s.create_entity{name=recipe.name, position=p, force = f, direction = d, orientation = o}
+	entity.destroy({raise_destroy = true})
+	local new_entity = s.create_entity{name=recipe.name, position=p, force = f, direction = d, orientation = o, raise_built = true}
 	if h ~= mh then new_entity.health = h end
 	new_entity.kills = k
 	local inv = new_entity.get_inventory(defines.inventory.turret_ammo)

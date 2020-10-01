@@ -1,4 +1,10 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.1.26
+  Changes:
+    - When ranking up turrets raise_destroy, raise_built now called
+    - Added check to allow mods creating turrets with base layers with more than one frame
+
+---------------------------------------------------------------------------------------------------
 Version: 0.1.25
   Bug Fixes:
     - Added nil check for fluidboxes on entity died

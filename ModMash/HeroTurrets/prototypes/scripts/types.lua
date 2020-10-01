@@ -49,7 +49,7 @@ local is_nesw = function(entity)
     return true
     end
 
-local get_badge = function(rank,top,left)
+local get_badge = function(rank,top,left,rc)
     local img = {
                     filename = "__heroturrets__/graphics/entity/turret/hero-"..rank.."-base.png",
                     priority = "high",
@@ -57,6 +57,7 @@ local get_badge = function(rank,top,left)
                     height = 24,
                     direction_count = 1,
                     frame_count = 1,
+                    repeat_count = rc,
                     shift = util.by_pixel((left)*-1,top+(24/3)),
                     hr_version =
                     {
@@ -256,24 +257,24 @@ local local_create_turret = function(turret,rank,rank_string,mod)
         if is_nesw(entity) then
             if left == nil then left = entity.base_picture.north.layers[1].width/2 end
             if left == nil then top = entity.base_picture.north.layers[1].height/2 end
-            table.insert(entity.base_picture.north.layers,get_badge(rank,top,left))
+            table.insert(entity.base_picture.north.layers,get_badge(rank,top,left,entity.base_picture.north.layers[1].repeat_count or 1))
 
             if left == nil then left = entity.base_picture.east.layers[1].width/2 end
             if left == nil then top = entity.base_picture.east.layers[1].height/2 end
-            table.insert(entity.base_picture.east.layers,get_badge(rank,top,left))
+            table.insert(entity.base_picture.east.layers,get_badge(rank,top,left,entity.base_picture.north.layers[1].repeat_count or 1))
 
             if left == nil then left = entity.base_picture.south.layers[1].width/2 end
             if left == nil then top = entity.base_picture.south.layers[1].height/2 end
-            table.insert(entity.base_picture.south.layers,get_badge(rank,top,left))
+            table.insert(entity.base_picture.south.layers,get_badge(rank,top,left,entity.base_picture.north.layers[1].repeat_count or 1))
 
             if left == nil then left = entity.base_picture.west.layers[1].width/2 end
             if left == nil then top = entity.base_picture.west.layers[1].height/2 end
-            table.insert(entity.base_picture.west.layers,get_badge(rank,top,left))
+            table.insert(entity.base_picture.west.layers,get_badge(rank,top,left,entity.base_picture.north.layers[1].repeat_count or 1))
         else
             if left == nil then left = entity.base_picture.layers[1].width/2 end
             if left == nil then top = entity.base_picture.layers[1].height/2 end
             
-            table.insert(entity.base_picture.layers,get_badge(rank,top,left))
+            table.insert(entity.base_picture.layers,get_badge(rank,top,left,entity.base_picture.layers[1].repeat_count or 1))
         end
         if turret.entity.fast_replaceable_group == nil then
             turret.entity.fast_replaceable_group = name
@@ -295,7 +296,7 @@ local local_create_turret = function(turret,rank,rank_string,mod)
    end
 
 local local_create_turrets = function()
-    local turret_types = {"ammo-turret", "fluid-turret","electric-turret", "artillery-turret"}
+    local turret_types = {"ammo-turret", "fluid-turret","electric-turret", "artillery-turret", "artillery-wagon"}
     local guns = {}
     for at = 1, #turret_types do local tt = turret_types[at]
         for name, entity in pairs(data.raw[tt]) do	
