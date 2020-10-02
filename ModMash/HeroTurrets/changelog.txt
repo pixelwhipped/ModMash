@@ -1,11 +1,18 @@
 ﻿---------------------------------------------------------------------------------------------------
-Version: 0.1.26
+Version: 0.1.28
+  Changes:
+    - Started testing for artillary wagons, not quite possible yet
+    - Made more compatible with K2 Turrets
+    - update kill counter
+
+---------------------------------------------------------------------------------------------------
+Version: 0.1.27
   Changes:
     - When ranking up turrets raise_destroy, raise_built now called
     - Added check to allow mods creating turrets with base layers with more than one frame
 
 ---------------------------------------------------------------------------------------------------
-Version: 0.1.25
+Version: 0.1.26
   Bug Fixes:
     - Added nil check for fluidboxes on entity died
 

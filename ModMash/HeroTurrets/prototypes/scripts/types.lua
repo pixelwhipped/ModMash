@@ -68,6 +68,7 @@ local get_badge = function(rank,top,left,rc)
                         height = 48,
                         frame_count = 1,
                         direction_count = 1,
+                        repeat_count = rc,
                         shift = util.by_pixel((left)*-1,top+(48/3)),
                         scale = 0.5
                     }
@@ -133,7 +134,7 @@ local local_create_turret_with_tags = function(turret)
     item_with_tags.localised_name = turret.item.localised_name
     item_with_tags.localised_description = turret.item.localised_desc
     item_with_tags.localised_description = turret.item.localised_desc
-    item_with_tags.order = turret.item.order..".tag"
+    item_with_tags.order = (turret.item.order or "["..turret.item.name.."]")..".tag"
     turret.entity.minable.result = name_with_tags
     data:extend({item_with_tags})
     end
@@ -168,10 +169,11 @@ local local_create_turret = function(turret,rank,rank_string,mod)
             --hide_from_player_crafting = true,
 
             subgroup = turret.item.subgroup,
-            order = turret.item.order.."["..rank.."]",
-            place_result = name,
-            stack_size = turret.item.stack_size 
+            order = (turret.item.order or "["..turret.item.name.."]").."["..rank.."]",
+            place_result = name,            
+            stack_size = turret.item.stack_size or 1
         }
+        
         local item_with_tags = {
             type = "item-with-tags",
             name = name_with_tags,
@@ -182,10 +184,13 @@ local local_create_turret = function(turret,rank,rank_string,mod)
             icon_size = 64,
             hide_from_player_crafting = true,
             subgroup = turret.item.subgroup,
-            order = turret.item.order.."["..rank.."].tag",
+            order = (turret.item.order or "["..turret.item.name.."]").."["..rank.."].tag",
             place_result = name,
-            stack_size = turret.item.stack_size
+            stack_size = turret.item.stack_size or 1
+            
         }
+
+
         local recipe = {
             type = "recipe",
             name = name,
@@ -224,6 +229,9 @@ local local_create_turret = function(turret,rank,rank_string,mod)
                 if entity.attack_parameters.ammo_type.action.action_delivery ~= nil  and entity.attack_parameters.ammo_type.action.action_delivery.max_length ~= nil then
                     entity.attack_parameters.ammo_type.action.action_delivery.max_length  = entity.attack_parameters.ammo_type.action.action_delivery.max_length  * mod
                 end
+                if entity.attack_parameters.ammo_type.action.action_delivery ~= nil  and entity.attack_parameters.ammo_type.action.action_delivery.max_range ~= nil then
+                    entity.attack_parameters.ammo_type.action.action_delivery.max_range  = entity.attack_parameters.ammo_type.action.action_delivery.max_range  * mod
+                end
             end
         end
         if entity.gun ~= nil then
@@ -253,7 +261,9 @@ local local_create_turret = function(turret,rank,rank_string,mod)
          top = (math.abs(box[1][2])*32)/2
         end
         
-
+        --if (entity.cannon_base_pictures ~= nil and entity.cannon_base_pictures.layers ~= nil and entity.cannon_base_pictures.layers[1].direction_count = 256) then            
+        --    table.insert(entity.cannon_base_pictures.layers,get_cannon_badge(rank))
+        --else
         if is_nesw(entity) then
             if left == nil then left = entity.base_picture.north.layers[1].width/2 end
             if left == nil then top = entity.base_picture.north.layers[1].height/2 end
@@ -296,14 +306,14 @@ local local_create_turret = function(turret,rank,rank_string,mod)
    end
 
 local local_create_turrets = function()
-    local turret_types = {"ammo-turret", "fluid-turret","electric-turret", "artillery-turret", "artillery-wagon"}
+    local turret_types = {"ammo-turret", "fluid-turret","electric-turret", "artillery-turret"} --, "artillery-wagon"}
     local guns = {}
     for at = 1, #turret_types do local tt = turret_types[at]
         for name, entity in pairs(data.raw[tt]) do	
             if entity ~= nil and entity.name ~= nil                    
 				    and starts_with(entity.name,"creative-mod") == false
 				    and entity.subgroup~="enemies" 
-                    and (is_nesw(entity) or (entity.base_picture ~= nil and entity.base_picture.layers ~= nil))
+                    and (is_nesw(entity) or (entity.base_picture ~= nil and entity.base_picture.layers ~= nil)) -- or (entity.cannon_base_pictures ~= nil and entity.cannon_base_pictures.layers ~= nil and entity.cannon_base_pictures.layers[1].direction_count == 256))
                     and entity.max_health > 1 
                     and entity.minable ~= nil and entity.minable.result ~= nil then
                     

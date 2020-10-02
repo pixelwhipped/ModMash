@@ -85,7 +85,7 @@ local local_turret_added = function(entity,event)
 local local_turret_removed = function(entity,event)	
  
 	if event ~= nil and is_valid(event.cause) == true and table_contains(turret_types,event.cause.type) and event.cause.kills ~=nil then		
-		if event.cause.kills >= heroturrets.defines.turret_levelup_four then		
+		if event.cause.kills >= (heroturrets.defines.turret_levelup_four - 1) then		
 			if starts_with(event.cause.name,"hero-turret") == true then
 				--is a hero turret
 				if starts_with(event.cause.name,"hero-turret-4") then
@@ -107,7 +107,7 @@ local local_turret_removed = function(entity,event)
 					local_replace_turret(event.cause,ug[1])
 				end
 			end
-		elseif event.cause.kills >= heroturrets.defines.turret_levelup_three then		
+		elseif event.cause.kills >= (heroturrets.defines.turret_levelup_three - 1) then		
 			if starts_with(event.cause.name,"hero-turret") == true then
 				--is a hero turret
 				if starts_with(event.cause.name,"hero-turret-3") then
@@ -128,7 +128,7 @@ local local_turret_removed = function(entity,event)
 					local_replace_turret(event.cause,ug[1])
 				end
 			end
-		elseif event.cause.kills >= heroturrets.defines.turret_levelup_two then
+		elseif event.cause.kills >= (heroturrets.defines.turret_levelup_two - 1) then
 			if starts_with(event.cause.name,"hero-turret") then
 				--is a hero turret
 				if starts_with(event.cause.name,"hero-turret-2") then
@@ -147,7 +147,7 @@ local local_turret_removed = function(entity,event)
 					local_replace_turret(event.cause,ug[1])
 				end
 			end
-		elseif event.cause.kills >= heroturrets.defines.turret_levelup_one then
+		elseif event.cause.kills >= (heroturrets.defines.turret_levelup_one - 1) then
 			if starts_with(event.cause.name,"hero-turret") then
 				--nothing to do
 			else
