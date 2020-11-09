@@ -582,7 +582,7 @@ script.on_nth_tick(low_priority, local_on_tick_low)
 script.on_nth_tick(medium_priority, local_on_tick_med)
 script.on_nth_tick(high_priority, local_on_tick_high)
 
-script.on_event(defines.events.on_gui_click, local_on_gui_click)
+script.on_event(defines.events.on_gui_click, local_on_gui_clicklocal_on_adjust)
 script.on_event(defines.events.on_selected_entity_changed,local_on_selected)	
 script.on_event(defines.events.on_post_entity_died,local_on_post_entity_died)
 script.on_event(defines.events.on_player_rotated_entity,local_on_player_rotated_entity) 

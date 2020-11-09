@@ -1,0 +1,7 @@
+﻿---------------------------------------------------------------------------------------------------
+Version: 1.0.01
+  Changes:
+    - Initial Release
+    - Optimized wagon load/unload still will use up UPS but perfectly fine if not over used
+    - Updated loader seek range so on wagon can be unloaded by up to 6 loaders
+    - Will load fuel but not unload from wagons

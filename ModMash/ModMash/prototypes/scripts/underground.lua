@@ -1,4 +1,4 @@
-﻿log("underground-access.lua")
+﻿ log("underground-access.lua")
 --[[check and import utils]]
 --if modmash == nil or modmash.util == nil then require("prototypes.scripts.util") end
 if not modmash.defines then require ("prototypes.scripts.defines") end
@@ -422,6 +422,7 @@ local init_surface2 = function(surface,parent)
 			["tile:water:probability"] = -1000,
 			["tile:deep-water:probability"] = -1000
 		}
+		
 	}
 	surface.peaceful_mode = parent.map_gen_settings.peaceful_mode
 	surface.daytime = 0.42
@@ -616,7 +617,6 @@ local local_update_diggers = function()
 		end]]
 end
 
-
 local local_on_spawned = function(entity)		
 	if is_valid(entity) and entity.name == "digger-biter" then
 		table.insert(diggers, {entity=entity})
@@ -810,7 +810,7 @@ local local_access_process = function(access,pollution)
 		local moved = {}
 		local enemy = game.surfaces["underground"].find_enemy_units(access.bottom_entity.position,2.5)
 		for i = 1, #enemy do local e = enemy[i]
-			if e.name ~= "digger-biter" then
+			if is_valid(e) and e.name ~= "digger-biter" then
 				if game.surfaces["nauvis"].can_place_entity{name=e.name, position=e.position, direction=e.direction, force=e.force} then
 					local ne = game.surfaces["nauvis"].create_entity{name=e.name, position=e.position, direction=e.direction, force=e.force}
 					ne.health = e.health

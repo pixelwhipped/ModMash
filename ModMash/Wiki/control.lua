@@ -16,7 +16,11 @@ script.on_configuration_changed(function(f)
 	end
 	end)
 
-remote.add_interface("wiki",{register_mod_wiki = wiki_register_mod_wiki})
+remote.add_interface("wiki",{
+	register_mod_wiki = wiki_register_mod_wiki,
+	informatron_menu = function(data) return informatron_mod_menu(data.player_index) end,
+	informatron_page_content = function(data) return informatron_mod_page_content(data.page_name, data.player_index, data.element) end
+	})
 
 
 --example use in control

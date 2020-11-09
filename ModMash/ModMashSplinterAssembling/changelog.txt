@@ -1,0 +1,12 @@
+﻿---------------------------------------------------------------------------------------------------
+Version: 1.0.02
+  Changes:
+    - Reference healing per tick instead of hard code
+    - Added missing burner inserter at start for new games
+
+---------------------------------------------------------------------------------------------------
+Version: 1.0.01
+  Changes:
+    - Initial Release
+    - Added Expensive recipies
+    - graphic tweak

@@ -1,4 +1,9 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.0.01
+  Changes:
+    - Added support for informatron not awesome, quite different systems
+
+---------------------------------------------------------------------------------------------------
 Version: 0.18.05
   Changes:
     - Code tweaks and clean

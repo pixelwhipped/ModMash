@@ -1,0 +1,12 @@
+﻿---------------------------------------------------------------------------------------------------
+Version: 1.0.02
+  Changes:
+    - added icon mip-maps
+    - added picture variants
+    - allowed brick
+    - added experimental mode
+
+---------------------------------------------------------------------------------------------------
+Version: 1.0.01
+  Changes:
+    - Initial Release

@@ -1,0 +1,15 @@
+{
+  "name": "modmashsplinterboom",
+  "version": "1.0.02",
+  "title": "ModMash Splinter, Boom",
+  "author": "PixelWhipped",
+  "contact": "",
+  "homepage": "https://www.patreon.com/user?u=15367757",
+  "factorio_version": "1.0",
+  "description": "Mod Mash Splinter for Defense, Adds new land mines.  All land mines can be remotely detonated",
+  "dependencies": [
+    "base >= 1.0.0",
+    "modmashsplinter >= 1.0.07",
+    "! modmash >= 0.0.0"
+  ]
+}

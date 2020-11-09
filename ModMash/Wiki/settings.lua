@@ -12,6 +12,12 @@
 		setting_type = "runtime-per-user",
 		default_value = false,
 		order = "b"
-	}
+	},{
+		type = "bool-setting",
+		name = "wiki-defer-informatron",
+		setting_type = "runtime-per-user",
+		default_value = false,
+		order = "c"
+	}	
 })
 		

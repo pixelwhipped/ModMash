@@ -1,0 +1,6 @@
+﻿done	temporary flag to prevent flipping between surfaces
+done	better descriptions	-Not much to do just little tweaks
+support structures potential add on mod.
+multi level shaft circuit conditions
+done add ruins when entity destroyed.
+add cehck if arrack rock was added

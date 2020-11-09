@@ -1,0 +1,11 @@
+﻿---------------------------------------------------------------------------------------------------
+Version: 1.0.02
+  Changes:
+    - Updated nuclear explosion
+
+---------------------------------------------------------------------------------------------------
+Version: 1.0.01
+  Changes:
+    - Initial Release
+    - Graphics updates
+    - Runtime setting to allow detionation on all surfaces or current only

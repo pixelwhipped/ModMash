@@ -4,3 +4,5 @@ hero-turret-1-for-####-#####-attack-bonus=#### ##### damage: +__1__
 
 not a bug, generally turrets do not rememebr kill count?
 you can update all items mine replica items-with-tags but that just cases a massive issue with inventory
+
+tod work out metric for better scaling

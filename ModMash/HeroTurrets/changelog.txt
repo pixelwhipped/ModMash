@@ -1,4 +1,33 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.1.33
+  Changes:
+    - update update_ammo_turret_tech suggestion by honktown
+
+---------------------------------------------------------------------------------------------------
+Version: 0.1.32
+  Bug Fixes:
+    - added condition for surface.can_pace_entity prior to placing
+  Changes:
+    - added setting to enable or diable artillery turrets
+    - added multiplier setting to kill counts per turret type applied after rank kill modifier
+    - addes AI lore thanks BanzaiBlitz
+
+---------------------------------------------------------------------------------------------------
+Version: 0.1.31
+  Bug Fixes:
+    - item place results went missing as did minable results 
+
+---------------------------------------------------------------------------------------------------
+Version: 0.1.30
+  Bug Fixes:
+    - bad reference to name
+
+---------------------------------------------------------------------------------------------------
+Version: 0.1.29
+  Changes:
+    - compat work for rampant arsenal
+
+---------------------------------------------------------------------------------------------------
 Version: 0.1.28
   Changes:
     - Started testing for artillary wagons, not quite possible yet

@@ -1,0 +1,25 @@
+﻿---------------------------------------------------------------------------------------------------
+Version: 1.0.04
+  Bug Fixes:
+    - ensure type is number or convert
+
+---------------------------------------------------------------------------------------------------
+Version: 1.0.03
+  Bug Fixes:
+    - incorrect variable called surface surfaces
+
+---------------------------------------------------------------------------------------------------
+Version: 1.0.02
+  Changes:
+    - Made by-product output a probability 75%
+
+---------------------------------------------------------------------------------------------------
+Version: 1.0.01
+  Changes:
+    - Initial Release
+    - Added Air Purifier Mark 2
+    - Outputs 2 fluids, depends on companion mods
+    - Added by-product to Fluid Purification. was called sludge treatment
+    - Placeability now dependant on tile emmisions.
+    - Production depends on biome
+    - Added achievement

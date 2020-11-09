@@ -80,7 +80,7 @@ local local_update_return_targets = function(target)
 			local s = target.entity.surface
 			if is_valid(s) then
 				target.entity.destroy()
-				s.create_entity{name="valkyrie-robot", position=p, force="player"}
+				s.create_entity{name="valkyrie-robot", position=target.entity.position, force="player"}
 				return true
 			end				
 		end

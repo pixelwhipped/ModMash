@@ -16,12 +16,55 @@
 		minimum_value = 0,
 		maximum_value = 100,
 		order = "b"
-	},{
+	},
+	{
+		type = "int-setting",
+		name = "heroturrets-setting-ammo-turret-kill-multiplier",
+		setting_type = "startup",
+		default_value = 1,
+		minimum_value = 1,
+		maximum_value = 20,
+		order = "c"
+	},
+	{
+		type = "int-setting",
+		name = "heroturrets-setting-fluid-turret-kill-multiplier",
+		setting_type = "startup",
+		default_value = 1,
+		minimum_value = 1,
+		maximum_value = 20,
+		order = "d"
+	},
+	{
+		type = "int-setting",
+		name = "heroturrets-setting-electric-turret-kill-multiplier",
+		setting_type = "startup",
+		default_value = 1,
+		minimum_value = 1,
+		maximum_value = 20,
+		order = "e"
+	},
+	{
+		type = "int-setting",
+		name = "heroturrets-setting-artillery-turret-kill-multiplier",
+		setting_type = "startup",
+		default_value = 1,
+		minimum_value = 1,
+		maximum_value = 20,
+		order = "f"
+	},
+	{
 		type = "bool-setting",
 		name = "heroturrets-allow-ghost-rank",
 		setting_type = "runtime-global",
 		default_value = false,
-		order = "c"
+		order = "g"
+	},{
+		type = "bool-setting",
+		name = "heroturrets-allow-artillery-turrets",
+		setting_type = "startup",
+		default_value = true,
+		order = "h"
 	},
 	--[[{
 		type = "bool-setting",
@@ -36,6 +79,14 @@
 		setting_type = "startup",
 		default_value = "Fuzzy",
 		allowed_values = {"Fuzzy", "Exact"},
-		order = "e"
+		order = "i"
+	},
+	{
+		type = "string-setting",
+		name = "heroturrets-allow-damage",
+		setting_type = "startup",
+		default_value = "Disabled",
+		allowed_values = {"Enabled", "Disabled"},
+		order = "j"
 	},
 })

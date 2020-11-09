@@ -1,8 +1,9 @@
-﻿--if not modmash or not modmash.util then require("prototypes.scripts.util") end
-require("prototypes.scripts.defines") 
+﻿require("prototypes.scripts.defines") 
 local underground_accumulator  = modmash.defines.names.underground_accumulator
 local underground_access  = modmash.defines.names.underground_access
 local underground_access2  = modmash.defines.names.underground_access2
+local used_battery_cell  = modmash.defines.names.used_battery_cell
+local battery_cell  = modmash.defines.names.battery_cell
 
 local local_get_alien_particle_shadow_pictures = function()
 	return
@@ -387,7 +388,6 @@ data:extend(
 		name = underground_access,
 		icon = "__modmashgraphics__/graphics/icons/underground-access.png",
 		icon_size = 32,
-		--fast_replaceable_group = "container",
 		flags = {
 			"placeable-neutral",
 			"player-creation"
@@ -397,7 +397,6 @@ data:extend(
 		corpse = "medium-small-remnants",
 		collision_box = {{-0.8, -0.8 }, {0.8, 0.8}},
 		selection_box = {{-1, -1 }, {1, 1}},
-		--enabled = false,
 		resistances =
 		{
 		  {
@@ -409,9 +408,6 @@ data:extend(
 			percent = 60
 		  }
 		},
-		--fast_replaceable_group = "container",
-		--logistic_mode = "passive-provider",
-		--C:\Resources\ModMash\base\graphics\entity\gun-turret\gun-turret-base.png or hr-
 		inventory_size = 8,
 		open_sound = { filename = "__base__/sound/metallic-chest-open.ogg", volume=0.65 },
 		close_sound = { filename = "__base__/sound/metallic-chest-close.ogg", volume = 0.7 },
@@ -455,7 +451,6 @@ data:extend(
 		corpse = "medium-small-remnants",
 		collision_box = {{-0.8, -0.8 }, {0.8, 0.8}},
 		selection_box = {{-1, -1 }, {1, 1}},
-		--enabled = false,
 		resistances =
 		{
 		  {
@@ -522,6 +517,59 @@ data:extend(
 		},
 		picture = underground_accumulator_picture(),
 		charge_animation = underground_accumulator_charge(),
+		charge_cooldown = 30,
+		charge_light = {intensity = 0.3, size = 7, color = {r = 1.0, g = 1.0, b = 1.0}},
+		discharge_animation = underground_accumulator_discharge(),
+		discharge_cooldown = 60, 
+		discharge_light = {intensity = 0.7, size = 7, color = {r = 1.0, g = 1.0, b = 1.0}},
+		vehicle_impact_sound =  { filename = "__base__/sound/car-metal-impact.ogg", volume = 0.65 },
+		working_sound =
+		{
+			sound =
+			{
+			filename = "__base__/sound/accumulator-working.ogg",
+			volume = 1
+			},
+			idle_sound =
+			{
+			filename = "__base__/sound/accumulator-idle.ogg",
+			volume = 0.5
+			},
+			--persistent = true,
+			max_sounds_per_type = 3,
+			fade_in_ticks = 10,
+			fade_out_ticks = 30
+		},
+
+		circuit_wire_connection_point = circuit_connector_definitions["chest"].points,
+		circuit_connector_sprites = circuit_connector_definitions["chest"].sprites,
+		circuit_wire_max_distance = default_circuit_wire_max_distance,
+
+		default_output_signal = {type = "virtual", name = "signal-A"}
+    },
+	{
+		type = "accumulator",
+		name = "battery-cell",
+		icon = "__modmashgraphics__/graphics/icons/battery-cell.png",
+		icon_size = 32,
+		flags = {"placeable-neutral", "player-creation"},
+		minable = {mining_time = 0.1, result = "used-battery-cell"},
+		max_health = 150,
+		corpse = "small-remnants",
+		dying_explosion = "accumulator-explosion",
+		collision_box = {{-0.4, -0.4}, {0.4, 0.4}},
+		selection_box = {{-0.5, -0.5}, {0.5, 0.5}},
+		drawing_box = {{-5, -1}, {0.5, 0.5}},
+		energy_source =
+		{
+		  type = "electric",
+		  buffer_capacity = "10MJ",
+		  usage_priority = "tertiary",
+		  input_flow_limit = "0kW",
+		  output_flow_limit = "500kW"
+		},
+		picture = underground_battery_picture(),
+		charge_animation = underground_accumulator_charge(),
 		-- water_reflection = accumulator_reflection(),
 
 		charge_cooldown = 30,
@@ -542,7 +590,59 @@ data:extend(
 			filename = "__base__/sound/accumulator-idle.ogg",
 			volume = 0.5
 			},
-			--persistent = true,
+			max_sounds_per_type = 3,
+			fade_in_ticks = 10,
+			fade_out_ticks = 30
+		},
+
+		circuit_wire_connection_point = circuit_connector_definitions["chest"].points,
+		circuit_connector_sprites = circuit_connector_definitions["chest"].sprites,
+		circuit_wire_max_distance = default_circuit_wire_max_distance,
+
+		default_output_signal = {type = "virtual", name = "signal-A"}
+    },
+	{
+		type = "accumulator",
+		name = "used-battery-cell",
+		icon = "__modmashgraphics__/graphics/icons/used-battery-cell.png",
+		icon_size = 32,
+		flags = {"placeable-neutral", "player-creation"},
+		minable = {mining_time = 0.1, result = "used-battery-cell"},
+		max_health = 150,
+		corpse = "small-remnants",
+		dying_explosion = "accumulator-explosion",
+		collision_box = {{-0.4, -0.4}, {0.4, 0.4}},
+		selection_box = {{-0.5, -0.5}, {0.5, 0.5}},
+		drawing_box = {{-5, -1}, {0.5, 0.5}},
+		energy_source =
+		{
+		  type = "electric",
+		  buffer_capacity = "0MJ",
+		  usage_priority = "tertiary",
+		  input_flow_limit = "0kW",
+		  output_flow_limit = "0kW"
+		},
+		picture = underground_used_battery_picture(),
+		charge_animation = underground_accumulator_charge(),
+
+		charge_cooldown = 30,
+		charge_light = {intensity = 0.3, size = 7, color = {r = 1.0, g = 1.0, b = 1.0}},
+		discharge_animation = underground_accumulator_discharge(),
+		discharge_cooldown = 60, 
+		discharge_light = {intensity = 0.7, size = 7, color = {r = 1.0, g = 1.0, b = 1.0}},
+		vehicle_impact_sound =  { filename = "__base__/sound/car-metal-impact.ogg", volume = 0.65 },
+		working_sound =
+		{
+			sound =
+			{
+			filename = "__base__/sound/accumulator-working.ogg",
+			volume = 1
+			},
+			idle_sound =
+			{
+			filename = "__base__/sound/accumulator-idle.ogg",
+			volume = 0.5
+			},
 			max_sounds_per_type = 3,
 			fade_in_ticks = 10,
 			fade_out_ticks = 30
@@ -600,118 +700,98 @@ data:extend(
 		  }
 		},
 		map_color = {r=1.0, g=0.0, b=0.5}
-	},
-	{
-		type = "accumulator",
-		name = "battery-cell",
-		icon = "__modmashgraphics__/graphics/icons/battery-cell.png",
-		icon_size = 32,
-		flags = {"placeable-neutral", "player-creation"},
-		minable = {mining_time = 0.1, result = "used-battery-cell"},
-		max_health = 150,
-		corpse = "small-remnants",
-		dying_explosion = "accumulator-explosion",
-		collision_box = {{-0.4, -0.4}, {0.4, 0.4}},
-		selection_box = {{-0.5, -0.5}, {0.5, 0.5}},
-		drawing_box = {{-5, -1}, {0.5, 0.5}},
-		energy_source =
-		{
-		  type = "electric",
-		  buffer_capacity = "10MJ",
-		  usage_priority = "tertiary",
-		  input_flow_limit = "0kW",
-		  output_flow_limit = "500kW"
-		},
-		picture = underground_battery_picture(),
-		charge_animation = underground_accumulator_charge(),
-		-- water_reflection = accumulator_reflection(),
-
-		charge_cooldown = 30,
-		charge_light = {intensity = 0.3, size = 7, color = {r = 1.0, g = 1.0, b = 1.0}},
-		discharge_animation = underground_accumulator_discharge(),
-		discharge_cooldown = 60, 
-		discharge_light = {intensity = 0.7, size = 7, color = {r = 1.0, g = 1.0, b = 1.0}},
-		vehicle_impact_sound =  { filename = "__base__/sound/car-metal-impact.ogg", volume = 0.65 },
-		working_sound =
-		{
-			sound =
-			{
-			filename = "__base__/sound/accumulator-working.ogg",
-			volume = 1
-			},
-			idle_sound =
-			{
-			filename = "__base__/sound/accumulator-idle.ogg",
-			volume = 0.5
-			},
-			--persistent = true,
-			max_sounds_per_type = 3,
-			fade_in_ticks = 10,
-			fade_out_ticks = 30
-		},
-
-		circuit_wire_connection_point = circuit_connector_definitions["chest"].points,
-		circuit_connector_sprites = circuit_connector_definitions["chest"].sprites,
-		circuit_wire_max_distance = default_circuit_wire_max_distance,
-
-		default_output_signal = {type = "virtual", name = "signal-A"}
-    },
-	{
-		type = "accumulator",
-		name = "used-battery-cell",
-		icon = "__modmashgraphics__/graphics/icons/used-battery-cell.png",
-		icon_size = 32,
-		flags = {"placeable-neutral", "player-creation"},
-		minable = {mining_time = 0.1, result = "used-battery-cell"},
-		max_health = 150,
-		corpse = "small-remnants",
-		dying_explosion = "accumulator-explosion",
-		collision_box = {{-0.4, -0.4}, {0.4, 0.4}},
-		selection_box = {{-0.5, -0.5}, {0.5, 0.5}},
-		drawing_box = {{-5, -1}, {0.5, 0.5}},
-		energy_source =
-		{
-		  type = "electric",
-		  buffer_capacity = "0MJ",
-		  usage_priority = "tertiary",
-		  input_flow_limit = "0kW",
-		  output_flow_limit = "0kW"
-		},
-		picture = underground_used_battery_picture(),
-		charge_animation = underground_accumulator_charge(),
-		-- water_reflection = accumulator_reflection(),
-
-		charge_cooldown = 30,
-		charge_light = {intensity = 0.3, size = 7, color = {r = 1.0, g = 1.0, b = 1.0}},
-		discharge_animation = underground_accumulator_discharge(),
-		discharge_cooldown = 60, 
-		discharge_light = {intensity = 0.7, size = 7, color = {r = 1.0, g = 1.0, b = 1.0}},
-		vehicle_impact_sound =  { filename = "__base__/sound/car-metal-impact.ogg", volume = 0.65 },
-		working_sound =
-		{
-			sound =
-			{
-			filename = "__base__/sound/accumulator-working.ogg",
-			volume = 1
-			},
-			idle_sound =
-			{
-			filename = "__base__/sound/accumulator-idle.ogg",
-			volume = 0.5
-			},
-			--persistent = true,
-			max_sounds_per_type = 3,
-			fade_in_ticks = 10,
-			fade_out_ticks = 30
-		},
-
-		circuit_wire_connection_point = circuit_connector_definitions["chest"].points,
-		circuit_connector_sprites = circuit_connector_definitions["chest"].sprites,
-		circuit_wire_max_distance = default_circuit_wire_max_distance,
-
-		default_output_signal = {type = "virtual", name = "signal-A"}
-    }
+	}
 })
+
+
+local rock_names = {
+  "rock-huge",
+  "rock-big",
+  "sand-rock-big"
+}
+
+for k=1, #rock_names do
+local r = table.deepcopy(data.raw["simple-entity"][rock_names[k]])
+	local desc = modmash.util.get_name_for(r.name)
+	r.name = "mm_"..r.name
+	r.loot = nil
+	r.localised_name = desc
+	r.max_health = r.max_health/3
+	if r.autoplace ~= nil then r.autoplace.default_enabled = false end
+	r.minable =
+    {
+      mining_particle = "stone-particle",
+      mining_time = 0.75,
+      results = {{name = "stone", amount_min = 1, amount_max = 8}, {name = "sand", amount_min = 1, amount_max = 5}},
+    }
+	data:extend({r})
+end
+
+for k=1, #rock_names do
+local r = table.deepcopy(data.raw["simple-entity"][rock_names[k]])
+	local desc = modmash.util.get_name_for(r.name)
+	r.name = "mm_dark-"..r.name
+	r.loot = nil
+	r.localised_name = desc
+	if r.autoplace ~= nil then r.autoplace.default_enabled = false end
+	r.max_health = r.max_health/3
+	r.minable =
+    {
+      mining_particle = "stone-particle",
+      mining_time = 0.75,
+      results = {
+		{name = "stone", amount_min = 1, amount_max = 8, probability = 0.5}, 
+		{name = "sand", amount_min = 1, amount_max = 5, probability = 0.5},
+		{name = "alien-ore", amount_min = 0, amount_max = 5, probability = 0.5},
+		{name = modmash.defines.names.titanium_ore_name, amount_min = 0, amount_max = 5, probability = 0.5},
+		{name = "super-material", amount_min = 0, amount_max = 1, probability = 0.005},
+		},
+    }
+	for j=1, #r.pictures do
+		r.pictures[j].tint = {0.25,0.25,0.25,1}
+		if r.pictures[j].hr_version then
+			r.pictures[j].hr_version.tint = {0.25,0.25,0.25,1}
+		end
+	end
+	data:extend({r})
+end
+
+for k=1, 7 do
+	local t = table.deepcopy(data.raw["tile"]["dirt-"..k])
+	t.name = "mm_dark-"..t.name
+	if t.autoplace ~= nil then t.autoplace.default_enabled = false end
+	t.tint = {0.15,0.15,0.15,1}
+	data:extend({t})
+end
+
+local digger_biter = table.deepcopy(data.raw["unit"]["small-biter"])
+digger_biter.name = "digger-biter"
+digger_biter.attack_parameters.ammo_type = make_unit_melee_ammo_type(30)
+data:extend({digger_biter})
+
+local digger_spawner = table.deepcopy(data.raw["unit-spawner"]["biter-spawner"])
+digger_spawner.name = "digger-spawner"
+
+--[[
+unit :: string: Prototype name of the unit that would be spawned
+spawn_points :: array of SpawnPoint: Each SpawnPoint is a table: 
+evolution_factor :: double: Evolution factor for which this weight applies.
+weight :: double: Probability of spawning this unit at this evolution fac
+]]
+digger_spawner.result_units = 
+{
+	{"digger-biter", {{0.0, 0.4}}},
+	{"small-biter", {{0.0, 0.3}, {0.6, 0.0}}},
+	{"small-spitter", {{0.25, 0.0}, {0.5, 0.3}, {0.7, 0.0}}},
+	{"medium-biter", {{0.2, 0.0}, {0.6, 0.3}, {0.7, 0.1}}},
+	{"medium-spitter", {{0.4, 0.0}, {0.7, 0.3}, {0.9, 0.1}}},
+	{"big-spitter", {{0.5, 0.0}, {1.0, 0.4}}},
+	{"big-biter", {{0.5, 0.0}, {1.0, 0.4}}},
+	{"behemoth-biter", {{0.9, 0.0}, {1.0, 0.3}}},
+	{"behemoth-spitter", {{0.9, 0.0}, {1.0, 0.3}}},
+}
+
+data:extend({digger_spawner})
 
 if not data.raw["resource"][modmash.defines.names.titanium_ore_name] then
 data:extend(
@@ -871,90 +951,3 @@ data:extend(
 	}
 	})
 end
-
-local rock_names = {
-  "rock-huge",
-  "rock-big",
-  "sand-rock-big"
-}
-
-for k=1, #rock_names do
-local r = table.deepcopy(data.raw["simple-entity"][rock_names[k]])
-	local desc = modmash.util.get_name_for(r.name)
-	r.name = "mm_"..r.name
-	r.loot = nil
-	r.localised_name = desc
-	r.max_health = r.max_health/3
-	r.minable =
-    {
-      mining_particle = "stone-particle",
-      mining_time = 0.75,
-      results = {{name = "stone", amount_min = 1, amount_max = 8}, {name = "sand", amount_min = 1, amount_max = 5}},
-    }
-	data:extend({r})
-end
-
-for k=1, #rock_names do
-local r = table.deepcopy(data.raw["simple-entity"][rock_names[k]])
-	local desc = modmash.util.get_name_for(r.name)
-	r.name = "mm_dark-"..r.name
-	r.loot = nil
-	r.localised_name = desc
-	r.max_health = r.max_health/3
-	r.minable =
-    {
-      mining_particle = "stone-particle",
-      mining_time = 0.75,
-      results = {
-		{name = "stone", amount_min = 1, amount_max = 8, probability = 0.5}, 
-		{name = "sand", amount_min = 1, amount_max = 5, probability = 0.5},
-		{name = "alien-ore", amount_min = 0, amount_max = 5, probability = 0.5},
-		{name = modmash.defines.names.titanium_ore_name, amount_min = 0, amount_max = 5, probability = 0.5},
-		{name = "super-material", amount_min = 0, amount_max = 1, probability = 0.005},
-		},
-    }
-	for j=1, #r.pictures do
-		r.pictures[j].tint = {0.25,0.25,0.25,1}
-		if r.pictures[j].hr_version then
-			r.pictures[j].hr_version.tint = {0.25,0.25,0.25,1}
-		end
-	end
-	data:extend({r})
-end
-
-for k=1, 7 do
-	local t = table.deepcopy(data.raw["tile"]["dirt-"..k])
-	t.name = "mm_dark-"..t.name
-	if t.autoplace ~= nil then t.autoplace.default_enabled = false end
-	t.tint = {0.15,0.15,0.15,1}
-	data:extend({t})
-end
-
-local digger_biter = table.deepcopy(data.raw["unit"]["small-biter"])
-digger_biter.name = "digger-biter"
-digger_biter.attack_parameters.ammo_type = make_unit_melee_ammo_type(30)
-data:extend({digger_biter})
-
-local digger_spawner = table.deepcopy(data.raw["unit-spawner"]["biter-spawner"])
-digger_spawner.name = "digger-spawner"
-
---[[
-unit :: string: Prototype name of the unit that would be spawned
-spawn_points :: array of SpawnPoint: Each SpawnPoint is a table: 
-evolution_factor :: double: Evolution factor for which this weight applies.
-weight :: double: Probability of spawning this unit at this evolution fac
-]]
-digger_spawner.result_units = 
-{
-	{"digger-biter", {{0.0, 0.4}}},
-	{"small-biter", {{0.0, 0.3}, {0.6, 0.0}}},
-	{"small-spitter", {{0.25, 0.0}, {0.5, 0.3}, {0.7, 0.0}}},
-	{"medium-biter", {{0.2, 0.0}, {0.6, 0.3}, {0.7, 0.1}}},
-	{"medium-spitter", {{0.4, 0.0}, {0.7, 0.3}, {0.9, 0.1}}},
-	{"big-spitter", {{0.5, 0.0}, {1.0, 0.4}}},
-	{"big-biter", {{0.5, 0.0}, {1.0, 0.4}}},
-	{"behemoth-biter", {{0.9, 0.0}, {1.0, 0.3}}},
-	{"behemoth-spitter", {{0.9, 0.0}, {1.0, 0.3}}},
-}
-
-data:extend({digger_spawner})

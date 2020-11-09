@@ -1,0 +1,40 @@
+﻿---------------------------------------------------------------------------------------------------
+Version: 1.0.07
+  Changes:
+    - Updates for undergrounds
+
+---------------------------------------------------------------------------------------------------
+Version: 1.0.06
+  Changes:
+    - Added alt ingredient for burner assembler
+
+---------------------------------------------------------------------------------------------------
+Version: 1.0.05
+  Changes:
+    - Added common control fucntions for logistics
+    - Enabled inserter rotations reuired by other splinters
+    - Added globale healing per tick for regnerative items
+
+---------------------------------------------------------------------------------------------------
+Version: 1.0.04
+  Changes:
+    - Added substitution for alien plate
+
+---------------------------------------------------------------------------------------------------
+Version: 1.0.03
+  Changes:
+    - Comment out log not required
+    - Upadated substitutions to handle substitutions
+  Fixes:
+    - Updated get_item function
+
+---------------------------------------------------------------------------------------------------
+Version: 1.0.02
+  Changes:
+    - Missing tumbnail
+
+---------------------------------------------------------------------------------------------------
+Version: 1.0.01
+  Changes:
+    - Initial Release
+    - Stripping out old code ex liborio. Incorporating back in as requied

@@ -1,4 +1,15 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.18.61
+  Notice
+    - Explosive mining will no longer work with cluster grenades
+  Changes:
+    - addition nill check for enemy entity teleport logic, issue identified by honktown
+    - added sugested break by removing scorch mark with explisove mining
+    - Added check for autoplace rock
+  Bug Fixes:
+    - fixe for explosive mining
+
+---------------------------------------------------------------------------------------------------
 Version: 0.18.60
   Bug Fixes:
     - Valkryrie on start quick fix

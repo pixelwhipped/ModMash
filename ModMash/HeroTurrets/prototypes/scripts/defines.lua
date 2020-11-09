@@ -11,11 +11,18 @@ heroturrets.defines.names.force_player = "player"
 heroturrets.defines.names.force_enemy = "enemy"
 heroturrets.defines.names.force_neutral = "neutral"
 
+local test = false
+
 heroturrets.defines.turret_initial_one_value = 50
 heroturrets.defines.turret_initial_two_value = 250
 heroturrets.defines.turret_initial_three_value = 500
 heroturrets.defines.turret_initial_four_value = 5000
-
+if test then
+	heroturrets.defines.turret_initial_one_value = 2
+	heroturrets.defines.turret_initial_two_value = 4
+	heroturrets.defines.turret_initial_three_value = 6
+	heroturrets.defines.turret_initial_four_value = 8
+end
 
 --[[defaults]]
 local percent = settings.startup["heroturrets-setting-level-up-modifier"].value/100

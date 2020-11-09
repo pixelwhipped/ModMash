@@ -6,8 +6,8 @@
 	force.recipes["mini-boiler"].enabled = true
   end
   if force.technologies["engine"].researched then
-    force.recipes["droid-chest"].enabled = true
-	force.recipes["droid"].enabled = true
+    if force.recipes["droid-chest"] ~= nil then force.recipes["droid-chest"].enabled = true end
+	if force.recipes["droid"] ~= nil then force.recipes["droid"].enabled = true end
 	--force.recipes["enhance-drone-targeting-1"].enabled = true
   end
   if force.technologies["logistics"].researched then

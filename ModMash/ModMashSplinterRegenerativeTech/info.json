@@ -1,0 +1,15 @@
+{
+  "name": "modmashsplinterregenerative",
+  "version": "1.0.01",
+  "title": "ModMash Splinter, Regenerative Tech",
+  "author": "PixelWhipped",
+  "contact": "",
+  "homepage": "https://www.patreon.com/user?u=15367757",
+  "factorio_version": "1.0",
+  "description": "Mod Mash Splinter for Regenerative Technology, enables healing factor for regenerative entities",
+  "dependencies": [
+    "base >= 1.0.0",
+    "modmashsplinter >= 1.0.05",
+    "! modmash >= 0.0.0"    
+  ]
+}

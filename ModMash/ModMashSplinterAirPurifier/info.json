@@ -1,0 +1,15 @@
+{
+  "name": "modmashsplinterairpurifier",
+  "version": "1.0.04",
+  "title": "ModMash Splinter, Air Purifiers",
+  "author": "PixelWhipped",
+  "contact": "",
+  "homepage": "https://www.patreon.com/user?u=15367757",
+  "factorio_version": "1.0",
+  "description": "Mod Mash Splinter for Air Purifiers",
+  "dependencies": [
+    "base >= 1.0.0",
+    "modmashsplinter >= 1.0.03",
+    "! modmash >= 0.0.0"    
+  ]
+}

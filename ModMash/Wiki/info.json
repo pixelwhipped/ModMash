@@ -1,13 +1,13 @@
 {
   "name": "wiki",
-  "version": "0.18.05",
+  "version": "1.0.01",
   "title": "Factorio Wiki Mod",
   "author": "PixelWhipped",
   "contact": "",
   "homepage": "",
-  "factorio_version": "0.18",
-  "description": "Common Wiki GUI interface for mods",
+  "factorio_version": "1.0.0",
+  "description": "Common Wiki GUI interface for mods, support for Booktorio or Informatron",
   "dependencies": [
-    "base >= 0.18.0"
+    "base >= 1.0.0"
   ]
 }

@@ -15,7 +15,10 @@ require("prototypes.scripts.util")
 require("__core__/lualib/mod-gui")
 
 local table_contains = wiki.util.table_contains
+
+local print = wiki.util.print
 local booktorio_posted = false
+local informatron_posted = false
 
 local local_create_element = function(parent,type,name,caption,tooltip)
 	if not (parent and parent.valid) then return nil end
@@ -229,6 +232,24 @@ local local_post_to_booktorio = function(event)
 	booktorio_posted = true
 	end
 
+
+
+--[[local local_post_to_informatron = function(event)	
+	local settings = game.players[event.player_index].mod_settings	
+	if informatron_posted ~= true and #wiki.topics > 0 and settings["wiki-defer-informatron"] and settings["wiki-defer-informatron"].value then		
+		--[[remote.add_interface("wiki", {
+			informatron_menu = function(data)
+			return informatron_mod_menu(data.player_index)
+			end,
+			informatron_page_content = function(data)
+			return informatron_mod_page_content(data.page_name, data.player_index, data.element)
+			end
+		})]--
+	end
+	informatron_posted = true
+	end]]
+	
+
 function wiki_on_runtime_mod_setting_changed(event)
 	if event.setting_type == "runtime-per-user" and event.setting == "wiki-enable-disable" then
 		local_remove_toggle_button(event.player_index)	
@@ -243,6 +264,11 @@ function wiki_on_runtime_mod_setting_changed(event)
 			local_post_to_booktorio(event) 
 		end
 	end
+--[[	if event.setting_type == "runtime-per-user" and event.setting == "wiki-defer-informatron" then
+		if game.players[event.player_index].mod_settings["wiki-defer-informatron"].value then	
+			local_post_to_informatron(event) 
+		end
+	end]]
 	end
 
 function wiki_initialize(event)
@@ -257,6 +283,9 @@ function wiki_initialize(event)
 	if settings["wiki-defer-booktorio"].value then	
 		local_post_to_booktorio(event) 
 	end
+	--[[if settings["wiki-defer-informatron"].value then	
+		local_post_to_informatron(event) 
+	end]]
 	end
 
 function wiki_on_gui_selection_state_changed(event)	
@@ -484,6 +513,52 @@ local local_change_wiki_description = function(event)
 		end
 	end
 	end
+
+function informatron_mod_menu(player_index)
+  return { } --seems to require local info
+end
+
+function informatron_mod_page_content(page_name, player_index, element)
+	-- main page
+	if game.players[player_index].mod_settings["wiki-defer-informatron"].value ~= true then return end			
+	if page_name ~= "wiki" then return end
+	local wiki_info_pane = element
+	
+	if wiki_info_pane == nil then return end
+	wiki_info_pane.clear()
+	local image_index = 0 
+	local text_index = 0
+	local title_index = 0
+	local line_index = 0
+	local custom_index = 0
+	print(#wiki.topics)
+	for i = 1, #wiki.topics do local topic = wiki.topics[i]
+		local desc = wiki.descriptions[topic]
+		for j = 1, #desc do local element = desc[j]			
+			if element.type == "title" or element.type == "subtitle" then
+				local str = element.title
+				local localized = type(str) == "table"
+				title_index = title_index + 1
+				local_add_title_to_descrption_pane(wiki_info_pane,str,title_index)
+			elseif element.type == "image" then
+				image_index = image_index + 1
+				local_add_image_to_descrption_pane(wiki_info_pane,element.name,image_index)
+			elseif element.type == "text" then
+				local str = element.text
+				local localized = type(str) == "table"
+				text_index = text_index + 1
+				local_add_label(wiki_info_pane,"wiki-description-" .. text_index, str, "wiki-description-label")	
+			elseif element.type == "line" then
+				line_index = line_index + 1
+				local_add_line(wiki_info_pane,"wiki-line-"..line_index)
+			elseif element.type == "custom" then					
+				custom_index = custom_index + 1
+				local_add_custom(wiki_info_pane,"wiki-custom-"..custom_index,element.interface,element.func)
+			end
+		end
+	end
+end
+
 
 local local_create_wiki = function(event, mod_filter)	
 	mod_filter = mod_filter or "All"

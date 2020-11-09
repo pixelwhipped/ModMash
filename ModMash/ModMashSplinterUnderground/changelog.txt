@@ -1,0 +1,42 @@
+﻿-----------------------------------------------------------------
+Version: 1.0.06
+  Changes:
+    - Added check for autoplace rock
+
+---------------------------------------------------------------------------------------------------
+Version: 1.0.05
+  Changes:
+    - Added check for enemy entity teleport changes adopted from modmash update
+
+---------------------------------------------------------------------------------------------------
+Version: 1.0.04
+  Changes:
+    - Place ghosts on levels when destroyed
+
+---------------------------------------------------------------------------------------------------
+Version: 1.0.03
+  Changes:
+    - Updated transport logic
+    - Updated descriptions and names
+    - Seems to work with modmashsplinterassembling now
+
+---------------------------------------------------------------------------------------------------
+Version: 1.0.02
+  Bug Fixes:
+    - Had to update requirment modmashspliter 1.0.06 to handle missing splinter assembling
+
+---------------------------------------------------------------------------------------------------
+Version: 1.0.01
+  Changes:
+    - Initial Release
+    - Updated graphics
+    - Battery cells now retain charge when picked up
+    - Addded achievement Hollow Earth
+    - Removed Digger biters, same effect operated different way no on_tick needed
+    - Can work on other surfaces now
+    - Battery cell now show correct animation when charging discharging
+    - altered pollution to only be updrafted if the layer is not sealed
+    - removed particle effects, Nukes on rocks causes extream lag
+    - Added resource detection mode Orginal(vallila or requested) Experimental(auto detect)
+    - Added surface detection mode Orginal(nauvis or requested) Experimental(auto detect excludes no water propability surfaces)
+    - Added remote calls for other mods to interface with

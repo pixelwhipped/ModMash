@@ -6,6 +6,7 @@ log("explosive-mining.lua")
 if modmash == nil or modmash.util == nil then require("prototypes.scripts.util") end
 
 local is_valid  = modmash.util.is_valid
+local starts_with  = modmash.util.starts_with
 
 local local_init = function()	
 	if global.modmash.grenade_targets == nil then global.modmash.grenade_targets = {} end	
@@ -19,7 +20,7 @@ local local_check_resource = function()
 			v.ticks = v.ticks + 1
 			local entities = v.target.surface.find_entities_filtered{area = {{v.target.position.x-0.5, v.target.position.y-0.5}, {v.target.position.x-1, v.target.position.y+1}}}
 			for i, ent in pairs(entities) do
-				if ent.name == "small-scorchmark" then
+				if starts_with(ent.name,"small-scorchmark") then
 					if is_valid(v.target) and game.item_prototypes[v.target.name] then
 						v.target.surface.spill_item_stack(ent.position, {name=v.target.name, count=50})
 						local r = v.target.amount - math.min(50,v.target.amount);
@@ -29,7 +30,9 @@ local local_check_resource = function()
 							v.target.amount = r
 						end
 					end
+					ent.destroy()
 					table.remove(global.modmash.grenade_targets, i)
+					--break
 				end
 			end
 		end

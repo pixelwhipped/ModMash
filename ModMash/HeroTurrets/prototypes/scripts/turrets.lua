@@ -14,12 +14,26 @@ local table_contains = heroturrets.util.table.contains
 local is_valid_and_persistant = heroturrets.util.entity.is_valid_and_persistant
 local distance = heroturrets.util.distance
 local get_entities_around  = heroturrets.util.entity.get_entities_around
-local find_recipes_for = heroturrets.util.recipe.find_recipes_for
+local find_recipes_for = function(name, force)
+	local p = game.entity_prototypes[name]
+	local ret = {}
+	if p~=nil then 
+	table.insert(ret,p)
+	end
+	return ret
+end
+
+
+--heroturrets.util.recipe.find_recipes_for
 
 --[[unitialized globals]]
 
 --[[ensure globals]]
-
+local multipliers = {}
+multipliers["ammo-turret"] = settings.startup["heroturrets-setting-ammo-turret-kill-multiplier"].value
+multipliers["fluid-turret"] = settings.startup["heroturrets-setting-fluid-turret-kill-multiplier"].value
+multipliers["electric-turret"] = settings.startup["heroturrets-setting-electric-turret-kill-multiplier"].value
+multipliers["artillery-turret"] = settings.startup["heroturrets-setting-artillery-turret-kill-multiplier"].value
 
 local local_replace_turret = function(entity,recipe)	
 	local s = entity.surface
@@ -30,6 +44,7 @@ local local_replace_turret = function(entity,recipe)
 	local k = entity.kills
 	local d = entity.direction
 	local o = entity.orientation
+
 	local fluid = {}
 	if entity.fluidbox ~= nil then 
 	  for k = 1, #entity.fluidbox do fb = entity.fluidbox[k]
@@ -38,7 +53,6 @@ local local_replace_turret = function(entity,recipe)
 		end
 	  end
 	end
-
 	local i = entity.get_inventory(defines.inventory.turret_ammo)
 	local c = nil
 	if i ~= nil then 
@@ -83,9 +97,19 @@ local local_turret_added = function(entity,event)
 	end
 
 local local_turret_removed = function(entity,event)	
- 
-	if event ~= nil and is_valid(event.cause) == true and table_contains(turret_types,event.cause.type) and event.cause.kills ~=nil then		
-		if event.cause.kills >= (heroturrets.defines.turret_levelup_four - 1) then		
+	
+	if event ~= nil and is_valid(event.cause) == true and table_contains(turret_types,event.cause.type) and event.cause.kills ~=nil then						
+		if settings.startup["heroturrets-allow-artillery-turrets"].value == false and event.cause.type == "artillery-turret" then return end
+		
+		local multiplier = multipliers[event.cause.type]
+		if multiplier == nil then return end
+		local levelup_four = heroturrets.defines.turret_levelup_four * multiplier
+		local levelup_three = heroturrets.defines.turret_levelup_three * multiplier
+		local levelup_two = heroturrets.defines.turret_levelup_two * multiplier
+		local levelup_one = heroturrets.defines.turret_levelup_one * multiplier
+		
+
+		if event.cause.kills >= (levelup_four - 1) then		
 			if starts_with(event.cause.name,"hero-turret") == true then
 				--is a hero turret
 				if starts_with(event.cause.name,"hero-turret-4") then
@@ -107,7 +131,7 @@ local local_turret_removed = function(entity,event)
 					local_replace_turret(event.cause,ug[1])
 				end
 			end
-		elseif event.cause.kills >= (heroturrets.defines.turret_levelup_three - 1) then		
+		elseif event.cause.kills >= (levelup_three - 1) then		
 			if starts_with(event.cause.name,"hero-turret") == true then
 				--is a hero turret
 				if starts_with(event.cause.name,"hero-turret-3") then
@@ -128,7 +152,7 @@ local local_turret_removed = function(entity,event)
 					local_replace_turret(event.cause,ug[1])
 				end
 			end
-		elseif event.cause.kills >= (heroturrets.defines.turret_levelup_two - 1) then
+		elseif event.cause.kills >= (levelup_two - 1) then
 			if starts_with(event.cause.name,"hero-turret") then
 				--is a hero turret
 				if starts_with(event.cause.name,"hero-turret-2") then
@@ -147,11 +171,11 @@ local local_turret_removed = function(entity,event)
 					local_replace_turret(event.cause,ug[1])
 				end
 			end
-		elseif event.cause.kills >= (heroturrets.defines.turret_levelup_one - 1) then
+		elseif event.cause.kills >= (levelup_one - 1) then
 			if starts_with(event.cause.name,"hero-turret") then
 				--nothing to do
 			else
-				--find upgrade
+				--find upgrade				
 				local ug = find_recipes_for("hero-turret-1-for-"..event.cause.name,event.cause.force)
 				if #ug ~= 0 then
 					local_replace_turret(event.cause,ug[1])
@@ -204,10 +228,22 @@ local local_on_post_entity_died = function(event)
 	end
 	end
 
+local local_on_damage = function(entity, event)
+
+end
+
 local control = {
 	on_removed = local_turret_removed,
 	on_added = local_turret_added,
 	on_post_entity_died = local_on_post_entity_died
-}
+
+if settings.global["heroturrets-allow-damage"].value then
+	control = {
+		on_removed = local_turret_removed,
+		on_added = local_turret_added,
+		on_post_entity_died = local_on_post_entity_died,
+		on_damage = local_on_damage
+	}
+end
 
 heroturrets.register_script(control)

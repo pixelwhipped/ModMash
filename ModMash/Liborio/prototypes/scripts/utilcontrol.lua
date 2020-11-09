@@ -64,8 +64,8 @@ local local_get_technology = function(technology, force)
 	return nil
 	end
 
-local local_get_entities_to_northwest = function(entity, type)
-    local wh = local_get_entity_size(entity)
+local local_get_entities_to_northwest = function(entity, type, size)
+    local wh = size or local_get_entity_size(entity)
 	if wh == {0, 0} then wh = { 1, 1 } end
     local w,h = 0.5* wh[1], 0.5 * wh[2]
 	if type ~= nil then return entity.surface.find_entities_filtered{area = {{entity.position.x-w, entity.position.y-(h+0.5)}, {entity.position.x-(w+0.5), entity.position.y-h}}, type = type} end
