@@ -113,9 +113,36 @@ local local_turret_removed = function(entity,event)
 		local levelup_three = heroturrets.defines.turret_levelup_three * multiplier
 		local levelup_two = heroturrets.defines.turret_levelup_two * multiplier
 		local levelup_one = heroturrets.defines.turret_levelup_one * multiplier
+		local levelup_damage_four = heroturrets.defines.turret_levelup_damage_four * multiplier
+		local levelup_damage_three = heroturrets.defines.turret_levelup_damage_three * multiplier
+		local levelup_damage_two = heroturrets.defines.turret_levelup_damage_two * multiplier
+		local levelup_damage_one = heroturrets.defines.turret_levelup_damage_one * multiplier
 		
-
-		if event.cause.kills >= (turret_levelup_kills_four - 1) or event.cause.damage_dealt >= heroturrets.defines.turret_levelup_damage_four then		
+		if settings.startup["heroturrets-kill-counter"].value == "Exact" and event ~= nil and is_valid(event.entity) and is_valid(event.buffer) and table_contains(turret_types,event.entity.type) and event.entity.kills ~= nil and event.entity.kills > 0 then	
+			if #event.buffer == 1 and entity.kills==0 then
+				local item = event.buffer[1]
+				local standard_item = item.name:sub(1,#item.name-#"-with-tags")
+				local stack = {
+					name = standard_item,
+					count = item.count,
+					health = item.health,
+					ammo = item.ammo
+				}
+				if event.buffer.can_set_stack(stack) then
+					event.buffer.set_stack(stack)
+				elseif item.type == "item-with-tags" then 			
+					item.set_tag("kills", entity.kills)
+					item.custom_description = entity.kills .. " Kills"
+				end
+			else
+				for k=#event.buffer, 1, -1 do item = event.buffer[k]
+					if item.type == "item-with-tags" then 			
+						item.set_tag("kills", entity.kills)
+						item.custom_description = entity.kills .. " Kills"
+					end
+				end
+			end		
+		elseif event.cause.kills >= (turret_levelup_kills_four - 1) or (settings.global["heroturrets-allow-damage"].value == "Enabled" and event.cause.damage_dealt >= levelup_damage_four) then		
 			if starts_with(event.cause.name,"hero-turret") == true then
 				--is a hero turret
 				if starts_with(event.cause.name,"hero-turret-4") then
@@ -137,7 +164,7 @@ local local_turret_removed = function(entity,event)
 					local_replace_turret(event.cause,ug[1])
 				end
 			end
-		elseif event.cause.kills >= (turret_levelup_kills_three - 1) event.cause.damage_dealt >= heroturrets.defines.turret_levelup_damage_three then		
+		elseif event.cause.kills >= (turret_levelup_kills_three - 1) or (settings.global["heroturrets-allow-damage"].value == "Enabled" and event.cause.damage_dealt >= levelup_damage_three) then		
 			if starts_with(event.cause.name,"hero-turret") == true then
 				--is a hero turret
 				if starts_with(event.cause.name,"hero-turret-3") then
@@ -158,7 +185,7 @@ local local_turret_removed = function(entity,event)
 					local_replace_turret(event.cause,ug[1])
 				end
 			end
-		elseif event.cause.kills >= (turret_levelup_kills_two - 1)  event.cause.damage_dealt >= heroturrets.defines.turret_levelup_damage_two then
+		elseif event.cause.kills >= (turret_levelup_kills_two - 1) or (settings.global["heroturrets-allow-damage"].value == "Enabled" and event.cause.damage_dealt >= levelup_damage_two) then
 			if starts_with(event.cause.name,"hero-turret") then
 				--is a hero turret
 				if starts_with(event.cause.name,"hero-turret-2") then
@@ -177,7 +204,7 @@ local local_turret_removed = function(entity,event)
 					local_replace_turret(event.cause,ug[1])
 				end
 			end
-		elseif event.cause.kills >= (turret_levelup_kills_one - 1) or event.cause.damage_dealt >= heroturrets.defines.turret_levelup_damage_one then
+		elseif event.cause.kills >= (turret_levelup_kills_one - 1) or (settings.global["heroturrets-allow-damage"].value == "Enabled" and event.cause.damage_dealt >= levelup_damage_one) then
 			if starts_with(event.cause.name,"hero-turret") then
 				--nothing to do
 			else
@@ -188,33 +215,6 @@ local local_turret_removed = function(entity,event)
 				end
 			end
 		end
-	elseif settings.startup["heroturrets-kill-counter"].value == "Exact" and event ~= nil and is_valid(event.entity) and is_valid(event.buffer) and table_contains(turret_types,event.entity.type) and event.entity.kills ~= nil and event.entity.kills > 0 then	
-		if #event.buffer == 1 and entity.kills==0 then
-			local item = event.buffer[1]
-			local standard_item = item.name:sub(1,#item.name-#"-with-tags")
-			local stack = {
-				name = standard_item,
-				count = item.count,
-				health = item.health,
-				ammo = item.ammo
-			}
-			if event.buffer.can_set_stack(stack) then
-				event.buffer.set_stack(stack)
-			elseif item.type == "item-with-tags" then 			
-				item.set_tag("kills", entity.kills)
-				item.custom_description = entity.kills .. " Kills"
-			end
-		else
-			for k=#event.buffer, 1, -1 do item = event.buffer[k]
-				if item.type == "item-with-tags" then 			
-					item.set_tag("kills", entity.kills)
-					item.custom_description = entity.kills .. " Kills"
-				end
-			end
-			--print(serpent.block(item.tags["kills"]))
-			--if item.name:match("^hero%-turret%-%d%-for%-") ~= nil then
-				
-		end		
 	end
 	end
 
@@ -234,22 +234,11 @@ local local_on_post_entity_died = function(event)
 	end
 	end
 
-local local_on_damage = function(entity, event)
-
-end
 
 local control = {
 	on_removed = local_turret_removed,
 	on_added = local_turret_added,
 	on_post_entity_died = local_on_post_entity_died
-
-if settings.global["heroturrets-allow-damage"].value then
-	control = {
-		on_removed = local_turret_removed,
-		on_added = local_turret_added,
-		on_post_entity_died = local_on_post_entity_died,
-		on_damage = local_on_damage
-	}
-end
+}
 
 heroturrets.register_script(control)
