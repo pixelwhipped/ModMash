@@ -788,7 +788,7 @@ local local_droid_process_build_destroy_command = function(droid)
 						droid.entity.surface.spill_item_stack(droid.target.position, {name=s.name, count=s.count},false,droid.entity.force)							
 					end
 					local_create_beam(droid.entity,droid.target,"droid_standard_beam",beam_time)
-					droid.target.destroy()
+					droid.target.destroy({raise_destroy = true})
 					local_clear_droid_command(droid)	
 					
 				else
@@ -807,7 +807,7 @@ local local_droid_process_build_destroy_command = function(droid)
 					local hidden = tile.hidden_tile or "out-of-map"
 					droid.target.surface.set_tiles({{name = hidden, position = tile.position}}, true)
 				end
-				droid.target.destroy()
+				droid.target.destroy({raise_destroy = true})
 				local_clear_droid_command(droid)					
 			end
 		end	

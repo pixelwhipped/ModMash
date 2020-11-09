@@ -1,4 +1,9 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.18.62
+  Changes:
+    - added {raise_destroy = true} for droids
+
+---------------------------------------------------------------------------------------------------
 Version: 0.18.61
   Notice
     - Explosive mining will no longer work with cluster grenades
