@@ -83,22 +83,32 @@ local turret_types = {"ammo-turret", "fluid-turret","electric-turret","artillery
 
 local local_turret_added = function(entity,event)	
 	if is_valid(entity) ~= true then return end	
-	
+	local multiplier = multipliers[entity.type]
+	if multiplier == nil the multiplier = 1
+	local levelup_four = heroturrets.defines.turret_levelup_four * multiplier
+	local levelup_three = heroturrets.defines.turret_levelup_three * multiplier
+	local levelup_two = heroturrets.defines.turret_levelup_two * multiplier
+	local levelup_one = heroturrets.defines.turret_levelup_one * multiplier
+	local levelup_damage_four = heroturrets.defines.turret_levelup_damage_four * multiplier
+	local levelup_damage_three = heroturrets.defines.turret_levelup_damage_three * multiplier
+	local levelup_damage_two = heroturrets.defines.turret_levelup_damage_two * multiplier
+	local levelup_damage_one = heroturrets.defines.turret_levelup_damage_one * multiplier
+
 	if table_contains(turret_types,entity.type)  ~= true then return end    
 	if settings.startup["heroturrets-kill-counter"].value == "Exact" and is_valid(event.stack) and event.stack.type == "item-with-tags" and event.stack.get_tag("kills") ~= nil then
 		entity.kills = event.stack.get_tag("kills")
 	elseif starts_with(entity.name,"hero-turret-4") == true then
-		entity.kills = math.max(heroturrets.defines.turret_levelup_four, entity.kills)
-		entity.damage_dealt = math.max(heroturrets.defines.turret_levelup_damage_four, entity.damage_dealt)
+		entity.kills = math.max(levelup_four, entity.kills)
+		entity.damage_dealt = math.max(levelup_damage_four, entity.damage_dealt)
 	elseif starts_with(entity.name,"hero-turret-3") == true then
-		entity.kills = math.max(heroturrets.defines.turret_levelup_three, entity.kills)
-		entity.damage_dealt = math.max(heroturrets.defines.turret_levelup_damage_three, entity.damage_dealt)
+		entity.kills = math.max(levelup_three, entity.kills)
+		entity.damage_dealt = math.max(levelup_damage_three, entity.damage_dealt)
 	elseif starts_with(entity.name,"hero-turret-2") == true then
-		entity.kills = math.max(heroturrets.defines.turret_levelup_two, entity.kills)
-		entity.damage_dealt = math.max(heroturrets.defines.turret_levelup_damage_two, entity.damage_dealt)
+		entity.kills = math.max(turret_levelup_two, entity.kills)
+		entity.damage_dealt = math.max(levelup_damage_two, entity.damage_dealt)
 	elseif starts_with(entity.name,"hero-turret-1") == true then
-		entity.kills = math.max(heroturrets.defines.turret_levelup_one, entity.kills)
-		entity.damage_dealt = math.max(heroturrets.defines.turret_levelup_damage_one, entity.damage_dealt)
+		entity.kills = math.max(levelup_one, entity.kills)
+		entity.damage_dealt = math.max(levelup_damage_one, entity.damage_dealt)
 	end
 	end
 
