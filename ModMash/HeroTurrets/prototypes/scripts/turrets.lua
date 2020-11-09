@@ -42,6 +42,7 @@ local local_replace_turret = function(entity,recipe)
 	local h = entity.health
 	local mh = entity.prototype.max_health
 	local k = entity.kills
+	local dd = entity.damage_dealt
 	local d = entity.direction
 	local o = entity.orientation
 
@@ -63,6 +64,7 @@ local local_replace_turret = function(entity,recipe)
 	local new_entity = s.create_entity{name=recipe.name, position=p, force = f, direction = d, orientation = o, raise_built = true}
 	if h ~= mh then new_entity.health = h end
 	new_entity.kills = k
+	new_entity.damage_dealt = dd
 	local inv = new_entity.get_inventory(defines.inventory.turret_ammo)
 	if inv ~= nil and c ~= nil then
 		for name, count in pairs(c) do
@@ -87,12 +89,16 @@ local local_turret_added = function(entity,event)
 		entity.kills = event.stack.get_tag("kills")
 	elseif starts_with(entity.name,"hero-turret-4") == true then
 		entity.kills = math.max(heroturrets.defines.turret_levelup_four, entity.kills)
+		entity.damage_dealt = math.max(heroturrets.defines.turret_levelup_damage_four, entity.damage_dealt)
 	elseif starts_with(entity.name,"hero-turret-3") == true then
 		entity.kills = math.max(heroturrets.defines.turret_levelup_three, entity.kills)
+		entity.damage_dealt = math.max(heroturrets.defines.turret_levelup_damage_three, entity.damage_dealt)
 	elseif starts_with(entity.name,"hero-turret-2") == true then
 		entity.kills = math.max(heroturrets.defines.turret_levelup_two, entity.kills)
+		entity.damage_dealt = math.max(heroturrets.defines.turret_levelup_damage_two, entity.damage_dealt)
 	elseif starts_with(entity.name,"hero-turret-1") == true then
 		entity.kills = math.max(heroturrets.defines.turret_levelup_one, entity.kills)
+		entity.damage_dealt = math.max(heroturrets.defines.turret_levelup_damage_one, entity.damage_dealt)
 	end
 	end
 
@@ -109,7 +115,7 @@ local local_turret_removed = function(entity,event)
 		local levelup_one = heroturrets.defines.turret_levelup_one * multiplier
 		
 
-		if event.cause.kills >= (levelup_four - 1) then		
+		if event.cause.kills >= (turret_levelup_kills_four - 1) or event.cause.damage_dealt >= heroturrets.defines.turret_levelup_damage_four then		
 			if starts_with(event.cause.name,"hero-turret") == true then
 				--is a hero turret
 				if starts_with(event.cause.name,"hero-turret-4") then
@@ -131,7 +137,7 @@ local local_turret_removed = function(entity,event)
 					local_replace_turret(event.cause,ug[1])
 				end
 			end
-		elseif event.cause.kills >= (levelup_three - 1) then		
+		elseif event.cause.kills >= (turret_levelup_kills_three - 1) event.cause.damage_dealt >= heroturrets.defines.turret_levelup_damage_three then		
 			if starts_with(event.cause.name,"hero-turret") == true then
 				--is a hero turret
 				if starts_with(event.cause.name,"hero-turret-3") then
@@ -152,7 +158,7 @@ local local_turret_removed = function(entity,event)
 					local_replace_turret(event.cause,ug[1])
 				end
 			end
-		elseif event.cause.kills >= (levelup_two - 1) then
+		elseif event.cause.kills >= (turret_levelup_kills_two - 1)  event.cause.damage_dealt >= heroturrets.defines.turret_levelup_damage_two then
 			if starts_with(event.cause.name,"hero-turret") then
 				--is a hero turret
 				if starts_with(event.cause.name,"hero-turret-2") then
@@ -171,7 +177,7 @@ local local_turret_removed = function(entity,event)
 					local_replace_turret(event.cause,ug[1])
 				end
 			end
-		elseif event.cause.kills >= (levelup_one - 1) then
+		elseif event.cause.kills >= (turret_levelup_kills_one - 1) or event.cause.damage_dealt >= heroturrets.defines.turret_levelup_damage_one then
 			if starts_with(event.cause.name,"hero-turret") then
 				--nothing to do
 			else

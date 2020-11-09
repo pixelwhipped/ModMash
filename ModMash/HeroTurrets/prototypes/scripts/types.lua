@@ -70,6 +70,7 @@ local is_unkown_nesw = function(entity)
     end
     return false
     end
+
 local get_badge = function(rank,top,left,rc)
     local img = {
                     filename = "__heroturrets__/graphics/entity/turret/hero-"..rank.."-base.png",
@@ -288,7 +289,8 @@ local local_create_turret = function(turret,rank,rank_string,mod)
         if entity.attack_parameters ~= nil then
             if entity.attack_parameters.cooldown ~= nil then entity.attack_parameters.cooldown = entity.attack_parameters.cooldown * (1-(mod-1)) end
             if entity.attack_parameters.range ~= nil then entity.attack_parameters.range = entity.attack_parameters.range * mod end
-            if entity.attack_parameters.ammo_type ~= nil and entity.attack_parameters.ammo_type.action ~= nil then
+            if entity.attack_parameters.min_range ~= nil then entity.attack_parameters.min_range = entity.attack_parameters.min_range * (1-(mod-1)) end
+			if entity.attack_parameters.ammo_type ~= nil and entity.attack_parameters.ammo_type.action ~= nil then
                 if entity.attack_parameters.ammo_type.action.action_delivery ~= nil  and entity.attack_parameters.ammo_type.action.action_delivery.max_length ~= nil then
                     entity.attack_parameters.ammo_type.action.action_delivery.max_length  = entity.attack_parameters.ammo_type.action.action_delivery.max_length  * mod
                 end

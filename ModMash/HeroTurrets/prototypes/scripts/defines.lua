@@ -13,24 +13,35 @@ heroturrets.defines.names.force_neutral = "neutral"
 
 local test = false
 
-heroturrets.defines.turret_initial_one_value = 50
-heroturrets.defines.turret_initial_two_value = 250
-heroturrets.defines.turret_initial_three_value = 500
-heroturrets.defines.turret_initial_four_value = 5000
+heroturrets.defines.turret_initial_one_kills_value = 50
+heroturrets.defines.turret_initial_one_damage_value = 10000
+heroturrets.defines.turret_initial_two_kills_value = 250
+heroturrets.defines.turret_initial_two_damage_value = 50000
+heroturrets.defines.turret_initial_three_kills_value = 500
+heroturrets.defines.turret_initial_three_damage_value = 100000
+heroturrets.defines.turret_initial_four_kills_value = 5000
+heroturrets.defines.turret_initial_four_damage_value = 1000000
 if test then
-	heroturrets.defines.turret_initial_one_value = 2
-	heroturrets.defines.turret_initial_two_value = 4
-	heroturrets.defines.turret_initial_three_value = 6
-	heroturrets.defines.turret_initial_four_value = 8
+	heroturrets.defines.turret_initial_one_kills_value = 2
+	heroturrets.defines.turret_initial_one_damage_value = 10
+	heroturrets.defines.turret_initial_two_kills_value = 4
+	heroturrets.defines.turret_initial_two_damage_value = 20
+	heroturrets.defines.turret_initial_three_kills_value = 6
+	heroturrets.defines.turret_initial_three_damage_value = 30
+	heroturrets.defines.turret_initial_four_kills_value = 8
+	heroturrets.defines.turret_initial_four_damage_value = 40
 end
 
 --[[defaults]]
 local percent = settings.startup["heroturrets-setting-level-up-modifier"].value/100
-heroturrets.defines.turret_levelup_one = heroturrets.defines.turret_initial_one_value + (math.floor((heroturrets.defines.turret_initial_one_value*percent)/10)*100)
-heroturrets.defines.turret_levelup_two = heroturrets.defines.turret_initial_two_value + (math.floor((heroturrets.defines.turret_initial_two_value*percent)/10)*100)
-heroturrets.defines.turret_levelup_three = heroturrets.defines.turret_initial_three_value + (math.floor((heroturrets.defines.turret_initial_three_value*percent)/10)*100)
-heroturrets.defines.turret_levelup_four = heroturrets.defines.turret_initial_four_value + (math.floor((heroturrets.defines.turret_initial_four_value*percent)/10)*100)
-
+heroturrets.defines.turret_levelup_kills_one = heroturrets.defines.turret_initial_one_kills_value + (math.floor((heroturrets.defines.turret_initial_one_kills_value*percent)/10)*100)
+heroturrets.defines.turret_levelup_damage_one = heroturrets.defines.turret_initial_one_damage_value + (math.floor((heroturrets.defines.turret_initial_one_damage_value*percent)/10)*100)
+heroturrets.defines.turret_levelup_kills_two = heroturrets.defines.turret_initial_two_kills_value + (math.floor((heroturrets.defines.turret_initial_two_kills_value*percent)/10)*100)
+heroturrets.defines.turret_levelup_damage_two = heroturrets.defines.turret_initial_two_damage_value + (math.floor((heroturrets.defines.turret_initial_two_damage_value*percent)/10)*100)
+heroturrets.defines.turret_levelup_kills_three = heroturrets.defines.turret_initial_three_kills_value + (math.floor((heroturrets.defines.turret_initial_three_kills_value*percent)/10)*100)
+heroturrets.defines.turret_levelup_damage_three = heroturrets.defines.turret_initial_three_damage_value + (math.floor((heroturrets.defines.turret_initial_three_damage_value*percent)/10)*100)
+heroturrets.defines.turret_levelup_kills_four = heroturrets.defines.turret_initial_four_kills_value + (math.floor((heroturrets.defines.turret_initial_four_kills_value*percent)/10)*100)
+heroturrets.defines.turret_levelup_damage_four = heroturrets.defines.turret_initial_four_damage_value + (math.floor((heroturrets.defines.turret_initial_four_damage_value*percent)/10)*100)
 --[[events]]
 heroturrets.events.on_build = {defines.events.on_built_entity, defines.events.on_robot_built_entity,defines.events.script_raised_built,defines.events.script_raised_revive}
 heroturrets.events.on_remove = {defines.events.on_entity_died,defines.events.on_robot_pre_mined,defines.events.on_robot_mined_entity,defines.events.on_player_mined_entity,defines.events.script_raised_destroy}
