@@ -308,6 +308,10 @@ local local_create_turret = function(turret,rank,rank_string,mod)
                 gun.name = gun_name
                 gun.localised_name = localised_name
                 gun.localised_desc = localised_desc
+               -- log("NEW_______________________________________")
+               -- log(serpent.block(gun))
+               --  log("FROM______________________________________")
+               --  log(serpent.block(data.raw["gun"][entity.gun]))
                 data:extend({gun})
                 entity.gun = gun_name
             end

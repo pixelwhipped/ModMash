@@ -1,4 +1,10 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.0.08
+  Planning:
+    - add test for copy inserter ensure base length not extended
+    - check for common functions to intergrate
+
+---------------------------------------------------------------------------------------------------
 Version: 1.0.07
   Changes:
     - Updates for undergrounds

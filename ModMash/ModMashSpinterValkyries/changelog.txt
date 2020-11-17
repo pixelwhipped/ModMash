@@ -1,4 +1,10 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.0.02
+  Planning:
+    - Add test for attack variants unable to return or die - convert to construction if ttl expired
+    - Add acheivement
+
+---------------------------------------------------------------------------------------------------
 Version: 1.0.01
   Changes:
     - Initial Release

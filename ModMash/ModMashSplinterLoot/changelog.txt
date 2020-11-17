@@ -1,5 +1,10 @@
 ﻿---------------------------------------------------------------------------------------------------
 Version: 1.0.01
+  Planning:
+    - Add acheivments
+
+---------------------------------------------------------------------------------------------------
+Version: 1.0.01
   Changes:
     - Initial Release
     - Loot is fixed no longer random, added function to allow mods to add loot packages
