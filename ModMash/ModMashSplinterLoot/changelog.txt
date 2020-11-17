@@ -2,4 +2,4 @@
 Version: 1.0.01
   Changes:
     - Initial Release
-    - Loot will be fixed no longer random, will add function to allow mods to add loot packages
+    - Loot is fixed no longer random, added function to allow mods to add loot packages

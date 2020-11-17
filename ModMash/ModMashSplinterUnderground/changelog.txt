@@ -1,4 +1,11 @@
-﻿-----------------------------------------------------------------
+﻿---------------------------------------------------------------------------------------------------
+Version: 1.0.07
+  Changes:
+    - Added loot stack if loot available
+  Bug-Fixes:
+    - Still seem to be autoplacing biter rocks and showing power on nauvis
+
+---------------------------------------------------------------------------------------------------
 Version: 1.0.06
   Changes:
     - Added check for autoplace rock
@@ -22,7 +29,7 @@ Version: 1.0.03
 
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.02
-  Bug Fixes:
+  Bug-Fixes:
     - Had to update requirment modmashspliter 1.0.06 to handle missing splinter assembling
 
 ---------------------------------------------------------------------------------------------------

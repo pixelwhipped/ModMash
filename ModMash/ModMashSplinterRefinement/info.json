@@ -1,6 +1,6 @@
 {
   "name": "modmashsplinterrefinement",
-  "version": "1.0.02",
+  "version": "1.0.03",
   "title": "ModMash Splinter, Refinement",
   "author": "PixelWhipped",
   "contact": "",
@@ -9,7 +9,7 @@
   "description": "Mod Mash Splinter for Ore Refinement",
   "dependencies": [
     "base >= 1.0.0",
-    "modmashsplinter >= 1.0.03",
+    "modmashsplinter >= 1.0.07",
     "! modmash >= 0.0.0"    
   ]
 }

@@ -63,6 +63,7 @@ local local_generate_attack_rocks = function(name,tint)
 		r.max_health = 50
 		r.selectable_in_game = false
 		r.dying_trigger_effect = nil
+		if r.autoplace ~= nil then r.autoplace.default_enabled = false end
 		r.minable =
 		{
 			mining_particle = "stone-particle",
@@ -80,6 +81,7 @@ local local_generate_attack_rocks = function(name,tint)
         }
         r.energy_usage = "1W"
         r.render_no_network_icon = false
+		r.render_no_power_icon = false
         r.alert_when_damaged = false
         r.create_ghost_on_death = false
         r.pictures =

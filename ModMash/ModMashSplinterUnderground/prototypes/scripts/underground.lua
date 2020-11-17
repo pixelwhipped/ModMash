@@ -924,6 +924,30 @@ local local_surface_created = function(event)
 	end
 end
 
+local local_register_loot = function()	
+	if remote.interfaces["modmashsplinterloot"] ~= nil and remote.interfaces["modmashsplinterloot"]["register_loot"] ~= nil then
+		local underground_loot = {
+			{
+				name = "underground_loot", probability = 0.1, 
+				items = {
+					{{name = underground_access ,max_stacks = 3, probability = 0.5},{name = underground_access2 ,max_stacks = 2, probability = 0.5}},
+					{{name = underground_accumulator ,max_stacks = 6, probability = 0.5}}
+				}
+			},
+			{
+				name = "underground_loot_power", probability = 0.1, 
+				items = {
+					{{name = underground_accumulator ,max_stacks = 10, probability = 0.5}},
+					{{name = battery_cell ,max_stacks = 10, probability = 0.5}}
+				}
+			}}
+		for k = 1, #underground_loot do
+			remote.call("modmashsplinterloot","register_loot",underground_loot[k])
+		end
+	end
+end
+
+
 
 local local_init = function() 
 	if global.modmashsplinterunderground.surfaces == nil then
@@ -933,15 +957,13 @@ local local_init = function()
 	end
 	surfaces = global.modmashsplinterunderground.surfaces
 	surfaces_top = global.modmashsplinterunderground.surfaces_top
-	--local_register_resources()
-	--local_check_surfaces()
+	local_register_loot()
 	end
 
 local local_load = function() 
 	surfaces = global.modmashsplinterunderground.surfaces
 	surfaces_top = global.modmashsplinterunderground.surfaces_top
-	--local_register_resources()
-	--local_check_surfaces()
+	local_register_loot()
 	end
 
 local local_entity_damaged = function(event)

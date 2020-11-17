@@ -261,7 +261,7 @@ local local_create_ore_refinements_experimental = function()
 							order = "z["..ore_name.."]",
 							stack_size = m
 						}
-						log(serpent.block(i))
+						--log(serpent.block(i))
 						if i.pictures and #i.pictures > 0 then
 						
 							local new_pictures = {}
