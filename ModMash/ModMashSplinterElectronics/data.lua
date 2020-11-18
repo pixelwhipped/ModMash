@@ -36,7 +36,7 @@ data:extend(
   },
   {
         amount = 5000,
-        icon = "__base__/graphics/achievement/blank-circuit-production-1",
+        icon = "__modmashsplinterelectronics__/graphics/achievement/blank-circuit-production-1.png",
         icon_size = 128,
         item_product = "blank-circuit",
         name = "blank-circuit-veteran-1",
