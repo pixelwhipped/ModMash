@@ -84,7 +84,7 @@ local turret_types = {"ammo-turret", "fluid-turret","electric-turret","artillery
 local local_turret_added = function(entity,event)	
 	if is_valid(entity) ~= true then return end	
 	local multiplier = multipliers[entity.type]
-	if multiplier == nil the multiplier = 1
+	if multiplier == nil then multiplier = 1 end
 	local levelup_four = heroturrets.defines.turret_levelup_four * multiplier
 	local levelup_three = heroturrets.defines.turret_levelup_three * multiplier
 	local levelup_two = heroturrets.defines.turret_levelup_two * multiplier
