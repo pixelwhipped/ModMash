@@ -11,7 +11,7 @@ heroturrets.defines.names.force_player = "player"
 heroturrets.defines.names.force_enemy = "enemy"
 heroturrets.defines.names.force_neutral = "neutral"
 
-local test = false
+local test = false	
 
 heroturrets.defines.turret_initial_one_kills_value = 50
 heroturrets.defines.turret_initial_one_damage_value = 10000
@@ -22,13 +22,13 @@ heroturrets.defines.turret_initial_three_damage_value = 100000
 heroturrets.defines.turret_initial_four_kills_value = 5000
 heroturrets.defines.turret_initial_four_damage_value = 1000000
 if test then
-	heroturrets.defines.turret_initial_one_kills_value = 2
+	heroturrets.defines.turret_initial_one_kills_value = 10
 	heroturrets.defines.turret_initial_one_damage_value = 10
-	heroturrets.defines.turret_initial_two_kills_value = 4
+	heroturrets.defines.turret_initial_two_kills_value = 50
 	heroturrets.defines.turret_initial_two_damage_value = 20
-	heroturrets.defines.turret_initial_three_kills_value = 6
+	heroturrets.defines.turret_initial_three_kills_value = 100
 	heroturrets.defines.turret_initial_three_damage_value = 30
-	heroturrets.defines.turret_initial_four_kills_value = 8
+	heroturrets.defines.turret_initial_four_kills_value = 250
 	heroturrets.defines.turret_initial_four_damage_value = 40
 end
 

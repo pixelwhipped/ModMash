@@ -1,4 +1,24 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 0.1.40
+  Not A Bug Fixes:
+    - good catch by kiwa cache function calling the local function checking it always nil
+
+---------------------------------------------------------------------------------------------------
+Version: 0.1.39
+  Bug Fixes:
+    - added clampint function to turn_after_shooting_cooldown
+
+---------------------------------------------------------------------------------------------------
+Version: 0.1.38
+  Changes:
+    - Added custom ranks
+
+---------------------------------------------------------------------------------------------------
+Version: 0.1.37
+  Bug Fixes:
+    - added addition check can be destroyed and if destroyed for replace.  edge case destroy fails
+
+---------------------------------------------------------------------------------------------------
 Version: 0.1.36
   Changes:
     - missed alterations in section

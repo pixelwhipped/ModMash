@@ -80,7 +80,6 @@ local local_register_surface = function(name)
 		origins = {},
 		flip = true
 	}
-
 end
 
 local local_register_resource_level_one = function(resource)
@@ -434,8 +433,7 @@ local local_cutscene_cancelled = function(event)
 	end
 end
 
-local local_accumulators_tick = function()		
-	
+local local_accumulators_tick = function()			
 	for name, value in pairs(surfaces_top) do --only on top and middle surface
 		local accumulators = value.accumulators
 		
@@ -824,6 +822,7 @@ local local_ensure_can_place_entity_inner = function(entity,event,surface)
 
 local local_ensure_can_place_entity = function(entity,event,surface)
 	if local_ensure_can_place_entity_inner(entity,event,surface) then	
+		
 		local etype = entity.type
 		local ename = entity.name
 		if entity.type == "entity-ghost" then etype = entity.ghost_prototype.type end
@@ -838,7 +837,7 @@ local local_ensure_can_place_entity = function(entity,event,surface)
 			fail_place_entity(entity,event,{"modmashsplinterunderground.underground-placement-disallowed"})
 			return false
 		end
-	else
+	else		
 		fail_place_entity(entity,event,{"modmashsplinterunderground.underground-placement-fail"})
 		return false
 	end
@@ -846,12 +845,15 @@ local local_ensure_can_place_entity = function(entity,event,surface)
 	end
 
 local local_underground_added = function(entity,event)	
+	
 		if is_valid(entity) ~= true then return end	
 		local surface = surfaces[entity.surface.name]
 		if surface == nil then 
 			if entity.name == battery_cell then	
 				entity.energy = 10000000
-			else
+			elseif entity.name == underground_access or 
+				   entity.name == underground_access2 or entity.name == underground_accumulator then
+			
 				fail_place_entity(entity,event,{"modmashsplinterunderground.underground-placement-disallowed"})
 			end
 			return
@@ -860,7 +862,7 @@ local local_underground_added = function(entity,event)
 		local accumulators = surfaces[surface.top_name].accumulators
 		local accesses = surfaces[surface.top_name].accesses
 		local accesses2 = surfaces[surface.middle_name].accesses
-
+		
 		local_ensure_underground_environment(surface)
 		if local_ensure_can_place_entity(entity,event,surface) == false then 
 			return

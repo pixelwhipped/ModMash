@@ -1,4 +1,4 @@
-﻿if not modmashsplinterboom then modmashsplintervalkyries = {} end
+﻿if not modmashsplinterboom then modmashsplinterboom = {} end
 
 if modmashsplinterboom.util == nil then
 	if remote ~= nil then

@@ -41,6 +41,7 @@ local local_get_item = function(name)
 	return item_list[name]
     end
 
+
 local is_nesw = function(entity)
 	if entity == nil then return false end
     if entity.base_picture == nil then return false end
@@ -56,7 +57,6 @@ local is_nesw = function(entity)
     end
 
 local is_unkown_nesw = function(entity)
-
 	if entity == nil then return false end
     local left = nil        
     local top = nil
@@ -72,6 +72,14 @@ local is_unkown_nesw = function(entity)
     end
 
 local get_badge = function(rank,top,left,rc)
+    local tint = {r=1.0,g=1.0,b=1.0,a=1}
+    if rank > 8 then
+        tint = {r=1.0,g=0.5,b=0.15,a=1}
+        rank = rank - 8
+    elseif rank > 4 then 
+        tint = {r=1.0,g=0.15,b=0.15,a=1}
+        rank = rank - 4
+    end
     local img = {
                     filename = "__heroturrets__/graphics/entity/turret/hero-"..rank.."-base.png",
                     priority = "high",
@@ -81,6 +89,7 @@ local get_badge = function(rank,top,left,rc)
                     frame_count = 1,
                     repeat_count = rc,
                     shift = util.by_pixel((left)*-1,top+(24/3)),
+                    tint = tint,
                     hr_version =
                     {
                         filename = "__heroturrets__/graphics/entity/turret/hr-hero-"..rank.."-base.png",
@@ -92,6 +101,7 @@ local get_badge = function(rank,top,left,rc)
                         direction_count = 1,
                         repeat_count = rc,
                         shift = util.by_pixel((left)*-1,top+(48/3)),
+                        tint = tint,
                         scale = 0.5
                     }
                 }
@@ -182,12 +192,23 @@ local local_create_turret_with_tags = function(turret)
     end
 
 local local_create_turret = function(turret,rank,rank_string,mod)
+        local tint = {r=1.0,g=1.0,b=1.0,a=1.0}
+        local ir = rank
+        if ir > 8 then
+            tint = {r=1.0,g=0.5,b=0.15,a=1.0}
+            ir = ir - 8
+        elseif ir > 4 then 
+            tint = {r=1.0,g=0.15,b=0.15,a=1.0}
+            ir = ir - 4
+        end
+
         local base_icon = 
 		{   
            {
-            icon = "__heroturrets__/graphics/icons/hero-"..rank.."-icon.png",
+            icon = "__heroturrets__/graphics/icons/hero-"..ir.."-icon.png",
 			icon_size = 64,
-            icon_mipmaps = 4
+            icon_mipmaps = 4,
+            tint = tint
            }
 		}
         local localised_name = get_name_for(turret.item,""," "..rank_string)
@@ -201,11 +222,7 @@ local local_create_turret = function(turret,rank,rank_string,mod)
         local item_name = "hero-turret-"..rank.."-for-"..turret.item.name
         local entity_name = "hero-turret-"..rank.."-for-"..turret.entity.name
         local recipe_name = "hero-turret-"..rank.."-for-"..turret.recipe.name
-
-
-        log("creating item " .. item_name)
-        log("creating entity " .. entity_name)
-        log("creating recipe " .. recipe_name)
+        log("Creating "..entity_name)
 
         local name_with_tags = item_name.."-with-tags"        
         
@@ -284,7 +301,10 @@ local local_create_turret = function(turret,rank,rank_string,mod)
         if entity.prepare_range ~= nil then entity.prepare_range = entity.prepare_range*mod end
         if entity.turret_rotation_speed ~= nil then entity.turret_rotation_speed = entity.turret_rotation_speed*mod end
         if entity.manual_range_modifier ~= nil then entity.manual_range_modifier = entity.manual_range_modifier*mod end
-        if entity.turn_after_shooting_cooldown ~= nil then entity.turn_after_shooting_cooldown = entity.turn_after_shooting_cooldown*(1-(mod-1)) end
+        if entity.turn_after_shooting_cooldown ~= nil then 
+            entity.turn_after_shooting_cooldown = entity.turn_after_shooting_cooldown*(1-(mod-1))
+            entity.turn_after_shooting_cooldown = math.min(180,math.max(entity.turn_after_shooting_cooldown,10))
+        end
         
         if entity.attack_parameters ~= nil then
             if entity.attack_parameters.cooldown ~= nil then entity.attack_parameters.cooldown = entity.attack_parameters.cooldown * (1-(mod-1)) end
@@ -382,6 +402,46 @@ local local_create_turret = function(turret,rank,rank_string,mod)
         end
    end
 
+local local_trim = function(s)
+   return (s:gsub("^%s*(.-)%s*$", "%1"))
+end
+local local_split = function(inputstr, sep)
+        if sep == nil then
+            sep = "%s"
+        end
+        local t={}
+        for str in string.gmatch(inputstr, "([^"..sep.."]+)") do
+            local n_str = local_trim(str)
+            if #n_str > 0 and #n_str < 26 and table_contains(t,n_str) == false then
+                table.insert(t, n_str)
+            end
+        end
+        return t
+end
+
+local local_get_names = function()
+    local names = {"Private 1st Class","Corporal","Sergeant","General"}
+    if  settings.startup["heroturrets-use-csv"].value ~= true then return names end
+    local custom_string = settings.startup["heroturrets-csv-names"].value 
+    if custom_string == nil then return names end
+    custom_string = local_trim(custom_string)
+
+    if #custom_string == 0 then return names end
+    local custom = local_split(custom_string,",")
+    if #custom < 4 then return names end
+    return custom
+end
+
+local local_get_recipe = function(name)
+    local r = data.raw["recipe"][name]
+    if r == nil then
+        for name,recipe in pairs(data.raw["recipe"]) do	
+            if recipe.result == name then return recipe end
+        end
+    end
+    return nil
+end
+
 local local_create_turrets = function()
     local turret_types = {"ammo-turret", "fluid-turret","electric-turret", "artillery-turret"} --, "artillery-wagon"}
     local guns = {}
@@ -397,7 +457,6 @@ local local_create_turrets = function()
              left = (math.abs(box[1][1])*32)/2
              top = (math.abs(box[1][2])*32)/2
             end
-
             if entity ~= nil and entity.name ~= nil                    
 				    and starts_with(entity.name,"creative-mod") == false
                     and starts_with(entity.name,"vehicle-gun-turret") == false
@@ -406,13 +465,14 @@ local local_create_turrets = function()
                     and (is_nesw(entity) or (entity.base_picture ~= nil and entity.base_picture.layers ~= nil) or (is_unkown_nesw(entity) and left ~=nil and top ~= nil)) -- or (entity.cannon_base_pictures ~= nil and entity.cannon_base_pictures.layers ~= nil and entity.cannon_base_pictures.layers[1].direction_count == 256))
                     and entity.max_health > 1 
                     and entity.minable ~= nil and entity.minable.result ~= nil then
-                    
-                    local recipe = data.raw["recipe"][entity.name]
-                    local item = local_get_item(entity.name)                    
+                    local recipe = local_get_recipe(entity.name)
+                    if recipe == nil then log("Missing recipie") end
+                    local item = local_get_item(entity.name)       
+                    if item == nil then log("Missing item") end
+                    if item ~= nil and entity.minable.result ~= item.name then log("Mining result mismatch") end
                     if recipe == nil and item ~= nil then recipe = data.raw["recipe"][item.name] end
                     --if entity.name == "shotgun-ammo-turret-rampant-arsenal" then
                     if recipe ~= nil and item ~= nil and entity.minable.result ==  item.name then
-                        log("Adding "..entity.name)
                        table.insert(guns,
                         {
                             item = item,
@@ -429,10 +489,18 @@ local local_create_turrets = function()
         if settings.startup["heroturrets-kill-counter"].value == "Exact" then     
             local_create_turret_with_tags(item)
         end
-        local_create_turret(item,1,"Private 1st Class",1.125*percent)
-        local_create_turret(item,2,"Corporal",1.25*percent)
-        local_create_turret(item,3,"Sergeant",1.375*percent)
-        local_create_turret(item,4,"General",1.5*percent)
+
+       local names = local_get_names()
+       local inc = (0.5*percent)/#names       
+       for j = 1, #names do
+           
+           local_create_turret(item,j,names[j],1+(inc*j))
+       end
+
+       -- local_create_turret(item,1,"Private 1st Class",1.125*percent)
+       -- local_create_turret(item,2,"Corporal",1.25*percent)
+       -- local_create_turret(item,3,"Sergeant",1.375*percent)
+       -- local_create_turret(item,4,"General",1.5*percent)
     end
 
     end

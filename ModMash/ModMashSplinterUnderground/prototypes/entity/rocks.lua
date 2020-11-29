@@ -59,9 +59,9 @@ local local_generate_attack_rocks = function(name,tint)
 		r.name = name
         r.type = "radar"
 		r.loot = nil
-		r.localised_name = desc
+		r.localised_name = "Rock"
 		r.max_health = 50
-		r.selectable_in_game = false
+		--r.selectable_in_game = false
 		r.dying_trigger_effect = nil
 		if r.autoplace ~= nil then r.autoplace.default_enabled = false end
 		r.minable =

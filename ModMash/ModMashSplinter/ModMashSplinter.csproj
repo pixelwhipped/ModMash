@@ -6,7 +6,7 @@
   </PropertyGroup>
   
    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>C:\Users\tarra\AppData\Roaming\Factorio\mods\modmashsplinter_1.0.08</OutputPath>
+    <OutputPath>C:\Users\tarra\AppData\Roaming\Factorio\mods\modmashsplinter_1.0.09</OutputPath>
   </PropertyGroup>
   
    <ItemGroup>
@@ -16,7 +16,13 @@
    </ItemGroup>
   
    <ItemGroup>
+     <Content Include="graphics\icons\bad-icon.png">
+       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+     </Content>
      <Content Include="graphics\icons\blank.png">
+       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+     </Content>
+     <Content Include="graphics\icons\blankicon.png">
        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
      </Content>
    </ItemGroup>

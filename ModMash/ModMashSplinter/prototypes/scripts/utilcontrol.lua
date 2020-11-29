@@ -144,6 +144,7 @@ local local_get_entities_to = function(direction, entity, type, size)
 	return {} 
     end
 
+modmashsplinter.get_item = local_get_item
 modmashsplinter.print = local_print
 modmashsplinter.is_valid = local_is_valid
 modmashsplinter.entity.is_valid_and_persistant = local_is_valid_and_persistant

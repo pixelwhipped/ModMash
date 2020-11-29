@@ -1,73 +1,15 @@
-﻿local ends_with = modmashsplinterairpurifier.util.ends_with
-local get_item = modmashsplinterairpurifier.util.get_item
-local get_name_for = modmashsplinterairpurifier.util.get_name_for
-
-local local_ensure_ingredient_format = function(product)
-	local type = nil
-	local name = nil
-	local amount = nil
-	if product == nil then return nil end
-	if product.type == nil then
-		type = "item" 
-	else 
-		type = product.type
-	end
-	if product.name == nil then
-		name = product[1] 
-	else 
-		name = product.name
-	end
-	if product.amount == nil then
-		amount = product[2]
-	else 
-		amount = product.amount
-	end
-	if amount == nil then amount = 1 end
-	if type ~= nil and name ~= nil then return {type=type, name=name, amount=amount} end
-	return nil
-end
-
-local local_get_standard_results = function(recipe)
-	if recipe == nil then return nil end
-	local result_count = 1
-	if recipe.results == nil then		
-		if recipe.result ~= nil then
-			result_count = recipe.result_count or 1
-			if type(recipe.result) == "string" then
-				return {{type = "item", name = recipe.result, amount = result_count}}
-			elseif recipe.result.name then
-				return {recipe.result}
-			elseif recipe.result[1] then
-				result_count = recipe.result[2] or result_count
-				return {{type = "item", name = recipe.result[1], amount = result_count}}
-			end	
-		end
-	end
-	return recipe.results
-end
-
-local local_get_normal_results = function(recipe)
-	if recipe == nil then return nil end
-	local result_count = 1		
-	if recipe.normal ~= nil and type(recipe.normal) == "table" and recipe.normal.result ~= nil then
-		result_count = recipe.normal.result_count or 1
-		if type(recipe.normal.result) == "string" then
-			return {{type = "item", name = recipe.normal.result, amount = result_count}}
-		elseif recipe.normal.result.name then
-			return {recipe.result}
-		elseif recipe.normal.result[1] then
-			result_count = recipe.normal.result[2] or result_count
-			return {{type = "item", name = recipe.normal.result[1], amount = result_count}}
-		end		
-	end
-	return recipe.results
-end
+﻿local ends_with = modmashsplinterrefinement.util.ends_with
+local get_item = modmashsplinterrefinement.util.get_item
+local get_name_for = modmashsplinterrefinement.util.get_name_for
+local ensure_ingredient_format = modmashsplinterrefinement.util.ensure_ingredient_format
+local get_standard_results = modmashsplinterrefinement.util.get_standard_results
+local get_normal_results = modmashsplinterrefinement.util.get_normal_results
 
 local local_create_ore_refinements = function()
 	for name, recipe in pairs(data.raw.recipe) do
 		if recipe ~= nil and recipe.name ~= nil and recipe.category=="smelting" then
-			local sr = local_get_standard_results(recipe)
-			local nr = local_get_normal_results(recipe)
+			local sr = get_standard_results(recipe)
+			local nr = get_normal_results(recipe)
 			local s = nil
 			local n = nil
 			if sr~=nil and #sr==1 then s = sr[1] end
@@ -80,7 +22,7 @@ local local_create_ore_refinements = function()
 					{
 						results = s,
 						energy_required  = recipe.energy_required,
-						ingredients = local_ensure_ingredient_format(recipe.ingredients[1])
+						ingredients = ensure_ingredient_format(recipe.ingredients[1])
 					}
 				end
 				if ends_with(s.name,"brick") then to_name = "_to_brick" end
@@ -90,7 +32,7 @@ local local_create_ore_refinements = function()
 					{
 						results = n,
 						energy_required  = recipe.normal.energy_required,
-						ingredients = local_ensure_ingredient_format(recipe.normal.ingredients[1])
+						ingredients = ensure_ingredient_format(recipe.normal.ingredients[1])
 					}
 				end
 				if ends_with(n.name,"brick") then to_name = "_to_brick" end
@@ -194,8 +136,8 @@ end
 local local_create_ore_refinements_experimental = function()
 	for name, recipe in pairs(data.raw.recipe) do
 		if recipe ~= nil and recipe.name ~= nil and recipe.category=="smelting" then
-			local sr = local_get_standard_results(recipe)
-			local nr = local_get_normal_results(recipe)
+			local sr = get_standard_results(recipe)
+			local nr = get_normal_results(recipe)
 			local s = nil
 			local n = nil
 			if sr~=nil and #sr==1 then s = sr[1] end
@@ -204,7 +146,7 @@ local local_create_ore_refinements_experimental = function()
 			local i = nil
 			if s ~= nil and s.name ~= nil then				
 				if #recipe.ingredients == 1 then
-					local ing = local_ensure_ingredient_format(recipe.ingredients[1])
+					local ing = ensure_ingredient_format(recipe.ingredients[1])
 					i = get_item(ing.name)
 					if i ~= nil and i.subgroup == "raw-resource" then
 						make = 
@@ -217,7 +159,7 @@ local local_create_ore_refinements_experimental = function()
 				end
 			elseif n ~= nil and n.name ~= nil and (ends_with(n.name,"plate") or ends_with(n.name,"brick"))  then
 				if #recipe.normal.ingredients == 1 then	
-					local ing = local_ensure_ingredient_format(recipe.normal.ingredients[1])
+					local ing = ensure_ingredient_format(recipe.normal.ingredients[1])
 					i = get_item(ing.name)
 					if i ~= nil and i.subgroup == "raw-resource" then
 						make = 

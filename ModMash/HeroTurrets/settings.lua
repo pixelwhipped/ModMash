@@ -89,4 +89,18 @@
 		allowed_values = {"Enabled", "Disabled"},
 		order = "j"
 	},
+	{
+		type = "bool-setting",
+		name = "heroturrets-use-csv",
+		setting_type = "startup",
+		default_value = false,
+		order = "k"
+	},
+	{
+		type = "string-setting",
+		name = "heroturrets-csv-names",
+		setting_type = "startup",
+		default_value = "Private,Corporal,Sergeant,Master sergeant,Sergeant major,Lieutenant,Captain,Major,Colonel,General",
+		order = "l"
+	},
 })

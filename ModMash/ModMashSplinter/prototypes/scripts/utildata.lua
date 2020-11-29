@@ -43,7 +43,7 @@ if modmashsplinter.mod_request_item_substitutions == nil then
 				return {{name = "rutile-ore", amount = qty }}
 			end
 			--defer to titanium if it exists
-			if local_get_item("titanium-ore") ~= nil then 
+			if mods["modmashsplinterresources"] or local_get_item("titanium-ore") ~= nil then 
 				if probability ~= nil then
 					return {{name = "titanium-ore", amount = qty,probability = probability}}
 				end
@@ -188,7 +188,6 @@ local remove_ingredient_from = function(tble,value)
 	end 
 
 local local_substitue_ingredient_item = function(name,ingredients)		
-	log(serpent.block(mods["modmashsplinterassembling"]))
     if modmashsplinter.is_empty(name) then log("name for item substitution invalid") return false end
 	if modmashsplinter.table.is_empty(ingredients) then log("ingredients for item substitution " .. name .. " is invalid") return false end -- find name of item to substitue
 	local count = 0
@@ -213,9 +212,8 @@ local local_substitue_ingredient_item = function(name,ingredients)
 	return ingredients
 	end
 
-local local_get_item_substitution = function(name)
-	
-	if type(name) == "string" then  
+local local_get_item_substitution = function(name)	
+	if type(name) == "string" then  		
 		local s = local_substitue_ingredient_item(name,{{name = name, amount = 1}})
 		if s~=nil and type(s) == "table" and #s > 0 and s[1].name ~= nil then 
 			if s[1].type == "fluid" then
@@ -251,11 +249,16 @@ local local_create_icon = function(base_icons, new_icons, options)
     local icon = nil
 	if not options.rescale then options.rescale = 1 end
 	if not options.origin then options.origin = {0,0} end
-	if not new_icons then
-		if options.from ~= nil and type(options.from) == "table" then
-			if options.from.icons then new_icons = options.from.icons
-            elseif options.from.icon then new_icons = {{icon = options.from.icon}}
-			else error("Table given had no icons.") end
+	--if not options.shift then options.shift = {0,0} end
+	if not new_icons then 
+		if options.from ~= nil and type(options.from) == "table" then --oops add scale shift tint
+			if options.from.icons then
+				new_icons = options.from.icons
+            elseif options.from.icon then 
+				new_icons = {{icon = options.from.icon}}
+			else 
+				error("Table given had no icons.") 
+			end
 			for _, icon in pairs(new_icons) do
 				if not icon.icon_size then icon.icon_size = options.from.icon_size end
 				if not icon.icon_size then error("Had icon "..icon.icon.." but size is missing.") end
@@ -302,6 +305,9 @@ local local_create_icon = function(base_icons, new_icons, options)
         icon.scale = icon.scale * options.rescale * extra_scale
         icon.shift[1] = icon.shift[1] * icon.scale + options.origin[1] * icon.scale * icon.icon_size
         icon.shift[2] = icon.shift[2] * icon.scale + options.origin[2] * icon.scale * icon.icon_size
+
+		--icon.shift[1] = icon.shift[1]  + options.shift[1]
+        --icon.shift[2] = icon.shift[2]  + options.shift[2]
     end
 	for _, icon in pairs(icons) do
         table.insert(base_icons, icon)
@@ -334,6 +340,197 @@ local local_patch_technology = function(technology, recipe)
 	end
 	end
 
+local icon_pin_topleft = 0
+local icon_pin_top = 1
+local icon_pin_topright = 2
+local icon_pin_right = 3
+local icon_pin_bottomright = 4
+local icon_pin_bottom = 5
+local icon_pin_bottomleft = 6
+local icon_pin_left = 7
+
+local local_create_layered_icon_using = function(initial_icons)
+	
+	local bad_icon = {	
+		{
+				icon = "__modmashsplinter__/graphics/icons/bad-icon.png",
+				icon_mipmaps = 4,
+				icon_size = 64,
+				scale = 1.0,
+				shift = {0,0}		
+		}
+	}
+
+	local base_icon = {
+		{
+			icon = "__modmashsplinter__/graphics/icons/blankicon.png",
+			icon_mipmaps = 4,
+			icon_size = 64,
+			scale = 1.0,
+			shift = {0,0}
+		}
+	}
+	
+	if initial_icons == nil or type(initial_icons) ~= "table" or #initial_icons == 0 then 
+		--log("Expected table of items")
+		return bad_icon 
+	end
+	local icons = {}
+	for k = 1, #initial_icons do local icon = initial_icons[k]
+		if icon ~= nil then
+			if icon.from ~= nil then
+				if icon.from.icon == false and icon.from.icons ~= nil then
+				--	log("adding icons from prototype with icons")
+					for j = 1, #icon.from.icons do 
+						table.insert(icons,icon.from.icons[j])
+					end
+				else
+				--	log("adding single icon from prototype with icon")
+					table.insert(icons,{
+						icon = icon.from.icon,
+						icon_mipmaps = icon.from.icon_mipmaps,
+						icon_size = icon.from.icon_size,
+						scale = icon.scale,
+						pin = icon.pin
+					})
+				end
+			else
+				--log("adding single icon from given definition")
+				table.insert(icons,icon)
+			end
+		end
+	end
+
+	for k = 1, #icons do local icon = icons[k]
+		if icon ~= nil and next(icon) ~= nil then
+			local current_icon = {}
+			--[[if icon.from ~= nil then
+				if type(icon.from.icon) == "string" then
+					if icon.from.icon_size == nil then 
+						log("missing icon size") 
+						return bad_icon
+					end
+					current_icon.icon = icon.from.icon
+					current_icon.icon_size = icon.from.icon_size
+					current_icon.tint = icon.from.tint
+					if icon.from.icon_mipmaps ~= nil then 
+						current_icon.icon_mipmaps = icon.from.icon_mipmaps
+					else
+						current_icon.icon_mipmaps = 1
+					end
+					current_icon.scale = 1
+					current_icon.icon_scale = icon.from.icon_size/64
+					current_icon.shift = {0,0}
+				elseif icon.from.icon == false and icon.from.icons ~= nil then
+					--same stuff but to each
+					log("icons with icons not yet supported -- it now this shoudl not occour")
+					return bad_icon
+				else
+					log("from contains unknown icon format")
+					return bad_icon
+				end
+			elseif type(icon.icon) ~= "string" or icon.icon_mipmaps == nil or icon.icon_size == nil then
+				log("only icons path, mipmaps, size defined is accepted")
+				return bad_icon
+			else]]
+				current_icon.icon = icon.icon
+				current_icon.icon_size = icon.icon_size
+				current_icon.icon_mipmaps = icon.icon_mipmaps
+				current_icon.tint = icon.tint
+				current_icon.icon_scale = icon.icon_size/64
+				if icon.scale == nil then	
+					current_icon.scale = 1
+				else
+					current_icon.scale = icon.scale
+				end 
+				if icon.pin == icon_pin_topleft then
+					current_icon.shift = {((64-(64*current_icon.scale))/2)*-1,((64-(64*current_icon.scale))/2)*-1}
+				elseif icon.pin == icon_pin_top then
+					current_icon.shift = {0,((64-(64*current_icon.scale))/2)*-1}
+				elseif icon.pin == icon_pin_topright then
+					current_icon.shift = {((64-(64*current_icon.scale))/2)*-1,((64-(64*current_icon.scale))/2)}
+				elseif icon.pin == icon_pin_right then
+					current_icon.shift = {((64-(64*current_icon.scale))/2),0}
+				elseif icon.pin == icon_pin_bottomright then
+					current_icon.shift = {((64-(64*current_icon.scale))/2),((64-(64*current_icon.scale))/2)}
+				elseif icon.pin == icon_pin_bottom then
+					current_icon.shift = {0,((64-(64*current_icon.scale))/2)}
+				elseif icon.pin == icon_pin_bottomleft then
+					current_icon.shift = {((64-(64*current_icon.scale))/2)*-1,((64-(64*current_icon.scale))/2)}
+				elseif icon.pin == icon_pin_left then
+					current_icon.shift = {((64-(64*current_icon.scale))/2)*-1,0}
+				end
+			--end
+			current_icon.scale = current_icon.scale * current_icon.icon_scale
+			
+			table.insert(base_icon,current_icon)
+		end
+	end
+	--log(serpent.block(base_icon))
+	return base_icon
+end
+
+local local_ensure_ingredient_format = function(product)
+	local type = nil
+	local name = nil
+	local amount = nil
+	if product == nil then return nil end
+	if product.type == nil then
+		type = "item" 
+	else 
+		type = product.type
+	end
+	if product.name == nil then
+		name = product[1] 
+	else 
+		name = product.name
+	end
+	if product.amount == nil then
+		amount = product[2]
+	else 
+		amount = product.amount
+	end
+	if amount == nil then amount = 1 end
+	if type ~= nil and name ~= nil then return {type=type, name=name, amount=amount} end
+	return nil
+end
+
+local local_get_standard_results = function(recipe)
+	if recipe == nil then return nil end
+	local result_count = 1
+	if recipe.results == nil then		
+		if recipe.result ~= nil then
+			result_count = recipe.result_count or 1
+			if type(recipe.result) == "string" then
+				return {{type = "item", name = recipe.result, amount = result_count}}
+			elseif recipe.result.name then
+				return {recipe.result}
+			elseif recipe.result[1] then
+				result_count = recipe.result[2] or result_count
+				return {{type = "item", name = recipe.result[1], amount = result_count}}
+			end	
+		end
+	end
+	return recipe.results
+end
+
+local local_get_normal_results = function(recipe)
+	if recipe == nil then return nil end
+	local result_count = 1		
+	if recipe.normal ~= nil and type(recipe.normal) == "table" and recipe.normal.result ~= nil then
+		result_count = recipe.normal.result_count or 1
+		if type(recipe.normal.result) == "string" then
+			return {{type = "item", name = recipe.normal.result, amount = result_count}}
+		elseif recipe.normal.result.name then
+			return {recipe.result}
+		elseif recipe.normal.result[1] then
+			result_count = recipe.normal.result[2] or result_count
+			return {{type = "item", name = recipe.normal.result[1], amount = result_count}}
+		end		
+	end
+	return recipe.results
+end
+
 modmashsplinter.is_valid = local_is_valid
 modmashsplinter.get_item = local_get_item
 
@@ -341,6 +538,11 @@ modmashsplinter.get_item_ingredient_substitutions = local_get_item_ingredient_su
 modmashsplinter.get_item_substitution = local_get_item_substitution
 
 modmashsplinter.create_icon = local_create_icon
+modmashsplinter.create_layered_icon_using = local_create_layered_icon_using
 
 modmashsplinter.tech.get_technology = local_get_technology
 modmashsplinter.tech.patch_technology = local_patch_technology
+
+modmashsplinter.ensure_ingredient_format = local_ensure_ingredient_format
+modmashsplinter.get_standard_results = local_get_standard_results
+modmashsplinter.get_normal_results = local_get_normal_results
