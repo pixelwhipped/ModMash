@@ -1,5 +1,6 @@
 ﻿require ("prototypes.scripts.defines")
 
+require("prototypes.categories.groups")
 require("prototypes.item.fluid")
 require("prototypes.item.resources")
 require("prototypes.recipe.fluid")

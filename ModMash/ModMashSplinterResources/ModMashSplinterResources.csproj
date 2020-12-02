@@ -191,6 +191,9 @@
     <None Update="locale\en\locale.cfg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="prototypes\categories\groups.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="prototypes\recipe\fluid.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

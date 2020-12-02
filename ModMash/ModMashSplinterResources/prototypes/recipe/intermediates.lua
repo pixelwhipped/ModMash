@@ -39,27 +39,13 @@ local create_titanium_extraction_process_icon = function()
 end
 
 local create_alien_ooze_icon = function()
-	local icon = create_layered_icon_using(
-	{
+	return {
 		{
-			icon = "__modmashsplinterresources__/graphics/icons/alien-ore.png",
+			icon = "__modmashsplinterresources__/graphics/icons/alien-ooze.png",
 			icon_mipmaps = 4,
 			icon_size = 64,
-			scale = 0.65,
-			pin = icon_pin_top
-		},
-		{
-			from = data.raw["fluid"]["alien-ooze"],
-			scale = 0.5,
-			pin = icon_pin_bottomleft
-		},
-		{
-			from = data.raw["fluid"]["alien-ooze"],
-			scale = 0.5,
-			pin = icon_pin_bottomright
 		}
-	})
-	return icon
+	}
 end
 
 local alien_artifact_enrichment_process_to_ore_icon = function()
@@ -69,14 +55,14 @@ local alien_artifact_enrichment_process_to_ore_icon = function()
 			icon = "__modmashsplinterresources__/graphics/icons/alien-ooze.png",
 			icon_mipmaps = 4,
 			icon_size = 64,
-			scale = 0.33,
+			scale = 0.45,
 			pin = icon_pin_topleft
 		},
 		{
 			icon = "__modmashsplinterresources__/graphics/icons/alien-ooze.png",
 			icon_mipmaps = 4,
 			icon_size = 64,
-			scale = 0.33,
+			scale = 0.45,
 			pin = icon_pin_top
 		},
 
@@ -84,21 +70,21 @@ local alien_artifact_enrichment_process_to_ore_icon = function()
 			icon = "__modmashsplinterresources__/graphics/icons/alien-artifact.png",
 			icon_mipmaps = 4,
 			icon_size = 64,
-			scale = 0.5,
+			scale = 0.58,
 			pin = icon_pin_bottomleft
 		},
 		{
 			icon = "__modmashsplinterresources__/graphics/icons/alien-ore.png",
 			icon_mipmaps = 4,
 			icon_size = 64,
-			scale = 0.33,
+			scale = 0.4,
 			pin = icon_pin_right
 		},
 		{
 			icon = "__modmashsplinterresources__/graphics/icons/alien-ore.png",
 			icon_mipmaps = 4,
 			icon_size = 64,
-			scale = 0.33,
+			scale = 0.4,
 			pin = icon_pin_bottomright
 		}
 	})
@@ -106,31 +92,13 @@ local alien_artifact_enrichment_process_to_ore_icon = function()
 end
 
 local alien_enrichment_process_to_artifact_icon = function()
-	local icon = create_layered_icon_using(
-	{
-		{
-			icon = "__modmashsplinterresources__/graphics/icons/alien-ore.png",
-			icon_mipmaps = 4,
-			icon_size = 64,
-			scale = 0.65,
-			pin = icon_pin_topleft
-		},
-		{
-			icon = "__modmashsplinterresources__/graphics/icons/sludge.png",
-			icon_mipmaps = 4,
-			icon_size = 64,
-			scale = 0.65,
-			pin = icon_pin_topright
-		},
+	return {
 		{
 			icon = "__modmashsplinterresources__/graphics/icons/alien-artifact.png",
 			icon_mipmaps = 4,
 			icon_size = 64,
-			scale = 0.65,
-			pin = icon_pin_bottom
 		}
-	})
-	return icon
+	}
 end
 
 data:extend(
@@ -169,8 +137,8 @@ data:extend(
 		icon = false,
 		icons = create_titanium_extraction_process_icon(),
 		icon_size = 64,
-		subgroup = "intermediate-product",
-		order = "c[titanium-extraction-process]",
+		subgroup = "raw-material",
+		order = "k[uranium-processing][titanium-extraction-process]",
 		main_product = "",
 		normal =
 		{
@@ -218,8 +186,8 @@ data:extend(
 		icon = false,
 		icons = create_alien_ooze_icon(),
 		icon_size = 64,
-		subgroup = "intermediate-product",
-		order = "c[alien-enrichment-process-to-ooze]",
+		subgroup = "conversion",
+		order = "b[alien-enrichment-process-to-ooze]",
 		main_product = "",
 		results =
 		{			
@@ -247,8 +215,8 @@ data:extend(
 		icon = false,
 		icons = alien_artifact_enrichment_process_to_ore_icon(),
 		icon_size = 64,
-		subgroup = "intermediate-product",
-		order = "c[alien-enrichment-process-to-ooze]-d[alien-artifact-enrichment-process-to-ore]",
+		subgroup = "conversion",
+		order = "c[alien-artifact-enrichment-process-to-ore]",
 		main_product = "",
 		results =
 		{			
@@ -272,8 +240,8 @@ data:extend(
 		icon = false,
 		icons = alien_enrichment_process_to_artifact_icon(),
 		icon_size = 64,
-		subgroup = "intermediate-product",
-		order = "c[alien-enrichment-process-to-ooze]-e[alien-enrichment-process-to-artifact]",
+		subgroup = "conversion",
+		order = "b[alien-enrichment-process-to-artifact]",
 		main_product = "",
 		results =
 		{			

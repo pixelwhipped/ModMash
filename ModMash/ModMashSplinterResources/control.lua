@@ -1,8 +1,11 @@
 ﻿require("prototypes.scripts.defines") 
 if not global.modmashsplinterresources then global.modmashsplinterresources = {} end
 local get_item = modmashsplinterresources.util.get_item
+local resources_registered = false
+local loot_registered = false
 
 local local_register_resources = function()
+	if resources_registered then return end
 	local titanium_ore_name = get_item("titanium-ore") 
 	if titanium_ore_name == nil then titanium_ore_name = get_item("rutile-ore") end
 	if titanium_ore_name ~= nil then titanium_ore_name = titanium_ore_name.name else titanium_ore_name = "titanium-ore" end
@@ -19,9 +22,11 @@ local local_register_resources = function()
 		remote.call("modmashsplinterunderground","register_resource_level_two",{name = "sand", probability = 0.2})
 		remote.call("modmashsplinterunderground","register_resource_level_two",{name = "sulfur", probability = 0.1})
 	end
+	resources_registered = true
 end
 
 local local_register_loot = function()	
+	if loot_registered then return end
 	if remote.interfaces["modmashsplinterloot"] ~= nil and remote.interfaces["modmashsplinterloot"]["register_loot"] ~= nil then
 		local loot = {
 			{
@@ -35,6 +40,7 @@ local local_register_loot = function()
 			remote.call("modmashsplinterloot","register_loot",loot[k])
 		end
 	end
+	loot_registered = true
 end
 
 local local_init = function() 
@@ -42,10 +48,10 @@ local local_init = function()
 	local_register_loot()
 	end
 
-local local_load = function() 
+local local_tick = function() 
 	local_register_resources()
 	local_register_loot()
 	end
 
 script.on_init(local_init)
-script.on_load(local_load)
+script.on_event(defines.events.on_tick, local_tick)
