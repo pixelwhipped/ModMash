@@ -113,7 +113,7 @@ if modmashsplinter.mod_request_item_substitutions == nil then
 		["glass"] = {
 			func = function(qty,probability)
 			--defer to glass if it exists
-			if local_get_item("glass") ~= nil then
+			if local_get_item("glass") ~= nil or mods["modmashsplinterresources"]  then
 				if probability ~= nil then
 					return {{name = "glass", amount = qty, probability = probability}} 
 				end
@@ -531,11 +531,44 @@ local local_get_normal_results = function(recipe)
 	return recipe.results
 end
 
+local local_add_ingredient_to_recipe_type = function(recipe, item)
+	local new_table = {}
+	if recipe ~= nil then
+		for i = 1, #recipe do		
+			if recipe[i].name == item.name then 
+				return recipe
+			end
+		end		
+		for i = 1, #recipe do		
+			table.insert(new_table,recipe[i])
+		end		
+		table.insert(new_table,item)
+	end
+	recipe = new_table
+	return recipe
+end
+
+local local_add_ingredient_to_recipe = function(recipe, item)
+	if data.raw.recipe[recipe] and type(item) == "table"  then
+	if data.raw.recipe[recipe].expensive then
+		data.raw.recipe[recipe].expensive.ingredients = local_add_ingredient_to_recipe_type(data.raw.recipe[recipe].expensive.ingredients,item)
+	end
+	if data.raw.recipe[recipe].normal then
+		data.raw.recipe[recipe].normal.ingredients = local_add_ingredient_to_recipe_type(data.raw.recipe[recipe].normal.ingredients,item)     
+	end
+	if data.raw.recipe[recipe].ingredients then
+		data.raw.recipe[recipe].ingredients = local_add_ingredient_to_recipe_type(data.raw.recipe[recipe].ingredients,item)
+	end
+	end
+end
+
 modmashsplinter.is_valid = local_is_valid
 modmashsplinter.get_item = local_get_item
 
 modmashsplinter.get_item_ingredient_substitutions = local_get_item_ingredient_substitutions
 modmashsplinter.get_item_substitution = local_get_item_substitution
+
+modmashsplinter.add_ingredient_to_recipe = local_add_ingredient_to_recipe
 
 modmashsplinter.create_icon = local_create_icon
 modmashsplinter.create_layered_icon_using = local_create_layered_icon_using

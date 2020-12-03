@@ -20,6 +20,7 @@ local distance  = modmashsplinterloot.util.distance
 local starts_with  = modmashsplinterloot.util.starts_with
 local print = modmashsplinterloot.util.print
 local is_valid  = modmashsplinterloot.util.is_valid
+local get_item = modmashsplinterloot.util.get_item
 
 local chunks = nil
 local loot_table = nil
@@ -41,16 +42,6 @@ local local_build_probability_table = function(res,get)
 	return tbl
 end
 
--- should migrate to base
-local local_get_item = function(name)
-  if name == nil then return nil end
-  local items = game.item_prototypes 
-  if items then
-    return items[name]
-  end
-  return nil 
-  end
-
 local local_register_science_pack = function(science)
 	if global.modmashsplinterloot.science_table == nil then global.modmashsplinterloot.science_table = {} end
 	if settings.startup["setting-tech-loot"].value ~= "Science" then return end
@@ -59,7 +50,7 @@ local local_register_science_pack = function(science)
 	local name = science.name
 	local max_stacks = science.max_stacks
 	local max_stack = science.max_stack
-	local item = local_get_item(name)
+	local item = get_item(name)
 	local probability = science.probability
 	if item == nil then log("Missing item for"..name.." in register_science_pack")  return end
 	if item.type ~= "tool" then log("Science pack "..name.." is not of type tool") return end
@@ -99,7 +90,7 @@ end
 
 local local_insert_loot_item = function(tbl,item)
 	local probability = item.probability
-	local item_prototype = local_get_item(item.name)
+	local item_prototype = get_item(item.name)
 	if item_prototype == nil then return end -- should never happen
 	if probability == nil then probability = 0.2 end
 	probability = math.max(0.1,probability)
@@ -135,7 +126,7 @@ local local_register_loot_item = function(name,items)
 		else -- check existing including case of potential subtable containg any item
 			for k=1, #items do	
 				if type(items[k].name) == "string" and #items[k].name > 0 then
-					if local_get_item(items[k].name) ~= nil then
+					if get_item(items[k].name) ~= nil then
 						local exists = -1
 						for j=1, #tbl.items do
 							if tbl.items[j].name == items[k].name then 

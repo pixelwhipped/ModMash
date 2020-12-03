@@ -1,5 +1,11 @@
 ﻿---------------------------------------------------------------------------------------------------
-Version: 1.0.07
+Version: 1.0.09
+  Changes:
+    - register loot in on_init or config_change on_load could lead to accessing game when non existant
+    - added camera
+
+---------------------------------------------------------------------------------------------------
+Version: 1.0.08
   Bug-Fixes:
     - Fix for factorissmo
     - Attack Rocks selectable

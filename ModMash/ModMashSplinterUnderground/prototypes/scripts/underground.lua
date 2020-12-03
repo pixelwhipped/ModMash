@@ -1,4 +1,5 @@
 ﻿require("prototypes.scripts.defines") 
+require("mod-gui")
 local distance = modmashsplinterunderground.util.distance
 local table_contains = modmashsplinterunderground.util.table.contains
 local is_valid  = modmashsplinterunderground.util.is_valid
@@ -449,6 +450,15 @@ local local_accumulators_tick = function()
 	end
 end
 
+local function local_get_camera(player)
+	local frameflow = mod_gui.get_frame_flow(player)	
+	local camera = frameflow.underground_camera
+	if not camera then
+		camera = frameflow.add{type = "frame", name = "underground_camera", style = "captionless_frame"}		
+	end
+	return camera
+end
+
 local last_point = {}
 
 local local_safe_teleport = function(player, surface, position,index)
@@ -460,6 +470,7 @@ local local_safe_teleport = function(player, surface, position,index)
 	end
 	player.teleport(position, surface)
 	last_point[last_pt_name] = {x=math.floor(position.x),y=math.floor(position.y)}
+	local_get_camera(player).visible = false
 end
 
 local local_bitter_follow = function(entity)
@@ -965,6 +976,9 @@ local local_init = function()
 local local_load = function() 
 	surfaces = global.modmashsplinterunderground.surfaces
 	surfaces_top = global.modmashsplinterunderground.surfaces_top
+	end
+
+local local_on_configuration_changed = function() 
 	local_register_loot()
 	end
 
@@ -981,6 +995,61 @@ local local_entity_damaged = function(event)
 	end
 	end
 
+
+
+local local_show_camera = function(player,entity)
+		local zoom = 0.1
+		local camera = local_get_camera(player)
+		local view = camera.view
+		if view then
+			view.position = entity.position
+			view.surface_index = entity.surface.index
+			view.zoom = zoom
+			view.style.minimal_width = 350
+			view.style.minimal_height = 350
+		else
+			local view = camera.add{type = "camera", name = "view", position = entity.position, surface_index = entity.surface.index, zoom = zoom}
+			view.style.minimal_width = 350
+			view.style.minimal_height = 350
+		end
+		camera.visible = true
+end
+
+local local_on_selected_entity_changed = function(event)
+
+	local player = game.players[event.player_index]
+	local selected = player.selected
+	if selected ~= nil then
+		local surface = selected.surface
+		if surface == nil then return end
+		
+		local s = surfaces[surface.name]
+		local accesses = surfaces[s.top_name].accesses
+		local accesses2 = surfaces[s.middle_name].accesses
+	
+		for index, access in pairs(accesses) do
+			if access.top_entity == selected then
+				local_show_camera(player,access.bottom_entity)
+				return
+			elseif access.bottom_entity == selected then
+				local_show_camera(player,access.top_entity)
+				return
+			end
+		end
+		for index, access in pairs(accesses2) do
+			if access.top_entity == selected then
+				local_show_camera(player,access.bottom_entity)
+				return
+			elseif access.bottom_entity == selected then
+				local_show_camera(player,access.top_entity)
+				return
+			end
+		end
+	end
+	local_get_camera(player).visible = false
+end
+
+
 script.on_init(local_init)
 script.on_load(local_load)
 script.on_event({defines.events.on_player_joined_game,defines.events.on_player_created},local_on_player_spawned)
@@ -988,6 +1057,7 @@ script.on_event(defines.events.on_cutscene_cancelled,local_cutscene_cancelled)
 script.on_event(defines.events.on_chunk_generated,local_chunk_generated)
 script.on_nth_tick(30, local_accumulators_tick)
 script.on_event(defines.events.on_tick, local_underground_tick)
+script.on_configuration_changed(local_on_configuration_changed)
 
 
 script.on_event(defines.events.on_entity_damaged,
@@ -1032,6 +1102,10 @@ script.on_event(defines.events.on_surface_created,
 	function(event) 
 		if is_valid(event) then local_surface_created(event) end 
 	end)
+
+script.on_event(defines.events.on_selected_entity_changed, local_on_selected_entity_changed)
+
+
 	
 remote.add_interface("modmashsplinterunderground",
 	{

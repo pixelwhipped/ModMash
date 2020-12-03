@@ -2,7 +2,7 @@
 {
   {
     type = "technology",
-    name = "alien-conversion-1",
+    name = "alien-conversion1",
     icon = "__modmashsplinterresources__/graphics/technology/conversion.png",
     icon_size = 128,
     effects =

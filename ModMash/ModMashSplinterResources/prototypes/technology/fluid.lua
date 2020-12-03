@@ -2,7 +2,7 @@
 {
   {
     type = "technology",
-    name = "fish-1",
+    name = "fish1",
     icon = "__modmashsplinterresources__/graphics/technology/fish.png",
     icon_size = 128,
     effects =
@@ -30,7 +30,7 @@
     order = "a-b-d",
   },{
     type = "technology",
-    name = "fish-2",
+    name = "fish2",
     icon = "__modmashsplinterresources__/graphics/technology/fish.png",
     icon_size = 128,
     effects =
@@ -42,7 +42,7 @@
     },
     prerequisites =
     {
-      "fish-1"
+      "fish1"
     },
     unit =
     {

@@ -1,11 +1,8 @@
 ﻿require("prototypes.scripts.defines") 
 if not global.modmashsplinterresources then global.modmashsplinterresources = {} end
 local get_item = modmashsplinterresources.util.get_item
-local resources_registered = false
-local loot_registered = false
 
 local local_register_resources = function()
-	if resources_registered then return end
 	local titanium_ore_name = get_item("titanium-ore") 
 	if titanium_ore_name == nil then titanium_ore_name = get_item("rutile-ore") end
 	if titanium_ore_name ~= nil then titanium_ore_name = titanium_ore_name.name else titanium_ore_name = "titanium-ore" end
@@ -48,10 +45,10 @@ local local_init = function()
 	local_register_loot()
 	end
 
-local local_tick = function() 
+local local_on_configuration_changed = function() 
 	local_register_resources()
 	local_register_loot()
 	end
 
 script.on_init(local_init)
-script.on_event(defines.events.on_tick, local_tick)
+script.on_configuration_changed(local_on_configuration_changed)

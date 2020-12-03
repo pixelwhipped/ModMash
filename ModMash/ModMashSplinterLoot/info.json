@@ -1,6 +1,6 @@
 {
   "name": "modmashsplinterloot",
-  "version": "1.0.01",
+  "version": "1.0.02",
   "title": "ModMash Splinter, Loot",
   "author": "PixelWhipped",
   "contact": "",
@@ -9,7 +9,7 @@
   "description": "Mod Mash Splinter for Loot, You managed to survive in your escape ship, however it appears the primary ship has faired less well leaving cargo pods and research sections of the ship strewn accross Nauvis.",
   "dependencies": [
     "base >= 1.0.0",
-    "modmashsplinter >= 1.0.07",
+    "modmashsplinter >= 1.0.09",
     "! modmash >= 0.0.0"
   ]
 }

@@ -6,7 +6,7 @@
   "contact": "",
   "homepage": "https://www.patreon.com/user?u=15367757",
   "factorio_version": "1.0",
-  "description": "Mod Mash Splinter for Ore  Resources and Intermediates",
+  "description": "Mod Mash Splinter for Ore Resources and Intermediates, adds ores, fluids and Intermediates used by other splinters",
   "dependencies": [
     "base >= 1.0.0",
     "modmashsplinter >= 1.0.09",
