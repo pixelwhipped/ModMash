@@ -1,0 +1,15 @@
+{
+  "name": "modmashsplinterenrichment",
+  "version": "1.0.01",
+  "title": "ModMash Splinter, Enrichment",
+  "author": "PixelWhipped",
+  "contact": "",
+  "homepage": "https://www.patreon.com/user?u=15367757",
+  "factorio_version": "1.0",
+  "description": "Mod Mash Splinter for Enrichment, allows extraction of other ores from another.",
+  "dependencies": [
+    "base >= 1.0.0",
+    "modmashsplinter >= 1.0.09",
+    "! modmash >= 0.0.0"
+  ]
+}
