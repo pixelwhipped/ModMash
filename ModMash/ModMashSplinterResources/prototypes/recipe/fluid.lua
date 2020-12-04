@@ -84,24 +84,6 @@ local create_fish_conversion_light_oil_icon = function()
 	return icon
 end
 
-local create_local_create_fish_conversion_icon = function(item)
-	local icon = create_layered_icon_using(
-	{
-		{
-			icon = "__modmashsplinterresources__/graphics/icons/fish-oil.png",
-			icon_mipmaps = 4,
-			icon_size = 64,
-		},
-		{
-			from = item,
-			scale = 0.65,
-			pin = icon_pin_bottomright
-		}
-	})
-	return icon
-end
-
-
 data:extend(
 {
 	{
@@ -193,51 +175,3 @@ data:extend(
 	}
 }
 )
-
-local local_create_fish_conversion = function(item)
-	data:extend(
-	{
-		{
-			type = "recipe",
-			name = "fish-conversion-for-"..item.name,
-			energy_required = 1.5,
-			enabled = true,
-			category = "crafting-with-fluid",
-			ingredients = {{item.name, 1}},
-			icon = false,
-			icons = create_local_create_fish_conversion_icon(item),
-			icon_size = 64,
-			localised_name = "Fish oil",
-			localised_description = "Fish oil",
-			subgroup = "fluid-recipes",
-			order = "y[fish-conversion]["..item.name.."]",
-			main_product = "",
-			results =
-			{			
-				{
-					type = "fluid",
-					name = "fish-oil",
-					amount = 25,
-				}			
-			},
-			crafting_machine_tint =
-			{
-			  primary = {r = 1.000, g = 1, b = 0.0, a = 0.000},
-			  secondary = {r = 0.812, g = 0.812, b = 0.0, a = 0.000},
-			  tertiary = {r = 0.960, g = 0.960, b = 0.0, a = 0.000},
-			},
-			allow_decomposition = false,
-		}
-	})
-end
-
-for name,fish in pairs(data.raw["fish"]) do
-	if fish.minable ~= nil and fish.minable.result ~= nil then
-		local item = data.raw["capsule"][fish.minable.result] 
-		if item == nil then log("Nil item "..name) end
-		if item.stack_size == nil then log("Nil stack "..name) end
-		if item ~= nil then
-			local_create_fish_conversion(item)
-		end
-	end
-end

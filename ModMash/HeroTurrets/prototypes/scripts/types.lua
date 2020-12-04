@@ -13,10 +13,16 @@ local convert_to_string = heroturrets.util.convert_to_string
 local tech = data.raw["technology"]
 
 local raw_items = {"item","accumulator","active-defense-equipment","ammo","ammo-turret","arithmetic-combinator","armor","artillery-turret","artillery-wagon","assembling-machine","battery-equipment","beacon","belt-immunity-equipment","boiler","capsule","car","cargo-wagon","combat-robot","constant-combinator","construction-robot","container","decider-combinator","electric-pole","electric-turret","energy-shield-equipment","fluid-wagon","furnace","gate","generator","generator-equipment","gun","heat-pipe","inserter","item","locomotive","logistic-container","logistic-robot","market","mining-drill","module","night-vision-equipment","offshore-pump","pipe","pipe-to-ground","power-switch","programmable-speaker","projectile","pump","radar","rail-chain-signal","rail-planner","rail-signal","reactor","repair-tool","resource","roboport","roboport-equipment","rocket-silo","solar-panel","solar-panel-equipment","splitter","storage-tank","straight-rail","tool","train-stop","transport-belt","underground-belt","wall"}
+local types_with_items = {}
+for category, prototypes in pairs(data.raw) do
+  local name, prototype = next(prototypes)
+  if name and prototype.stack_size then table.insert(types_with_items, category) end
+end
+
 local item_list = nil
 
 local local_get_item = function(name)
-	if item_list == nil then
+	--[[if item_list == nil then
 		item_list = {}
 		for r = 1, #raw_items do local raw = raw_items[r]	
 			for name,item in pairs(data.raw[raw]) do			
@@ -33,6 +39,24 @@ local local_get_item = function(name)
                         item_list[item.place_result] = item
                     else
                         item_list[item.name] = item
+					end
+				end
+			end
+		end
+	end]]
+    if item_list == nil then
+		item_list = {}
+		for _, category in pairs(types_with_items) do
+			for name,item in pairs(data.raw[category]) do
+				if item.place_result ~= nil then
+					local placed = item.place_result
+					if item_list[placed] then
+						--log("item entity place collision: "..name.." "..placed)
+						if placed == name then
+							item_list[placed] = item
+						end						
+					else
+						item_list[placed] = item
 					end
 				end
 			end

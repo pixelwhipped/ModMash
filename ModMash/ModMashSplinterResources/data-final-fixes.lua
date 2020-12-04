@@ -2,6 +2,36 @@
 require("prototypes.scripts.defines")
 require ("prototypes.scripts.types")
 local add_ingredient_to_recipe = modmashsplinterresources.util.add_ingredient_to_recipe
+local get_name_for = modmashsplinterresources.util.get_name_for
+local create_icon =	modmashsplinterresources.util.create_icon
+local create_layered_icon_using =	modmashsplinterresources.util.create_layered_icon_using
+
+local icon_pin_topleft = modmashsplinterresources.util.defines.icon_pin_topleft
+local icon_pin_top = modmashsplinterresources.util.defines.icon_pin_top
+local icon_pin_topright = modmashsplinterresources.util.defines.icon_pin_topright
+local icon_pin_right = modmashsplinterresources.util.defines.icon_pin_right
+local icon_pin_bottomright = modmashsplinterresources.util.defines.icon_pin_bottomright
+local icon_pin_bottom = modmashsplinterresources.util.defines.icon_pin_bottom
+local icon_pin_bottomleft = modmashsplinterresources.util.defines.icon_pin_bottomleft
+local icon_pin_left = modmashsplinterresources.util.defines.icon_pin_left
+
+
+local create_local_create_fish_conversion_icon = function(item)
+	local icon = create_layered_icon_using(
+	{
+		{
+			icon = "__modmashsplinterresources__/graphics/icons/fish-oil.png",
+			icon_mipmaps = 4,
+			icon_size = 64,
+		},
+		{
+			from = item,
+			scale = 0.65,
+			pin = icon_pin_bottomright
+		}
+	})
+	return icon
+end
 
 
 local local_add_loot_to_entity = function(entityType, entityName, probability, countMin, countMax)
@@ -53,4 +83,53 @@ if settings.startup["setting-glass-recipes"].value == "Enabled" then
 	
 	add_ingredient_to_recipe("lab",{name = "glass", amount = 2})
 	add_ingredient_to_recipe("solar-panel",{name = "glass", amount = 1})
+end
+
+
+local local_create_fish_conversion = function(item)
+	data:extend(
+	{
+		{
+			type = "recipe",
+			name = "fish-conversion-for-"..item.name,
+			energy_required = 1.5,
+			enabled = true,
+			category = "crafting-with-fluid",
+			ingredients = {{item.name, 1}},
+			icon = false,
+			icons = create_local_create_fish_conversion_icon(item),
+			icon_size = 64,
+			localised_name = "Fish oil",
+			localised_description = "Fish oil",
+			subgroup = "fluid-recipes",
+			order = "y[fish-conversion]["..item.name.."]",
+			main_product = "",
+			results =
+			{			
+				{
+					type = "fluid",
+					name = "fish-oil",
+					amount = 25,
+				}			
+			},
+			crafting_machine_tint =
+			{
+			  primary = {r = 1.000, g = 1, b = 0.0, a = 0.000},
+			  secondary = {r = 0.812, g = 0.812, b = 0.0, a = 0.000},
+			  tertiary = {r = 0.960, g = 0.960, b = 0.0, a = 0.000},
+			},
+			allow_decomposition = false,
+		}
+	})
+end
+
+for name,fish in pairs(data.raw["fish"]) do
+	if fish.minable ~= nil and fish.minable.result ~= nil then
+		local item = data.raw["capsule"][fish.minable.result] 
+		if item == nil then log("Nil item "..name) end
+		if item.stack_size == nil then log("Nil stack "..name) end
+		if item ~= nil then
+			local_create_fish_conversion(item)
+		end
+	end
 end

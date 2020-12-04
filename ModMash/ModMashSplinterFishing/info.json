@@ -1,15 +1,16 @@
 {
-  "name": "modmashsplinterenrichment",
+  "name": "modmashsplintefishing",
   "version": "1.0.01",
-  "title": "ModMash Splinter, Ore Processing",
+  "title": "ModMash Splinter, Gone Fishing",
   "author": "PixelWhipped",
   "contact": "",
   "homepage": "https://www.patreon.com/user?u=15367757",
   "factorio_version": "1.0",
-  "description": "Mod Mash Splinter for Ore Processing, allows extraction of other ores from another.",
+  "description": "Mod Mash Splinter for Fishing",
   "dependencies": [
     "base >= 1.0.0",
     "modmashsplinter >= 1.0.09",
+    "modmashsplinterresources >= 1.0.01",
     "! modmash >= 0.0.0"
   ]
 }
