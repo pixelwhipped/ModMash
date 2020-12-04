@@ -13,11 +13,14 @@ local convert_to_string = heroturrets.util.convert_to_string
 local tech = data.raw["technology"]
 
 local raw_items = {"item","accumulator","active-defense-equipment","ammo","ammo-turret","arithmetic-combinator","armor","artillery-turret","artillery-wagon","assembling-machine","battery-equipment","beacon","belt-immunity-equipment","boiler","capsule","car","cargo-wagon","combat-robot","constant-combinator","construction-robot","container","decider-combinator","electric-pole","electric-turret","energy-shield-equipment","fluid-wagon","furnace","gate","generator","generator-equipment","gun","heat-pipe","inserter","item","locomotive","logistic-container","logistic-robot","market","mining-drill","module","night-vision-equipment","offshore-pump","pipe","pipe-to-ground","power-switch","programmable-speaker","projectile","pump","radar","rail-chain-signal","rail-planner","rail-signal","reactor","repair-tool","resource","roboport","roboport-equipment","rocket-silo","solar-panel","solar-panel-equipment","splitter","storage-tank","straight-rail","tool","train-stop","transport-belt","underground-belt","wall"}
+
+--honk
 local types_with_items = {}
 for category, prototypes in pairs(data.raw) do
   local name, prototype = next(prototypes)
   if name and prototype.stack_size then table.insert(types_with_items, category) end
 end
+--end honk
 
 local item_list = nil
 
@@ -44,6 +47,7 @@ local local_get_item = function(name)
 			end
 		end
 	end]]
+    --honk
     if item_list == nil then
 		item_list = {}
 		for _, category in pairs(types_with_items) do
@@ -62,6 +66,7 @@ local local_get_item = function(name)
 			end
 		end
 	end
+    --end honk
 	return item_list[name]
     end
 

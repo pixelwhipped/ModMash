@@ -1,5 +1,5 @@
 {
-  "name": "modmashsplintefishing",
+  "name": "modmashsplinterfishing",
   "version": "1.0.01",
   "title": "ModMash Splinter, Gone Fishing",
   "author": "PixelWhipped",
@@ -10,7 +10,7 @@
   "dependencies": [
     "base >= 1.0.0",
     "modmashsplinter >= 1.0.09",
-    "modmashsplinterresources >= 1.0.01",
+    "modmashsplinterresources >= 1.0.02",
     "! modmash >= 0.0.0"
   ]
 }

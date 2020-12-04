@@ -50,8 +50,8 @@ data:extend(
 		icons = create_light_oil_conversion_crude_oil_icon(),
 		icon_size = 64,
 		icon_mipmaps = 4,
-		subgroup = "intermediate-product",
-		order = "c[light-oil-conversion-crude-oil]",
+		subgroup = "fluid-recipes",
+		order = "zz[light-oil-conversion-crude-oil]",
 		main_product = "",
 		results =
 		{

@@ -3,7 +3,7 @@ require("prototypes.scripts.defines")
 local get_name_for = modmashsplinterfishing.util.get_name_for
 local create_icon =	modmashsplinterfishing.util.create_icon
 local create_layered_icon_using = modmashsplinterfishing.util.create_layered_icon_using
-local patch_technology = modmashsplinterfishing.util.patch_technology
+local patch_technology = modmashsplinterfishing.util.tech.patch_technology
 
 local icon_pin_topleft = modmashsplinterfishing.util.defines.icon_pin_topleft
 local icon_pin_top = modmashsplinterfishing.util.defines.icon_pin_top
@@ -36,7 +36,7 @@ local local_create_fish_recipes = function(item)
 			category = "fisheries",
 			ingredients = {
 				{type="fluid", name = "water",amount = 50},
-				{"roe", 1}
+				{"roe", 1},
 				{"fishfood", 1}
 			},
 			icon = false,
@@ -51,8 +51,8 @@ local local_create_fish_recipes = function(item)
 					name = item.name,
 					amount = 10,
 				}			
-			}
-			allow_decomposition = false,
+			},
+			allow_decomposition = false
 		},
 		{
 			type = "recipe",
@@ -70,9 +70,9 @@ local local_create_fish_recipes = function(item)
 			main_product = "",
 			results =
 			{
-				{name="row", amount=25},     
+				{name="roe", amount=25}     
 			},
-			allow_decomposition = false,
+			allow_decomposition = false
 		},
 	})
 	patch_technology("fisheries","fish-harvesting-of-"..item.name)
