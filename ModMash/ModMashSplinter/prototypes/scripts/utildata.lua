@@ -379,13 +379,15 @@ local local_create_layered_icon_using = function(initial_icons)
 	for k = 1, #initial_icons do local icon = initial_icons[k]
 		if icon ~= nil then
 			if icon.from ~= nil then
-				if icon.from.icon == false and icon.from.icons ~= nil then
+				if (icon.from.icon == false or icon.from.icon == nil)  and icon.from.icons ~= nil then
 				--	log("adding icons from prototype with icons")
 					for j = 1, #icon.from.icons do 
 						table.insert(icons,icon.from.icons[j])
-					end
+					end				
 				else
-				--	log("adding single icon from prototype with icon")
+					
+					log("adding single icon from prototype with icon")
+					log(serpent.block(icon.from))
 					table.insert(icons,{
 						icon = icon.from.icon,
 						icon_mipmaps = icon.from.icon_mipmaps,

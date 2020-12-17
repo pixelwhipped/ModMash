@@ -887,8 +887,8 @@ if data_final_fixes then
 			data.raw["loader-1x1"]["regenerative-mini-loader"].speed = rspeed
 			data.raw["loader-1x1"]["high-speed-mini-loader"].speed = fspeed
 
-			data.raw.loader["regenerative-loader"].speed = rspeed			
-			data.raw.loader["high-speed-loader"].speed = fspeed
+			--data.raw.loader["regenerative-loader"].speed = rspeed			
+			--data.raw.loader["high-speed-loader"].speed = fspeed
 
 			data.raw["underground-belt"]["high-speed-underground-belt-structure"].speed = rspeed
 			data.raw["underground-belt"]["regenerative-underground-belt-structure"].speed = fspeed

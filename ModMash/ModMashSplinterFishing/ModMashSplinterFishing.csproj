@@ -28,7 +28,7 @@
     <None Update="graphics\entity\nursery\hr-nurseryva.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="graphics\entity\nursery\hr-nurseyv.png">
+    <None Update="graphics\entity\nursery\hr-nurseryv.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="graphics\entity\nursery\nurseryh.png">

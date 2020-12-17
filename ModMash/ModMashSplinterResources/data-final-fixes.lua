@@ -126,9 +126,11 @@ end
 for name,fish in pairs(data.raw["fish"]) do
 	if fish.minable ~= nil and fish.minable.result ~= nil then
 		local item = data.raw["capsule"][fish.minable.result] 
+		if item == nil then item = data.raw["tool"][fish.minable.result] end
+		if item == nil then item = data.raw["module"][fish.minable.result] end
 		if item == nil then log("Nil item "..name) end
-		if item.stack_size == nil then log("Nil stack "..name) end
-		if item ~= nil then
+		if item ~= nil and item.stack_size == nil then log("Nil stack "..name) end
+		if item ~= nil and item.stack_size ~= nil then
 			local_create_fish_conversion(item)
 		end
 	end
