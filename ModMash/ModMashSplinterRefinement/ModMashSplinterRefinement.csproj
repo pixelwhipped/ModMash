@@ -6,12 +6,11 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>C:\Users\tarra\AppData\Roaming\Factorio\mods\modmashsplinterrefinement_1.1.01</OutputPath>
+    <OutputPath>C:\Users\tarra\AppData\Roaming\Factorio\mods\modmashsplinterrefinement_1.1.02</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
     <Folder Include="graphics\item-group\" />
-    <Folder Include="prototypes\migrations\" />
     <Folder Include="prototypes\technology\" />
   </ItemGroup>
 
@@ -50,6 +49,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="prototypes\item\ore-refinery.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="prototypes\migrations\modmashsplinterrefinement_1.1.02.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="prototypes\recipe\ore-refinery.lua">

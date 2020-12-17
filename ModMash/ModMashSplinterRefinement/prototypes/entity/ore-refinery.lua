@@ -2,11 +2,11 @@
 {
 	{
 		type = "assembling-machine",
-		name = "ore-refinery",
+		name = "mm-ore-refinery",
 		icon = "__modmashsplinterrefinement__/graphics/icons/ore-refinery.png",
 		icon_size = 32,
 		flags = {"placeable-neutral", "placeable-player", "player-creation"},
-		minable = {mining_time = 0.2, result = "ore-refinery"},
+		minable = {mining_time = 0.2, result = "mm-ore-refinery"},
 		max_health = 300,
 		corpse = "big-remnants",
 		dying_explosion = "medium-explosion",

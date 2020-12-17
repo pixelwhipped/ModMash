@@ -2,7 +2,7 @@
 {
 	{
 		type = "item",
-		name = "ore-refinery",
+		name = "mm-ore-refinery",
 		icon = "__modmashsplinterrefinement__/graphics/icons/ore-refinery.png",
 		icon_size = 64,
 		icon_mipmaps = 4,
