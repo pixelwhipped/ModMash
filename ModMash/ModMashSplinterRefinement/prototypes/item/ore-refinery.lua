@@ -8,7 +8,7 @@
 		icon_mipmaps = 4,
 		subgroup = "production-machine",
 		order = "c[ore-refinery]",
-		place_result = "ore-refinery",
+		place_result = "mm-ore-refinery",
 		stack_size = 50
 	}
 }
