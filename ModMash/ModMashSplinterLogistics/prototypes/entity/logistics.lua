@@ -78,7 +78,7 @@ local local_create_mini_loader = function(name,max_health,filter_count,localised
 			percent = 60
 		  }
 		},
-		collision_box =  {{-0.2, -0.2}, {0.2, 0.2}},
+		collision_box =  {{-0.3, -0.3}, {0.3, 0.3}},
 		selection_box = {{-0.75, -0.75}, {0.75, 0.75}},
 		animation_speed_coefficient = 32,
 		belt_animation_set = belt_animation_set,

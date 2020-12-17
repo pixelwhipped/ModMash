@@ -1,5 +1,7 @@
 ﻿require ("prototypes.scripts.defines")
 require ("prototypes.categories.fisheries")
+require ("prototypes.categories.groups")
+local allow_fishing = modmashsplinterfishing.defines.names.allow_fishing
 local get_name_for = modmashsplinterfishing.util.get_name_for
 
 data:extend(
@@ -11,7 +13,7 @@ data:extend(
 		icon_size = 64,
 		icon_mipmaps = 4,
 		subgroup = "production-machine",
-		order = "h[a]",
+		order = "h[d][nursery]",
 		place_result = "nursery",
 		stack_size = 50
 	},
@@ -19,8 +21,6 @@ data:extend(
 		type = "recipe",
 		name = "nursery",
 		energy_required = 1.5,
-		enabled = false,
-		category = "chemistry",
 		enabled = false,
 		normal =
 		{
@@ -48,8 +48,8 @@ data:extend(
 		icon = "__modmashsplinterfishing__/graphics/icons/nursery.png",
 		icon_size = 64,
 		icon_mipmaps = 4,
-		subgroup = "intermediate-product",
-		order = "c[nursery]",
+		subgroup = "production-machine",
+		order = "h[d][nursery]",
 		allow_decomposition = false,
 	},
 	{
@@ -72,7 +72,10 @@ data:extend(
 		},
 		collision_box = {{-1.2, -1.2}, {1.2, 1.2}},
         selection_box = {{-1.5, -1.5}, {1.5, 1.5}},
-		alert_icon_shift = util.by_pixel(-3, -12),
+		alert_icon_shift = {
+                -0.09375,
+                -0.375
+                },
         scale_entity_info_icon = true,
 		fluid_boxes =
         {
@@ -98,18 +101,19 @@ data:extend(
 		{
 			north =
 			{
-				filename = "__modmashsplinterfishing__/graphics/entity/nursery/nurseryv.png",
+				filename = "__modmashsplinterfishing__/graphics/entity/nursery/nurseryva.png",
 				width = 107,
 				height = 113,
-				frame_count = 1,
+				frame_count = 4,
 				animation_speed = 0.5,
 				hr_version =
 				{
-					filename = "__modmashsplinterfishing__/graphics/entity/nursery/hr-nurseryv.png",
+					filename = "__modmashsplinterfishing__/graphics/entity/nursery/hr-nurseryva.png",
 					priority="high",
 					width = 214,
 					height = 226,
-					frame_count = 1,
+					frame_count = 5,
+					animation_speed = 0.5,
 					scale = 0.5
 			    }
 			},
@@ -208,7 +212,7 @@ data:extend(
 		icon = "__modmashsplinterfishing__/graphics/icons/fishfood.png",
 		icon_size = 64,
 		icon_mipmaps = 4,
-		subgroup = "production-machine",
+		subgroup = "fisheries",
 		order = "h[a]",
 		stack_size = 100
 	},
@@ -218,8 +222,8 @@ data:extend(
 		icon = "__modmashsplinterfishing__/graphics/icons/roe.png",
 		icon_size = 64,
 		icon_mipmaps = 4,
-		subgroup = "production-machine",
-		order = "h[a]",
+		subgroup = "fisheries",
+		order = "d[a]",
 		stack_size = 50
 	},
 	{
@@ -227,18 +231,18 @@ data:extend(
 		name = "fishfood",
 		energy_required = 1.5,
 		enabled = false,
-		category = "chemistry",
-		ingredients = {{"alien-ore", 5},{type="fluid", name="sludge", amount=50}},
+		category = "crafting-with-fluid",
+		ingredients = {{"alien-ore", 4},{type="fluid", name="sludge", amount=50}},
 		icon = false,
 		icon = "__modmashsplinterfishing__/graphics/icons/fishfood.png",
 		icon_size = 64,
 		icon_mipmaps = 4,
-		subgroup = "intermediate-product",
+		subgroup = "fisheries",
 		order = "c[fishfood]",
 		main_product = "",
 		results =
 		{
-			{name="fishfood", amount=50},     
+			{name="fishfood", amount=10},     
 		},
 		allow_decomposition = false,
 	},
@@ -247,13 +251,13 @@ data:extend(
 		name = "roe",
 		energy_required = 1.5,
 		enabled = false,
-		category = "chemistry",
+		category = "crafting-with-fluid",
 		ingredients = {{"alien-ore", 5},{"alien-artifact", 2},{"fishfood", 10}},
 		icon = false,
 		icon = "__modmashsplinterfishing__/graphics/icons/roe.png",
 		icon_size = 64,
 		icon_mipmaps = 4,
-		subgroup = "intermediate-product",
+		subgroup = "fisheries",
 		order = "c[roe]",
 		main_product = "",
 		results =
@@ -279,6 +283,30 @@ data:extend(
 			type = "unlock-recipe",
 			recipe = "nursery"
 			}
+		},
+		prerequisites =
+		{
+			"fish1"
+		},
+		unit =
+		{
+			count = 75,
+			ingredients =
+			{
+			{"automation-science-pack", 1},
+			{"logistic-science-pack", 1},
+			},
+			time = 35
+		},
+		upgrade = true,
+		order = "a-b-d",
+	},{
+		type = "technology",
+		name = allow_fishing,
+		icon = "__modmashsplinterresources__/graphics/technology/fish.png",
+		icon_size = 128,
+		effects =
+		{
 		},
 		prerequisites =
 		{

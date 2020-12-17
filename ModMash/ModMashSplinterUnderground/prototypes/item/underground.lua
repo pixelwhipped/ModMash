@@ -2,10 +2,22 @@
 local underground_accumulator  = modmashsplinterunderground.defines.names.underground_accumulator
 local underground_access  = modmashsplinterunderground.defines.names.underground_access
 local underground_access2  = modmashsplinterunderground.defines.names.underground_access2
+local underground_accessml  = modmashsplinterunderground.defines.names.underground_accessml
 local used_battery_cell  = modmashsplinterunderground.defines.names.used_battery_cell
 local battery_cell  = modmashsplinterunderground.defines.names.battery_cell
 data:extend(
 {
+{
+    type = "item",
+    name = underground_accessml,
+    icon = "__modmashsplinterunderground__/graphics/icons/underground-accessml.png",
+    icon_size = 64,
+    icon_mipmaps = 4,
+    subgroup = "production-machine",
+    order = "u[underground-access3]",
+    place_result = underground_accessml,
+    stack_size = 10
+  },
   {
     type = "item",
     name = underground_access,

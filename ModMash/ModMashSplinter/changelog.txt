@@ -1,8 +1,12 @@
 ﻿---------------------------------------------------------------------------------------------------
-Version: 1.0.10
-  Planning:
-    - add test for copy inserter ensure base length not extended
-    - check for common functions to intergrate
+Version: 1.1.02
+  Changes:
+    - Added fluid functions
+
+---------------------------------------------------------------------------------------------------
+Version: 1.1.01
+  Changes:
+    - 1.1.0 ready
 
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.09

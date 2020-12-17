@@ -13,6 +13,7 @@ end
 
 modmashsplinterunderground.defines.names.underground_access = "underground-access"
 modmashsplinterunderground.defines.names.underground_access2 = "underground-access2"
+modmashsplinterunderground.defines.names.underground_accessml = "underground-accessml"
 modmashsplinterunderground.defines.names.underground_accumulator = "underground-accumulator"
 modmashsplinterunderground.defines.names.battery_cell = "battery-cell"
 modmashsplinterunderground.defines.names.used_battery_cell = "used-battery-cell"

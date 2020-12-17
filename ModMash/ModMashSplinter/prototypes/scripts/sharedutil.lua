@@ -161,6 +161,20 @@ local local_distance = function(x1, y1, x2, y2)
   return math.sqrt(x*x+y*y)
   end
 
+local local_opposite_direction = function(direction)
+	if direction == defines.direction.north then return defines.direction.south end
+	if direction == defines.direction.northeast then return defines.direction.southwest end
+	if direction == defines.direction.east then return defines.direction.west end
+	if direction == defines.direction.southeast then return defines.direction.northwest end
+	if direction == defines.direction.south then return defines.direction.north end
+	if direction == defines.direction.southwest then return defines.direction.northeast end
+	if direction == defines.direction.west then return defines.direction.east end
+	if direction == defines.direction.northwest then return defines.direction.southeast end
+	return direction
+    end
+
+
+modmashsplinter.opposite_direction = local_opposite_direction
 modmashsplinter.convert_to_string = local_convert_to_string
 modmashsplinter.log = local_log
 modmashsplinter.log_disable = local_log_disable

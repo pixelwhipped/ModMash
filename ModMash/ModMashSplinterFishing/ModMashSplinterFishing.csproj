@@ -6,11 +6,14 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>C:\Users\tarra\AppData\Roaming\Factorio\mods\modmashsplinterfishing_1.0.01</OutputPath>
+    <OutputPath>C:\Users\tarra\AppData\Roaming\Factorio\mods\modmashsplinterfishing_1.1.02</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
     <None Update="changelog.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="control.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="data-final-fixes.lua">
@@ -22,6 +25,9 @@
     <None Update="graphics\entity\nursery\hr-nurseryh.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="graphics\entity\nursery\hr-nurseryva.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="graphics\entity\nursery\hr-nurseyv.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -29,6 +35,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="graphics\entity\nursery\nurseryv.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\entity\nursery\nurseryva.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="graphics\icons\fishfood.png">
@@ -49,7 +58,16 @@
     <None Update="prototypes\categories\fisheries.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="prototypes\categories\groups.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="prototypes\scripts\defines.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="prototypes\scripts\fishing-inserter.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="settings.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="thumbnail.png">

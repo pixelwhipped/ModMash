@@ -12,7 +12,7 @@ end
 if not wiki.descriptions then wiki.descriptions = {} end
 
 require("prototypes.scripts.util")
-require("__core__/lualib/mod-gui")
+local mod_gui = require("__core__/lualib/mod-gui")
 
 local table_contains = wiki.util.table_contains
 

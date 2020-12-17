@@ -1,4 +1,20 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.03
+  Changes:
+    - Added Mulit level underground shaft
+
+---------------------------------------------------------------------------------------------------
+Version: 1.1.02
+  Changes:
+    - Added setting to disable biter teleporting bewteen surfaces
+    - Added setting to disable biter rock generation
+
+---------------------------------------------------------------------------------------------------
+Version: 1.1.01
+  Changes:
+    - 1.1.0 ready
+
+---------------------------------------------------------------------------------------------------
 Version: 1.0.09
   Changes:
     - register loot in on_init or config_change on_load could lead to accessing game when non existant

@@ -1,4 +1,11 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.01
+  Changes:
+    - 1.1.0 ready
+  Not A Bug Fixes:
+    - Update to get item from honktown
+
+---------------------------------------------------------------------------------------------------
 Version: 0.1.40
   Not A Bug Fixes:
     - good catch by kiwa cache function calling the local function checking it always nil

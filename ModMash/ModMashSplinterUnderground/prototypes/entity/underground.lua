@@ -2,6 +2,7 @@
 local underground_accumulator  = modmashsplinterunderground.defines.names.underground_accumulator
 local underground_access  = modmashsplinterunderground.defines.names.underground_access
 local underground_access2  = modmashsplinterunderground.defines.names.underground_access2
+local underground_accessml  = modmashsplinterunderground.defines.names.underground_accessml
 local used_battery_cell  = modmashsplinterunderground.defines.names.used_battery_cell
 local battery_cell  = modmashsplinterunderground.defines.names.battery_cell
 
@@ -226,6 +227,63 @@ end
 
 data:extend(
 {
+{		
+		type = "logistic-container",
+		name = underground_accessml,
+		logistic_mode = "buffer",
+		render_not_in_network_icon = false,
+		icon = "__modmashsplinterunderground__/graphics/icons/underground-accessml.png",
+		icon_size = 64,
+		icon_mipmaps = 4,
+		flags = {"placeable-neutral", "placeable-player", "player-creation"},
+		minable = {hardness = 0.2, mining_time = 0.5, result = underground_accessml},
+		max_health = 350,
+		corpse = "medium-small-remnants",
+		collision_box = {{-0.8, -0.8 }, {0.8, 0.8}},
+		selection_box = {{-1, -1 }, {1, 1}},
+		resistances =
+		{
+		  {
+			type = "fire",
+			percent = 90
+		  },
+		  {
+			type = "impact",
+			percent = 60
+		  }
+		},
+		inventory_size = 64,
+		open_sound = { filename = "__base__/sound/metallic-chest-open.ogg", volume=0.65 },
+		close_sound = { filename = "__base__/sound/metallic-chest-close.ogg", volume = 0.7 },
+		vehicle_impact_sound =  { filename = "__base__/sound/car-metal-impact.ogg", volume = 0.65 },
+		picture =
+		{
+			  filename = "__modmashsplinterunderground__/graphics/entity/underground/accessml.png",
+			  priority = "high",
+			  width = 76,
+			  height = 60,
+			  axially_symmetrical = false,
+			  direction_count = 1,
+			  frame_count = 1,
+			  shift = util.by_pixel(1, -1),
+			  hr_version =
+			  {
+				filename = "__modmashsplinterunderground__/graphics/entity/underground/hr-accessml.png",
+				priority = "high",
+				width = 150,
+				height = 118,
+				axially_symmetrical = false,
+				direction_count = 1,
+				frame_count = 1,
+				shift = util.by_pixel(0.5, -1),
+				scale = 0.5
+			  }
+		},
+		circuit_wire_connection_point = circuit_connector_definitions["chest"].points,
+		circuit_connector_sprites = circuit_connector_definitions["chest"].sprites,
+		circuit_wire_max_distance = default_circuit_wire_max_distance,
+		allow_copy_paste = true
+	},
 	{		
 		type = "container",
 		name = underground_access,

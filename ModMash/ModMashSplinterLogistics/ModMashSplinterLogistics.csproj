@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>C:\Users\tarra\AppData\Roaming\Factorio\mods\modmashsplinterlogistics_1.0.01</OutputPath>
+    <OutputPath>C:\Users\tarra\AppData\Roaming\Factorio\mods\modmashsplinterlogistics_1.1.01</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,6 +1,6 @@
 ﻿require ("prototypes.scripts.defines")
 
-require("__core__/lualib/mod-gui")
+local mod_gui = require("__core__/lualib/mod-gui")
 
 local is_valid  = modmashsplinterboom.util.is_valid
 local print = modmashsplinterboom.util.print

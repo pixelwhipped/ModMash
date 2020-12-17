@@ -542,7 +542,7 @@ local local_on_trigger_created_entity = function(event)
 	if entity ~= nil then	
 		for k=1, #modmash.on_trigger_created_entity do local v = modmash.on_trigger_created_entity[k]		
 			v(event)
-		end
+		local_on_standard_entity_event
 	end end
 	
 --[[done]]

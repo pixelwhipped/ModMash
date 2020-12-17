@@ -1,4 +1,4 @@
-﻿require("__core__/lualib/mod-gui")
+﻿local mod_gui =  require("__core__/lualib/mod-gui")
 
 local is_valid  = modmash.util.is_valid
 

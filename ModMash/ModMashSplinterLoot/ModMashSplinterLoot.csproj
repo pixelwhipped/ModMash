@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>C:\Users\tarra\AppData\Roaming\Factorio\mods\modmashsplinterloot_1.0.02</OutputPath>
+    <OutputPath>C:\Users\tarra\AppData\Roaming\Factorio\mods\modmashsplinterloot_1.1.01</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,6 +17,27 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="data.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\entity\crash-site-lab\crash-site-lab-broken-shadow.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\entity\crash-site-lab\crash-site-lab-broken.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\entity\crash-site-lab\crash-site-lab-ground.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\entity\crash-site-lab\hr-crash-site-lab-broken-shadow.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\entity\crash-site-lab\hr-crash-site-lab-broken.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\entity\crash-site-lab\hr-crash-site-lab-ground.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="graphics\icons\crash-site-lab-broken.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="info.json">

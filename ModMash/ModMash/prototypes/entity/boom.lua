@@ -212,7 +212,7 @@ data:extend(
         }
       },
       icon = "__base__/graphics/technology/land-mine.png",
-      icon_size = 128,
+      icon_size = 256, icon_mipmaps = 4,
       name = "nuclear-land-mine",
       order = "e-e",
       prerequisites = { "land-mine" },
@@ -374,7 +374,7 @@ data:extend(
         }
       },
       icon = "__base__/graphics/technology/land-mine.png",
-      icon_size = 128,
+      icon_size = 256, icon_mipmaps = 4,
       name = "bigger-land-mine",
       order = "e-e",
       prerequisites = { "land-mine" },
@@ -508,7 +508,7 @@ data:extend(
         }
       },
       icon = "__base__/graphics/technology/land-mine.png",
-      icon_size = 128,
+      icon_size = 256, icon_mipmaps = 4,
       name = "toxin-land-mine",
       order = "e-e",
       prerequisites = { "land-mine","biter-neuro-toxin-artillery-shell" },

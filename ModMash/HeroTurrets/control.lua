@@ -1,5 +1,5 @@
 ﻿log("Entering control.lua")
-require("__core__/lualib/mod-gui")
+local mod_gui =  require("mod-gui")
 --[[Setup volatile structures]]
 if not heroturrets then heroturrets = {} end
 

@@ -2,6 +2,7 @@
 local underground_accumulator  = modmashsplinterunderground.defines.names.underground_accumulator
 local underground_access  = modmashsplinterunderground.defines.names.underground_access
 local underground_access2  = modmashsplinterunderground.defines.names.underground_access2
+local underground_accessml  = modmashsplinterunderground.defines.names.underground_accessml
 local used_battery_cell  = modmashsplinterunderground.defines.names.used_battery_cell
 local battery_cell  = modmashsplinterunderground.defines.names.battery_cell
 local recharged_battery_cell = modmashsplinterunderground.defines.names.recharged_battery_cell
@@ -43,6 +44,21 @@ data:extend(
 				{"titanium-plate", 15}
 		}),
 		result = underground_access2
+	},
+	{
+		type = "recipe",
+		name = underground_accessml,
+		energy_required = 10,
+		enabled = false,
+		ingredients = modmashsplinterunderground.util.get_item_ingredient_substitutions({"titanium-plate"},{
+				{underground_access2, 3},
+				{"titanium-plate", 10}
+		}),
+		ingredients_expensive = modmashsplinterunderground.util.get_item_ingredient_substitutions({"titanium-plate"},{
+				{underground_access2, 3},
+				{"titanium-plate", 15}
+		}),
+		result = underground_accessml
 	},
 	{
 		type = "recipe",

@@ -1,15 +1,15 @@
 {
   "name": "modmashsplintervalkyries",
-  "version": "1.0.01",
+  "version": "1.1.01",
   "title": "ModMash Splinter, Valkyries",
   "author": "PixelWhipped",
   "contact": "",
   "homepage": "https://www.patreon.com/user?u=15367757",
-  "factorio_version": "1.0",
+  "factorio_version": "1.1",
   "description": "Mod Mash Splinter for Valkyries, Combat Bots from roboports. You can now build construction robots that double as defense drones. These drones operate with hit and run tactics, move in fast take their shots and move out.",
   "dependencies": [
     "base >= 1.0.0",
-    "modmashsplinter >= 1.0.07",
+    "modmashsplinter >= 1.1.01",
     "! modmash >= 0.0.0"
   ]
 }

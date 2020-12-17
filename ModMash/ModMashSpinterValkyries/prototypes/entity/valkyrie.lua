@@ -84,12 +84,12 @@ data:extend(
 		attack_parameters =
 		{
 		  type = "beam",
-		  ammo_category = "combat-robot-beam",
+		  ammo_category = "beam",
 		  cooldown = 5,
 		  range = 15,
 		  ammo_type =
 		  {
-			category = "combat-robot-beam",
+			category = "beam",
 			action =
 			{
 			  type = "direct",
@@ -657,12 +657,12 @@ data:extend(
 		attack_parameters =
 		{
 		  type = "beam",
-		  ammo_category = "combat-robot-beam",
+		  ammo_category = "beam",
 		  cooldown = 5,
 		  range = 15,
 		  ammo_type =
 		  {
-			category = "combat-robot-beam",
+			category = "beam",
 			action =
 			{
 			  type = "direct",

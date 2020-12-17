@@ -31,47 +31,44 @@ local local_create_fish_recipes = function(item)
 		{
 			type = "recipe",
 			name = "fish-harvesting-of-"..item.name,
-			energy_required = 1.5,
+			energy_required = 15.5,
 			enabled = true,
 			category = "fisheries",
 			ingredients = {
 				{type="fluid", name = "water",amount = 50},
-				{"roe", 1},
-				{"fishfood", 1}
+				{"roe", 2},
+				{"fishfood", 20}
 			},
+			localised_name = get_name_for(item,""),
+			localised_description = get_name_for(item,""),
 			icon = false,
 			icons = create_local_create_fish_icon(item),
 			icon_size = 64,
-			subgroup = "fluid-recipes",
+			subgroup = "fisheries",
 			order = "a[fish-harvesting]["..item.name.."]",
 			main_product = "",
-			results =
-			{			
-				{
-					name = item.name,
-					amount = 10,
-				}			
-			},
+			result = item.name,
+			result_count = 8,
 			allow_decomposition = false
 		},
 		{
 			type = "recipe",
 			name = "roe-from-"..item.name,
-			energy_required = 1.5,
+			localised_name = {"recipe-name.defaultstring",{"item-name.roe"}} ,
+			localised_description = {"recipe-name.defaultstring",{"item-name.roe"}} ,
+			energy_required = 2.5,
 			enabled = false,
-			category = "chemistry",
-			ingredients = {{item.name, 1}},
+			category = "crafting-with-fluid",
+			ingredients = {{type="fluid", name = "water",amount = 50},{item.name, 1}},
 			icon = false,
 			icon = "__modmashsplinterfishing__/graphics/icons/roe.png",
 			icon_size = 64,
 			icon_mipmaps = 4,
-			subgroup = "intermediate-product",
+			subgroup = "fisheries",
 			order = "c[roe-from-"..item.name.."]",
 			main_product = "",
-			results =
-			{
-				{name="roe", amount=25}     
-			},
+			result = "roe",
+			result_count = 3,
 			allow_decomposition = false
 		},
 	})

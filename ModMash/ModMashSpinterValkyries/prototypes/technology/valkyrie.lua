@@ -4,7 +4,7 @@
     type = "technology",
     name = "valkyrie-robot",
     icon_size = 128,
-    icon = "__base__/graphics/technology/combat-robotics.png",
+    icon = "__modmashsplintervalkyries__/graphics/technology/combat-robotics.png",
     effects =
     {
       {
@@ -12,7 +12,7 @@
         recipe = "valkyrie-robot"
       }
     },
-    prerequisites = {"combat-robotics-2", "construction-robotics"},
+    prerequisites = {"defender", "construction-robotics"},
     unit =
     {
       count = 200,
@@ -30,7 +30,7 @@
   {
 	type = "technology",
 	name = "valkyries-network",
-	icon = "__base__/graphics/technology/combat-robotics.png",
+	icon = "__modmashsplintervalkyries__/graphics/technology/combat-robotics.png",
 	icon_size = 128,
 	effects =
 	{
@@ -54,7 +54,7 @@
   {
 	type = "technology",
 	name = "valkyrie-range-1",
-	icon = "__base__/graphics/technology/combat-robotics.png",
+	icon = "__modmashsplintervalkyries__/graphics/technology/combat-robotics.png",
 	icon_size = 128,
 	localised_name = {"technology-description.valkyrie-range-1"},
 	localised_description =  {"technology-description.valkyrie-range-1"},
@@ -80,7 +80,7 @@
   {
 	type = "technology",
 	name = "valkyrie-force-1",
-	icon = "__base__/graphics/technology/combat-robotics.png",
+	icon = "__modmashsplintervalkyries__/graphics/technology/combat-robotics.png",
 	icon_size = 128,
 	localised_name = {"technology-description.valkyrie-force-1"},
 	localised_description =  {"technology-description.valkyrie-force-1"},
@@ -112,7 +112,7 @@ local create_range_technology = function(level)
 		{
 			type = "technology",
 			name = "valkyrie-range-"..level,
-			icon = "__base__/graphics/technology/combat-robotics.png",
+			icon = "__modmashsplintervalkyries__/graphics/technology/combat-robotics.png",
 			icon_size = 128,
 			localised_name = {"",{"technology-description.valkyrie-range-1"}," ",level},
 			localised_description =  {"technology-description.valkyrie-range-1"},
@@ -144,7 +144,7 @@ local create_force_technology = function(level)
 		{
 			type = "technology",
 			name = "valkyrie-force-"..level,
-			icon = "__base__/graphics/technology/combat-robotics.png",
+			icon = "__modmashsplintervalkyries__/graphics/technology/combat-robotics.png",
 			icon_size = 128,
 			localised_name = {"",{"technology-description.valkyrie-force-1"}," ",level},
 			localised_description =  {"technology-description.valkyrie-force-1"},

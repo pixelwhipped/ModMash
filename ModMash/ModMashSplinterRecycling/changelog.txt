@@ -1,0 +1,6 @@
+﻿---------------------------------------------------------------------------------------------------
+Version: 1.0.01
+  Changes:
+    - Initial Release
+    - No more auto functionality to cheaty
+    - energy required is twice the initial recipe

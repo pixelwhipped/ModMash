@@ -3,7 +3,7 @@
     {
         type = "technology",
         name = "automation-4",
-        icon = "__base__/graphics/technology/automation.png",
+        icon = "__modmashsplinterassembling__/graphics/technology/automation-4.png",
         icon_size = 128,
         effects =
         {
@@ -34,7 +34,7 @@
     {
         type = "technology",
         name = "automation-5",
-        icon = "__base__/graphics/technology/automation.png",
+        icon = "__modmashsplinterassembling__/graphics/technology/automation-5.png",
         icon_size = 128,
         effects =
         {

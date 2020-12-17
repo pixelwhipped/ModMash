@@ -1,5 +1,5 @@
 ﻿require("prototypes.scripts.defines") 
-require("mod-gui")
+local mod_gui = require("mod-gui")
 local distance = modmashsplinterunderground.util.distance
 local table_contains = modmashsplinterunderground.util.table.contains
 local is_valid  = modmashsplinterunderground.util.is_valid
@@ -26,6 +26,7 @@ local_generate_rocks()
 local underground_accumulator  = modmashsplinterunderground.defines.names.underground_accumulator
 local underground_access  = modmashsplinterunderground.defines.names.underground_access
 local underground_access2  = modmashsplinterunderground.defines.names.underground_access2
+local underground_accessml  = modmashsplinterunderground.defines.names.underground_accessml
 local battery_cell = modmashsplinterunderground.defines.names.battery_cell
 local used_battery_cell = modmashsplinterunderground.defines.names.used_battery_cell
 local fail_place_entity  = modmashsplinterunderground.util.fail_place_entity
@@ -290,6 +291,7 @@ local generate_surface_area = function(x,y,r,surface, res, allow_mixed, rock_pre
 	local res_table =  local_build_probability_table(res)
 	local rnd = math.random(1, math.ceil(#res_table*1.5))
 	local attack_rocks = math.random(1,5)
+	if settings.global["setting-biter-rocks"].value == "Disabled" then attack_rocks = 0 end
 
 	local mixed = math.random(1,6)
 	local biter = math.random(1,45)
@@ -482,7 +484,7 @@ end
 
 local local_access_process = function(access,pollution,flip,upper_surface,lower_surface)
 	teleport_cooldown = teleport_cooldown -1
-	if teleport_cooldown <= 0 then 
+	if teleport_cooldown <= 0 and access.top_entity.name ~= underground_accessml then 
 		for i = 1, #game.players do local p = game.players[i]
 			local last_pt_name = i..""		
 			local last_pt = last_point[last_pt_name]
@@ -560,7 +562,7 @@ local local_access_process = function(access,pollution,flip,upper_surface,lower_
 		end
 	end
 
-	if game.tick%60==0 then
+	if game.tick%60==0 and settings.global["setting-biter-teleport"].value == "Enabled" then
 		local moved = {}
 		local enemy = lower_surface.find_enemy_units(access.bottom_entity.position,2.5)
 		for i = 1, #enemy do local e = enemy[i]
@@ -644,7 +646,73 @@ local local_underground_removed = function(entity,event,died)
 	local accesses2 = surfaces[surface.middle_name].accesses
 	if modmashsplinterunderground.removed_rocks == nil then modmashsplinterunderground.removed_rocks = 0 end
 
-	if entity.name == underground_access then				
+	if entity.name == underground_accessml then		
+		local top_index = nil
+		local bottom_index = nil
+		local top = nil
+		local middle = nil
+		local bottom = nil
+		
+		if entity.surface.name == surface.top_name or entity.surface.name == surface.middle_name then
+			for index, access in pairs(accesses) do
+				if access.top_entity == entity or access.bottom_entity == entity  then			
+					top = access.top_entity
+					middle = access.bottom_entity
+					top_index = index
+				end
+			end
+			for index, access in pairs(accesses2) do
+				if access.top_entity == middle or access.bottom_entity == entity  then			
+					bottom = access.bottom_entity
+					bottom_index = index
+				end
+			end
+		else
+			for index, access in pairs(accesses2) do
+				if access.top_entity == entity or access.bottom_entity == entity  then	
+					middle = access.top_entity
+					bottom = access.bottom_entity
+					bottom_index = index
+				end
+			end
+			for index, access in pairs(accesses) do
+				if access.top_entity == entity or access.bottom_entity == middle  then			
+					top = access.top_entity
+					top_index = index
+				end
+			end
+		end
+
+		if died == true then
+			local surface = top.surface
+			local pos = top.position
+			local name = top.name
+			if entity ~= top then top.destroy() end
+			surface.create_entity{name = "small-remnants", position = pos, force = force_player}
+			surface.create_entity{ name = "entity-ghost", inner_name = name, position = pos, force = force_player}
+
+			surface = middle.surface
+			pos = middle.position
+			name = middle.name
+			if entity ~= middle then middle.destroy() end
+			surface.create_entity{name = "small-remnants", position = pos, force = force_player}
+			surface.create_entity{ name = "entity-ghost", inner_name = name, position = pos, force = force_player}
+
+			surface = bottom.surface
+			pos = bottom.position
+			 name = bottom.name
+			if entity ~= bottom then bottom.destroy() end
+			surface.create_entity{name = "small-remnants", position = pos, force = force_player}
+			surface.create_entity{ name = "entity-ghost", inner_name = name, position = pos, force = force_player}
+
+		else
+			if entity ~= top then top.destroy() end
+			if entity ~= middle then middle.destroy() end
+			if entity ~= bottom then bottom.destroy() end
+		end
+		table.remove(accesses,top_index)
+		table.remove(accesses2,bottom_index)
+	elseif entity.name == underground_access then				
 		for index, access in pairs(accesses) do
 			if access.top_entity == entity then
 				if died == true then
@@ -832,8 +900,7 @@ local local_ensure_can_place_entity_inner = function(entity,event,surface)
 	end
 
 local local_ensure_can_place_entity = function(entity,event,surface)
-	if local_ensure_can_place_entity_inner(entity,event,surface) then	
-		
+	if local_ensure_can_place_entity_inner(entity,event,surface) then			
 		local etype = entity.type
 		local ename = entity.name
 		if entity.type == "entity-ghost" then etype = entity.ghost_prototype.type end
@@ -855,67 +922,163 @@ local local_ensure_can_place_entity = function(entity,event,surface)
 	return true
 	end
 
-local local_underground_added = function(entity,event)	
-	
-		if is_valid(entity) ~= true then return end	
-		local surface = surfaces[entity.surface.name]
-		if surface == nil then 
-			if entity.name == battery_cell then	
-				entity.energy = 10000000
-			elseif entity.name == underground_access or 
-				   entity.name == underground_access2 or entity.name == underground_accumulator then
-			
-				fail_place_entity(entity,event,{"modmashsplinterunderground.underground-placement-disallowed"})
-			end
-			return
-		end
-
-		local accumulators = surfaces[surface.top_name].accumulators
-		local accesses = surfaces[surface.top_name].accesses
-		local accesses2 = surfaces[surface.middle_name].accesses
-		
-		local_ensure_underground_environment(surface)
-		if local_ensure_can_place_entity(entity,event,surface) == false then 
-			return
-		end		
-
-		if entity.name == underground_access then 	
-			--entity.force = force_neutral
-			if surface.level == 0 then
-				local u = game.surfaces[surface.middle_name].create_entity{name = entity.name, position = entity.position, force = force_player}				
-				table.insert(accesses,{bottom_entity = u, top_entity = entity})
-			elseif surface.level == 1 then
-				local u = game.surfaces[surface.top_name].create_entity{name = entity.name, position = entity.position, force = force_player}
-				table.insert(accesses,{bottom_entity = entity, top_entity = u})
-			end
-		elseif entity.name == underground_access2 then 	
-			--entity.force = force_neutral
-			if surface.level == 1 then
-				local u = game.surfaces[surface.bottom_name].create_entity{name = entity.name, position = entity.position, force = force_player}				
-				table.insert(accesses2,{bottom_entity = u, top_entity = entity})
-			elseif surface.level == 2 then
-				local u = game.surfaces[surface.middle_name].create_entity{name = entity.name, position = entity.position, force = force_player}
-				table.insert(accesses2,{bottom_entity = entity, top_entity = u})
-			end
-		elseif entity.name == underground_accumulator then	
-			if surface.level == 0 then
-				local u = game.surfaces[surface.middle_name].create_entity{name = entity.name, position = entity.position, force = entity.force}
-				table.insert(accumulators,{bottom_entity = u, top_entity = entity})
-			elseif surface.level == 1 then
-				local u = game.surfaces[surface.top_name].create_entity{name = entity.name, position = entity.position, force = entity.force}
-				table.insert(accumulators,{bottom_entity = entity, top_entity = u})
-			end
-		elseif entity.name == battery_cell then	
+local local_underground_added_std = function(entity,event)			
+	local surface = surfaces[entity.surface.name]
+	if surface == nil then 
+		if entity.name == battery_cell then	
 			entity.energy = 10000000
-		elseif entity.name == used_battery_cell and is_valid(event.stack) and event.stack.type == "item-with-tags" and event.stack.get_tag("charge") ~= nil then
-			entity.energy = event.stack.get_tag("charge")*100000	
+		elseif entity.name == underground_access or 
+				entity.name == underground_access2 or entity.name == underground_accumulator then
+			
+			fail_place_entity(entity,event,{"modmashsplinterunderground.underground-placement-disallowed"})
 		end
+		return
 	end
+
+	local accumulators = surfaces[surface.top_name].accumulators
+	local accesses = surfaces[surface.top_name].accesses
+	local accesses2 = surfaces[surface.middle_name].accesses	
+
+	local_ensure_underground_environment(surface)
+	if local_ensure_can_place_entity(entity,event,surface) == false then 
+		return
+	end		
+
+	if entity.name == underground_access then 	
+		--entity.force = force_neutral
+		if surface.level == 0 then
+			local u = game.surfaces[surface.middle_name].create_entity{name = entity.name, position = entity.position, force = force_player}				
+			table.insert(accesses,{bottom_entity = u, top_entity = entity})
+		elseif surface.level == 1 then
+			local u = game.surfaces[surface.top_name].create_entity{name = entity.name, position = entity.position, force = force_player}
+			table.insert(accesses,{bottom_entity = entity, top_entity = u})
+		end
+	elseif entity.name == underground_access2 then 	
+		--entity.force = force_neutral
+		if surface.level == 1 then
+			local u = game.surfaces[surface.bottom_name].create_entity{name = entity.name, position = entity.position, force = force_player}				
+			table.insert(accesses2,{bottom_entity = u, top_entity = entity})
+		elseif surface.level == 2 then
+			local u = game.surfaces[surface.middle_name].create_entity{name = entity.name, position = entity.position, force = force_player}
+			table.insert(accesses2,{bottom_entity = entity, top_entity = u})
+		end
+	elseif entity.name == underground_accumulator then	
+		if surface.level == 0 then
+			local u = game.surfaces[surface.middle_name].create_entity{name = entity.name, position = entity.position, force = entity.force}
+			table.insert(accumulators,{bottom_entity = u, top_entity = entity})
+		elseif surface.level == 1 then
+			local u = game.surfaces[surface.top_name].create_entity{name = entity.name, position = entity.position, force = entity.force}
+			table.insert(accumulators,{bottom_entity = entity, top_entity = u})
+		end
+	elseif entity.name == battery_cell then	
+		entity.energy = 10000000
+	elseif entity.name == used_battery_cell and is_valid(event.stack) and event.stack.type == "item-with-tags" and event.stack.get_tag("charge") ~= nil then
+		entity.energy = event.stack.get_tag("charge")*100000	
+	end
+	end
+
+local local_ensure_can_place_entity_inner_ml_surface = function(entity,surface,resource_level,rock_prefix)
+	local etype = entity.type
+	local ename = entity.name
+	if entity.type == "entity-ghost" then etype = entity.ghost_prototype.type end
+	if entity.type == "entity-ghost" then ename = entity.ghost_prototype.name end
+	local rocks = surface.find_entities_filtered{area = {{entity.position.x-2.5, entity.position.y-2.5}, {entity.position.x+2.5, entity.position.y+2.5}}, name = rock_names}			
+	for index=1, #rocks do local r = rocks[index]
+		if is_valid(r) then 
+			r.destroy({raise_destroy = true}) 
+		end			
+	end	
+	generate_surface_area(entity.position.x, entity.position.y,5,surface,resource_level,false,rock_prefix)
+	return surface.can_place_entity{name=ename, position=entity.position, direction=entity.direction, force=entity.force}		
+end
+
+local local_ensure_can_place_entity_ml = function(entity,event,surface)
+	local etype = entity.type
+	local ename = entity.name
+	if entity.type == "entity-ghost" then etype = entity.ghost_prototype.type end
+	if entity.type == "entity-ghost" then ename = entity.ghost_prototype.name end
+	local pass = false
+	if entity.surface.name == surface.top_name then
+		pass =  local_ensure_can_place_entity_inner_ml_surface(entity,game.surfaces[surface.middle_name],resource_level_one,level_one_rock_prefix)
+		if pass == true then pass = local_ensure_can_place_entity_inner_ml_surface(entity,game.surfaces[surface.bottom_name],resource_level_two,level_two_rock_prefix) end
+	elseif entity.surface.name == surface.middle_name then
+		pass = game.surfaces[surface.top_name].can_place_entity{name=ename, position=entity.position, direction=entity.direction, force=entity.force}
+		if pass == true then pass = local_ensure_can_place_entity_inner_ml_surface(entity,game.surfaces[surface.bottom_name],resource_level_two,level_two_rock_prefix) end
+	elseif entity.surface.name == surface.bottom_name then
+		pass = game.surfaces[surface.top_name].can_place_entity{name=ename, position=entity.position, direction=entity.direction, force=entity.force}
+		if pass == true then pass = local_ensure_can_place_entity_inner_ml_surface(entity,game.surfaces[surface.middle_name],resource_level_one,level_one_rock_prefix) end
+	end
+	return pass
+	end
+
+
+local local_underground_added_ml = function(entity,event)			
+	local surface = surfaces[entity.surface.name]
+	if surface == nil then 
+		fail_place_entity(entity,event,{"modmashsplinterunderground.underground-placement-fail"})
+		return
+	end
+
+	local accesses = surfaces[surface.top_name].accesses
+	local accesses2 = surfaces[surface.middle_name].accesses	
+
+	local_ensure_underground_environment(surface)
+
+	if local_ensure_can_place_entity_ml(entity,event,surface) == false then 
+		fail_place_entity(entity,event,{"modmashsplinterunderground.underground-placement-fail"})
+		return
+	end		
+
+	if entity.surface.name == surface.top_name then
+		
+		local u = game.surfaces[surface.middle_name].create_entity{name = entity.name, position = entity.position, force = force_player}				
+		table.insert(accesses,{bottom_entity = u, top_entity = entity})
+		
+		local u2 = game.surfaces[surface.bottom_name].create_entity{name = entity.name, position = entity.position, force = force_player}				
+		table.insert(accesses2,{bottom_entity = u2, top_entity = u})
+		
+
+	elseif entity.surface.name == surface.middle_name then
+		local u = game.surfaces[surface.top_name].create_entity{name = entity.name, position = entity.position, force = force_player}
+		table.insert(accesses,{bottom_entity = entity, top_entity = u})
+		
+		local u2 = game.surfaces[surface.bottom_name].create_entity{name = entity.name, position = entity.position, force = force_player}				
+		table.insert(accesses2,{bottom_entity = u2, top_entity = entity})
+
+		print("top "..entity.surface.name)
+		print("middle "..u.surface.name)
+		print("bottom "..u2.surface.name)
+
+	elseif entity.surface.name == surface.bottom_name then
+		local u = game.surfaces[surface.middle_name].create_entity{name = entity.name, position = entity.position, force = force_player}				
+		table.insert(accesses2,{bottom_entity = entity, top_entity = u})
+
+		local u2 = game.surfaces[surface.top_name].create_entity{name = entity.name, position = entity.position, force = force_player}
+		table.insert(accesses,{bottom_entity = u, top_entity = u2})
+
+		print("top "..entity.surface.name)
+		print("middle "..u.surface.name)
+		print("bottom "..u2.surface.name)
+
+	end
+
+	print(#accesses .. " " .. #accesses2)
+	end
+
+local local_underground_added = function(entity,event)
+	if is_valid(entity) ~= true then return end	
+	if entity.name == underground_accessml then
+		local_underground_added_ml(entity,event)
+	else	
+		local_underground_added_std(entity,event)
+	end
+end
 
 local local_standard_filter = {
 	{filter = "name", name = underground_accumulator}, 
 	{filter = "name", name = underground_access},
 	{filter = "name", name = underground_access2},
+	{filter = "name", name = underground_accessml},
 	{filter = "name", name = battery_cell},
 	{filter = "name", name = used_battery_cell},
 	
@@ -995,8 +1158,6 @@ local local_entity_damaged = function(event)
 	end
 	end
 
-
-
 local local_show_camera = function(player,entity)
 		local zoom = 0.1
 		local camera = local_get_camera(player)
@@ -1019,7 +1180,7 @@ local local_on_selected_entity_changed = function(event)
 
 	local player = game.players[event.player_index]
 	local selected = player.selected
-	if selected ~= nil then
+	if selected ~= nil and selected.name ~= underground_accessml then
 		local surface = selected.surface
 		if surface == nil then return end
 		

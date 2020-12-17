@@ -13,6 +13,7 @@ local is_valid  = modmashsplinterairpurifier.util.is_valid
 local fail_place_entity  = modmashsplinterairpurifier.util.fail_place_entity
 
 local local_air_purifier_pump_added = function(entity,event)
+	
 	local r = 10
 	local aabb = entity.prototype.collision_box
     local box = { { entity.position.x - r - aabb.left_top.x, entity.position.y - r - aabb.left_top.y }, { entity.position.x + r + aabb.right_bottom.x, entity.position.y + r + aabb.right_bottom.y } }
@@ -25,6 +26,11 @@ local local_air_purifier_pump_added = function(entity,event)
 			return
 		end		
     end
+
+	--try_set_recipe(entity,air_purifier_prefix .. "hi")
+	entity.operable = false
+	--return
+	
 	tiles = entity.surface.find_tiles_filtered{area=box}
 	for _,tile in pairs(tiles) do
 		total = total + tile.prototype.emissions_per_second
@@ -33,11 +39,11 @@ local local_air_purifier_pump_added = function(entity,event)
 	if total<0.0024 then
 		try_set_recipe(entity,air_purifier_prefix .. "low")
 	elseif total < 0.0026 then
-		try_set_recipe(entity,air_purifier_prefix .. "med")
+		try_set_recipe(entity,air_purifier_prefix .. "medium")
 	else
 		try_set_recipe(entity,air_purifier_prefix .. "hi")
 	end
-	entity.operable = false
+	
 end
 
 script.on_event(defines.events.on_robot_built_entity,

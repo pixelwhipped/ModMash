@@ -1,16 +1,16 @@
 {
   "name": "modmashsplinterlogistics",
-  "version": "1.0.01",
+  "version": "1.1.01",
   "title": "ModMash Splinter, Logistics",
   "author": "PixelWhipped",
   "contact": "",
   "homepage": "https://www.patreon.com/user?u=15367757",
-  "factorio_version": "1.0",
+  "factorio_version": "1.1",
   "description": "Mod Mash Splinter for Logistics, includes 2 higher tiers belts and mini loaders",
   "dependencies": [
-    "base >= 1.0.0",
-    "modmashsplinter >= 1.0.06",
-    "modmashsplinterregenerative >= 1.0.01",
+    "base >= 1.1.0",
+    "modmashsplinter >= 1.1.01",
+    "modmashsplinterregenerative >= 1.1.01",
     "! modmash >= 0.0.0"    
   ]
 }

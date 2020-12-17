@@ -161,7 +161,7 @@ else
                 -0.09375,
                 -0.375
                 },
-                animation = {
+             animation = {
                 layers = {
                     {
                     filename = "__modmashsplinterassembling__/graphics/entity/assembling-machine-4/assembling-machine-4.png",

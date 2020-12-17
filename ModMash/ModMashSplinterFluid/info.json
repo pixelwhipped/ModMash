@@ -1,0 +1,16 @@
+{
+  "name": "modmashsplinterfluid",
+  "version": "1.1.01",
+  "title": "ModMash Splinter, Fluid Handling",
+  "author": "PixelWhipped",
+  "contact": "",
+  "homepage": "https://www.patreon.com/user?u=15367757",
+  "factorio_version": "1.1",
+  "description": "Mod Mash Splinter for Fluid Handling, Add's pipes and fluid control systems.",
+  "dependencies": [
+    "base >= 1.1.0",
+    "modmashsplinter >= 1.1.02",
+    "modmashsplinterresources >= 1.1.01",
+    "! modmash >= 0.0.0"    
+  ]
+}

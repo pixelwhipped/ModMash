@@ -71,7 +71,7 @@ if modmashsplinter.mod_request_item_substitutions == nil then
 		["sludge"] = {
 		func = 	function(qty,probability)
 			--defer to sludge if it exists
-			if local_get_item("sludge") ~= nil then 
+			if mods["modmashsplinterresources"] or local_get_item("sludge") ~= nil then 
 				if probability ~= nil then
 					return {{type = "fluid", name = "sludge", amount = qty }}
 				end
@@ -86,7 +86,7 @@ if modmashsplinter.mod_request_item_substitutions == nil then
 		["sludge-by-product"] = {
 		func = 	function(qty,probability)
 			--defer to sludge if it exists
-			if local_get_item("sludge") ~= nil then 
+			if mods["modmashsplinterresources"] or local_get_item("sludge") ~= nil then 
 				if probability ~= nil then
 					return {{"stone", amount = qty, probability = probability}}
 				end

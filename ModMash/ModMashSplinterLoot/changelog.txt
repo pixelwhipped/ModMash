@@ -1,8 +1,7 @@
 ﻿---------------------------------------------------------------------------------------------------
-Version: 1.0.03
-  Planning:
-    - Add acheivments
-    - add debre around cargo to make more visible in minimap alearts could be annoying
+Version: 1.1.01
+  Changes:
+    - 1.1.0 ready
 
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.02

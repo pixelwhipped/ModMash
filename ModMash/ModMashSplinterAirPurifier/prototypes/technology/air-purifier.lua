@@ -3,8 +3,9 @@
   {
     type = "technology",
     name = modmashsplinterairpurifier.defines.names.air_purifier,
-    icon = "__base__/graphics/technology/automation.png",
-    icon_size = 128,
+    icon = "__base__/graphics/technology/automation-2.png",
+    icon_size = 256,
+    icon_mipmaps = 4,
     effects =
     {
       {
@@ -31,8 +32,9 @@
   },{
     type = "technology",
     name = modmashsplinterairpurifier.defines.names.advanced_air_purifier,
-    icon = "__base__/graphics/technology/automation.png",
-    icon_size = 128,
+    icon = "__base__/graphics/technology/automation-2.png",
+    icon_size = 256,
+    icon_mipmaps = 4,
     effects =
     {
       {
@@ -59,8 +61,9 @@
   },{
     type = "technology",
     name = "sludge-treatment",
-    icon = "__base__/graphics/technology/automation.png",
-    icon_size = 128,
+    icon = "__base__/graphics/technology/automation-2.png",
+    icon_size = 256,
+    icon_mipmaps = 4,
     effects =
     {
       {
