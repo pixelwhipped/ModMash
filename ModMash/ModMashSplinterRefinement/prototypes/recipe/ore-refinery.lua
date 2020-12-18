@@ -2,13 +2,13 @@
 {
 	{
 		type = "recipe",
-		name = "mm-ore-refinery",	
+		name = "ore-refinery",	
 		enabled = "true",
 		ingredients =
 		{
 			{"stone", 3},
 			{"iron-plate", 2},
 		},
-		result = "mm-ore-refinery"
+		result = "ore-refinery"
 	}
 })

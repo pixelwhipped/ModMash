@@ -8,12 +8,12 @@ local local_register_resources = function()
 	if titanium_ore_name ~= nil then titanium_ore_name = titanium_ore_name.name else titanium_ore_name = "titanium-ore" end
 
 
-	if remote.interfaces["modmashsplinterunderground"] ~= nil and remote.interfaces["modmashsplinterloot"]["register_resource_level_one"] ~= nil then	
+	if remote.interfaces["modmashsplinterunderground"] ~= nil and remote.interfaces["modmashsplinterunderground"]["register_resource_level_one"] ~= nil then	
 		remote.call("modmashsplinterunderground","register_resource_level_one",{name = "alien-ore", probability = 0.1})
 		remote.call("modmashsplinterunderground","register_resource_level_one",{name = titanium_ore_name, probability = 0.1})
 		remote.call("modmashsplinterunderground","register_resource_level_one",{name = "sand", probability = 0.1})
 	end
-	if remote.interfaces["modmashsplinterunderground"] ~= nil and remote.interfaces["modmashsplinterloot"]["register_resource_level_two"] ~= nil then	
+	if remote.interfaces["modmashsplinterunderground"] ~= nil and remote.interfaces["modmashsplinterunderground"]["register_resource_level_two"] ~= nil then	
 		remote.call("modmashsplinterunderground","register_resource_level_two",{name = "alien-ore", probability = 0.4})
 		remote.call("modmashsplinterunderground","register_resource_level_two",{name = titanium_ore_name, probability = 0.2})
 		remote.call("modmashsplinterunderground","register_resource_level_two",{name = "sand", probability = 0.2})

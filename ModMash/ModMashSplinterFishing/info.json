@@ -9,8 +9,8 @@
   "description": "Mod Mash Splinter for Fishing, makes fish more useful",
   "dependencies": [
     "base >= 1.1.0",
-    "modmashsplinter >= 1.1.01",
-    "modmashsplinterresources >= 1.1.01",
+    "modmashsplinter >= 1.1.03",
+    "modmashsplinterresources >= 1.1.02",
     "! modmash >= 0.0.0"
   ]
 }

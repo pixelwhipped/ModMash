@@ -9,7 +9,7 @@
   "description": "Mod Mash Splinter for Ore Processing, allows extraction of other ores from another.",
   "dependencies": [
     "base >= 1.1.0",
-    "modmashsplinter >= 1.1.01",
+    "modmashsplinter >= 1.1.03",
     "! modmash >= 0.0.0"
   ]
 }

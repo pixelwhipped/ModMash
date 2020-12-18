@@ -9,7 +9,7 @@
   "description": "Mod Mash Splinter for Ore Resources and Intermediates, adds ores, fluids and Intermediates used by other splinters",
   "dependencies": [
     "base >= 1.1.0",
-    "modmashsplinter >= 1.1.01",
+    "modmashsplinter >= 1.1.03",
     "! modmash >= 0.0.0"    
   ]
 }
