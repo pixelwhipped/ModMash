@@ -517,20 +517,20 @@ local local_get_standard_results = function(recipe)
 end
 
 local local_get_normal_results = function(recipe)
-	if recipe == nil then return nil end
-	local result_count = 1		
-	if recipe.normal ~= nil and type(recipe.normal) == "table" and recipe.normal.result ~= nil then
+	if recipe == nil or recipe.normal == nil then return nil end	--ok should be somthing or false
+	if recipe.normal ~= false and recipe.normal.results ~= nil then return recipe.normal.results end		
+	if recipe.normal ~= false and recipe.normal.result ~= nil and type(recipe.normal.result) == "string" then
+		local result_count = 1	
 		result_count = recipe.normal.result_count or 1
-		if type(recipe.normal.result) == "string" then
-			return {{type = "item", name = recipe.normal.result, amount = result_count}}
-		elseif recipe.normal.result.name then
-			return {recipe.result}
-		elseif recipe.normal.result[1] then
-			result_count = recipe.normal.result[2] or result_count
-			return {{type = "item", name = recipe.normal.result[1], amount = result_count}}
-		end		
+		return {{type = "item", name = recipe.normal.result, amount = result_count}}
 	end
-	return recipe.results
+	if recipe.expensive ~= false and recipe.expensive.results ~= nil then return recipe.expensive.results end		
+	if recipe.expensive ~= false and recipe.expensive.result ~= nil and type(recipe.expensive.result) == "string" then
+		local result_count = 1	
+		result_count = recipe.expensive.result_count or 1
+		return {{type = "item", name = recipe.expensive.result, amount = result_count}}
+	end
+	return nil
 end
 
 local local_add_ingredient_to_recipe_type = function(recipe, item)

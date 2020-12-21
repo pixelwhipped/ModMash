@@ -25,7 +25,7 @@ local local_create_conversions = function()
 				local item = data.raw["item"][resource.minable.result]
 				if item == nil then log("Nil item "..resource.minable.result) end
 				if item.stack_size == nil then log("Nil stack "..resource.minable.result) end
-				if item ~= nil and item.stack_size ~= nil then
+				if item and item ~= nil and item.stack_size ~= nil then
 					data:extend(
 					{
 						{
@@ -111,7 +111,7 @@ local local_create_ore_conversions = function()
 				log(resource.minable.result)
 				local item = data.raw["item"][resource.minable.result]
 				if item == nil then log("Nil item "..resource.minable.result) end
-				if item.stack_size == nil then log("Nil stack "..resource.minable.result) end
+				if item and item.stack_size == nil then log("Nil stack "..resource.minable.result) end
 				if item ~= nil and item.stack_size ~= nil then
 					table.insert(ores,item)
 				end

@@ -1185,6 +1185,7 @@ local local_on_selected_entity_changed = function(event)
 		if surface == nil then return end
 		
 		local s = surfaces[surface.name]
+		if not s then return end
 		local accesses = surfaces[s.top_name].accesses
 		local accesses2 = surfaces[s.middle_name].accesses
 	

@@ -53,6 +53,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModMashSplinterFluid", "Mod
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModMashSplinterRecycling", "ModMashSplinterRecycling\ModMashSplinterRecycling.csproj", "{47D4FFFB-89C3-447F-9FC4-914219BBBC79}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModMashSplinterDefense", "ModMashSplinterDefense\ModMashSplinterDefense.csproj", "{893D74A1-A503-4FE1-882A-CABA47A66780}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -155,6 +157,10 @@ Global
 		{47D4FFFB-89C3-447F-9FC4-914219BBBC79}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47D4FFFB-89C3-447F-9FC4-914219BBBC79}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47D4FFFB-89C3-447F-9FC4-914219BBBC79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{893D74A1-A503-4FE1-882A-CABA47A66780}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{893D74A1-A503-4FE1-882A-CABA47A66780}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{893D74A1-A503-4FE1-882A-CABA47A66780}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{893D74A1-A503-4FE1-882A-CABA47A66780}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -176,6 +182,7 @@ Global
 		{39E93DAA-BBF8-4D59-8C2D-C09284FFAFFC} = {D7B0BC2C-CCC1-48E9-8025-CD4E2632FF8C}
 		{C886E7C2-6E72-4906-A606-E71995C74AA8} = {D7B0BC2C-CCC1-48E9-8025-CD4E2632FF8C}
 		{47D4FFFB-89C3-447F-9FC4-914219BBBC79} = {D7B0BC2C-CCC1-48E9-8025-CD4E2632FF8C}
+		{893D74A1-A503-4FE1-882A-CABA47A66780} = {D7B0BC2C-CCC1-48E9-8025-CD4E2632FF8C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B16926D6-3B1B-4B40-9225-A9261A0E28AD}

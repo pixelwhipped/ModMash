@@ -1,6 +1,6 @@
 {
   "name": "modmashsplinterresources",
-  "version": "1.1.02",
+  "version": "1.1.03",
   "title": "ModMash Splinter, Resources and Intermediates",
   "author": "PixelWhipped",
   "contact": "",
@@ -9,7 +9,7 @@
   "description": "Mod Mash Splinter for Ore Resources and Intermediates, adds ores, fluids and Intermediates used by other splinters",
   "dependencies": [
     "base >= 1.1.0",
-    "modmashsplinter >= 1.1.03",
+    "modmashsplinter >= 1.1.04",
     "! modmash >= 0.0.0"    
   ]
 }

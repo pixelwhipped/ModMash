@@ -112,7 +112,7 @@ data:extend(
 					priority="high",
 					width = 214,
 					height = 226,
-					frame_count = 5,
+					frame_count = 4,
 					animation_speed = 0.5,
 					scale = 0.5
 			    }
@@ -123,7 +123,7 @@ data:extend(
 				width = 107,
 				height = 113,
 				frame_count = 1,
-				animation_speed = 0.5,
+				--animation_speed = 0.5,
 				hr_version =
 				{
 					filename = "__modmashsplinterfishing__/graphics/entity/nursery/hr-nurseryh.png",
@@ -140,7 +140,7 @@ data:extend(
 				width = 107,
 				height = 113,
 				frame_count = 1,
-				animation_speed = 0.5,
+				--animation_speed = 0.5,
 				hr_version =
 				{
 					filename = "__modmashsplinterfishing__/graphics/entity/nursery/hr-nurseryv.png",
@@ -157,7 +157,7 @@ data:extend(
 				width = 107,
 				height = 113,
 				frame_count = 1,
-				animation_speed = 0.5,
+				--animation_speed = 0.5,
 				hr_version =
 				{
 					filename = "__modmashsplinterfishing__/graphics/entity/nursery/hr-nurseryh.png",
