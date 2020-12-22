@@ -9,7 +9,7 @@
   "description": "Mod Mash Splinter for Defense, Adds alien defense systems",
   "dependencies": [
     "base >= 1.0.0",
-    "modmashsplinter >= 1.1.03",
+    "modmashsplinter >= 1.1.04",
     "! modmash >= 0.0.0",
   ]
 }
