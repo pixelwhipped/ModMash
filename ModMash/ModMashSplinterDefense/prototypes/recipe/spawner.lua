@@ -16,7 +16,7 @@
 		results =
 		{			
 			{
-			name = "spitter-spawner",
+			name = "spawner",
 			amount = 1,
 			}
 		},

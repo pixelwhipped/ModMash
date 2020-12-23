@@ -1,4 +1,4 @@
 ﻿require("prototypes.scripts.defines") 
-if not global.modmashsplinterunderground then global.modmashsplinterunderground = {} end
+if not global.modmashsplinterdefense then global.modmashsplinterdefense = {} end
 
-require("prototypes.scripts.underground") 
+require("prototypes.scripts.toxin-and-wall-and-spawners") 

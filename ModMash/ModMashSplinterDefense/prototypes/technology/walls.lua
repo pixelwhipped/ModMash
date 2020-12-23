@@ -3,8 +3,9 @@
      {
         type = "technology",
         name = "regenerative-wall",
-        icon_size = 128,
-        icon = "__base__/graphics/technology/stone-walls.png",
+              icon_mipmaps = 4,
+      icon_size = 256,
+        icon = "__base__/graphics/technology/stone-wall.png",
         effects =
         {
           {
@@ -29,8 +30,9 @@
       {
         type = "technology",
         name = "titanium-walls",
-        icon_size = 128,
-        icon = "__base__/graphics/technology/stone-walls.png",
+              icon_mipmaps = 4,
+      icon_size = 256,
+        icon = "__base__/graphics/technology/stone-wall.png",
         effects =
         {
           {
@@ -38,7 +40,7 @@
             recipe = "titanium-wall"
           }
         },
-	    prerequisites = {"gates"},
+	    prerequisites = {"stone-wall"},
         unit =
         {
           count = 50,

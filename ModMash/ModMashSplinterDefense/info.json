@@ -5,11 +5,13 @@
   "author": "PixelWhipped",
   "contact": "",
   "homepage": "https://www.patreon.com/user?u=15367757",
-  "factorio_version": "1.0",
+  "factorio_version": "1.1",
   "description": "Mod Mash Splinter for Defense, Adds alien defense systems",
   "dependencies": [
-    "base >= 1.0.0",
+    "base >= 1.1.0",
     "modmashsplinter >= 1.1.04",
-    "! modmash >= 0.0.0",
+    "modmashsplinterregenerative >= 1.1.01",
+    "modmashsplinterresources >= 1.1.03",    
+    "! modmash >= 0.0.0"
   ]
 }

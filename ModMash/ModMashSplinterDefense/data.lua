@@ -1,20 +1,19 @@
 ﻿require ("prototypes.scripts.defines")
-require("prototypes.scripts.util")
 
-require ("prototypes.item.underground")
-require ("prototypes.entity.underground")
-require ("prototypes.recipe.underground")
-require ("prototypes.technology.underground")
+require ("prototypes.item.ammo")
+require ("prototypes.item.juice")
+require ("prototypes.item.spawner")
+require ("prototypes.item.walls")
+require ("prototypes.item.mines")
 
-require ("prototypes.entity.rocks")
+require ("prototypes.entity.biter-neuro-toxin")
+require ("prototypes.entity.walls")
 
-data:extend(
-{
-  {
-    type = "achievement",
-    name = "hollow_earth",
-    order = "g[secret]-a[hollow_earth]",
-    icon = "__modmashsplinterunderground__/graphics/achievement/hollow_earth.png",
-    icon_size = 128
-  }
-})
+require ("prototypes.recipe.ammo")
+require ("prototypes.recipe.juice")
+require ("prototypes.recipe.spawner")
+require ("prototypes.recipe.walls")
+
+require ("prototypes.technology.ammo")
+require ("prototypes.technology.walls")
+require ("prototypes.technology.spawner")

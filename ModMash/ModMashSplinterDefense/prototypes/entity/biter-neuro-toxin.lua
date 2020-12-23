@@ -1,4 +1,4 @@
-﻿require("prototypes.scripts.util")
+﻿require("prototypes.scripts.defines")
 
 local get_name_for = modmashsplinterdefense.util.get_name_for
 
@@ -7,8 +7,8 @@ data:extend({
     type = "ammo",
     name = "biter-neuro-toxin-artillery-shell",
     icon = "__modmashsplinterdefense__/graphics/icons/biter-neuro-toxin.png",
-
-    icon_size = 32,
+	icon_size = 64,
+	icon_mipmaps = 4,
     ammo_type =
     {
       category = "artillery-shell",
@@ -46,7 +46,7 @@ data:extend({
     map_color = {r=0.2, g=1, b=0},
     picture =
     {
-      filename = "__base__/graphics/entity/artillery-projectile/hr-shell.png",
+      filename = "__modmashsplinterdefense__/graphics/entity/shells/hr-alien-shell.png",
       width = 64,
       height = 64,
       scale = 0.5,
@@ -390,7 +390,8 @@ data:extend({
     type = "technology",
     name = "biter-neuro-toxin-artillery-shell",
     icon = "__base__/graphics/technology/artillery.png",
-    icon_size = 128,
+    icon_mipmaps = 4,
+    icon_size = 256,
     effects =
     {
       {
@@ -417,7 +418,8 @@ data:extend({
 			type = "technology",
 			name = "enhance-biter-neuro-toxin-range-1",
 			icon = "__base__/graphics/technology/artillery-range.png",
-			icon_size = 128,
+			icon_mipmaps = 4,
+			icon_size = 256,
 			localised_name = {"technology-name.enhance-biter-neuro-toxin-range-1"},
 			localised_description =  {"technology-description.enhance-biter-neuro-toxin-range-1"},
 			effects =
@@ -469,7 +471,8 @@ local create_technology = function(level)
 			type = "technology",
 			name = "enhance-biter-neuro-toxin-range-"..level,
 			icon = "__base__/graphics/technology/artillery-range.png",
-			icon_size = 128,
+			icon_mipmaps = 4,
+			icon_size = 256,
 			localised_name = {"",{"technology-name.enhance-biter-neuro-toxin-range-1"}," ",level},
 			localised_description =  {"technology-description.enhance-biter-neuro-toxin-range-1"},
 			effects =

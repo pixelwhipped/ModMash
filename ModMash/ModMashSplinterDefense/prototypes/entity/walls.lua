@@ -1,5 +1,5 @@
 ﻿local local_get_remnants = function(name)
-    return {
+    data:extend({ {
       animation = {
         {
           direction_count = 2,
@@ -154,6 +154,9 @@
       time_before_removed = 54000,
       type = "corpse"
     }
+    })
+
+    return name.."-remnants"
 end
 
 data:extend(
@@ -162,7 +165,8 @@ data:extend(
             type = "wall",
             name = "regenerative-wall",
             icon = "__modmashsplinterdefense__/graphics/icons/regenerative-wall.png",
-            icon_size = 32,
+       		icon_size = 64,
+		    icon_mipmaps = 4,    
             flags = {"placeable-neutral", "player-creation"},
             collision_box = {{-0.29, -0.29}, {0.29, 0.29}},
             selection_box = {{-0.5, -0.5}, {0.5, 0.5}},
@@ -239,7 +243,7 @@ data:extend(
                     }
                   },
                   {
-                    filename = "__modmashsplinterdefense__/graphics/entity/"..name.."/wall-single-shadow.png",
+                    filename = "__base__/graphics/entity/wall/wall-single-shadow.png",
                     priority = "extra-high",
                     width = 50,
                     height = 32,
@@ -248,7 +252,7 @@ data:extend(
                     draw_as_shadow = true,
                     hr_version =
                     {
-                      filename = "__modmashsplinterdefense__/graphics/entity/"..name.."/hr-wall-single-shadow.png",
+                      filename = "__base__/graphics/entity/wall/hr-wall-single-shadow.png",
                       priority = "extra-high",
                       width = 98,
                       height = 60,
@@ -285,7 +289,7 @@ data:extend(
                     }
                   },
                   {
-                    filename = "__modmashsplinterdefense__/graphics/entity/"..name.."/wall-vertical-shadow.png",
+                    filename = "__base__/graphics/entity/wall/wall-vertical-shadow.png",
                     priority = "extra-high",
                     width = 50,
                     height = 58,
@@ -294,7 +298,7 @@ data:extend(
                     draw_as_shadow = true,
                     hr_version =
                     {
-                      filename = "__modmashsplinterdefense__/graphics/entity/"..name.."/hr-wall-vertical-shadow.png",
+                      filename = "__base__/graphics/entity/wall/hr-wall-vertical-shadow.png",
                       priority = "extra-high",
                       width = 98,
                       height = 110,
@@ -331,7 +335,7 @@ data:extend(
                     }
                   },
                   {
-                    filename = "__modmashsplinterdefense__/graphics/entity/"..name.."/wall-horizontal-shadow.png",
+                    filename = "__base__/graphics/entity/wall/wall-horizontal-shadow.png",
                     priority = "extra-high",
                     width = 62,
                     height = 36,
@@ -340,7 +344,7 @@ data:extend(
                     draw_as_shadow = true,
                     hr_version =
                     {
-                      filename = "__modmashsplinterdefense__/graphics/entity/"..name.."/hr-wall-horizontal-shadow.png",
+                      filename = "__base__/graphics/entity/wall/hr-wall-horizontal-shadow.png",
                       priority = "extra-high",
                       width = 124,
                       height = 68,
@@ -377,7 +381,7 @@ data:extend(
                     }
                   },
                   {
-                    filename = "__modmashsplinterdefense__/graphics/entity/"..name.."/wall-corner-right-shadow.png",
+                    filename = "__base__/graphics/entity/wall/wall-corner-right-shadow.png",
                     priority = "extra-high",
                     width = 62,
                     height = 60,
@@ -386,7 +390,7 @@ data:extend(
                     draw_as_shadow = true,
                     hr_version =
                     {
-                      filename = "__modmashsplinterdefense__/graphics/entity/"..name.."/hr-wall-corner-right-shadow.png",
+                      filename = "__base__/graphics/entity/wall/hr-wall-corner-right-shadow.png",
                       priority = "extra-high",
                       width = 124,
                       height = 120,
@@ -423,7 +427,7 @@ data:extend(
                     }
                   },
                   {
-                    filename = "__modmashsplinterdefense__/graphics/entity/"..name.."/wall-corner-left-shadow.png",
+                    filename = "__base__/graphics/entity/wall/wall-corner-left-shadow.png",
                     priority = "extra-high",
                     width = 54,
                     height = 60,
@@ -432,7 +436,7 @@ data:extend(
                     draw_as_shadow = true,
                     hr_version =
                     {
-                      filename = "__modmashsplinterdefense__/graphics/entity/"..name.."/hr-wall-corner-left-shadow.png",
+                      filename = "__base__/graphics/entity/wall/hr-wall-corner-left-shadow.png",
                       priority = "extra-high",
                       width = 102,
                       height = 120,
@@ -469,7 +473,7 @@ data:extend(
                     }
                   },
                   {
-                    filename = "__modmashsplinterdefense__/graphics/entity/"..name.."/wall-t-shadow.png",
+                    filename = "__base__/graphics/entity/wall/wall-t-shadow.png",
                     priority = "extra-high",
                     width = 62,
                     height = 60,
@@ -478,7 +482,7 @@ data:extend(
                     draw_as_shadow = true,
                     hr_version =
                     {
-                      filename = "__modmashsplinterdefense__/graphics/entity/"..name.."/hr-wall-t-shadow.png",
+                      filename = "__base__/graphics/entity/wall/hr-wall-t-shadow.png",
                       priority = "extra-high",
                       width = 124,
                       height = 120,
@@ -515,7 +519,7 @@ data:extend(
                     }
                   },
                   {
-                    filename = "__modmashsplinterdefense__/graphics/entity/"..name.."/wall-ending-right-shadow.png",
+                    filename = "__base__/graphics/entity/wall/wall-ending-right-shadow.png",
                     priority = "extra-high",
                     width = 62,
                     height = 36,
@@ -524,7 +528,7 @@ data:extend(
                     draw_as_shadow = true,
                     hr_version =
                     {
-                      filename = "__modmashsplinterdefense__/graphics/entity/"..name.."/hr-wall-ending-right-shadow.png",
+                      filename = "__base__/graphics/entity/wall/hr-wall-ending-right-shadow.png",
                       priority = "extra-high",
                       width = 124,
                       height = 68,
@@ -561,7 +565,7 @@ data:extend(
                     }
                   },
                   {
-                    filename = "__modmashsplinterdefense__/graphics/entity/"..name.."/wall-ending-left-shadow.png",
+                    filename = "__base__/graphics/entity/wall/wall-ending-left-shadow.png",
                     priority = "extra-high",
                     width = 54,
                     height = 36,
@@ -570,7 +574,7 @@ data:extend(
                     draw_as_shadow = true,
                     hr_version =
                     {
-                      filename = "__modmashsplinterdefense__/graphics/entity/"..name.."/hr-wall-ending-left-shadow.png",
+                      filename = "__base__/graphics/entity/wall/hr-wall-ending-left-shadow.png",
                       priority = "extra-high",
                       width = 102,
                       height = 68,
@@ -624,7 +628,7 @@ data:extend(
                     }
                   },
                   {
-                    filename = "__modmashsplinterdefense__/graphics/entity/"..name.."/wall-patch-shadow.png",
+                    filename = "__base__/graphics/entity/wall/wall-patch-shadow.png",
                     priority = "extra-high",
                     width = 74,
                     height = 52,
@@ -632,7 +636,7 @@ data:extend(
                     draw_as_shadow = true,
                     hr_version =
                     {
-                      filename = "__modmashsplinterdefense__/graphics/entity/"..name.."/hr-wall-patch-shadow.png",
+                      filename = "__base__/graphics/entity/wall/hr-wall-patch-shadow.png",
                       priority = "extra-high",
                       width = 144,
                       height = 100,
@@ -664,7 +668,7 @@ data:extend(
                     }
                   },
                   {
-                    filename = "__modmashsplinterdefense__/graphics/entity/"..name.."/wall-gate-shadow.png",
+                    filename = "__base__/graphics/entity/wall/wall-gate-shadow.png",
                     priority = "extra-high",
                     width = 66,
                     height = 40,
@@ -672,7 +676,7 @@ data:extend(
                     draw_as_shadow = true,
                     hr_version =
                     {
-                      filename = "__modmashsplinterdefense__/graphics/entity/"..name.."/hr-wall-gate-shadow.png",
+                      filename = "__base__/graphics/entity/wall/hr-wall-gate-shadow.png",
                       priority = "extra-high",
                       width = 130,
                       height = 78,
@@ -689,7 +693,7 @@ data:extend(
             {
               sheet =
               {
-                filename = "__modmashsplinterdefense__/graphics/entity/"..name.."/wall-diode-green.png",
+                filename = "__base__/graphics/entity/wall/wall-diode-green.png",
                 priority = "extra-high",
                 width = 38,
                 height = 24,
@@ -697,7 +701,7 @@ data:extend(
                 shift = util.by_pixel(-2, -24),
                 hr_version =
                 {
-                  filename = "__modmashsplinterdefense__/graphics/entity/"..name.."/hr-wall-diode-green.png",
+                  filename = "__base__/graphics/entity/wall/hr-wall-diode-green.png",
                   priority = "extra-high",
                   width = 72,
                   height = 44,
@@ -744,7 +748,7 @@ data:extend(
             {
               sheet =
               {
-                filename = "__modmashsplinterdefense__/graphics/entity/"..name.."/wall-diode-red.png",
+                filename = "__base__/graphics/entity/wall/wall-diode-red.png",
                 priority = "extra-high",
                 width = 38,
                 height = 24,
@@ -752,7 +756,7 @@ data:extend(
                 shift = util.by_pixel(-2, -24),
                 hr_version =
                 {
-                  filename = "__modmashsplinterdefense__/graphics/entity/"..name.."/hr-wall-diode-red.png",
+                  filename = "__base__/graphics/entity/wall/hr-wall-diode-red.png",
                   priority = "extra-high",
                   width = 72,
                   height = 44,
@@ -804,7 +808,8 @@ data:extend(
             type = "wall",
             name = "titanium-wall",
             icon = "__modmashsplinterdefense__/graphics/icons/titanium-wall.png",
-            icon_size = 32,
+            icon_size = 64,
+		    icon_mipmaps = 4,    
             flags = {"placeable-neutral", "player-creation"},
             collision_box = {{-0.29, -0.29}, {0.29, 0.29}},
             selection_box = {{-0.5, -0.5}, {0.5, 0.5}},
