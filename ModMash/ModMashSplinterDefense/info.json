@@ -6,7 +6,7 @@
   "contact": "",
   "homepage": "https://www.patreon.com/user?u=15367757",
   "factorio_version": "1.1",
-  "description": "Mod Mash Splinter for Defense, Adds alien defense systems",
+  "description": "Mod Mash Splinter for Defense, Adds alien defense systems and new artillery including atomic",
   "dependencies": [
     "base >= 1.1.0",
     "modmashsplinter >= 1.1.04",

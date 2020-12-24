@@ -226,6 +226,9 @@
     <None Update="locale\en\locale.cfg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="prototypes\entity\atomic-artillery.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="prototypes\entity\biter-neuro-toxin.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
