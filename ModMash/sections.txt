@@ -6,7 +6,14 @@ Work with Spidertons, Players and Roboports
 Use tech to extend Valyrie range,  swarm size and allow defense of area's connected to roboport networks
 ***
 
-https://mods.factorio.com/mod/modmashsplintervalkyries
+#Air Purifiers
+Air Purifiers clean up the air and allow for biter de-evolution.
+There are 2 tiers of Air Purifiers both of which produce water and a by-product. The by-product can be used to create ore depending on the type of by-product.
+![AirPurifiers](https://raw.githubusercontent.com/pixelwhipped/ModMash/master/ModMash/Web/mmsapweb01.png)
+Note 1: the by-product will change depending if sluge is not found.
+Note 2: Air Purifies cannot be placed on tiles that do not absorb pollution and the amount of water/byproduct is dependent on the underlying tiles.
+Note 3: de-evolution can be disabled in settings.
+
 https://mods.factorio.com/mod/modmashsplinterairpurifier
 https://mods.factorio.com/mod/modmashsplinterboom   
 https://mods.factorio.com/mod/modmashsplinterresources 

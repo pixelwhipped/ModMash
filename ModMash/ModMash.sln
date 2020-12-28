@@ -60,6 +60,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{B3BA1155-9461-45D6-B6E3-B59799804573}"
 	ProjectSection(SolutionItems) = preProject
 		bottom.txt = bottom.txt
+		sections.txt = sections.txt
 		top.txt = top.txt
 	EndProjectSection
 EndProject
