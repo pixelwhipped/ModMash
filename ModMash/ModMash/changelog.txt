@@ -1,4 +1,9 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.02
+  Changes:
+    - Dependancy update
+
+---------------------------------------------------------------------------------------------------
 Version: 1.1.01
   Changes:
     - remove all old code start using splinter, will now work as direct replacement for 0.18 to 1.1

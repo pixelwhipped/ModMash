@@ -1,0 +1,26 @@
+#Valkyries(Combat Bots)
+Valkyries serve as either combat bots from roboports or as constructions bots.
+These drones operate with hit and run tactics, move in fast take your shots and move out.
+Work with Spidertons, Players and Roboports
+![Valkyries](https://raw.githubusercontent.com/pixelwhipped/ModMash/master/ModMash/Web/combat.png)
+Use tech to extend Valyrie range,  swarm size and allow defense of area's connected to roboport networks
+***
+
+https://mods.factorio.com/mod/modmashsplintervalkyries
+https://mods.factorio.com/mod/modmashsplinterairpurifier
+https://mods.factorio.com/mod/modmashsplinterboom   
+https://mods.factorio.com/mod/modmashsplinterresources 
+https://mods.factorio.com/mod/modmashsplinterregenerative
+https://mods.factorio.com/mod/modmashsplinterassembling
+https://mods.factorio.com/mod/modmashsplinterelectronics
+https://mods.factorio.com/mod/modmashsplinterenrichment
+https://mods.factorio.com/mod/modmashsplinterfishing
+https://mods.factorio.com/mod/modmashsplinterfluid
+https://mods.factorio.com/mod/modmashsplinterlogistics
+https://mods.factorio.com/mod/modmashsplinterloot
+https://mods.factorio.com/mod/modmashsplinterrecycling
+https://mods.factorio.com/mod/modmashsplinterrefinement
+https://mods.factorio.com/mod/modmashsplinterregenerative
+https://mods.factorio.com/mod/modmashsplintersubspacelogistics
+https://mods.factorio.com/mod/modmashsplinterunderground
+https://mods.factorio.com/mod/modmashsplinterdefense

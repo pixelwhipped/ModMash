@@ -599,3 +599,19 @@ data:extend(
 	}
 })
 end
+
+if not data.raw.recipe["sand-from-stone"] then
+  data:extend({
+    {
+      ingredients = {
+        { "stone", 1 }
+      },
+      name = "sand-from-stone",
+      result = "sand",
+      result_count = 2,
+      type = "recipe",
+      enabled = true,
+      energy_required = 0.5,
+    }
+  })
+end

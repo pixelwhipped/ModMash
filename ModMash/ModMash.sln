@@ -57,6 +57,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModMashSplinterDefense", "M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModMashSplinterSubspaceLogistics", "ModMashSplinterSubspaceLogistics\ModMashSplinterSubspaceLogistics.csproj", "{5A4CAD4D-D8A3-48D3-A296-C0A6ABD3872E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{B3BA1155-9461-45D6-B6E3-B59799804573}"
+	ProjectSection(SolutionItems) = preProject
+		bottom.txt = bottom.txt
+		top.txt = top.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
