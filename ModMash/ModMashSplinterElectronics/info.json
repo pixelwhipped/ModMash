@@ -1,6 +1,6 @@
 {
   "name": "modmashsplinterelectronics",
-  "version": "1.1.01",
+  "version": "1.1.02",
   "title": "ModMash Splinter, Electronics",
   "author": "PixelWhipped",
   "contact": "",
@@ -9,7 +9,6 @@
   "description": "Mod Mash Splinter for Electronics, Increases circuit production chain complexity",
   "dependencies": [
     "base >= 1.1.0",
-    "modmashsplinter >= 1.1.01",
-    "! modmash >= 0.0.0"
+    "modmashsplinter >= 1.1.01"
   ]
 }

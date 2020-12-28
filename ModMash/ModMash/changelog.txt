@@ -1,4 +1,9 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.01
+  Changes:
+    - remove all old code start using splinter, will now work as direct replacement for 0.18 to 1.1
+
+---------------------------------------------------------------------------------------------------
 Version: 0.18.62
   Changes:
     - added {raise_destroy = true} for droids

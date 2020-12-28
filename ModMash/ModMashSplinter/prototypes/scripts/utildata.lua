@@ -386,8 +386,8 @@ local local_create_layered_icon_using = function(initial_icons)
 					end				
 				else
 					
-					log("adding single icon from prototype with icon")
-					log(serpent.block(icon.from))
+					--log("adding single icon from prototype with icon")
+					--log(serpent.block(icon.from))
 					table.insert(icons,{
 						icon = icon.from.icon,
 						icon_mipmaps = icon.from.icon_mipmaps,
@@ -468,7 +468,7 @@ local local_create_layered_icon_using = function(initial_icons)
 			table.insert(base_icon,current_icon)
 		end
 	end
-	--log(serpent.block(base_icon))
+	log(serpent.block(base_icon))
 	return base_icon
 end
 

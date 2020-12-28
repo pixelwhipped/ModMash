@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ModMash
 {
-    class Program
+    public static class program
     {
-        static void Main(string[] args)
-        {
-            //System.Diagnostics.Process.Start("steam://rungameid/427520");
-        }
+        public static void Main() { }
     }
 }

@@ -1,0 +1,16 @@
+{
+  "name": "modmashsplintersubspacelogistics",
+  "version": "1.1.02",
+  "title": "ModMash Splinter, Subspace Logistics",
+  "author": "PixelWhipped",
+  "contact": "",
+  "homepage": "https://www.patreon.com/user?u=15367757",
+  "factorio_version": "1.1",
+  "description": "Mod Mash Splinter for Subspace Logistics, adds super material whiich allows matter subspace storage and transport",
+  "dependencies": [
+    "base >= 1.1.0",
+    "modmashsplinter >= 1.1.05",
+    "modmashsplinterresources >= 1.1.05",
+    "modmashsplinterassembling >= 1.1.02"
+  ]
+}

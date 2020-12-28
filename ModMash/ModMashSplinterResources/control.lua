@@ -6,18 +6,38 @@ local local_register_resources = function()
 	local titanium_ore_name = get_item("titanium-ore") 
 	if titanium_ore_name == nil then titanium_ore_name = get_item("rutile-ore") end
 	if titanium_ore_name ~= nil then titanium_ore_name = titanium_ore_name.name else titanium_ore_name = "titanium-ore" end
-
+	local level_1_resources = {
+		{name = "alien-ore", probability = 0.1},
+		{name = titanium_ore_name, probability = 0.1},
+		{name = "sand", probability = 0.1},
+	}
+	local level_2_resources = {
+		{name = "alien-ore", probability = 0.4},
+		{name = titanium_ore_name, probability = 0.2},
+		{name = "sand", probability = 0.2},
+		{name = "sulfur", probability = 0.1},
+	}
 
 	if remote.interfaces["modmashsplinterunderground"] ~= nil and remote.interfaces["modmashsplinterunderground"]["register_resource_level_one"] ~= nil then	
-		remote.call("modmashsplinterunderground","register_resource_level_one",{name = "alien-ore", probability = 0.1})
-		remote.call("modmashsplinterunderground","register_resource_level_one",{name = titanium_ore_name, probability = 0.1})
-		remote.call("modmashsplinterunderground","register_resource_level_one",{name = "sand", probability = 0.1})
+		for _, res in pairs(level_1_resources) do
+			if game.entity_prototypes[res.name] ~= nil then
+				remote.call("modmashsplinterunderground","register_resource_level_one",res)
+			end
+		end
+		--remote.call("modmashsplinterunderground","register_resource_level_one",{name = "alien-ore", probability = 0.1})
+		--remote.call("modmashsplinterunderground","register_resource_level_one",{name = titanium_ore_name, probability = 0.1})
+		--remote.call("modmashsplinterunderground","register_resource_level_one",{name = "sand", probability = 0.1})
 	end
 	if remote.interfaces["modmashsplinterunderground"] ~= nil and remote.interfaces["modmashsplinterunderground"]["register_resource_level_two"] ~= nil then	
-		remote.call("modmashsplinterunderground","register_resource_level_two",{name = "alien-ore", probability = 0.4})
-		remote.call("modmashsplinterunderground","register_resource_level_two",{name = titanium_ore_name, probability = 0.2})
-		remote.call("modmashsplinterunderground","register_resource_level_two",{name = "sand", probability = 0.2})
-		remote.call("modmashsplinterunderground","register_resource_level_two",{name = "sulfur", probability = 0.1})
+		for _, res in pairs(level_2_resources) do
+			if game.entity_prototypes[res.name] ~= nil then
+				remote.call("modmashsplinterunderground","register_resource_level_two",res)
+			end
+		end
+		--remote.call("modmashsplinterunderground","register_resource_level_two",{name = "alien-ore", probability = 0.4})
+		--remote.call("modmashsplinterunderground","register_resource_level_two",{name = titanium_ore_name, probability = 0.2})
+		--remote.call("modmashsplinterunderground","register_resource_level_two",{name = "sand", probability = 0.2})
+		--remote.call("modmashsplinterunderground","register_resource_level_two",{name = "sulfur", probability = 0.1})
 	end
 	resources_registered = true
 end

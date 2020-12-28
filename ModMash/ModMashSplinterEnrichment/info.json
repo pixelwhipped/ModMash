@@ -1,6 +1,6 @@
 {
   "name": "modmashsplinterenrichment",
-  "version": "1.1.01",
+  "version": "1.1.02",
   "title": "ModMash Splinter, Ore Processing",
   "author": "PixelWhipped",
   "contact": "",
@@ -9,7 +9,6 @@
   "description": "Mod Mash Splinter for Ore Processing, allows extraction of other ores from another.",
   "dependencies": [
     "base >= 1.1.0",
-    "modmashsplinter >= 1.1.03",
-    "! modmash >= 0.0.0"
+    "modmashsplinter >= 1.1.03"
   ]
 }

@@ -38,5 +38,63 @@
         },
         time = 15
       }
-    }
+    },
+    {
+        type = "technology",
+        name = "fish-juice",
+        icon = "__modmashsplinterresources__/graphics/technology/fish.png",
+        icon_size = 128,
+        effects =
+        {
+          {
+            type = "unlock-recipe",
+            recipe = "fish-juice"
+          }
+        },
+        prerequisites =
+        {
+          "fish1"
+        },
+        unit =
+        {
+          count = 200,
+          ingredients =
+          {
+            {"automation-science-pack", 1},
+            {"logistic-science-pack", 1},
+          },
+          time = 45
+        },
+        upgrade = true,
+        order = "a-b-d",
+    },
+    {
+        type = "technology",
+        name = "ooze-juice",
+        icon = "__modmashsplinterresources__/graphics/technology/conversion.png",
+        icon_size = 128,
+        effects =
+        {
+          {
+            type = "unlock-recipe",
+            recipe = "ooze-juice"
+          }
+        },
+        prerequisites =
+        {
+          "alien-conversion1"
+        },
+        unit =
+        {
+          count = 200,
+          ingredients =
+          {
+            {"automation-science-pack", 1},
+            {"logistic-science-pack", 1},
+          },
+          time = 45
+        },
+        upgrade = true,
+        order = "a-b-d",
+    },
 })

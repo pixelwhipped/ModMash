@@ -1,6 +1,6 @@
 {
   "name": "modmashsplinterfluid",
-  "version": "1.1.01",
+  "version": "1.1.02",
   "title": "ModMash Splinter, Fluid Handling",
   "author": "PixelWhipped",
   "contact": "",
@@ -9,8 +9,7 @@
   "description": "Mod Mash Splinter for Fluid Handling, Add's pipes and fluid control systems.",
   "dependencies": [
     "base >= 1.1.0",
-    "modmashsplinter >= 1.1.02",
-    "modmashsplinterresources >= 1.1.01",
-    "! modmash >= 0.0.0"    
+    "modmashsplinter >= 1.1.05",
+    "modmashsplinterresources >= 1.1.03"  
   ]
 }

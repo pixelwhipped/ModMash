@@ -285,8 +285,7 @@ local local_create_containers = function(items,x,tech_desc)
 		order = "d-a-a"}
 
 
-		data:extend({tech})
-	
+		data:extend({tech})	
 end
 
 local local_create_subspace_transport = function()

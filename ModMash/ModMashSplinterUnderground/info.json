@@ -1,6 +1,6 @@
 {
   "name": "modmashsplinterunderground",
-  "version": "1.1.05",
+  "version": "1.1.06",
   "title": "ModMash Splinter, Underground",
   "author": "PixelWhipped",
   "contact": "",
@@ -9,9 +9,8 @@
   "description": "Mod Mash Splinter for Undergrounds, Now you can go underground and expand your base in multiple dimensions",
   "dependencies": [
     "base >= 1.1.0",
-    "modmashsplinter >= 1.1.04",
-    "! modmash >= 0.0.0",
-    "? modmashsplinterassembling >= 1.1.01",
-    "? modmashsplinterboom >= 1.1.01"
+    "modmashsplinter >= 1.1.05",
+    "? modmashsplinterassembling >= 1.1.02",
+    "? modmashsplinterboom >= 1.1.02"
   ]
 }
