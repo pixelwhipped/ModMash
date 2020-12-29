@@ -13,21 +13,110 @@ There are 2 tiers of Air Purifiers both of which produce water and a by-product.
 Note 1: the by-product will change depending if sluge is not found.
 Note 2: Air Purifies cannot be placed on tiles that do not absorb pollution and the amount of water/byproduct is dependent on the underlying tiles.
 Note 3: de-evolution can be disabled in settings.
+***
 
-https://mods.factorio.com/mod/modmashsplinterairpurifier
-https://mods.factorio.com/mod/modmashsplinterboom   
-https://mods.factorio.com/mod/modmashsplinterresources 
-https://mods.factorio.com/mod/modmashsplinterregenerative
-https://mods.factorio.com/mod/modmashsplinterassembling
-https://mods.factorio.com/mod/modmashsplinterelectronics
-https://mods.factorio.com/mod/modmashsplinterenrichment
-https://mods.factorio.com/mod/modmashsplinterfishing
-https://mods.factorio.com/mod/modmashsplinterfluid
-https://mods.factorio.com/mod/modmashsplinterlogistics
-https://mods.factorio.com/mod/modmashsplinterloot
-https://mods.factorio.com/mod/modmashsplinterrecycling
-https://mods.factorio.com/mod/modmashsplinterrefinement
-https://mods.factorio.com/mod/modmashsplinterregenerative
-https://mods.factorio.com/mod/modmashsplintersubspacelogistics
-https://mods.factorio.com/mod/modmashsplinterunderground
-https://mods.factorio.com/mod/modmashsplinterdefense
+#Boom
+Adds 2 new mines one bigger and one nuclear option.
+The nuclear option will highlight the safe zone if you hover over them.
+Any mines placed can be detonated at anytime with the Boom button top right.
+![Boom1](https://raw.githubusercontent.com/pixelwhipped/ModMash/master/ModMash/Web/boomweb01.png)
+![Boom2](https://raw.githubusercontent.com/pixelwhipped/ModMash/master/ModMash/Web/mines.png)
+Note 1:  You can set to detonate on the current surface or all surfaces in the runtime settings.
+***
+
+#Resources and Intermediates
+Adds new resources to the game.
+Fluids Fish oil and Alien Ooze
+Resources Silicate, Sulfer, Titianium, Alien ore and artifact
+Intermediates Titanium and Alien Plate
+![Resource](https://raw.githubusercontent.com/pixelwhipped/ModMash/master/ModMash/Web/resourceweb01.png)
+Note 1: New resource generally found underground.
+Note 2: Setting available to allow biters to drop ore
+***
+
+#Regenerative Tech
+Regenerative Tech utilizes unique properties of the inhabitants of Nauvis to allow self healing structures.
+Research is available to increase the rate of repair.
+***
+
+#Assembling
+Assembling Machine 4 Crafting Speed 2.5 and 5 Module Slots
+Assembling Machine 5 Crafting Speed 4 and 6 Module Slots + Healing Factor
+Assembling Machine Burner Crafting Speed 0.25 and requires fuel. Smaller footprint 2x2
+![assemblers](https://raw.githubusercontent.com/pixelwhipped/ModMash/master/ModMash/Web/assemblers.png)
+***
+
+#Electronics
+Adds another layer to the circuit to the production chain and makes more use or red and green wires.
+![badspaghetti](https://raw.githubusercontent.com/pixelwhipped/ModMash/master/ModMash/Web/badspaghetti.png)
+***
+
+#Gone Fishing
+The aquatic life is not without it's uses either. Use their oils or juices for medicinal reasons.
+![fishing](https://raw.githubusercontent.com/pixelwhipped/ModMash/master/ModMash/Web/fishweb01.png)
+***
+
+#Fluid Handling
+Add's pipes and fluid control systems.
+You can create steam or condense it back to water, not very useful for power generation but handy for recipes.
+Titanium pipes have an underground length of 15 and Discharge pumps can return excess water to the sea.
+![fluidhandling](https://raw.githubusercontent.com/pixelwhipped/ModMash/master/ModMash/Web/fluidweb01.png)
+***
+
+#Logistics
+2 new tiers of belt's, undergrounds and splitters with the full range of mini loaders to complement.
+The highest tier uses regenerative tech allowing them to self heal.
+
+Inserters can be adjusted using CTRL + R by default but can be changed in controls or disabled.
+Trans and wagons. Wagons can be loaded/unloaded by up to 6 loaders per side and Trains can have fuel loaded but wont accidently unload.
+You can disable wagon support though if not being used for trains UPS shouldn't be an issue, the code has been optimized but it is done different way than other loaders and not as UPS friendly. I won't be altering how they work bar any fixes required as that would really just be ripping off somebody else efforts and I quite like the way these ones work.
+Mini loaders can be disabled in settings.
+![logistics](https://raw.githubusercontent.com/pixelwhipped/ModMash/master/ModMash/Web/logisticsweb01.png)
+***
+
+#Loot
+Throughout the world will find your not the only one who made it here, but still appear to be the only one who made it alive. On the upside all the crashed wreckages around the place have some handy bits and bobs for you to use.
+If you are lucky you may even find a damaged science research lab. Who know what they were up to in there.
+![Loot](https://raw.githubusercontent.com/pixelwhipped/ModMash/master/ModMash/Web/lootweb.png)
+***
+
+#Recycling
+You can now recycle your unwanted goods, you just have to deal with a little waste material.
+![Recycling](https://raw.githubusercontent.com/pixelwhipped/ModMash/master/ModMash/Web/recycleweb01.png)
+***
+
+#Refinement
+Ore refiners can refine ore which intern produce more plates or bricks.
+items ending with ore that are in a recipe that end in plate are added. Darker tint to identify.
+![Refinement](https://raw.githubusercontent.com/pixelwhipped/ModMash/master/ModMash/Web/refine.png)
+***
+
+#Ore Processing
+Allows conversions of one ore to other ores, Costly but can help if in surplus of one ore or really need another. Will produce all ores so let splitters sort it out.
+![Processing](https://raw.githubusercontent.com/pixelwhipped/ModMash/master/ModMash/Web/oreweb01.png)
+***
+
+#Underground
+2 sublevels available the second by research.
+Multi level shafts, no character transport but larger and multi-level acts as buffer chest each level has unique logistic requests
+No water below and no fluid transport so get ready to start barreling.
+Underground power transfer stations can be used to transfer power from Nauvis to the next level down but can't reach the deep dark you'll have to use Battery Cells to jumpstart the level.
+Be warned the bitters have a bad habit of digging.
+![Underground](https://raw.githubusercontent.com/pixelwhipped/ModMash/master/ModMash/Web/underground.png)
+***
+
+#Defense
+Add Spawners useful for harvesting if alien loot enabled in resource splinter or training hero turrets
+Biter neural toxin which makes biters attack each other, mine and artillery form
+Titanium and Regenerative walls
+Atomic artillery
+Titanium and Alien ammo rounds
+![Defense](https://raw.githubusercontent.com/pixelwhipped/ModMash/master/ModMash/Web/toxin.png)
+
+#Subspace Logistics
+Transport items though the subspace network.
+![SubspaceNetwork](https://raw.githubusercontent.com/pixelwhipped/ModMash/master/ModMash/Web/Subspace Network.png)	
+Using super material you can unlock sub dimensional pockets in space to stack basically everything.
+Requires research per item and contained and uncontained in Assemblers MK 4+
+Note: Default is Resources only but can choose Item's.  Massive tech tree.
+![Containment](https://raw.githubusercontent.com/pixelwhipped/ModMash/master/ModMash/Web/Containment.png)	
