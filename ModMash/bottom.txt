@@ -19,6 +19,7 @@ https://mods.factorio.com/mod/modmashsplinterregenerative
 https://mods.factorio.com/mod/modmashsplintersubspacelogistics
 https://mods.factorio.com/mod/modmashsplinterunderground
 https://mods.factorio.com/mod/modmashsplinterdefense
+https://mods.factorio.com/mod/modmashsplinternewworlds
 
 #Others
 

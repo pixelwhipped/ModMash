@@ -1,4 +1,11 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.03
+  Changes:
+    - Added setting to reduce deployment distance from player ports or spidertrons
+  Bug Fixes:
+    - added test for target being nil, couldn't reproduce bug but may help
+
+---------------------------------------------------------------------------------------------------
 Version: 1.1.02
   Changes:
     - ModPack ready

@@ -1,0 +1,6 @@
+﻿Mernom
+When a spidertron gets destroyed while having deployed valkyries, it crashes the game.
+could not replicate 
+Mernom
+They deploy at a far too big range atm.
+add mod to max_distance for player and spider routine, setting needs be added

@@ -4,6 +4,7 @@ local distance = modmashsplinterunderground.util.distance
 local table_contains = modmashsplinterunderground.util.table.contains
 local is_valid  = modmashsplinterunderground.util.is_valid
 local starts_with  = modmashsplinterunderground.util.starts_with
+local ends_with  = modmashsplinterunderground.util.ends_with
 local print  = modmashsplinterunderground.util.print
 local is_valid_and_persistant = modmashsplinterunderground.util.entity.is_valid_and_persistant
 
@@ -84,8 +85,39 @@ local local_register_surface = function(name)
 	}
 end
 
+local mineable_resources = nil
+
+local local_check_mineable = function(name)
+	if name == nil then return false end
+	if mineable_resources == nil then
+		mineable_resources = {}
+		for k, v in pairs(game.entity_prototypes) do 
+			if v.type == "resource" and starts_with(v.name,"creative") == false then
+				if v.mineable_properties ~= nil and v.mineable_properties.minable == true and 
+					v.mineable_properties.mining_particle ~= nil and
+					type(v.mineable_properties.mining_time) == "number" then
+					local pass = 0
+					for _, product in pairs(v.mineable_properties.products) do
+						if product.type == "item" then
+							pass = 1
+						end
+					end
+					if pass == 1 then
+						if v.map_color ~= nil then
+							mineable_resources[v.name] = v.name
+						end
+					end
+				end
+			end					
+		end
+	end
+	if mineable_resources[name] == nil then return false end
+	return true
+end
+
 local local_register_resource_level_one = function(resource)
 	if resource == nil or type(resource.name) ~= "string" or type(resource.probability) ~= "number" then return end
+	if local_check_mineable(resource.name) == false then return end
 	for k=1, #resource_level_one do
 		if resource_level_one[k].name == resource.name then return end
 	end
@@ -93,6 +125,7 @@ local local_register_resource_level_one = function(resource)
 end
 local local_register_resource_level_two = function(resource)
 	if resource == nil or type(resource.name) ~= "string" or type(resource.probability) ~= "number" then return end
+	if local_check_mineable(resource.name) == false then return end
 	for k=1, #resource_level_two do
 		if resource_level_two[k].name == resource.name then return end
 	end
@@ -289,7 +322,14 @@ local generate_surface_area = function(x,y,r,surface, res, allow_mixed, rock_pre
 	
     local amt = math.random(800, 3200)
 	local res_table =  local_build_probability_table(res)
-	local rnd = math.random(1, math.ceil(#res_table*1.5))
+	local rnd = nil
+	local erand = math.ceil(#res_table*1.5)
+	if erand == 1 then 
+		rnd = 1 
+	else
+		rnd = math.random(1, erand)
+	end
+
 	local attack_rocks = math.random(1,5)
 	if settings.global["setting-biter-rocks"].value == "Disabled" then attack_rocks = 0 end
 
@@ -331,7 +371,7 @@ local generate_surface_area = function(x,y,r,surface, res, allow_mixed, rock_pre
 			  if current_tile.name == "out-of-map" then 
 			    surface.set_tiles({{ name = tile, position = pos }})
 				local create = nil
-				if rnd <= #res_table then
+				if rnd ~= nil and  rnd <= #res_table then
 					if allow_mixed and mixed == 1 then
 						create = {name=res_table[math.random(1,#res_table)], amount=(amt*m)*2, position=pos}
 					else
@@ -398,6 +438,7 @@ local local_chunk_generated = function(event)
   local area = event.area
   local surface = event.surface   
   local surface_reference = surfaces[surface.name]
+  if surface_reference == nil then return end
   if surface_reference.level ~= 0 then
 	  for py = 0, 31, 1 do 
 		for px = 0, 31, 1 do 
@@ -491,14 +532,14 @@ local local_access_process = function(access,pollution,flip,upper_surface,lower_
 			if last_pt ~= nil and distance(math.floor(p.character.position.x),math.floor(p.character.position.y),last_pt.x,last_pt.y) >= 1 then 
 				last_point[last_pt_name] = nil
 			elseif last_pt == nil then
-				if is_valid(p.character) and p.character.surface.name == upper_surface.name and last_pos ~= p.character.position then
+				if is_valid(p.character) and p.vehicle == nil and p.character.surface.name == upper_surface.name and last_pos ~= p.character.position then
 					if distance(p.character.position.x,p.character.position.y,access.top_entity.position.x,access.top_entity.position.y) < 1.5 then				
 						local_safe_teleport(p, lower_surface,p.character.position,i)
 						teleport_cooldown = 60
 						last_pos = p.character.position
 						local_bitter_follow(access.top_entity)
 					end
-				elseif is_valid(p.character) and p.character.surface.name == lower_surface.name and last_pos ~= p.character.position then
+				elseif is_valid(p.character) and p.vehicle == nil and p.character.surface.name == lower_surface.name and last_pos ~= p.character.position then
 					if distance(p.character.position.x,p.character.position.y,access.bottom_entity.position.x,access.bottom_entity.position.y) < 1.5 then				
 						local_safe_teleport(p, upper_surface,p.character.position,i)
 						teleport_cooldown = 60
@@ -905,13 +946,16 @@ local local_ensure_can_place_entity = function(entity,event,surface)
 		local ename = entity.name
 		if entity.type == "entity-ghost" then etype = entity.ghost_prototype.type end
 		if entity.type == "entity-ghost" then ename = entity.ghost_prototype.name end
-		if surface.level == 1 and (etype=="solar-panel" or etype == "rocket-silo") or table_contains(banned_level_one,entity.name) then		
+		if surface.level == 1 and ((etype=="solar-panel" or etype == "rocket-silo") or table_contains(banned_level_one,entity.name)) then		
+			print("c")
 			fail_place_entity(entity,event,{"modmashsplinterunderground.underground-placement-disallowed"})
 			return false
-		elseif surface.level == 2 and (entity.name == underground_accumulator or entity.name == underground_access or entity.type=="solar-panel" or entity.type == "rocket-silo") or table_contains(banned_level_two,entity.name) then
+		elseif surface.level == 2 and ((entity.name == underground_accumulator or entity.name == underground_access or entity.type=="solar-panel" or entity.type == "rocket-silo") or table_contains(banned_level_two,entity.name)) then
+			print("b")
 			fail_place_entity(entity,event,{"modmashsplinterunderground.underground-placement-disallowed"})
 			return false
-		elseif surface.level == 0 and entity.name == underground_access2 or table_contains(banned_level_zero,entity.name) then
+		elseif surface.level == 0 and (entity.name == underground_access2 or table_contains(banned_level_zero,entity.name)) then			
+			print("a")
 			fail_place_entity(entity,event,{"modmashsplinterunderground.underground-placement-disallowed"})
 			return false
 		end
@@ -1064,6 +1108,99 @@ local local_underground_added_ml = function(entity,event)
 
 	print(#accesses .. " " .. #accesses2)
 	end
+
+
+local basic_generate_surface_area = function(x,y,r,surface, rock_prefix)	
+	local cx, cy = math.floor(x / 32), math.floor(y / 32)
+	if surface.is_chunk_generated({cx, cy}) ~= true then
+		surface.request_to_generate_chunks({x, y}, r*2)
+		surface.force_generate_chunk_requests()
+	end
+	local p = get_circle_lines(x,y,r)
+	local d = get_sorted_lines(p)
+	
+	local attack_rocks = math.random(1,5)
+	if settings.global["setting-biter-rocks"].value == "Disabled" then attack_rocks = 0 end
+
+	p = d[1]
+	for i=d[2],d[3] do
+	  local str = ""
+	  if p[i] ~= nil then
+		local s = p[i][1]
+		local e = p[i][2]
+		for j =s,e do
+		  local pos = {x = j, y = i }
+		  local tile = dirt_prefix .. "dirt-"..math.random(1, 7)
+		  local current_tile = surface.get_tile(pos)		  
+		  local m = math.max((1-(distance(x,y,j,i)/r)),0.25)
+		  m = ((math.random(40,100)/200)+0.5)*m
+		  if j>s and j<e then
+			if i == d[2] or i == d[3] then
+			  --edge
+			  if current_tile.name == "out-of-map" then 
+			    surface.set_tiles({{ name = tile, position = pos }})
+				if force_first_rock ~= nil or (attack_rocks > 0 and math.random(1,10) > 4 and #surface.find_entities_filtered{area = {{pos.x-4.5, pos.y-4.5}, {pos.x+4.5, pos.y+4.5}}, name = {level_one_attack_rock,level_two_attack_rock}} < 1) then
+					force_first_rock = nil
+					local rname = level_one_attack_rock
+					attack_rocks = attack_rocks - 1
+					if rock_prefix == level_two_rock_prefix then rname = level_two_attack_rock end
+					local ent = surface.create_entity({ name = rname, position = pos, force = force_player })
+					if ent ~= nil then
+						ent.active = false
+						ent.backer_name = ""
+					end
+				else			
+					surface.create_entity({ name = rock_prefix..base_rock_names[math.random(#base_rock_names)], position = pos,force = force_player })
+				end
+			  end			  			  
+			else
+			  --inside
+			  if current_tile.name == "out-of-map" then 
+			    surface.set_tiles({{ name = tile, position = pos }})					
+			  end
+			end
+		  elseif j==s or j == e then
+		    --edge
+				if current_tile.name == "out-of-map" then 
+			    surface.set_tiles({{ name = tile, position = pos }})
+				--add rock radar
+				surface.create_entity({ name = rock_prefix..base_rock_names[math.random(#base_rock_names)], position = pos })
+			  end	
+		  else 
+			--nothing
+		  end
+		end
+	  end
+	end
+	end
+
+
+local local_try_add_entity = function(surface_name,entity_name,position,radius,force)
+	local surface = surfaces[surface_name]
+	if surface == nil then return false end
+	local_ensure_underground_environment(surface)
+	local rocks = game.surfaces[surface_name].find_entities_filtered{area = {{position.x-radius, position.y-radius}, {position.x+radius, position.y+radius}}, name = rock_names}			
+	for index=1, #rocks do local r = rocks[index]
+		if is_valid(r) then 
+			r.destroy({raise_destroy = true}) 
+		end			
+	end			
+	local rock_prefix = level_one_rock_prefix
+	local resources = resource_level_one
+	if ends_with(surface_name,"deep-underground") then
+		rock_prefix = level_two_rock_prefix
+		resources = resource_level_two
+	end
+
+
+	--function(x,y,r,surface, res, allow_mixed, rock_prefix,force_gen)	
+	basic_generate_surface_area(position.x, position.y,radius,game.surfaces[surface_name],rock_prefix)
+	if game.surfaces[surface_name].can_place_entity{name=entity_name, position=position, force = force} then
+		return game.surfaces[surface_name].create_entity({name=entity_name, position=position, force = force}) ~= nil
+	end
+	return false
+
+end
 
 local local_underground_added = function(entity,event)
 	if is_valid(entity) ~= true then return end	
@@ -1276,5 +1413,6 @@ remote.add_interface("modmashsplinterunderground",
 		register_resource_level_two = local_register_resource_level_two,
 		ban_entity_level_zero = local_ban_entity_level_zero,
 		ban_entity_level_one = local_ban_entity_level_one,
-		ban_entity_level_two = local_ban_entity_level_two
+		ban_entity_level_two = local_ban_entity_level_two,
+		try_add_entity = local_try_add_entity
 	})

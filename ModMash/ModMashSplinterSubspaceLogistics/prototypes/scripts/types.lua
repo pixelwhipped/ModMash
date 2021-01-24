@@ -246,7 +246,7 @@ local local_create_subspace_transport = function()
 			type = "recipe",
 			name = "subspace-transport",	
 			enabled = "false",
-			ingredients =
+			ingredients = modmashsplintersubspacelogistics.util.get_item_ingredient_substitutions({"assembling-machine-4","alien-plate","titanium-plate"},
 			{
 			  {"assembling-machine-4", 1},
 			  {"processing-unit", 10},
@@ -255,7 +255,7 @@ local local_create_subspace_transport = function()
 			  {"alien-plate",10},
 			  {"concrete",50},
 			  {"super-material", 20}
-			},
+			}),
 			result = "subspace-transport"
 		},
 		{
@@ -349,12 +349,12 @@ local local_create_super_containers = function()
 		localised_name = "Empty Super Container",
 		localised_description = "Empty Super Container",
 		enabled = false,
-		ingredients =
+		ingredients = modmashsplintersubspacelogistics.util.get_item_ingredient_substitutions({"titanium-plate"},
 		{
 		  {"super-material", 1},
 		  {"titanium-plate", 2},
 		  {"blank-circuit", 1}
-		},
+		}),
 		result = "empty-super-container"}
 
 	local tech_icons = {
@@ -548,7 +548,17 @@ if data ~= nil and data_final_fixes == true then
 		local_create_subspace_transport()
 		local_create_super_containers()		
 	end
-	table.insert(data.raw["assembling-machine"]["assembling-machine-4"].crafting_categories,"containment")
-	table.insert(data.raw["assembling-machine"]["assembling-machine-5"].crafting_categories,"containment")
+	local has_cat = false
+	if data.raw["assembling-machine"]["assembling-machine-4"] ~= nil then
+		table.insert(data.raw["assembling-machine"]["assembling-machine-4"].crafting_categories,"containment")
+		has_cat = true
+	end
+	if data.raw["assembling-machine"]["assembling-machine-4"] ~= nil then
+		table.insert(data.raw["assembling-machine"]["assembling-machine-5"].crafting_categories,"containment")
+		has_cat = true
+	end
+	if has_cat == false then 
+		table.insert(data.raw["assembling-machine"]["assembling-machine-3"].crafting_categories,"containment")
+	end
 end
 

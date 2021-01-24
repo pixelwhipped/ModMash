@@ -105,8 +105,10 @@ local local_on_post_entity_died = function(event)
 	end
 
 local local_update_alert_type = function(alerts_id)
-	
+	if alerts_id == nil then return end
+	if game == nil or game.players == nil or game.players[1] == nil then return end
 	local alerts = game.players[1].get_alerts{type=alerts_id}
+	if alerts == nil then return end
 	alerts = alerts[alerts_id]
 	if alerts == nil then return end
 		

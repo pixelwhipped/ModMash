@@ -1,0 +1,19 @@
+﻿Plan for ModMash Terraforming
+Concept
+After destroying a Queen Hive 2-4x size spawner located randomly in 2nd level underground (Nauvis)
+Drops royal jelly loot reguired to research first tier of new worlds tech
+you unlock technology Terraformation
+with this technology you can grow clones
+with cones you can train an explorer brutal training many will perish
+with an explorer you can launch in as a satellite
+once launched there is a chance of unlocking a new planet surface or perishing
+
+recipes
+clone = 10 fish, 1 alien artifact, 100 water, 100 sludge
+explorer = 50 clones, 1x super material, 1x subspace transport
+
+clones can also act as modules and if in terraformers will convert surface tiles to grass.
+
+Terraformers cannot be place in polluted areas or underground
+
+Technolody to improve success

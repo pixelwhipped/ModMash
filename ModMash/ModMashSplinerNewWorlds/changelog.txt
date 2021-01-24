@@ -1,0 +1,21 @@
+﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.04
+  Changes:
+    - Fixed teleport to last location
+    - Tweaked UI
+    - Added Spaceports
+
+---------------------------------------------------------------------------------------------------
+Version: 1.1.03
+  Changes:
+    - Compat for Schall alien loot
+
+---------------------------------------------------------------------------------------------------
+Version: 1.1.02
+  Changes:
+    - Decoupled dependancy for modmashsplinterresources and modmashsplintersubspacelogistics
+
+---------------------------------------------------------------------------------------------------
+Version: 1.1.01
+  Changes:
+    - Initial Release

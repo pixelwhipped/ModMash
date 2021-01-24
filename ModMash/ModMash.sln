@@ -51,11 +51,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModMashSplinterFishing", "M
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModMashSplinterFluid", "ModMashSplinterFluid\ModMashSplinterFluid.csproj", "{C886E7C2-6E72-4906-A606-E71995C74AA8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModMashSplinterRecycling", "ModMashSplinterRecycling\ModMashSplinterRecycling.csproj", "{47D4FFFB-89C3-447F-9FC4-914219BBBC79}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModMashSplinterRecycling", "ModMashSplinterRecycling\ModMashSplinterRecycling.csproj", "{47D4FFFB-89C3-447F-9FC4-914219BBBC79}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModMashSplinterDefense", "ModMashSplinterDefense\ModMashSplinterDefense.csproj", "{893D74A1-A503-4FE1-882A-CABA47A66780}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModMashSplinterSubspaceLogistics", "ModMashSplinterSubspaceLogistics\ModMashSplinterSubspaceLogistics.csproj", "{5A4CAD4D-D8A3-48D3-A296-C0A6ABD3872E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModMashSplinterSubspaceLogistics", "ModMashSplinterSubspaceLogistics\ModMashSplinterSubspaceLogistics.csproj", "{5A4CAD4D-D8A3-48D3-A296-C0A6ABD3872E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{B3BA1155-9461-45D6-B6E3-B59799804573}"
 	ProjectSection(SolutionItems) = preProject
@@ -63,6 +63,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{B3BA1155-946
 		sections.txt = sections.txt
 		top.txt = top.txt
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModMashSplinterNewWorlds", "ModMashSplinerNewWorlds\ModMashSplinterNewWorlds.csproj", "{25959771-ACF5-4AFF-B79F-137D61D58977}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModMashSplinterExplosiveMining", "ModMashSplinterExplosiveMining\ModMashSplinterExplosiveMining.csproj", "{DF6610C6-B562-4741-A436-517F894DCBE6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -174,6 +178,14 @@ Global
 		{5A4CAD4D-D8A3-48D3-A296-C0A6ABD3872E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5A4CAD4D-D8A3-48D3-A296-C0A6ABD3872E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5A4CAD4D-D8A3-48D3-A296-C0A6ABD3872E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25959771-ACF5-4AFF-B79F-137D61D58977}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25959771-ACF5-4AFF-B79F-137D61D58977}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25959771-ACF5-4AFF-B79F-137D61D58977}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25959771-ACF5-4AFF-B79F-137D61D58977}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF6610C6-B562-4741-A436-517F894DCBE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF6610C6-B562-4741-A436-517F894DCBE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF6610C6-B562-4741-A436-517F894DCBE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF6610C6-B562-4741-A436-517F894DCBE6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -197,6 +209,8 @@ Global
 		{47D4FFFB-89C3-447F-9FC4-914219BBBC79} = {D7B0BC2C-CCC1-48E9-8025-CD4E2632FF8C}
 		{893D74A1-A503-4FE1-882A-CABA47A66780} = {D7B0BC2C-CCC1-48E9-8025-CD4E2632FF8C}
 		{5A4CAD4D-D8A3-48D3-A296-C0A6ABD3872E} = {D7B0BC2C-CCC1-48E9-8025-CD4E2632FF8C}
+		{25959771-ACF5-4AFF-B79F-137D61D58977} = {D7B0BC2C-CCC1-48E9-8025-CD4E2632FF8C}
+		{DF6610C6-B562-4741-A436-517F894DCBE6} = {D7B0BC2C-CCC1-48E9-8025-CD4E2632FF8C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B16926D6-3B1B-4B40-9225-A9261A0E28AD}

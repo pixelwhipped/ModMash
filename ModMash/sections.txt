@@ -1,3 +1,16 @@
+#New Worlds
+Rid the Nauvis of the Queen Hive and explore New Worlds.
+![queen](https://raw.githubusercontent.com/pixelwhipped/ModMash/master/ModMash/Web/newworldsweb01.png)
+This mod introduces a very tough Queen hive underground which needs to be killed to unlock alien science packs
+then you can build terraformers which if they have clones in the modules slots will terraform the area around them
+clones can be trained to become explorers brutal training regime many will perish.
+clones can be used as productivity modules, slightly better.
+![queen](https://raw.githubusercontent.com/pixelwhipped/ModMash/master/ModMash/Web/newworldsweb02.png)
+The explorers in a rocket to unlock new planets
+Use tech to improve chance of explorer's finding new planets.
+![queen](https://raw.githubusercontent.com/pixelwhipped/ModMash/master/ModMash/Web/newworldsweb03.png)
+***
+
 #Valkyries(Combat Bots)
 Valkyries serve as either combat bots from roboports or as constructions bots.
 These drones operate with hit and run tactics, move in fast take your shots and move out.
@@ -120,3 +133,8 @@ Using super material you can unlock sub dimensional pockets in space to stack ba
 Requires research per item and contained and uncontained in Assemblers MK 4+
 Note: Default is Resources only but can choose Item's.  Massive tech tree.
 ![Containment](https://raw.githubusercontent.com/pixelwhipped/ModMash/master/ModMash/Web/Containment.png)	
+
+#Explosive mining
+Throw at resorces patches to liberate ores for collection. Excludes uranium.
+Simple port over from earlier ModMash with new specific item. 
+Still works with grenades wont be adding support for other explosives as it could easily become too op and to many items on the ground is not good. May add leave water tile functionality later.

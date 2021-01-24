@@ -87,7 +87,7 @@ local local_find_train_loaders = function(entity)
 				local_add_or_replace({loader,entity,2})
 			end
 		elseif entity.orientation==0.25 or entity.orientation==0.75 then
-			print("Z")
+			--print("Z")
 			local entities = entity.surface.find_entities_filtered{type={'loader-1x1','loader','loader-1x2'},area={{entity.position.x-2.5,entity.position.y-1.8},{entity.position.x+2.5,entity.position.y-0.8}}}
 			for k=1,#entities do local loader = entities[k]		
 				local_add_or_replace({loader,entity,0})
@@ -183,12 +183,14 @@ local local_loader_tick = function()
 					local transport_line = l1.get_transport_line(1)
 					if transport_line.get_item_count()>0 then
 						local name,count = next(transport_line.get_contents())
-						transport_line.remove_item({name=name,count=wagon.insert({name=name,count=1})})
+						local wagon_count = wagon.insert({name=name,count=1})
+						if wagon_count > 0 then transport_line.remove_item({name=name,count=wagon_count}) end
 					end
 					transport_line = l1.get_transport_line(2)
 					if transport_line.get_item_count()>0 then
 						local name,count = next(transport_line.get_contents())
-						transport_line.remove_item({name=name,count=wagon.insert({name=name,count=1})})
+						local wagon_count = wagon.insert({name=name,count=1})
+						if wagon_count > 0 then transport_line.remove_item({name=name,count=wagon_count}) end
 					end
 				end
 			end

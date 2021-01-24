@@ -1,9 +1,9 @@
 ﻿require ("prototypes.scripts.defines")
 
-local starts_with  = modmashsplinterfluid.util.starts_with
-local get_item  = modmashsplinterfluid.util.get_item
-local get_item_substitution  = modmashsplinterfluid.util.get_item_substitution
-local get_name_for  = modmashsplinterfluid.util.get_name_for
+local starts_with  = modmashsplinterrecycling.util.starts_with
+local get_item  = modmashsplinterrecycling.util.get_item
+local get_item_substitution  = modmashsplinterrecycling.util.get_item_substitution
+local get_name_for  = modmashsplinterrecycling.util.get_name_for
 
 local local_get_results_from_ingredients = function(r)
 	local ingredients = {}		

@@ -1,6 +1,6 @@
 {
   "name": "modmashsplinterairpurifier",
-  "version": "1.1.02",
+  "version": "1.1.03",
   "title": "ModMash Splinter, Air Purifiers",
   "author": "PixelWhipped",
   "contact": "",
@@ -9,6 +9,6 @@
   "description": "Mod Mash Splinter for Air Purifiers",
   "dependencies": [
     "base >= 1.1.0",
-    "modmashsplinter >= 1.1.01" 
+    "modmashsplinter >= 1.1.06" 
   ]
 }

@@ -1,0 +1,14 @@
+{
+  "name": "modmashsplinterexplosivemining",
+  "version": "1.1.01",
+  "title": "ModMash Splinter, Explosive Mining",
+  "author": "PixelWhipped",
+  "contact": "",
+  "homepage": "https://www.patreon.com/user?u=15367757",
+  "factorio_version": "1.1",
+  "description": "Mod Mash Splinter for Explosive Mining",
+  "dependencies": [
+    "base >= 1.1.0",
+    "modmashsplinter >= 1.1.07" 
+  ]
+}

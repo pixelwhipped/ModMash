@@ -59,7 +59,7 @@ if modmashsplinter.mod_request_item_substitutions == nil then
 		["titanium-plate"] = {
 			func = function(qty,probability)
 			--defer to titanium if it exists
-			if local_get_item("titanium-plate") ~= nil then
+			if local_get_item("titanium-plate") ~= nil or mods["modmashsplinterresources"] then
 				if probability ~= nil then
 					return {{name = "titanium-plate", amount = qty, probability = probability}} 
 				end
@@ -101,13 +101,25 @@ if modmashsplinter.mod_request_item_substitutions == nil then
 		["alien-plate"] = {
 			func = function(qty,probability)
 			--defer to titanium if it exists
-			if local_get_item("alien-plate") ~= nil then
+			if local_get_item("alien-plate") ~= nil or mods["modmashsplinterresources"] then
 				if probability ~= nil then
 					return {{name = "alien-plate", amount = qty, probability = probability}} 
 				end
 				return {{name = "alien-plate", amount = qty }} 
 			end
 			return modmashsplinter.mod_request_item_substitutions["titanium-plate"].func(math.ceil(qty * 2),probability)
+			end	
+		},
+		["alien-artifact"] = {
+			func = function(qty,probability)
+			--defer to titanium if it exists
+			if local_get_item("alien-artifact") ~= nil or mods["modmashsplinterresources"] then
+				if probability ~= nil then
+					return {{name = "alien-artifact", amount = qty, probability = probability}} 
+				end
+				return {{name = "alien-artifact", amount = qty }} 
+			end
+			return {{name = "uranium-235", amount = math.ceil(qty * 2)}}
 			end	
 		},
 		["glass"] = {
@@ -132,6 +144,70 @@ if modmashsplinter.mod_request_item_substitutions == nil then
 				return {{name = "assembling-machine-burner", amount = qty }} 
 			end
 			return {{name = "assembling-machine-1", amount = math.ceil(qty)}}
+			end	
+		},
+		["assembling-machine-4"] = {
+			func = function(qty,probability)
+			--defer to titanium if it exists
+			if local_get_item("assembling-machine-4") ~= nil or mods["modmashsplinterassembling"] then
+				if settings.startup["setting-assembling-machine-burner-only"].value == "No" then
+					if probability ~= nil then
+						return {{name = "assembling-machine-4", amount = qty, probability = probability}} 
+					end
+					return {{name = "assembling-machine-4", amount = qty }} 
+				end			
+			end
+			return {{name = "assembling-machine-3", amount = math.ceil(qty*2)}}
+			end	
+		},
+		["assembling-machine-5"] = {
+			func = function(qty,probability)
+			--defer to titanium if it exists
+			if local_get_item("assembling-machine-5") ~= nil or mods["modmashsplinterassembling"] then
+				if settings.startup["setting-assembling-machine-burner-only"].value == "No" then
+					if probability ~= nil then
+						return {{name = "assembling-machine-5", amount = qty, probability = probability}} 
+					end
+					return {{name = "assembling-machine-5", amount = qty }} 
+				end			
+			end
+			return {{name = "assembling-machine-3", amount = math.ceil(qty*2.5)}}
+			end	
+		},
+		["subspace-transport"] = {
+			func = function(qty,probability)
+			--defer to titanium if it exists
+			if local_get_item("subspace-transport") ~= nil or mods["modmashsplintersubspacelogistics"] then
+				if probability ~= nil then
+					return {{name = "subspace-transport", amount = qty, probability = probability}} 
+				end
+				return {{name = "subspace-transport", amount = qty }} 
+			end
+			return {{name = "lab", amount = math.ceil(qty*2)}}
+			end	
+		},
+		["super-material"] = {
+			func = function(qty,probability)
+			--defer to titanium if it exists
+			if local_get_item("super-material") ~= nil or mods["modmashsplintersubspacelogistics"] then
+				if probability ~= nil then
+					return {{name = "super-material", amount = qty, probability = probability}} 
+				end
+				return {{name = "super-material", amount = qty }} 
+			end
+			return {{name = "uranium-235", amount = math.ceil(qty*2)}}
+			end	
+		},
+		["alien-ooze"] = {
+			func = function(qty,probability)
+			--defer to titanium if it exists
+			if local_get_item("alien-ooze") ~= nil or mods["modmashsplinterresources"] then
+				if probability ~= nil then
+					return {{name = "alien-ooze", type="fluid", amount = qty, probability = probability}} 
+				end
+				return {{name = "alien-ooze", type="fluid", amount = qty }} 
+			end
+			return {{name = "sulfuric-acid", type="fluid", amount = math.ceil(qty*4)}}
 			end	
 		}
 		
@@ -228,13 +304,36 @@ local local_get_item_substitution = function(name)
 	return local_get_item(name)
 	end
 
+local local_get_item_ingredient_substitutions_merged = function(ingredients)
+	--log(serpent.block(ingredients))
+	local temp = {}
+	local ret = {}
+	for k=1, #ingredients do local i = ingredients[k]
+		if i ~= nil then
+			if i.name == nil then
+				temp[i[1]] = {name = i[1], amount = i[2]}
+			elseif temp[i.name] == nil then
+				temp[i.name] = {name = i.name, type = i.type, probability=  i.probability, amount = i.amount}
+			else
+				temp[i.name].amount = temp[i.name].amount + i.amount
+			end
+		end		
+	end
+	for name,value in pairs(temp) do
+		table.insert(ret,value)
+	end
+	--log(serpent.block(temp))
+	--log(serpent.block(ret))
+	return ret
+end
+
 
 local local_get_item_ingredient_substitutions = function(names,ingredients)
 	if type(names) == "string" then return local_substitue_ingredient_item(names,ingredients) end
 	for k = 1, #names do local name = names[k]		
 		if name ~= nil then ingredients = local_substitue_ingredient_item(name,ingredients) end
 	end
-	return ingredients
+	return local_get_item_ingredient_substitutions_merged(ingredients)
 end
 
 local local_check_icon_size = function(size,fallback)

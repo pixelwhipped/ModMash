@@ -1,8 +1,15 @@
-﻿if data_final_fixes then
-	data.raw["assembling-machine"]["assembling-machine-3"].next_upgrade = "assembling-machine-4"
+﻿local local_add_entity = function(entity)
+    if data.raw[entity.type] == nil then return end
+    if data.raw[entity.type][entity.name] ~= nil then return end
+    data:extend({entity})    
+end
+
+if data_final_fixes then
+    if settings.startup["setting-assembling-machine-burner-only"].value == "No" then
+	    data.raw["assembling-machine"]["assembling-machine-3"].next_upgrade = "assembling-machine-4"
+    end
 else
-    data:extend(
-    {
+    local_add_entity(
         {
 		    type = "assembling-machine",
 		    name = "assembling-machine-burner",
@@ -115,279 +122,282 @@ else
 		      idle_sound = { filename = "__base__/sound/idle1.ogg", volume = 0.6 },
 		      apparent_volume = 1.5
 		    }
-	    },
-        {
-            type = "assembling-machine",
-            name = "assembling-machine-4",
-            icon = "__modmashsplinterassembling__/graphics/icons/assembling-machine-4.png",
-            icon_size = 64,
-            icon_mipmaps = 4,        
-            flags = {"placeable-neutral", "placeable-player", "player-creation"},
-            minable = {hardness = 0.2, mining_time = 0.5, result = "assembling-machine-4"},
-            max_health = 500,
-            corpse = "big-remnants",
-            dying_explosion = "medium-explosion",
-            resistances =
+	    })
+    if settings.startup["setting-assembling-machine-burner-only"].value == "No" then
+        local_add_entity(
             {
+                type = "assembling-machine",
+                name = "assembling-machine-4",
+                icon = "__modmashsplinterassembling__/graphics/icons/assembling-machine-4.png",
+                icon_size = 64,
+                icon_mipmaps = 4,        
+                flags = {"placeable-neutral", "placeable-player", "player-creation"},
+                minable = {hardness = 0.2, mining_time = 0.5, result = "assembling-machine-4"},
+                max_health = 500,
+                corpse = "big-remnants",
+                dying_explosion = "medium-explosion",
+                resistances =
                 {
-                type = "fire",
-                percent = 70
-                }
-            },
-            fluid_boxes =
-            {
-                {
-                production_type = "input",
-                pipe_picture = assembler2pipepictures(),
-                pipe_covers = pipecoverspictures(),
-                base_area = 10,
-                base_level = -1,
-                pipe_connections = {{ type="input", position = {0, -2} }}
-                },
-                {
-                production_type = "output",
-                pipe_picture = assembler2pipepictures(),
-                pipe_covers = pipecoverspictures(),
-                base_area = 10,
-                base_level = 1,
-                pipe_connections = {{ type="output", position = {0, 2} }}
-                },
-                off_when_no_fluid_recipe = true
-            },
-            collision_box = {{-1.2, -1.2}, {1.2, 1.2}},
-            selection_box = {{-1.5, -1.5}, {1.5, 1.5}},
-            fast_replaceable_group = "assembling-machine",
-	        alert_icon_shift = {
-                -0.09375,
-                -0.375
-                },
-             animation = {
-                layers = {
                     {
-                    filename = "__modmashsplinterassembling__/graphics/entity/assembling-machine-4/assembling-machine-4.png",
-                    frame_count = 32,
-                    height = 119, --124,
-                    hr_version = {
-                        filename = "__modmashsplinterassembling__/graphics/entity/assembling-machine-4/hr-assembling-machine-4.png",
-                        frame_count = 32,
-                        height = 247,
-                        line_length = 8,
-                        priority = "high",
-                        scale = 0.5,
-                        shift = {
-                        0,
-                        -0.0234375
-                        },
-                        width = 214
-                    },
-                    line_length = 8,
-                    priority = "high",
-                    shift = {
-                        0,
-                        -0.015625
-                    },
-                    width = 108
-                    },
-                    {
-                    draw_as_shadow = true,
-                    filename = "__modmashsplinterassembling__/graphics/entity/assembling-machine-4/assembling-machine-shadow.png",
-                    frame_count = 32,
-                    height = 87,
-                    hr_version = {
-                        draw_as_shadow = true,
-                        filename = "__modmashsplinterassembling__/graphics/entity/assembling-machine-4/hr-assembling-machine-shadow.png",
-                        frame_count = 32,
-                        height = 172,
-                        line_length = 8,
-                        priority = "high",
-                        scale = 0.5,
-                        shift = {
-                        0.875,
-                        0.125
-                        },
-                        width = 260
-                    },
-                    line_length = 8,
-                    priority = "high",
-                    shift = {
-                        0.875,
-                        0.125
-                    },
-                    width = 130
+                    type = "fire",
+                    percent = 70
                     }
-                }
                 },
-            open_sound = { filename = "__base__/sound/machine-open.ogg", volume = 0.85 },
-            close_sound = { filename = "__base__/sound/machine-close.ogg", volume = 0.75 },
-            working_sound =
-            {
-                sound = {
+                fluid_boxes =
                 {
-                    filename = "__base__/sound/assembling-machine-t2-1.ogg",
-                    volume = 0.8
-                },
-                {
-                    filename = "__base__/sound/assembling-machine-t2-2.ogg",
-                    volume = 0.8
-                },
-                },
-                idle_sound = { filename = "__base__/sound/idle1.ogg", volume = 0.6 },
-                apparent_volume = 1.5,
-            },
-            crafting_categories = {"crafting", "advanced-crafting", "crafting-with-fluid"},
-            crafting_speed = 2.5,
-            energy_source =
-            {
-                type = "electric",
-                usage_priority = "secondary-input",
-                emissions_per_minute  = 2
-            },
-            energy_usage = "360kW",
-            ingredient_count = 6,
-            module_specification =
-            {
-                module_slots = 5,
-                module_info_icon_shift = {0, 0.5},
-                module_info_multi_row_initial_height_modifier = -0.3
-            },
-            allowed_effects = {"consumption", "speed", "productivity", "pollution"},
-        },
-        {
-            type = "assembling-machine",
-            name = "assembling-machine-5",
-            icon = "__modmashsplinterassembling__/graphics/icons/assembling-machine-5.png",
-            icon_size = 64,
-            icon_mipmaps = 4,        
-            flags = {"placeable-neutral","placeable-player", "player-creation"},
-            minable = {hardness = 0.2, mining_time = 0.5, result = "assembling-machine-5"},
-            max_health = 600,
-            healing_per_tick = modmashsplinterassembling.util.defines.healing_per_tick,
-            corpse = "big-remnants",
-            dying_explosion = "medium-explosion",
-            resistances = 
-            {
-              {
-                type = "fire",
-                percent = 70
-              }
-            },
-            fluid_boxes =
-            {
-              {
-                production_type = "input",
-                pipe_picture = assembler3pipepictures(),
-                pipe_covers = pipecoverspictures(),
-                base_area = 10,
-                base_level = -1,
-                pipe_connections = {{ type="input", position = {0, -2} }}
-              },
-              {
-                production_type = "output",
-                pipe_picture = assembler3pipepictures(),
-                pipe_covers = pipecoverspictures(),
-                base_area = 10,
-                base_level = 1,
-                pipe_connections = {{ type="output", position = {0, 2} }}
-              },
-              off_when_no_fluid_recipe = true
-            },
-            open_sound = { filename = "__base__/sound/machine-open.ogg", volume = 0.85 },
-            close_sound = { filename = "__base__/sound/machine-close.ogg", volume = 0.75 },
-            working_sound =
-            {
-              sound = {
-                {
-                  filename = "__base__/sound/assembling-machine-t3-1.ogg",
-                  volume = 0.8
-                },
-                {
-                  filename = "__base__/sound/assembling-machine-t3-2.ogg",
-                  volume = 0.8
-                },
-              },
-              idle_sound = { filename = "__base__/sound/idle1.ogg", volume = 0.6 },
-              apparent_volume = 1.5,
-            },
-            collision_box = {{-1.2, -1.2}, {1.2, 1.2}},
-            selection_box = {{-1.5, -1.5}, {1.5, 1.5}},
-            fast_replaceable_group = "assembling-machine",
-            alert_icon_shift = {
-                -0.09375,
-                -0.375
-              },
-              animation = {
-                layers = {
-		          {
-                    filename = "__modmashsplinterassembling__/graphics/entity/assembling-machine-5/assembling-machine-5.png",
-                    frame_count = 32,
-                    height = 119, --124,
-                    hr_version = {
-                      filename = "__modmashsplinterassembling__/graphics/entity/assembling-machine-5/hr-assembling-machine-5.png",
-                      frame_count = 32,
-                      height = 247,
-                      line_length = 8,
-                      priority = "high",
-                      scale = 0.5,
-                      shift = {
-                        0,
-                        -0.0234375
-                      },
-                      width = 214
+                    {
+                    production_type = "input",
+                    pipe_picture = assembler2pipepictures(),
+                    pipe_covers = pipecoverspictures(),
+                    base_area = 10,
+                    base_level = -1,
+                    pipe_connections = {{ type="input", position = {0, -2} }}
                     },
-                    line_length = 8,
-                    priority = "high",
-                    shift = {
-                      0,
-                      -0.015625
+                    {
+                    production_type = "output",
+                    pipe_picture = assembler2pipepictures(),
+                    pipe_covers = pipecoverspictures(),
+                    base_area = 10,
+                    base_level = 1,
+                    pipe_connections = {{ type="output", position = {0, 2} }}
                     },
-                    width = 108
+                    off_when_no_fluid_recipe = true
+                },
+                collision_box = {{-1.2, -1.2}, {1.2, 1.2}},
+                selection_box = {{-1.5, -1.5}, {1.5, 1.5}},
+                fast_replaceable_group = "assembling-machine",
+	            alert_icon_shift = {
+                    -0.09375,
+                    -0.375
+                    },
+                 animation = {
+                    layers = {
+                        {
+                        filename = "__modmashsplinterassembling__/graphics/entity/assembling-machine-4/assembling-machine-4.png",
+                        frame_count = 32,
+                        height = 119, --124,
+                        hr_version = {
+                            filename = "__modmashsplinterassembling__/graphics/entity/assembling-machine-4/hr-assembling-machine-4.png",
+                            frame_count = 32,
+                            height = 247,
+                            line_length = 8,
+                            priority = "high",
+                            scale = 0.5,
+                            shift = {
+                            0,
+                            -0.0234375
+                            },
+                            width = 214
+                        },
+                        line_length = 8,
+                        priority = "high",
+                        shift = {
+                            0,
+                            -0.015625
+                        },
+                        width = 108
+                        },
+                        {
+                        draw_as_shadow = true,
+                        filename = "__modmashsplinterassembling__/graphics/entity/assembling-machine-4/assembling-machine-shadow.png",
+                        frame_count = 32,
+                        height = 87,
+                        hr_version = {
+                            draw_as_shadow = true,
+                            filename = "__modmashsplinterassembling__/graphics/entity/assembling-machine-4/hr-assembling-machine-shadow.png",
+                            frame_count = 32,
+                            height = 172,
+                            line_length = 8,
+                            priority = "high",
+                            scale = 0.5,
+                            shift = {
+                            0.875,
+                            0.125
+                            },
+                            width = 260
+                        },
+                        line_length = 8,
+                        priority = "high",
+                        shift = {
+                            0.875,
+                            0.125
+                        },
+                        width = 130
+                        }
+                    }
+                    },
+                open_sound = { filename = "__base__/sound/machine-open.ogg", volume = 0.85 },
+                close_sound = { filename = "__base__/sound/machine-close.ogg", volume = 0.75 },
+                working_sound =
+                {
+                    sound = {
+                    {
+                        filename = "__base__/sound/assembling-machine-t2-1.ogg",
+                        volume = 0.8
+                    },
+                    {
+                        filename = "__base__/sound/assembling-machine-t2-2.ogg",
+                        volume = 0.8
+                    },
+                    },
+                    idle_sound = { filename = "__base__/sound/idle1.ogg", volume = 0.6 },
+                    apparent_volume = 1.5,
+                },
+                crafting_categories = {"crafting", "advanced-crafting", "crafting-with-fluid"},
+                crafting_speed = 2.5,
+                energy_source =
+                {
+                    type = "electric",
+                    usage_priority = "secondary-input",
+                    emissions_per_minute  = 2
+                },
+                energy_usage = "360kW",
+                ingredient_count = 6,
+                module_specification =
+                {
+                    module_slots = 5,
+                    module_info_icon_shift = {0, 0.5},
+                    module_info_multi_row_initial_height_modifier = -0.3
+                },
+                allowed_effects = {"consumption", "speed", "productivity", "pollution"},
+            })
+        local_add_entity(
+            {
+                type = "assembling-machine",
+                name = "assembling-machine-5",
+                icon = "__modmashsplinterassembling__/graphics/icons/assembling-machine-5.png",
+                icon_size = 64,
+                icon_mipmaps = 4,        
+                flags = {"placeable-neutral","placeable-player", "player-creation"},
+                minable = {hardness = 0.2, mining_time = 0.5, result = "assembling-machine-5"},
+                max_health = 600,
+                healing_per_tick = modmashsplinterassembling.util.defines.healing_per_tick,
+                corpse = "big-remnants",
+                dying_explosion = "medium-explosion",
+                resistances = 
+                {
+                  {
+                    type = "fire",
+                    percent = 70
+                  }
+                },
+                fluid_boxes =
+                {
+                  {
+                    production_type = "input",
+                    pipe_picture = assembler3pipepictures(),
+                    pipe_covers = pipecoverspictures(),
+                    base_area = 10,
+                    base_level = -1,
+                    pipe_connections = {{ type="input", position = {0, -2} }}
                   },
                   {
-                    draw_as_shadow = true,
-                    filename = "__modmashsplinterassembling__/graphics/entity/assembling-machine-4/assembling-machine-shadow.png",
-                    frame_count = 32,
-                    height = 87,
-                    hr_version = {
-                      draw_as_shadow = true,
-                      filename = "__modmashsplinterassembling__/graphics/entity/assembling-machine-4/hr-assembling-machine-shadow.png",
-                      frame_count = 32,
-                      height = 172,
-                      line_length = 8,
-                      priority = "high",
-                      scale = 0.5,
-                      shift = {
-                        0.875,
-                        0.125
+                    production_type = "output",
+                    pipe_picture = assembler3pipepictures(),
+                    pipe_covers = pipecoverspictures(),
+                    base_area = 10,
+                    base_level = 1,
+                    pipe_connections = {{ type="output", position = {0, 2} }}
+                  },
+                  off_when_no_fluid_recipe = true
+                },
+                open_sound = { filename = "__base__/sound/machine-open.ogg", volume = 0.85 },
+                close_sound = { filename = "__base__/sound/machine-close.ogg", volume = 0.75 },
+                working_sound =
+                {
+                  sound = {
+                    {
+                      filename = "__base__/sound/assembling-machine-t3-1.ogg",
+                      volume = 0.8
+                    },
+                    {
+                      filename = "__base__/sound/assembling-machine-t3-2.ogg",
+                      volume = 0.8
+                    },
+                  },
+                  idle_sound = { filename = "__base__/sound/idle1.ogg", volume = 0.6 },
+                  apparent_volume = 1.5,
+                },
+                collision_box = {{-1.2, -1.2}, {1.2, 1.2}},
+                selection_box = {{-1.5, -1.5}, {1.5, 1.5}},
+                fast_replaceable_group = "assembling-machine",
+                alert_icon_shift = {
+                    -0.09375,
+                    -0.375
+                  },
+                  animation = {
+                    layers = {
+		              {
+                        filename = "__modmashsplinterassembling__/graphics/entity/assembling-machine-5/assembling-machine-5.png",
+                        frame_count = 32,
+                        height = 119, --124,
+                        hr_version = {
+                          filename = "__modmashsplinterassembling__/graphics/entity/assembling-machine-5/hr-assembling-machine-5.png",
+                          frame_count = 32,
+                          height = 247,
+                          line_length = 8,
+                          priority = "high",
+                          scale = 0.5,
+                          shift = {
+                            0,
+                            -0.0234375
+                          },
+                          width = 214
+                        },
+                        line_length = 8,
+                        priority = "high",
+                        shift = {
+                          0,
+                          -0.015625
+                        },
+                        width = 108
                       },
-                      width = 260
-                    },
-                    line_length = 8,
-                    priority = "high",
-                    shift = {
-                      0.875,
-                      0.125
-                    },
-                    width = 130
-                  }
-                }
-              },
-            crafting_categories = {"crafting", "advanced-crafting", "crafting-with-fluid"},
-            crafting_speed = 4,
-            energy_source =
-            {
-              type = "electric",
-              usage_priority = "secondary-input",
-              emissions_per_minute  = 2
-            },
-            energy_usage = "480kW",
-            ingredient_count = 6,
-            module_specification =
-            {
-              module_slots = 6,
-              module_info_icon_shift = {0, 0.5},
-              module_info_multi_row_initial_height_modifier = -0.3
-            },
-            allowed_effects = {"consumption", "speed", "productivity", "pollution"}
-        }
-    })
+                      {
+                        draw_as_shadow = true,
+                        filename = "__modmashsplinterassembling__/graphics/entity/assembling-machine-4/assembling-machine-shadow.png",
+                        frame_count = 32,
+                        height = 87,
+                        hr_version = {
+                          draw_as_shadow = true,
+                          filename = "__modmashsplinterassembling__/graphics/entity/assembling-machine-4/hr-assembling-machine-shadow.png",
+                          frame_count = 32,
+                          height = 172,
+                          line_length = 8,
+                          priority = "high",
+                          scale = 0.5,
+                          shift = {
+                            0.875,
+                            0.125
+                          },
+                          width = 260
+                        },
+                        line_length = 8,
+                        priority = "high",
+                        shift = {
+                          0.875,
+                          0.125
+                        },
+                        width = 130
+                      }
+                    }
+                  },
+                crafting_categories = {"crafting", "advanced-crafting", "crafting-with-fluid"},
+                crafting_speed = 4,
+                energy_source =
+                {
+                  type = "electric",
+                  usage_priority = "secondary-input",
+                  emissions_per_minute  = 2
+                },
+                energy_usage = "480kW",
+                ingredient_count = 6,
+                module_specification =
+                {
+                  module_slots = 6,
+                  module_info_icon_shift = {0, 0.5},
+                  module_info_multi_row_initial_height_modifier = -0.3
+                },
+                allowed_effects = {"consumption", "speed", "productivity", "pollution"}
+            })
+    end
 end

@@ -1,0 +1,17 @@
+{
+  "name": "modmashsplinternewworlds",
+  "version": "1.1.04",
+  "title": "ModMash Splinter, New Worlds",
+  "author": "PixelWhipped",
+  "contact": "",
+  "homepage": "https://www.patreon.com/user?u=15367757",
+  "factorio_version": "1.1",
+  "description": "Mod Mash Splinter for New Worlds, Rid the Nauvis of the Queen Hive and explore New Worlds",
+  "dependencies": [
+    "base >= 1.1.0",
+    "modmashsplinter >= 1.1.06",
+    "? modmashsplinterresources >= 1.1.05",
+    "? modmashsplintersubspacelogistics >= 1.1.02",
+    "? modmashsplinterunderground >= 1.1.07"
+  ]
+}

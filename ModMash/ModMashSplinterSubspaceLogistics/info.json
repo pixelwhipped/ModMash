@@ -1,6 +1,6 @@
 {
   "name": "modmashsplintersubspacelogistics",
-  "version": "1.1.02",
+  "version": "1.1.03",
   "title": "ModMash Splinter, Subspace Logistics",
   "author": "PixelWhipped",
   "contact": "",
@@ -9,8 +9,8 @@
   "description": "Mod Mash Splinter for Subspace Logistics, adds super material whiich allows matter subspace storage and transport",
   "dependencies": [
     "base >= 1.1.0",
-    "modmashsplinter >= 1.1.05",
-    "modmashsplinterresources >= 1.1.05",
-    "modmashsplinterassembling >= 1.1.02"
+    "modmashsplinter >= 1.1.07",
+    "?modmashsplinterresources >= 1.1.05",
+    "?modmashsplinterassembling >= 1.1.04"
   ]
 }

@@ -145,18 +145,18 @@ local local_valves = {
 		localised_description = {"item-description.modmash-super-boiler-valve"},
 		order = "e",
 		fixed_recipe = "valve-water-steam",
-		normal = {
+		normal = modmashsplintersubspacelogistics.util.get_item_ingredient_substitutions({"alien-plate"},{
 				{"electronic-circuit", 1},
 				{"alien-plate", 2},
 				{"iron-gear-wheel", 1},
 				{"pipe", 1},
-		},
-		expensive = {
+		}),
+		expensive = modmashsplintersubspacelogistics.util.get_item_ingredient_substitutions({"alien-plate"},{
 				{"electronic-circuit", 1},
 				{"alien-plate", 4},
 				{"iron-gear-wheel", 2},
 				{"pipe", 2},
-		},
+		}),
 		energy_source =
 		{
 			  type = "burner",

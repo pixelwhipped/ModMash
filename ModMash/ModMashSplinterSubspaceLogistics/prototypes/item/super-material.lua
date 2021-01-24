@@ -45,7 +45,7 @@ data:extend(
 		category = "crafting-with-fluid",
 		order = "a[super-material]",
 		
-		ingredients = {{"uranium-238", 2},{type="fluid", name="alien-ooze", amount=100}},
+		ingredients = modmashsplintersubspacelogistics.util.get_item_ingredient_substitutions({"alien-ooze"} ,{{"uranium-238", 2},{type="fluid", name="alien-ooze", amount=100}}),
 		result = "super-material"
 	},
 	{

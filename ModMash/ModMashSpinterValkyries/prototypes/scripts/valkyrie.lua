@@ -32,6 +32,11 @@ local local_remove_projectile = function()
 	global.modmashsplintervalkyries.valkyries.projectiles = math.max(global.modmashsplintervalkyries.valkyries.projectiles - 1,0)
 end
 
+local player_spider_distance_mod = function()
+	local mod = (settings.global["setting-player-distance"].value/100)*0.5
+	mod = mod + 0.5
+	return mod
+end
 
 local local_update_return_targets = function(target)
 	if target ~= nil and is_valid(target.entity) then	
@@ -68,30 +73,35 @@ local local_update_return_targets = function(target)
 end
 
 local local_update_target = function(k)
-		local t = targets[k]
-		local r = t.entity
-		local is_player = t.player ~= false and is_valid(t.player)
-		local is_spider = t.spider ~= false and is_valid(t.spider)
-		if is_valid(r) then
-			local p = r.position
-			local enemy = r.surface.find_enemy_units(p, max_distance/5)
-			if enemy == nil or #enemy < 1 then
-				table.remove(targets,k)				
-				if is_player and is_valid(t.player.surface) and r.destroy() then
-					local s = t.player.surface						
-					s.create_entity{name='valkyrie-robot-return-projectile', speed=0.06, position=p, force="player", source=t.player, target=t.player.position}
-					local_add_projectile()
-				elseif is_spider and is_valid(t.spider.surface) and r.destroy() then
-					local s = t.spider.surface						
-					s.create_entity{name='valkyrie-robot-return-projectile', speed=0.06, position=p, force="player", source=t.spider, target=t.spider.position}
-					local_add_projectile()
-				else					
-					local s = r.surface
-					if is_valid(s)  then 
-						s.create_entity{name="valkyrie-robot", position=p, force="player"}
-					end					
+		local t = targets[k] --potential nil? wait and see if re-occours
+		if t ~= nil then
+			local r = t.entity
+			local is_player = t.player ~= false and is_valid(t.player)
+			local is_spider = t.spider ~= false and is_valid(t.spider)
+			if is_valid(r) then
+				local p = r.position
+				local enemy = r.surface.find_enemy_units(p, max_distance/5)
+				if enemy == nil or #enemy < 1 then
+					table.remove(targets,k)				
+					if is_player and is_valid(t.player.surface) and r.destroy() then
+						local s = t.player.surface						
+						s.create_entity{name='valkyrie-robot-return-projectile', speed=0.06, position=p, force="player", source=t.player, target=t.player.position}
+						local_add_projectile()
+					elseif is_spider and is_valid(t.spider.surface) and r.destroy() then
+						local s = t.spider.surface						
+						s.create_entity{name='valkyrie-robot-return-projectile', speed=0.06, position=p, force="player", source=t.spider, target=t.spider.position}
+						local_add_projectile()
+					else					
+						local s = r.surface
+						if is_valid(s)  then 
+							s.create_entity{name="valkyrie-robot", position=p, force="player"}
+						end					
+					end
+					r.destroy()
 				end
-				r.destroy()
+			else
+				table.remove(targets,k)
+				return
 			end
 		else
 			table.remove(targets,k)
@@ -107,7 +117,7 @@ local local_find_targets = function()
 				local grid = nil
 				if player ~= nil and player.character ~= nil then grid = player.character.grid end
 				if logistic and logistic.all_construction_robots > 0 and logistic.robot_limit > 0 and grid ~= nil then
-					local enemy = player.surface.find_enemy_units(player.position, max_distance) --player.surface.find_entities_filtered{area = {{-d, -d}, {d, d}}, force = "enemy", limit=1} --				
+					local enemy = player.surface.find_enemy_units(player.position, max_distance * player_spider_distance_mod() ) --player.surface.find_entities_filtered{area = {{-d, -d}, {d, d}}, force = "enemy", limit=1} --				
 					if enemy ~= nil and #enemy > 0 then 
 						if player.remove_item({name='valkyrie-robot',count=1}) > 0 then
 							local c = player.surface.create_entity({
@@ -199,7 +209,7 @@ local local_find_targets = function()
 				local grid = nil
 				if r ~= nil then grid = r.grid end
 				if logistic and logistic.all_construction_robots > 0 and logistic.robot_limit > 0 and grid ~= nil then
-					local enemy = r.surface.find_enemy_units(r.position, max_distance) --player.surface.find_entities_filtered{area = {{-d, -d}, {d, d}}, force = "enemy", limit=1} --				
+					local enemy = r.surface.find_enemy_units(r.position, max_distance * player_spider_distance_mod()) --player.surface.find_entities_filtered{area = {{-d, -d}, {d, d}}, force = "enemy", limit=1} --				
 					if enemy ~= nil and #enemy > 0 then 
 						if r.remove_item({name='valkyrie-robot',count=1}) > 0 then
 							local c = r.surface.create_entity({

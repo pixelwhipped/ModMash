@@ -1,4 +1,7 @@
-﻿data:extend(
+﻿local prerequisites = nil
+if mods["modmashsplinterresources"] then prerequisites = "alien-conversion1" end
+
+data:extend(
 {
   {
     type = "technology",
@@ -23,7 +26,7 @@
     },
     prerequisites =
     {
-      "alien-conversion1"
+      prerequisites
     },
     unit =
     {

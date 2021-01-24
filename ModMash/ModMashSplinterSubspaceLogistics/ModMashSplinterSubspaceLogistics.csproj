@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>C:\Users\tarra\AppData\Roaming\Factorio\mods\modmashsplintersubspacelogistics_1.1.02</OutputPath>
+    <OutputPath>C:\Users\tarra\AppData\Roaming\Factorio\mods\modmashsplintersubspacelogistics_1.1.03</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -71,6 +71,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="locale\en\locale.cfg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="prototypes\categories\discharge-fluids.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="prototypes\categories\groups.lua">
