@@ -36,6 +36,28 @@ local local_tick = function()
 	if index >= #all_terraformers then index = 1 end
 	local numiter = 0
 	local updates = math.min(#all_terraformers,terraformers_per_tick)
+	if global.modmashsplinternewworlds.queen_hive_generated == true and global.modmashsplinternewworlds.queen_hive_taged ~= true then
+		local surface = "nauvis-deep-underground"
+		if not game.active_mods["modmashsplinterunderground"] then
+			surface = "nauvis"
+		end
+		if game.surfaces[surface] ~= nil then
+			local queens = game.surfaces[surface].find_entities_filtered{name = "queen-hive"}
+			
+			if queens ~= nil and #queens>=1 and is_valid(queens[1]) then		
+			
+				for k=1, #game.players do local player = game.players[k]
+					local chunk = {queens[1].position.x/32,queens[1].position.y/32} 
+					if player.force.is_chunk_charted(game.surfaces[surface],chunk) == true then
+						player.force.add_chart_tag(game.surfaces[surface],{position=queens[1].position,icon={type="virtual", name="queen-hive-signal"},text="Queen Hive"})
+						global.modmashsplinternewworlds.queen_hive_taged = true
+					else
+						player.force.chart(game.surfaces[surface],{{queens[1].position.x-12,queens[1].position.y-12},{queens[1].position.x+12,queens[1].position.y+12}})
+					end
+				end
+			end
+		end
+	end
 	for k=index, #all_terraformers do local terraformer = all_terraformers[k].entity
 		
 		if is_valid_and_persistant(terraformer) and terraformer.energy > 0 then
@@ -375,13 +397,11 @@ local local_chunk_generated = function(event)
 					for _, force in pairs(game.forces) do
 					
 						force.chart(event.surface, {{area.left_top.x-12, area.left_top.y-12}, {area.right_bottom.x+12, area.right_bottom.y+12}})					
-						--no point area not charted and not checking each event
-						--force.add_chart_tag(event.surface,{position=position,icon={type="virtual", name="queen-hive-signal"},text="Queen Hive"})
-						--if force.is_chunk_charted(event.surface,position) then
-						--print("yes")
-						--else
-						--print("nope")
-						--end
+						local chunk = {position.x/32,position.y/32} 
+						if force.is_chunk_charted(event.surface,chunk) == true then
+							force.add_chart_tag(event.surface,{position=position,icon={type="virtual", name="queen-hive-signal"},text="Queen Hive"})
+							global.modmashsplinternewworlds.queen_hive_taged = true
+						end
 					end
 				
 				end

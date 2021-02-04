@@ -229,7 +229,6 @@ local local_turret_added = function(entity,event)
 	end
 
 local local_turret_removed = function(entity,event)	
-	
 	if event ~= nil and is_valid(event.cause) == true and table_contains(turret_types,event.cause.type) and event.cause.kills ~=nil then						
 		if settings.startup["heroturrets-allow-artillery-turrets"].value == false and event.cause.type == "artillery-turret" then return end
 		
@@ -245,32 +244,6 @@ local local_turret_removed = function(entity,event)
 			local levelup_damage_two = heroturrets.defines.turret_levelup_damage_two * multiplier
 			local levelup_damage_one = heroturrets.defines.turret_levelup_damage_one * multiplier
 		]]
-		if settings.startup["heroturrets-kill-counter"].value == "Exact" and event ~= nil and is_valid(event.entity) and is_valid(event.buffer) and table_contains(turret_types,event.entity.type) and event.entity.kills ~= nil and event.entity.kills > 0 then	
-			if #event.buffer == 1 and entity.kills==0 then
-				local item = event.buffer[1]
-				local standard_item = item.name:sub(1,#item.name-#"-with-tags")
-				local stack = {
-					name = standard_item,
-					count = item.count,
-					health = item.health,
-					ammo = item.ammo
-				}
-				if event.buffer.can_set_stack(stack) then
-					event.buffer.set_stack(stack)
-				elseif item.type == "item-with-tags" then 			
-					item.set_tag("kills", entity.kills)
-					item.custom_description = entity.kills .. " Kills"
-				end
-			else
-				for k=#event.buffer, 1, -1 do item = event.buffer[k]
-					if item.type == "item-with-tags" then 			
-						item.set_tag("kills", entity.kills)
-						item.custom_description = entity.kills .. " Kills"
-					end
-				end
-			end		
-
-		else
 			if rank_count == nil then rank_count = #local_get_names() end
 			for k = rank_count, 1, -1 do
 				if event.cause.kills >= ((local_get_kill_table()[k]*multiplier) - 1) or (settings.startup["heroturrets-allow-damage"].value == "Enabled" and event.cause.damage_dealt >= local_get_damage_table()[k]*multiplier) then		
@@ -299,81 +272,32 @@ local local_turret_removed = function(entity,event)
 					end
 				end
 			end
+			
+	else if settings.startup["heroturrets-kill-counter"].value == "Exact" and event ~= nil and is_valid(event.entity) and is_valid(event.buffer) and table_contains(turret_types,event.entity.type) and event.entity.kills ~= nil and event.entity.kills > 0 then	
+			if #event.buffer == 1 and entity.kills==0 then
+				local item = event.buffer[1]
+				local standard_item = item.name:sub(1,#item.name-#"-with-tags")
+				local stack = {
+					name = standard_item,
+					count = item.count,
+					health = item.health,
+					ammo = item.ammo
+				}
+				if event.buffer.can_set_stack(stack) then
+					event.buffer.set_stack(stack)
+				elseif item.type == "item-with-tags" then 			
+					item.set_tag("kills", entity.kills)
+					item.custom_description = entity.kills .. " Kills"
+				end
+			else
+				for k=#event.buffer, 1, -1 do item = event.buffer[k]
+					if item.type == "item-with-tags" then 			
+						item.set_tag("kills", entity.kills)
+						item.custom_description = entity.kills .. " Kills"
+					end
+				end
+			end		
 		end
-		--[[	elseif event.cause.kills >= (levelup_four - 1) or (settings.startup["heroturrets-allow-damage"].value == "Enabled" and event.cause.damage_dealt >= levelup_damage_four) then		
-				if starts_with(event.cause.name,"hero-turret") == true then
-					--is a hero turret
-					if starts_with(event.cause.name,"hero-turret-4") then
-						--nothing to do
-					else
-						local new_name = event.cause.name:gsub("hero%-turret%-3%-for%-", "")
-						new_name = new_name:gsub("hero%-turret%-2%-for%-", "")
-						new_name = new_name:gsub("hero%-turret%-1%-for%-", "")
-						local ug = find_recipes_for("hero-turret-4-for-"..new_name,event.cause.force)
-					
-						if #ug ~= 0 then
-							local_replace_turret(event.cause,ug[1])
-						end
-					end
-				else
-					--find upgrade
-					local ug = find_recipes_for("hero-turret-4-for-"..event.cause.name,event.cause.force)
-					if #ug ~= 0 then
-						local_replace_turret(event.cause,ug[1])
-					end
-				end
-			elseif event.cause.kills >= (levelup_three - 1) or (settings.startup["heroturrets-allow-damage"].value == "Enabled" and event.cause.damage_dealt >= levelup_damage_three) then		
-				if starts_with(event.cause.name,"hero-turret") == true then
-					--is a hero turret
-					if starts_with(event.cause.name,"hero-turret-3") then
-						--nothing to do
-					else
-						local new_name = event.cause.name:gsub("hero%-turret%-2%-for%-", "")
-						new_name = new_name:gsub("hero%-turret%-1%-for%-", "")
-						local ug = find_recipes_for("hero-turret-3-for-"..new_name,event.cause.force)
-					
-						if #ug ~= 0 then
-							local_replace_turret(event.cause,ug[1])
-						end
-					end
-				else
-					--find upgrade
-					local ug = find_recipes_for("hero-turret-3-for-"..event.cause.name,event.cause.force)
-					if #ug ~= 0 then
-						local_replace_turret(event.cause,ug[1])
-					end
-				end
-			elseif event.cause.kills >= (levelup_two - 1) or (settings.startup["heroturrets-allow-damage"].value == "Enabled" and event.cause.damage_dealt >= levelup_damage_two) then
-				if starts_with(event.cause.name,"hero-turret") then
-					--is a hero turret
-					if starts_with(event.cause.name,"hero-turret-2") then
-						--nothing to do
-					else
-						local new_name = event.cause.name:gsub("hero%-turret%-1%-for%-", "")
-						local ug = find_recipes_for("hero-turret-2-for-"..new_name,event.cause.force)
-						if #ug ~= 0 then
-							local_replace_turret(event.cause,ug[1])
-						end
-					end
-				else
-					--find upgrade
-					local ug = find_recipes_for("hero-turret-2-for-"..event.cause.name,event.cause.force)
-					if #ug ~= 0 then
-						local_replace_turret(event.cause,ug[1])
-					end
-				end
-			elseif event.cause.kills >= (levelup_one - 1) or (settings.startup["heroturrets-allow-damage"].value == "Enabled" and event.cause.damage_dealt >= levelup_damage_one) then
-				if starts_with(event.cause.name,"hero-turret") then
-					--nothing to do
-				else
-					--find upgrade				
-					local ug = find_recipes_for("hero-turret-1-for-"..event.cause.name,event.cause.force)
-					if #ug ~= 0 then
-						local_replace_turret(event.cause,ug[1])
-					end
-				end
-			end
-		]]
 	end
 	end
 

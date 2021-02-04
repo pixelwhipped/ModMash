@@ -530,7 +530,7 @@ local local_create_belt_underground = function(name,max_health,max_distance,spee
 	patch_technology(technology,name)
 	end
 
-local local_create_belt = function(name,max_health,speed,localised_name,localised_description,order,ingredients,ingredients_expensive, healing_per_tick,technology,next_upgrade)
+local local_create_belt = function(name,max_health,speed,localised_name,localised_description,order,ingredients,ingredients_expensive, healing_per_tick,technology,next_upgrade,related_underground_belt)
 	local icon = "__modmashsplinterlogistics__/graphics/icons/" .. name .. ".png"
 	local entity = {
 		type = "transport-belt",
@@ -567,6 +567,7 @@ local local_create_belt = function(name,max_health,speed,localised_name,localise
 		belt_animation_set = local_create_belt_animation_set(name),
 		fast_replaceable_group = "transport-belt",
 		next_upgrade = next_upgrade,
+		related_underground_belt = related_underground_belt,
 		speed = speed,
 		connector_frame_sprites = transport_belt_connector_frame_sprites,
 		circuit_wire_connection_points = circuit_connector_definitions["belt"].points,
@@ -670,7 +671,8 @@ local local_belts = {
 				{"express-transport-belt", 1},
 				{"titanium-plate", 8}
 		}),
-		next_upgrade = "regenerative-transport-belt"
+		next_upgrade = "regenerative-transport-belt",
+		related_underground_belt = "high-speed-underground-belt-structure"
 	},{
 		name = "regenerative-transport-belt",		
 		max_health = 300,
@@ -688,7 +690,8 @@ local local_belts = {
 				{"high-speed-transport-belt", 1},
 				{"alien-plate", 8},
 		}),
-		next_upgrade = nil
+		next_upgrade = nil,
+		related_underground_belt = "regenerative-underground-belt-structure"
 	}}
 
 local local_splitters = {
@@ -904,7 +907,7 @@ if data_final_fixes then
 else
 	for index=1, #local_belts do local belt = local_belts[index]
 		log("Creating Belt " .. belt.name)
-		local_create_belt(belt.name,belt.max_health,belt.speed,belt.localised_name,belt.localised_description,belt.order,belt.ingredients,belt.ingredients_expensive, belt.healing_per_tick, belt.technology,belt.next_upgrade)
+		local_create_belt(belt.name,belt.max_health,belt.speed,belt.localised_name,belt.localised_description,belt.order,belt.ingredients,belt.ingredients_expensive, belt.healing_per_tick, belt.technology,belt.next_upgrade,belt.related_underground_belt)
 	end
 	for index=1, #local_underground_belts do local belt = local_underground_belts[index]
 		log("Creating Underground Belt " .. belt.name)

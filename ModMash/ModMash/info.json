@@ -1,6 +1,6 @@
 {
   "name": "modmash",
-  "version": "1.1.12",
+  "version": "1.1.13",
   "title": "ModMash",
   "author": "PixelWhipped",
   "contact": "",
@@ -28,7 +28,7 @@
     "modmashsplintersubspacelogistics >= 1.1.03",
     "modmashsplinterunderground >= 1.1.10",
     "modmashsplinterdefense >= 1.1.04",  
-    "modmashsplinternewworlds >= 1.1.04",
+    "modmashsplinternewworlds >= 1.1.05",
     "modmashsplinterexplosivemining >= 1.1.01",
     "? heroturrets >= 1.1.02"    
   ]

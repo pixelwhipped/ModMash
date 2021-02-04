@@ -1,4 +1,10 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.07
+  Changes:
+    - added related_underground_belt property to belts
+    - updated thumbnail
+
+---------------------------------------------------------------------------------------------------
 Version: 1.1.06
   Bug Fixes:
     - printing Z left over bug hunting
