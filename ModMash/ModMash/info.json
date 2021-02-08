@@ -1,6 +1,6 @@
 {
   "name": "modmash",
-  "version": "1.1.13",
+  "version": "1.1.14",
   "title": "ModMash",
   "author": "PixelWhipped",
   "contact": "",
@@ -9,7 +9,7 @@
   "description": "Mod Mash, Modpack for all ModMash splinter",
   "dependencies": [
     "base >= 1.1.0",
-    "modmashsplinter >= 1.1.07",
+    "modmashsplinter >= 1.1.08",
     "modmashsplintervalkyries >= 1.1.03",
     "modmashsplinterairpurifier >= 1.1.02",
     "modmashsplinterboom >= 1.1.02",    
@@ -25,7 +25,7 @@
     "modmashsplinterrecycling >= 1.1.04",
     "modmashsplinterrefinement >= 1.1.04",
     "modmashsplinterregenerative >= 1.1.02",
-    "modmashsplintersubspacelogistics >= 1.1.03",
+    "modmashsplintersubspacelogistics >= 1.1.04",
     "modmashsplinterunderground >= 1.1.10",
     "modmashsplinterdefense >= 1.1.04",  
     "modmashsplinternewworlds >= 1.1.05",

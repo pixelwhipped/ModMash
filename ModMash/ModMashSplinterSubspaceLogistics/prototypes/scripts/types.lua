@@ -349,7 +349,7 @@ local local_create_super_containers = function()
 		localised_name = "Empty Super Container",
 		localised_description = "Empty Super Container",
 		enabled = false,
-		ingredients = modmashsplintersubspacelogistics.util.get_item_ingredient_substitutions({"titanium-plate"},
+		ingredients = modmashsplintersubspacelogistics.util.get_item_ingredient_substitutions({"titanium-plate","blank-circuit"},
 		{
 		  {"super-material", 1},
 		  {"titanium-plate", 2},

@@ -1,4 +1,9 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.08
+  Changes:
+    - Added alternate recipes to reduce splinter mod dependancies
+
+---------------------------------------------------------------------------------------------------
 Version: 1.1.07
   Changes:
     - Added alternate recipes to reduce splinter mod dependancies

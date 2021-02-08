@@ -134,6 +134,18 @@ if modmashsplinter.mod_request_item_substitutions == nil then
 			return {{name = "iron-plate", amount = math.ceil(qty /2)}}
 			end	
 		},
+		["blank-circuit"] = {
+			func = function(qty,probability)
+			--defer to glass if it exists
+			if local_get_item("blank-circuit") ~= nil or mods["modmashsplinterelectronics"]  then
+				if probability ~= nil then
+					return {{name = "blank-circuit", amount = qty, probability = probability}} 
+				end
+				return {{name = "blank-circuit", amount = qty }} 
+			end
+			return {{name = "electronic-circuit", amount = math.ceil(qty /2)}}
+			end	
+		},
 		["assembling-machine-burner"] = {
 			func = function(qty,probability)
 			--defer to titanium if it exists

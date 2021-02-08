@@ -1,2 +1,2 @@
 ﻿data_updates = true
-require("prototypes.scripts.defines") 
+require("prototypes.scripts.defines")

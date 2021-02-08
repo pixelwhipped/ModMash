@@ -32,10 +32,14 @@ local local_create_ore_conversions = function()
 			if resource ~= nil and resource.name ~= nil and resource.minable ~= nil and resource.minable.result ~= nil then
 				log(resource.minable.result)
 				local item = data.raw["item"][resource.minable.result]
-				if item == nil then log("Nil item "..resource.minable.result) end
-				if item.stack_size == nil then log("Nil stack "..resource.minable.result) end
-				if item ~= nil and item.stack_size ~= nil then
-					table.insert(ores,item)
+				if item == nil then 
+					log("Nil item "..resource.minable.result) 
+				else
+					if item.stack_size == nil then 
+						log("Nil stack "..resource.minable.result)
+					else
+						table.insert(ores,item)
+					end
 				end
 			end
 		end
