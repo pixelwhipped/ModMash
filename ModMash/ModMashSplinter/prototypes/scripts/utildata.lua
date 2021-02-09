@@ -493,7 +493,15 @@ local local_create_layered_icon_using = function(initial_icons)
 				if (icon.from.icon == false or icon.from.icon == nil)  and icon.from.icons ~= nil then
 				--	log("adding icons from prototype with icons")
 					for j = 1, #icon.from.icons do 
-						table.insert(icons,icon.from.icons[j])
+						local new_icon_from = icon.from.icons[j]
+						if icon.scale ~=nil then
+							if new_icon_from.scale == nil then
+								new_icon_from.scale = icon.scale
+							else
+								new_icon_from.scale = new_icon_from.scale * icon.scale
+							end
+						end
+						table.insert(icons,new_icon_from)
 					end				
 				else
 					
@@ -517,69 +525,43 @@ local local_create_layered_icon_using = function(initial_icons)
 	for k = 1, #icons do local icon = icons[k]
 		if icon ~= nil and next(icon) ~= nil then
 			local current_icon = {}
-			--[[if icon.from ~= nil then
-				if type(icon.from.icon) == "string" then
-					if icon.from.icon_size == nil then 
-						log("missing icon size") 
-						return bad_icon
-					end
-					current_icon.icon = icon.from.icon
-					current_icon.icon_size = icon.from.icon_size
-					current_icon.tint = icon.from.tint
-					if icon.from.icon_mipmaps ~= nil then 
-						current_icon.icon_mipmaps = icon.from.icon_mipmaps
-					else
-						current_icon.icon_mipmaps = 1
-					end
-					current_icon.scale = 1
-					current_icon.icon_scale = icon.from.icon_size/64
-					current_icon.shift = {0,0}
-				elseif icon.from.icon == false and icon.from.icons ~= nil then
-					--same stuff but to each
-					log("icons with icons not yet supported -- it now this shoudl not occour")
-					return bad_icon
-				else
-					log("from contains unknown icon format")
-					return bad_icon
-				end
-			elseif type(icon.icon) ~= "string" or icon.icon_mipmaps == nil or icon.icon_size == nil then
-				log("only icons path, mipmaps, size defined is accepted")
+			if icon.icon_size == nil then
 				return bad_icon
-			else]]
-				current_icon.icon = icon.icon
-				current_icon.icon_size = icon.icon_size
-				current_icon.icon_mipmaps = icon.icon_mipmaps
-				current_icon.tint = icon.tint
-				current_icon.icon_scale = icon.icon_size/64
-				if icon.scale == nil then	
-					current_icon.scale = 1
-				else
-					current_icon.scale = icon.scale
-				end 
-				if icon.pin == icon_pin_topleft then
-					current_icon.shift = {((64-(64*current_icon.scale))/2)*-1,((64-(64*current_icon.scale))/2)*-1}
-				elseif icon.pin == icon_pin_top then
-					current_icon.shift = {0,((64-(64*current_icon.scale))/2)*-1}
-				elseif icon.pin == icon_pin_topright then
-					current_icon.shift = {((64-(64*current_icon.scale))/2)*-1,((64-(64*current_icon.scale))/2)}
-				elseif icon.pin == icon_pin_right then
-					current_icon.shift = {((64-(64*current_icon.scale))/2),0}
-				elseif icon.pin == icon_pin_bottomright then
-					current_icon.shift = {((64-(64*current_icon.scale))/2),((64-(64*current_icon.scale))/2)}
-				elseif icon.pin == icon_pin_bottom then
-					current_icon.shift = {0,((64-(64*current_icon.scale))/2)}
-				elseif icon.pin == icon_pin_bottomleft then
-					current_icon.shift = {((64-(64*current_icon.scale))/2)*-1,((64-(64*current_icon.scale))/2)}
-				elseif icon.pin == icon_pin_left then
-					current_icon.shift = {((64-(64*current_icon.scale))/2)*-1,0}
-				end
-			--end
-			current_icon.scale = current_icon.scale * current_icon.icon_scale
+			end
+			current_icon.icon = icon.icon
+			current_icon.icon_size = icon.icon_size
+			current_icon.icon_mipmaps = icon.icon_mipmaps
+			current_icon.tint = icon.tint
+			current_icon.icon_scale = (icon.icon_size and icon.icon_size/64) --icon.icon_size/64
+			if icon.scale == nil then	
+				current_icon.scale = 1
+			else
+				current_icon.scale = icon.scale
+			end 
+			if icon.pin == icon_pin_topleft then
+				current_icon.shift = {((64-(64*current_icon.scale))/2)*-1,((64-(64*current_icon.scale))/2)*-1}
+			elseif icon.pin == icon_pin_top then
+				current_icon.shift = {0,((64-(64*current_icon.scale))/2)*-1}
+			elseif icon.pin == icon_pin_topright then
+				current_icon.shift = {((64-(64*current_icon.scale))/2)*-1,((64-(64*current_icon.scale))/2)}
+			elseif icon.pin == icon_pin_right then
+				current_icon.shift = {((64-(64*current_icon.scale))/2),0}
+			elseif icon.pin == icon_pin_bottomright then
+				current_icon.shift = {((64-(64*current_icon.scale))/2),((64-(64*current_icon.scale))/2)}
+			elseif icon.pin == icon_pin_bottom then
+				current_icon.shift = {0,((64-(64*current_icon.scale))/2)}
+			elseif icon.pin == icon_pin_bottomleft then
+				current_icon.shift = {((64-(64*current_icon.scale))/2)*-1,((64-(64*current_icon.scale))/2)}
+			elseif icon.pin == icon_pin_left then
+				current_icon.shift = {((64-(64*current_icon.scale))/2)*-1,0}
+			end			
+			--current_icon.scale = current_icon.scale * current_icon.icon_scale
+			current_icon.scale = (current_icon.scale and current_icon.icon_scale and current_icon.scale * current_icon.icon_scale)
 			
 			table.insert(base_icon,current_icon)
 		end
 	end
-	log(serpent.block(base_icon))
+	--log(serpent.block(base_icon))
 	return base_icon
 end
 

@@ -28,7 +28,7 @@ local local_create_container = function(item,x,container)
 
 	local container = {
 		type = "item",
-		name = "super-container-for-"..item.name,
+		name = "super-container-for-"..item.name,		
 		localised_name = get_name_for(item,"Super Container of "),
 		localised_description = get_name_for(item,"Super Container of "),
 		icon = false,
@@ -112,6 +112,17 @@ local local_create_container = function(item,x,container)
 			{name = "empty-super-container", amount = 1},
 			{name = item.name, amount = math.min(item.stack_size,settings.startup["setting-max-recipie-stack"].value)}
 		}}	
+
+	--[[if item.subgroup == "barrel" then
+		log(item.name.."-------------------------------------------")
+		log(serpent.block(item))
+		log("-------------------------------------------")
+		log(serpent.block(contain.icons))
+		log("-------------------------------------------")
+		log(serpent.block(uncontain.icons))
+
+	end--]]
+
 	local tech = {
 		type = "technology",
 		name = "super-containment-"..x,

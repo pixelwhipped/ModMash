@@ -1,4 +1,10 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.09
+  Changes:
+    - Reduce log spam
+    - Improved icon generation
+
+---------------------------------------------------------------------------------------------------
 Version: 1.1.08
   Changes:
     - Added alternate recipes to reduce splinter mod dependancies
