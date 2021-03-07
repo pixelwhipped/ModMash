@@ -19,7 +19,7 @@ data:extend({
           },
           {
             draw_as_light = true,
-            filename = "__modmashsplinterdefense__/graphics/icons/atomic-artillery.png",
+            filename = "__modmashsplinterdefense__/graphics/icons/atomic-artillery-light.png",
             flags = {
               "light"
             },
@@ -171,6 +171,15 @@ data:extend({
 				radius = 35,
 				type = "destroy-cliffs"
 			},
+            {
+				  apply_projection = true,
+				  radius = 35,
+				  tile_collision_mask = {
+					"water-tile",
+				  },
+				  tile_name = "nuclear-ground",
+				  type = "set-tile"
+            },
 			{
 				type = "nested-result",
 				action =

@@ -1,3 +1,16 @@
+#Them
+Launching a rocket alerts Them to your presence.  They come with one goal to wipe you out.
+The late game enemies build their own base, harvest resources and expand.
+They will also raid attack or defend.
+To destroy them you must elimenate each roboport.. They will come back a little faster and harder each time.
+![them](https://raw.githubusercontent.com/pixelwhipped/ModMash/master/ModMash/Web/them.png)
+
+Make sure you don't let them progress too far or it may be your doom.
+
+![them](https://raw.githubusercontent.com/pixelwhipped/ModMash/master/ModMash/Web/thema.png)
+***
+
+
 #New Worlds
 Rid the Nauvis of the Queen Hive and explore New Worlds.
 ![queen](https://raw.githubusercontent.com/pixelwhipped/ModMash/master/ModMash/Web/newworldsweb01.png)

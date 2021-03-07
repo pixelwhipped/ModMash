@@ -11,5 +11,7 @@ require("prototypes.entity.gui")
 require("prototypes.recipe.newworlds") 
 require("prototypes.recipe.launch-platform") 
 
-require("prototypes.technology.newworlds")
-require("prototypes.technology.launch-platform") 
+if not mods["Krastorio2"] then
+	require("prototypes.technology.newworlds")
+	require("prototypes.technology.launch-platform") 
+end

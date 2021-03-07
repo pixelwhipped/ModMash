@@ -1,6 +1,6 @@
 {
   "name": "modmashsplinterexplosivemining",
-  "version": "1.1.01",
+  "version": "1.1.02",
   "title": "ModMash Splinter, Explosive Mining",
   "author": "PixelWhipped",
   "contact": "",
@@ -9,6 +9,6 @@
   "description": "Mod Mash Splinter for Explosive Mining",
   "dependencies": [
     "base >= 1.1.0",
-    "modmashsplinter >= 1.1.07" 
+    "modmashsplinter >= 1.1.09" 
   ]
 }

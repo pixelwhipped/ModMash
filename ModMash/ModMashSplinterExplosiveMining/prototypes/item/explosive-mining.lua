@@ -10,11 +10,15 @@
                 entity_name = "grenade-explosion",
                 type = "create-entity"
               },
+              --{
+              --  check_buildability = true,
+              --  entity_name = "small-scorchmark-tintable",
+              --  type = "create-entity"
+              --},              
               {
-                check_buildability = true,
-                entity_name = "small-scorchmark-tintable",
-                type = "create-entity"
-              },
+				    type = "script",
+				    effect_id = "explosive-mining-explosion"
+			  },
               {
                 repeat_count = 1,
                 type = "invoke-tile-trigger"
@@ -169,7 +173,7 @@
                           }
                         },
                         type = "play-sound"
-                    }
+                    }                    
                   },
                   type = "instant"
                 },

@@ -1,6 +1,6 @@
 {
   "name": "modmashsplintervalkyries",
-  "version": "1.1.03",
+  "version": "1.1.05",
   "title": "ModMash Splinter, Valkyries",
   "author": "PixelWhipped",
   "contact": "",
@@ -9,6 +9,6 @@
   "description": "Mod Mash Splinter for Valkyries, Combat Bots from roboports. You can now build construction robots that double as defense drones. These drones operate with hit and run tactics, move in fast take their shots and move out.",
   "dependencies": [
     "base >= 1.0.0",
-    "modmashsplinter >= 1.1.04"
+    "modmashsplinter >= 1.1.09"
   ]
 }

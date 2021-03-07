@@ -212,6 +212,7 @@ local local_terraformer_removed = function(event)
 	if entity.name == "queen-hive" then
 		for _, force in pairs(game.forces) do
 		  force.technologies["alien-science-pack"].researched = true
+		--  force.recipes["alien-science-pack"].enabled = true
 		end
 	end
 	if entity.name == "launch-platform" then

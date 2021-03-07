@@ -14,7 +14,7 @@
 	  {
         type = "unlock-recipe",
         recipe = "royal-jelly"
-      },
+      }
 	},
 	prerequisites =
 	{

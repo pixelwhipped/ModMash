@@ -1,4 +1,12 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.05
+  Bug-Fixes:
+    - missing local for neural toxin mine
+    - nuclear artillery missing light texture
+  Changes:
+    - added nuclear tile on explosion
+
+---------------------------------------------------------------------------------------------------
 Version: 1.1.04
   Changes:
     - Added nil checks for alerts

@@ -5,7 +5,7 @@
 local is_valid  = modmashsplinterexplosivemining.util.is_valid
 local starts_with  = modmashsplinterexplosivemining.util.starts_with
 local print  = modmashsplinterexplosivemining.util.print
-
+--[[
 local local_init = function()	
 	if global.modmashsplinterexplosivemining.grenade_targets == nil then global.modmashsplinterexplosivemining.grenade_targets = {} end	
 	end
@@ -57,8 +57,32 @@ local local_action_mining =function (event)
 		end
 		grenade = nil
 	end
+end--]]
+
+local local_on_script_trigger_effect = function(event)
+	if event.effect_id == "explosive-mining-explosion" and  event.target_position ~= nil then
+		local surface = game.surfaces[event.surface_index]
+		local entities = surface.find_entities_filtered{type={"resource"}, area = {{event.target_position.x-0.5, event.target_position.y-0.5}, {event.target_position.x+0.5, event.target_position.y+0.5}}}
+		if #entities >0 then
+			for k = 1, #entities do local ent = entities[k]
+				if is_valid(ent) and game.item_prototypes[ent.name] and ent.name ~= "uranium-ore" then
+					ent.surface.spill_item_stack(ent.position, {name=ent.name, count=35})
+					local r = ent.amount - math.min(35,ent.amount);
+					if r == 0 then
+						ent.destroy()
+					else
+						ent.amount = r
+					end
+				end
+				return
+			end
+		else
+			surface.set_tiles({{name="water",position={x=event.target_position.x,y=event.target_position.y}, remove_colliding_entities = true, remove_colliding_decoratives = true}})
+		end
+	end
 end
 
-script.on_init(local_init)
-script.on_event(defines.events.on_tick, local_check_resource)
-script.on_event(defines.events.on_player_cursor_stack_changed,local_action_mining)
+script.on_event(defines.events.on_script_trigger_effect, local_on_script_trigger_effect)
+--script.on_init(local_init)
+--script.on_event(defines.events.on_tick, local_check_resource)
+--script.on_event(defines.events.on_player_cursor_stack_changed,local_action_mining)

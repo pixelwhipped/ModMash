@@ -1,4 +1,9 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.06
+  Changes:
+    - Compat for K2 which was attempting to modify tech causing cyclic loop
+
+---------------------------------------------------------------------------------------------------
 Version: 1.1.05
   Changes:
     - Added tag for queen hive on map

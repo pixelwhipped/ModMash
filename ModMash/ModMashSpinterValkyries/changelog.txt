@@ -1,4 +1,14 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.05
+  Changes:
+    - redunant code line
+
+---------------------------------------------------------------------------------------------------
+Version: 1.1.04
+  Bug Fixes:
+    - identified condition where targets may not be removed from internal lists
+
+---------------------------------------------------------------------------------------------------
 Version: 1.1.03
   Changes:
     - Added setting to reduce deployment distance from player ports or spidertrons

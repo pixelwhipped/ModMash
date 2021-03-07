@@ -947,15 +947,15 @@ local local_ensure_can_place_entity = function(entity,event,surface)
 		if entity.type == "entity-ghost" then etype = entity.ghost_prototype.type end
 		if entity.type == "entity-ghost" then ename = entity.ghost_prototype.name end
 		if surface.level == 1 and ((etype=="solar-panel" or etype == "rocket-silo") or table_contains(banned_level_one,entity.name)) then		
-			print("c")
+			--print("c")
 			fail_place_entity(entity,event,{"modmashsplinterunderground.underground-placement-disallowed"})
 			return false
 		elseif surface.level == 2 and ((entity.name == underground_accumulator or entity.name == underground_access or entity.type=="solar-panel" or entity.type == "rocket-silo") or table_contains(banned_level_two,entity.name)) then
-			print("b")
+			--print("b")
 			fail_place_entity(entity,event,{"modmashsplinterunderground.underground-placement-disallowed"})
 			return false
 		elseif surface.level == 0 and (entity.name == underground_access2 or table_contains(banned_level_zero,entity.name)) then			
-			print("a")
+			--print("a")
 			fail_place_entity(entity,event,{"modmashsplinterunderground.underground-placement-disallowed"})
 			return false
 		end

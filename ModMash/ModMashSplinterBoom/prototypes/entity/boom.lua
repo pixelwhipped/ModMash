@@ -107,6 +107,7 @@ data:extend(
 		  action_delivery =
 		  {
 			type = "instant",
+
 			source_effects =
 			{
 			  {
@@ -241,7 +242,35 @@ data:extend(
 						type = "create-entity",
 						entity_name = "nuclear-smouldering-smoke-source",
 						tile_collision_mask = { "water-tile" }
-					  }
+					  }					  
+					}
+				  }
+				}
+			  },
+			  {
+				type = "nested-result",
+				action =
+				{
+				  type = "area",
+				  show_in_tooltip = false,
+				  target_entities = false,
+				  trigger_from_target = true,
+				  repeat_count = 1,
+				  radius = 1,
+				  action_delivery =
+				  {
+					type = "instant",
+					target_effects =
+					{
+					  {
+						  apply_projection = true,
+						  radius = 35,
+						  tile_collision_mask = {
+							"water-tile",
+						  },
+						  tile_name = "nuclear-ground",
+						  type = "set-tile"
+					  }				  
 					}
 				  }
 				}

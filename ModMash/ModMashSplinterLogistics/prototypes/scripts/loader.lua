@@ -6,6 +6,7 @@ local get_entities_to_north  = modmashsplinterlogistics.util.entity.get_entities
 local get_entities_to_south  = modmashsplinterlogistics.util.entity.get_entities_to_south
 local get_entities_to_east  = modmashsplinterlogistics.util.entity.get_entities_to_east
 local get_entities_to_west  = modmashsplinterlogistics.util.entity.get_entities_to_west
+local starts_with  = modmashsplinterlogistics.util.starts_with
 
 
 loaders = nil
@@ -16,6 +17,7 @@ local beltTypes = {
 }
 
 local local_adjust_loader = function(entity)	
+	--if starts_with(entity.name,"them-") then return end
 	if loader_size == nil then loader_size = get_entity_size(entity) end
 	if settings.startup["setting-loader-snapping"].value ~= "Enabled" then return end
 	if entity.direction == defines.direction.north or entity.direction == defines.direction.south then

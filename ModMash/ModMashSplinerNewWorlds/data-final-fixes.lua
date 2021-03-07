@@ -2,6 +2,11 @@
 require("prototypes.scripts.defines")
 local patch_technology = modmashsplinternewworlds.util.tech.patch_technology
 
+if mods["Krastorio2"] then
+	require("prototypes.technology.newworlds")
+	require("prototypes.technology.launch-platform") 
+end
+
 local local_create_clone= function(item)
 	data:extend(
 	{

@@ -1,4 +1,6 @@
-﻿require("prototypes.scripts.defines") 
+﻿--local local_roboport_removed was referencing type not name may need to clean
+
+require("prototypes.scripts.defines") 
 local distance = modmashsplintervalkyries.util.distance
 local is_valid  = modmashsplintervalkyries.util.is_valid
 local table_index_of  = modmashsplintervalkyries.util.table.index_of
@@ -251,7 +253,7 @@ local local_valkyrie_tick = function()
 		if k >= #targets then k = 1 end
 		tnumiter = tnumiter + 1
 		if tnumiter >= tupdates then 
-			global.modmashsplintervalkyries.valkyries.valkyries_update_index	= k
+			global.modmashsplintervalkyries.valkyries.valkyries_update_index = k
 			k = #targets + 1 -- break
 		end
 	end
@@ -405,6 +407,23 @@ local local_valkyrie_added = function(event)
 		end
 	end end
 
+local local_on_configuration_changed = function() 
+	--local_roboport_removed was checking type not name
+	if global.modmashsplintervalkyries.valkyries.target_name_correction ~= true then
+		for k = #targets, -1 do
+			if is_valid(targets[k]) ~= true then
+				 table.remove(targets,k)
+			end
+		end
+		for k = #return_targets, -1 do
+			if is_valid(return_targets[k]) ~= true then
+				 table.remove(return_targets,k)
+			end
+		end
+		global.modmashsplintervalkyries.valkyries.target_name_correction = true
+	end
+	end
+
 local local_roboport_removed = function(entity)
 	if entity.type == "roboport" then				
 		for index, roboport in pairs(all_roboports) do
@@ -412,13 +431,13 @@ local local_roboport_removed = function(entity)
 				table.remove(all_roboports, index)
 			end
 		end
-	elseif entity.type == "valkyrie-robot-combat" then				
+	elseif entity.name == "valkyrie-robot-combat" then				
 		for index, target in pairs(targets) do
 			if target == entity then
 				table.remove(targets, index)
 			end
 		end
-	elseif entity.type == "valkyrie-robot-return" then				
+	elseif entity.name == "valkyrie-robot-return" then				
 		for index, target in pairs(return_targets) do
 			if target == entity then
 				table.remove(return_targets, index)
@@ -482,7 +501,6 @@ local local_on_entity_selected = function(event)
 		{
 			surface = entity.surface,
 			players = {player},
-			filled = true,
 			color = {r = 1, g = 0.1, b = 0, a = 0.1},
 			draw_on_ground = true,
 			width = 64,
@@ -532,8 +550,6 @@ script.on_event(defines.events.script_raised_built,
 	function(event) 
 		if is_valid(event.created_entity) then local_roboport_added(event.entity) end 
 	end)
-
-
 script.on_event(defines.events.on_trigger_created_entity, local_valkyrie_added)
 
 script.on_event(defines.events.on_entity_cloned,
@@ -542,3 +558,5 @@ script.on_event(defines.events.on_entity_cloned,
 	end)
 
 script.on_event(defines.events.on_research_finished, local_valkyrie_research)
+
+script.on_configuration_changed(local_on_configuration_changed)
