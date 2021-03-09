@@ -395,15 +395,13 @@ local local_build_base = function(surface, x, y, cbase, ghost)
 	local ports = {}
 	local is_vein = true
 	local base = {}
-	for k=1, #cbase do
-		table.insert(base,cbase[k]) 
-		if cbase[k].name ~= "them-transport-belt" then is_vein = false end
-	end
+	
+
 	if is_vein == false then
 		local destroys = surface.surface.find_entities_filtered{area={left_top = {x+0.1, y+0.1}, right_bottom = {x+9.9, y+10.9}}}
 		for k=1, #destroys do
 			if destroys[k].type ~= "character" and destroys[k].name ~= "them-roboport" and destroys[k].name ~=  "them-chest-energy-converter" and destroys[k].name ~=  "them-chest" then
-				if destroy[k].type == "cliff" then
+				if destroys[k].type == "cliff" then
 					destroys[k].destroy({raise_destroy=true})
 				else
 					destroys[k].destroy({raise_destroy=false})
@@ -411,11 +409,16 @@ local local_build_base = function(surface, x, y, cbase, ghost)
 			end
 		end
 	end
+	for k=1, #cbase do --deleted before don't delete
+		table.insert(base,cbase[k])
+	end
 
 	if ghost==true then --weird underground belt flipping
 		base[#base] = cbase[#base-1]
 		base[#base-1] = cbase[#base]
 	end
+
+	
 
 	for k=1, #base do 
 		local structure = base[k]	

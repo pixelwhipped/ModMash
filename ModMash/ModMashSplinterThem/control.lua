@@ -23,7 +23,7 @@ local exclude_targets = {"transport-belt","underground-belt","loader", "splitter
 local minimal_energy = 1000
 local max_useable_iterations = 10
 local beam_life = 60*3
-local end_game_energy = 10000 -- reduce just made crazy to avoid
+local end_game_energy = 100000--todo re-work
 local resource_gain_event = 0
 
 
@@ -126,14 +126,17 @@ local resource_gain_event = 0
 --]]
 --init section
 	--to make initialization of new emeny dynamic harder the more times they spawn from new(not expand)
-	local local_init_surface = function(surface)
+	local local_init_surface = function(surface,launch)
 		local iteration = 1
 		if table_contains(surface_names,surface.name) then 
 			iteration = surfaces[surface.name].iteration or 1
 			iteration = iteration + 1
+			launch = surfaces[surface.name].launch
 		end
+		if launch == nil then launch = false end
 		local data = 
 		{
+			launch = launch,
 			started = game.ticks_played,
 			iteration = iteration,
 			surface = surface,
@@ -196,10 +199,11 @@ local resource_gain_event = 0
 		surfaces[surface.surface.name] = local_init_surface(surface.surface)	
 	end
 
-	local local_register_surface = function(surface)
+	local local_register_surface = function(surface, launch)
+		if launch == nil then launch = false end
 		if surfaces[surface.name] ~= nil then return end
 		if ends_with(surface.name,"underground") == true then return end  --no undergrounds
-		surfaces[surface.name] = local_init_surface(surface)
+		surfaces[surface.name] = local_init_surface(surface,launch)
 	end
 
 	local local_init = function()	
@@ -373,7 +377,7 @@ local local_update_steal = function(surface)
 				return
 			end			
 			connection = "top"
-			if base.connections[connection].marked == true then 
+			if base.connections[connection] == nil or base.connections[connection].marked == true then 
 				surface.steal_requested = false
 				return
 			end			
@@ -392,7 +396,7 @@ local local_update_steal = function(surface)
 				return
 			end			
 			connection = "bottom"
-			if base.connections[connection].marked == true then 
+			if base.connections[connection] == nil or  base.connections[connection].marked == true then 
 				surface.steal_requested = false
 				return
 			end			
@@ -413,7 +417,7 @@ local local_update_steal = function(surface)
 				return
 			end			
 			connection = "left"
-			if base.connections[connection].marked == true then
+			if base.connections[connection] == nil or  base.connections[connection].marked == true then
 				surface.steal_requested = false
 				return
 			end			
@@ -433,8 +437,8 @@ local local_update_steal = function(surface)
 				surface.steal_requested = false
 				return 
 			end			
-			connection = "right"
-			if base.connections[connection].marked == true then 
+			connection = "right"			 
+			if base.connections[connection] == nil or base.connections[connection].marked == true then 
 				surface.steal_requested = false
 				return
 			end			
@@ -520,13 +524,23 @@ local local_update_steal = function(surface)
 		table.insert(surface.steal.belts,options[1])
 		--base_builder.add_concrete(surface,options[1].name, options[1].position.x, options[1].position.y, 0, 0)
 	end
-
-
 end
 
+local local_has_launches = function()
+	local c = 0
+	for k = 1, #game.players do local player = game.players[k]
+		for name, value in pairs(player.force.items_launched) do
+			c = c + value
+		end
+	end
+	if c == 0 then return false end
+	return true
+end
 --each tick per surface.  
 --checks for loaders including filter
 local local_tick_surface = function(surface)
+	if surface.launch == nil then surface.launch = local_has_launches() end
+	if surface.launch == false then return end
 	resource_gain_event = 0
 	for k=#surface.loader_checks, 1, -1 do
 		local e = surface.surface.find_entity("them-mini-loader-structure",surface.loader_checks[k].position)
@@ -657,6 +671,7 @@ end
 local local_update_converters = function(surface)
 	local rebuild_priority = false
 	for k=#surface.converters,1,-1 do local entity = surface.converters[k] 
+		local foundexplosive = false
 		if is_valid(entity) == true then
 			local from = entity.get_inventory(defines.inventory.chest)
 			if from ~= nil then
@@ -677,6 +692,11 @@ local local_update_converters = function(surface)
 						surface.energy = surface.energy + (c*surface.conversion_efficiency)
 					end
 				end	
+				if from.get_item_count("cliff-explosives") == 0 then
+					if from.can_insert({name = "cliff-explosives", count = 1}) then
+						from.insert({name = "cliff-explosives", count = 1})
+					end
+				end
 			end
 		end
 	end
@@ -867,6 +887,7 @@ local check_interupt_belt = function(surface)
 end
 
 local check_current_base_build = function(surface)
+
 	if surface.current_base_build.is_vein == false then
 		for k=1,#surface.current_base_build.base do local structure = surface.current_base_build.base[k]
 			if structure~=nil then			
@@ -908,7 +929,7 @@ local local_get_start = function(surface)
 		y = y*-1
 	end
 	local pos = {x=local_round(t.position.x+x),y=local_round(t.position.y+y)}
-	local x = surface.surface.find_entities_filtered{type={"resource"}, position=pos, radius = (surface.raid_projectile_range*0.5)}
+	local x = surface.surface.find_entities_filtered{type={"resource"}, position=pos, radius = (surface.raid_projectile_range*0.75)}
 	if #x < 1 then return nil end
 	--for k=1, #x do
 	--	modmashsplinterthem.util.print(x[k].name)
@@ -918,7 +939,12 @@ end
 
 local check_base_exists = function(surface)
 	if #surface.ports == 0 then		
-		--modmashsplinterthem.util.print(surface.spawn_base_cooldown)
+		
+		for k= #surface.bases, 1, -1 do
+			if #surface.bases[k].base == 0 then
+				table.remove(surface.bases,k)
+			end
+		end
 		if surface.spawn_base_cooldown <= 0 then
 			--todo randomize
 			local pos = local_get_start(surface)
@@ -1017,17 +1043,20 @@ local local_do_harvest = function(surface,port,bots)
 	if #targets > 0 then
 		local allow_harvest = true
 		local x = targets[math.random(1, #targets)]
-		local removed = port.get_inventory(defines.inventory.roboport_robot).remove({name ="them-robot",count=math.ceil(bots*0.1)})					
-		if removed > 0 then	
-			for k=1, removed do
-				port.surface.create_entity({
-					name='them-robot-projectile-harvest',
-					force=port.force,
-					position=port.position,
-					speed=0.6,
-					source=port,
-					target={x=x.position.x+math.random(1,4),y=x.position.y+math.random(1,4)}
-					})		
+		local r = math.ceil(bots*0.1)
+		if r > 0 then
+			local removed = port.get_inventory(defines.inventory.roboport_robot).remove({name ="them-robot",count=r})					
+			if removed > 0 then	
+				for k=1, removed do
+					port.surface.create_entity({
+						name='them-robot-projectile-harvest',
+						force=port.force,
+						position=port.position,
+						speed=0.6,
+						source=port,
+						target={x=x.position.x+math.random(1,4),y=x.position.y+math.random(1,4)}
+						})		
+				end
 			end
 		end
 	end	
@@ -1046,16 +1075,19 @@ local local_do_attack = function(surface,port,bots)
 	if #targets > 0 then
 		local x = targets[math.random(1, #targets)]
 		if x.name ~= "entity-ghost" and table_contains(exclude_all_targets,x.type) == false then 	
-			local removed = port.get_inventory(defines.inventory.roboport_robot).remove({name = "them-robot",count=math.ceil(bots*0.25)})					
-			for k=1,removed do
-				port.surface.create_entity({
-					name='them-robot-projectile-combat',
-					force=port.force,
-					position=port.position,
-					speed=0.6,
-					source=port,
-					target={x=x.position.x+math.random(1,3),y=x.position.y+math.random(1,3)}
-					})	
+			local r = math.ceil(bots*0.25)
+			if r > 0 then
+				local removed = port.get_inventory(defines.inventory.roboport_robot).remove({name = "them-robot",count=r})					
+				for k=1,removed do
+					port.surface.create_entity({
+						name='them-robot-projectile-combat',
+						force=port.force,
+						position=port.position,
+						speed=0.6,
+						source=port,
+						target={x=x.position.x+math.random(1,3),y=x.position.y+math.random(1,3)}
+						})	
+				end
 			end
 		end
 	end	
@@ -1076,16 +1108,19 @@ local local_do_raid = function(surface,port,bots)
 		if x.name ~= "entity-ghost" then 			
 			local from = x.get_inventory(defines.inventory.chest)
 			if from ~= nil and from.is_empty() == false then
-				local removed = port.get_inventory(defines.inventory.roboport_robot).remove({name = "them-robot",count=math.ceil(bots*0.25)})					
-				for k=1,removed do
-					port.surface.create_entity({
-						name='them-robot-projectile-raid',
-						force=port.force,
-						position=port.position,
-						speed=0.6,
-						source=port,
-						target=x.position
-						})	
+				local r = math.ceil(bots*0.25)
+				if r > 0  then
+					local removed = port.get_inventory(defines.inventory.roboport_robot).remove({name = "them-robot",count=r})					
+					for k=1,removed do
+						port.surface.create_entity({
+							name='them-robot-projectile-raid',
+							force=port.force,
+							position=port.position,
+							speed=0.6,
+							source=port,
+							target=x.position
+							})	
+					end
 				end
 			end
 		end
@@ -1133,6 +1168,7 @@ local local_expand_condition = function(surface,port,bots)
 	return true
 end
 
+
 local local_do_expand = function(surface,port,bots)
 	local base = surface.bases[math.random(1,#surface.bases)]
 
@@ -1160,28 +1196,31 @@ local local_do_expand = function(surface,port,bots)
 		for k=1, #surface.bases do
 			if surface.bases[k].position.x == build_position.x and surface.bases[k].position.y == build_position.y then return end
 		end
-		local b = base_builder.build_base(surface,build_position.x,build_position.y,surface.flags.next_base,true)		
-		table.insert(surface.bases,	b) 
-		--connect bases
-		if d == 1 then
-			base.connections["bottom"].marked = true
-			b.connections["top"].marked = true
-		elseif d == 2 then
-			base.connections["top"].marked = true
-			b.connections["bottom"].marked = true
-		elseif d == 3 then
-			base.connections["left"].marked = true
-			b.connections["right"].marked = true
-		else
-			base.connections["right"].marked = true
-			b.connections["left"].marked = true
+		local b = base_builder.build_base(surface,build_position.x,build_position.y,surface.flags.next_base,true)	
+		if b ~= nil then
+			table.insert(surface.bases,	b) 
+			--connect bases
+			if b.connections ~= nil then
+				if d == 1 then
+					base.connections["bottom"].marked = true
+					if b.connections["top"] ~= nil then b.connections["top"].marked = true end
+				elseif d == 2 then
+					base.connections["top"].marked = true
+					if b.connections["bottom"] ~= nil then b.connections["bottom"].marked = true end
+				elseif d == 3 then
+					base.connections["left"].marked = true
+					if b.connections["right"] ~= nil then b.connections["right"].marked = true end
+				else
+					base.connections["right"].marked = true
+					if b.connections["left"] ~= nil then b.connections["left"].marked = true end
+				end
+			end
 		end
-
-	end
-	
+	end	
 end
 
 local local_end_game_condition = function(surface,port,bots)
+--add max base, min time no rebuild
 	return (surface.energy + surface.end_game_saving) > end_game_energy
 end
 
@@ -1202,15 +1241,22 @@ local local_add_chance= function (chance_table,count,func)
 end
 
 local local_nth_tick_surface = function(surface,ticks)	
+	if surface.launch == nil then surface.launch = local_has_launches() end
+	if surface.launch == false then return end
 	surface.flags = {}
 	surface.spawn_base_cooldown = math.max(0,surface.spawn_base_cooldown - ticks)
 	surface.flags.rebuild_required = local_rebuid_count(surface)
 	surface.flags.rebuild_priority = false
 	surface.flags.defend_priority = local_update_defense(surface)
-	surface.flags.next_base = base_builder.bases[math.random(1,#base_builder.bases)]
+	if #base_builder.bases > 0 then
+		surface.flags.next_base = base_builder.bases[math.random(1,#base_builder.bases)]
+	end
+	--surface.spawn_base_cooldown = math.min(surface.spawn_base_cooldown, 60*60)
+	--surface.energy = math.max(surface.energy,200)
 	if surface.current_base_build ~= nil then 
 		check_current_base_build(surface)
 	end
+	
 	update_raid_projectiles(surface,ticks)
 	update_attack_projectiles(surface,ticks)
 	update_harvest_projectiles(surface,ticks)
@@ -1219,6 +1265,7 @@ local local_nth_tick_surface = function(surface,ticks)
 		surface.end_game_saving = surface.end_game_saving + (surface.energy*0.02)
 		surface.energy = surface.energy - (surface.energy*0.02)
 	end
+	if #surface.ports == 0 then return end
 	--surface.energy = 1000
 	surface.flags.rebuild_priority = local_update_converters(surface)
 
@@ -1242,6 +1289,7 @@ local local_nth_tick_surface = function(surface,ticks)
 end
 
 local local_nth_tick = function()
+
 	local tindex = global.modmashsplinterthem.surface_update_nth_index
 	if not tindex then 
 		global.modmashsplinterthem.surface_update_nth_index = 1
@@ -1258,6 +1306,7 @@ local local_nth_tick = function()
 			s.ticks = game.ticks_played - s.last_tick 
 			s.last_tick = game.ticks_played
 		end
+		
 		local_nth_tick_surface(s,s.ticks)
 		if k >= #surface_names then k = 1 end
 		tnumiter = tnumiter + 1
@@ -1274,7 +1323,7 @@ local local_on_rocket_launched = function(event)
 	local rocket_silo = event.rocket_silo
 	local player_index = event.player_index
 	if table_contains(surfaces,rocket_silo.surface.name) == true then return end
-	local_register_surface(rocket_silo.surface)
+	local_register_surface(rocket_silo.surface,true)
 	end
 
 local local_on_post_entity_died = function(event)
@@ -1553,11 +1602,19 @@ local local_added = function(entity,event)
 	end
 	end
 
+local local_on_configuration_changed = function() 	
+	if local_has_launches() == false then
+		for name, surface  in pairs (global.modmashsplinterthem.surfaces) do
+			local_clear_surface(surface)
+		end
+	end
+end
 
 --event setup section
 	script.on_init(local_init)
 	script.on_load(local_load)
 	script.on_nth_tick(120, local_nth_tick)
+	script.on_configuration_changed(local_on_configuration_changed)
 	script.on_event(defines.events.on_script_trigger_effect, local_on_script_trigger_effect)
 	script.on_event(defines.events.on_tick, local_tick)
 	script.on_event(defines.events.on_entity_died,
@@ -1593,3 +1650,67 @@ local local_added = function(entity,event)
 	script.on_event(defines.events.on_trigger_created_entity, local_on_trigger_created_entity)
 	script.on_event(defines.events.on_rocket_launched, local_on_rocket_launched)
 --end event setup section
+
+--[[
+	local local_path_from = function(surface,start_pos,end_pos,max)
+	local is_left = false
+	local is_above = false
+	local movements = {4,6,2}
+	if end_pos.x < start_pos.x then -- target is to left
+		is_left = true
+		if end_pos.y < start_pos.y then -- target is above
+			is_above = true
+			movements = {0,2,6}
+		else -- target is below
+			movements = {4,2,6}
+		end
+	else --target is to right
+		if end_pos.y < start_pos.y then -- target is above
+			is_above = true
+			movements = {0,6,2}
+		else -- target is below
+			movements = {4,6,2}
+		end
+	end
+	local belts = {start_pos}
+	local base = {}
+
+	for z = 1, max do
+		local options = local_get_options(surface,movements,belts[#belts].position,end_pos.position,belts)
+		if options == nil then return nil end
+			if is_above == true and options[1].position.y > end_pos.position.y then return nil end
+			if is_above == false and options[1].position.y < end_pos.position.y then return nil end
+			if is_left == true and options[1].position.x > end_pos.position.x then return nil end
+			if is_left == false and options[1].position.x < end_pos.position.x then return nil end
+			--complete
+			if options[1].position.x == end_pos.position.x and options[1].position.y == end_pos.position.y then
+				local base = {}
+				table.insert(belts,options[1])
+			
+				if #belts == 1 then								
+					table.insert(base,{name="them-transport-belt", position=surface.steal.belts[1].position, direction = 2})
+				else
+					for k = 1, #belts-1 do 
+						local belt = belts[k]
+						local next_belt = belts[k+1]
+						if (belt.direction == 4 or belt.direction == 0) and next_belt.position.x~=belt.position.x then
+							belt.direction = next_belt.direction
+						end
+						if (belt.direction == 6 or belt.direction == 2) and next_belt.position.y~=belt.position.y then
+							belt.direction = next_belt.direction
+						end
+					end
+					belts[#belts].direction = movements[1]
+					for k = 1, #belts do 
+						local belt = belts[k]
+						table.insert(base,{name="them-transport-belt", position=belt.position, direction = belt.direction})
+					end
+				end
+				return base
+			end
+			table.insert(belts,options[1])
+		end
+	end
+	return nil
+end
+]]
