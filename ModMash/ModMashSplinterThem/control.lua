@@ -1,8 +1,16 @@
 ﻿require("prototypes.scripts.defines") 
 if not global.modmashsplinterthem then global.modmashsplinterthem = {} end
 local base_builder = require("prototypes.scripts.build") 
-local rebuild_names = {"them-roboport","them-chest","them-chest-energy-converter","them-solar-panel","them-transport-belt","them-underground-belt-structure","them-mini-loader-structure","them-small-electric-pole"}
-
+local rebuild_names = {"them-chest","them-chest-energy-converter","them-solar-panel","them-transport-belt","them-underground-belt-structure","them-mini-loader-structure","them-small-electric-pole","them-roboport"}
+local entity_size = {}
+entity_size["them-roboport"]= {x=4,y=4}
+entity_size["them-solar-panel"] = {x=3,y=3}
+entity_size["them-chest-energy-converter"] = {x=1,y=3}
+entity_size["them-chest"] = {x=1,y=3}
+entity_size["them-transport-belt"] = {x=1,y=1}
+entity_size["them-underground-belt-structure"] = {x=1,y=1}
+entity_size["them-mini-loader-structure"] = {x=1,y=1}
+entity_size["them-small-electric-pole"] = {x=1,y=1}
 
 local distance = modmashsplinterthem.util.distance
 local is_valid  = modmashsplinterthem.util.is_valid
@@ -23,7 +31,7 @@ local exclude_targets = {"transport-belt","underground-belt","loader", "splitter
 local minimal_energy = 1000
 local max_useable_iterations = 10
 local beam_life = 60*3
-local end_game_energy = 100000--todo re-work
+local end_game_energy = 60000
 local resource_gain_event = 0
 
 
@@ -40,7 +48,8 @@ local resource_gain_event = 0
 				  target_position = target.position,
 				  position = source.position,
 				  force = source.force,
-				  duration = time
+				  duration = time,
+				  max_length = (distance(target.position.x,target.position.y,source.position.x,source.position.y) + 3)
 				}
 			else
 				return source.surface.create_entity
@@ -50,19 +59,54 @@ local resource_gain_event = 0
 				  target = target,
 				  position = source.position,
 				  force = source.force,
-				  duration = time
+				  duration = time,
+				  max_length = (distance(target.position.x,target.position.y,source.position.x,source.position.y) + 3)
 				}
 			end
 		end
 		end
+
+	--dont know why but some instances ghosts just were not being build
+	local local_rebuld_ghost = function(surface,ghost)
+		if ghost.ghost_name == "them-roboport" then
+			 base_builder.add_port(surface, ghost.position.x, ghost.position.y, true,0,0)
+		elseif ghost.ghost_name == "them-chest" then
+			base_builder.add_chest(surface, ghost.position.x, ghost.position.y, true, 0,0)
+		elseif ghost.ghost_name == "them-chest-energy-converter" then
+			base_builder.add_converter(surface, ghost.position.x, ghost.position.y, true, 0,0)
+		elseif ghost.ghost_name == "them-solar-panel" then
+			base_builder.add_solar(surface, ghost.position.x, ghost.position.y, true, 0,0)
+		elseif ghost.ghost_name == "them-transport-belt" then
+			base_builder.add_belt(surface, ghost.position.x, ghost.position.y,ghost.direction, true, 0,0)
+		elseif ghost.ghost_name == "them-underground-belt-structure" then
+			base_builder.add_underground(surface, ghost.position.x, ghost.position.y,ghost.direction,ghost.belt_to_ground_type, true, 0,0)
+		elseif ghost.ghost_name == "them-mini-loader-structure" then
+			base_builder.add_loader(surface, ghost.position.x, ghost.position.y,ghost.direction,ghost.loader_type, true, 0,0)
+		elseif ghost.ghost_name == "them-small-electric-pole" then
+			base_builder.add_pole(surface, ghost.position.x, ghost.position.y, true, 0,0)
+		end
+	end
 	
-	local local_rebuid_count = function(surface)
+	local local_reset_surface_ghost_check = function(surface)
+		surface.spawn_ghost_check = 60*60
+	end
+
+	local local_rebuild_count = function(surface)
+		if surface == nil then return 0 end
 		local c = 0
 		for k=1, #rebuild_names do 
+			if surface.rebuild == nil then return 0 end
 			for j = #surface.rebuild[rebuild_names[k]],1,-1 do		
 				if surface.surface.find_entity(rebuild_names[k], surface.rebuild[rebuild_names[k]][j].position) ~= nil then
 					table.remove(surface.rebuild[rebuild_names[k]],j)
-				else
+				else	
+					if surface.spawn_ghost_check <= 0 and c == 0 then
+						local e = surface.surface.find_entity("entity-ghost", surface.rebuild[rebuild_names[k]][j].position)
+						if e ~= nil then
+							local_rebuld_ghost(surface,e)
+						end
+						local_reset_surface_ghost_check(surface)
+					end
 					c = c + 1
 				end
 			end
@@ -102,7 +146,7 @@ local resource_gain_event = 0
 	local debug_rebuild_sensor = function(player)
 	  if surfaces[player.surface.name] ~= nil then
 		local s = surfaces[player.surface.name]
-		return {"","Enemy build que",(" = "..local_rebuid_count(s))} 
+		return {"","Enemy build que",(" = "..local_rebuild_count(s))} 
 	  end
 	  return {"","nil"}
 	end
@@ -170,7 +214,7 @@ local resource_gain_event = 0
 			attack_chance = value_builder(10,20,iteration,max_useable_iterations), -- more aggresive over time
 			expand_chance = 10,
 			bot_chance = 10,
-			steal_chance = 10,
+			steal_chance = 5,
 			end_game_chance = 5,
 			end_game_saving = 0,
 			flags = {},
@@ -178,9 +222,9 @@ local resource_gain_event = 0
 			max_veins = value_builder(3,10,iteration,max_useable_iterations),
 
 		}
-		data.spawn_base_cooldown = 60*60*math.random(6,reverse_value_builder(8,25,iteration,max_useable_iterations))		
-		--if modmashsplinterthem.debug == true and iteration == 1 then data.spawn_base_cooldown=0 end	--todo remove only for debug
-		
+		data.spawn_base_cooldown = 60*60*math.random(6,math.ceil(reverse_value_builder(8,25,iteration,max_useable_iterations)))		
+		local_reset_surface_ghost_check(data)	
+	
 		for k=1, #rebuild_names do data.rebuild[rebuild_names[k]] = {} end
 		if table_contains(surface_names,surface.name) == false then
 			table.insert(surface_names,surface.name)
@@ -196,12 +240,21 @@ local resource_gain_event = 0
 				e.die(e.force,e)
 			end
 		end
+		kill = surface.surface.find_entities_filtered {ghost_name = rebuild_names}
+		for k=1, #kill do local e = kill[k]
+			if is_valid(e) then
+				e.destroy({raise_destroy = true})
+			end
+		end
 		surfaces[surface.surface.name] = local_init_surface(surface.surface)	
 	end
 
 	local local_register_surface = function(surface, launch)
 		if launch == nil then launch = false end
-		if surfaces[surface.name] ~= nil then return end
+		if surfaces[surface.name] ~= nil then 
+			if launch == true then surfaces[surface.name].launch = true end
+			return 
+		end
 		if ends_with(surface.name,"underground") == true then return end  --no undergrounds
 		surfaces[surface.name] = local_init_surface(surface,launch)
 	end
@@ -214,12 +267,20 @@ local resource_gain_event = 0
 		surfaces = global.modmashsplinterthem.surfaces
 		surface_names = global.modmashsplinterthem.surface_names	
 		--register_sensors()
+		local eg = end_game_energy
+		local set = settings.startup["setting-end-game-mod"].value
+		local mod = ((set-50)/100)*end_game_energy
+		end_game_energy = end_game_energy + mod
 		end
 
 	local local_load = function()	
 		surfaces = global.modmashsplinterthem.surfaces
 		surface_names = global.modmashsplinterthem.surface_names	
 		--register_sensors()
+		local eg = end_game_energy
+		local set = settings.startup["setting-end-game-mod"].value
+		local mod = ((set-50)/100)*end_game_energy
+		end_game_energy = end_game_energy + mod
 		end
 --end init section
 
@@ -280,15 +341,15 @@ local local_get_options_unclean = function (surface,directions,current,target)
 end
 
 
-local local_get_options = function (surface,directions,current,target,exiting)
+local local_get_options = function (surface,directions,current,target,existing)
 	local opts = local_get_options_unclean(surface,directions,current,target)
 	if opts == nil then return nil end
-	if #exiting == 0 then return opts end
+	if existing == nil or #existing == 0 then return opts end
 	local ret = {}
 	for k=1,#opts do
 		local safe = true
-		for j=1,#exiting do
-			if exiting[j].position.x == opts[k].position.x and exiting[j].position.y == opts[k].position.y then
+		for j=1,#existing do
+			if existing[j].position.x == opts[k].position.x and existing[j].position.y == opts[k].position.y then
 				safe = false
 				break
 			end
@@ -526,21 +587,9 @@ local local_update_steal = function(surface)
 	end
 end
 
-local local_has_launches = function()
-	local c = 0
-	for k = 1, #game.players do local player = game.players[k]
-		for name, value in pairs(player.force.items_launched) do
-			c = c + value
-		end
-	end
-	if c == 0 then return false end
-	return true
-end
 --each tick per surface.  
 --checks for loaders including filter
 local local_tick_surface = function(surface)
-	if surface.launch == nil then surface.launch = local_has_launches() end
-	if surface.launch == false then return end
 	resource_gain_event = 0
 	for k=#surface.loader_checks, 1, -1 do
 		local e = surface.surface.find_entity("them-mini-loader-structure",surface.loader_checks[k].position)
@@ -670,21 +719,27 @@ end
 
 local local_update_converters = function(surface)
 	local rebuild_priority = false
+	local t = 0
 	for k=#surface.converters,1,-1 do local entity = surface.converters[k] 
 		local foundexplosive = false
 		if is_valid(entity) == true then
 			local from = entity.get_inventory(defines.inventory.chest)
 			if from ~= nil then
 				for j=1, #rebuild_names do local name = rebuild_names[j]
-					if surface.rebuild[name] ~= nil and #surface.rebuild[name] > from.get_item_count(name) then							
-						-- possibe duplicates but they will be removed when no longer the case this also enusres availbility from closest could check network storage maybe
-						if from.can_insert({name = name, count = 1}) and surface.energy > surface.energy_required_per_item then
-							from.insert({name = name, count = 1})
-							surface.energy = surface.energy - surface.energy_required_per_item
-						else
-							rebuild_priority = true
-						end
-					end					
+					if name == "them-roboport" and t > 0 then
+						-- no ports if doing other stuff
+					else
+						if surface.rebuild[name] ~= nil and #surface.rebuild[name] > from.get_item_count(name) then							
+							-- possibe duplicates but they will be removed when no longer the case this also enusres availbility from closest could check network storage maybe
+							if from.can_insert({name = name, count = 1}) and surface.energy > surface.energy_required_per_item then
+								from.insert({name = name, count = 1})
+								surface.energy = surface.energy - surface.energy_required_per_item
+								t = t +1
+							else
+								rebuild_priority = true
+							end
+						end			
+					end
 				end
 				for n, c  in pairs (from.get_contents()) do
 					if n~=nil and (surface.rebuild[n] == nil or #surface.rebuild[n] == 0) then	
@@ -771,7 +826,7 @@ local update_attack_projectiles = function(surface,ticks)
 				elseif projectile.target_time_to_live <=0 and is_valid(projectile.target) == false then
 					projectile.target = nil
 					--attack some things, leave chests belts etc  other entites are auto targeted anyway
-					local targets =  projectile.entity.surface.find_entities_filtered{force="player", position=projectile.entity.position, radius = surface.attack_projectile_range, limit=15}
+					local targets =  projectile.entity.surface.find_entities_filtered{force="player", position=projectile.entity.position, radius = 8, limit=15}
 
 					local new_targets = {}	--invert = true dosn't work
 					for j=1, #targets do
@@ -859,13 +914,27 @@ local update_harvest_projectiles = function(surface,ticks)
 end
 
 
-local check_interupt_belt = function(surface)
+
+local check_interupt = function(surface,vein)
 	local redo = {}
 	local mark = {}
+
 	for k=1,#surface.current_base_build.base do local structure = surface.current_base_build.base[k]
 		if structure~=nil then
+			local size = entity_size[structure.name] 
+			if size == nil then size = {x=1,y=1} end
+			local hx = math.ceil(size.x/2.0)
+			local hy = math.ceil(size.y/2.0)
 			if surface.surface.find_entity(structure.name,{x=surface.current_base_build.position.x+structure.position.x,y=surface.current_base_build.position.y+structure.position.y}) == nil then 
-				local targets = surface.surface.find_entities_filtered{force = {"neutral","player"},position={x=surface.current_base_build.position.x+structure.position.x,y=surface.current_base_build.position.y+structure.position.y}}
+				local targets = {}
+				if structure.name == "them-transport-belt" then
+					targets = surface.surface.find_entities_filtered{force = {"neutral","player"},position={x=surface.current_base_build.position.x+structure.position.x,y=surface.current_base_build.position.y+structure.position.y}}
+				else
+					targets = surface.surface.find_entities_filtered{force = {"neutral","player"},area={
+						{x=surface.current_base_build.position.x+structure.position.x-hx,y=surface.current_base_build.position.y+structure.position.y-hy},
+						{x=surface.current_base_build.position.x+structure.position.x+hx,y=surface.current_base_build.position.y+structure.position.y+hy}
+						}}
+				end
 				--if tagets may be something in our way check if it a belt otherwise
 				for j = 1, #targets do
 					if targets[j].to_be_deconstructed() == false then
@@ -877,35 +946,39 @@ local check_interupt_belt = function(surface)
 		end
 	end
 	for k = 1, #mark do
-		mark[k].force = "enemy"
-		mark[k].order_deconstruction("enemy")
-		if mark[k].to_be_deconstructed() == false then mark[k].destroy({raise_destroy = true}) end
+		if is_valid(mark[k]) == true then
+			mark[k].force = "enemy"
+			mark[k].order_deconstruction("enemy")
+			if mark[k].to_be_deconstructed() == false then mark[k].destroy({raise_destroy = true}) end
+		end
 	end
-	for k = 1, #redo do
-		base_builder.add_belt(surface, surface.current_base_build.position.x, surface.current_base_build.position.y,redo[k].direction, true, redo[k].position.x,redo[k].position.y)
+	if vein then
+		for k = 1, #redo do
+			base_builder.add_belt(surface, surface.current_base_build.position.x, surface.current_base_build.position.y,redo[k].direction, true, redo[k].position.x,redo[k].position.y)
+		end
 	end
 end
 
 local check_current_base_build = function(surface)
-
+	--those freaking cliffs again
 	if surface.current_base_build.is_vein == false then
+
+		check_interupt(surface,false)
 		for k=1,#surface.current_base_build.base do local structure = surface.current_base_build.base[k]
 			if structure~=nil then			
 				if surface.surface.find_entity(structure.name,{x=surface.current_base_build.position.x+structure.position.x,y=surface.current_base_build.position.y+structure.position.y}) == nil then return end
 			end
 		end
 	else
-		if check_interupt_belt(surface) == false then
-			surface.current_base_build = nil
-		else
-			for k=1,#surface.current_base_build.base do local structure = surface.current_base_build.base[k]
-				if structure~=nil then
-					if surface.surface.find_entity(structure.name,{x=surface.current_base_build.position.x+structure.position.x,y=surface.current_base_build.position.y+structure.position.y}) == nil then return end
-				end
+		check_interupt(surface,true)
+		for k=1,#surface.current_base_build.base do local structure = surface.current_base_build.base[k]
+			if structure~=nil then
+				if surface.surface.find_entity(structure.name,{x=surface.current_base_build.position.x+structure.position.x,y=surface.current_base_build.position.y+structure.position.y}) == nil then return end
 			end
 		end
+
 	end
-	if is_vein == false then
+	if surface.current_base_build.is_vein == false then
 		base_builder.build_base(surface,surface.current_base_build.position.x,surface.current_base_build.position.y,surface.current_base_build.base,false)
 	end
 	surface.current_base_build = nil
@@ -931,13 +1004,11 @@ local local_get_start = function(surface)
 	local pos = {x=local_round(t.position.x+x),y=local_round(t.position.y+y)}
 	local x = surface.surface.find_entities_filtered{type={"resource"}, position=pos, radius = (surface.raid_projectile_range*0.75)}
 	if #x < 1 then return nil end
-	--for k=1, #x do
-	--	modmashsplinterthem.util.print(x[k].name)
-	--end
 	return pos
 end
 
 local check_base_exists = function(surface)
+	
 	if #surface.ports == 0 then		
 		
 		for k= #surface.bases, 1, -1 do
@@ -946,7 +1017,7 @@ local check_base_exists = function(surface)
 			end
 		end
 		if surface.spawn_base_cooldown <= 0 then
-			--todo randomize
+
 			local pos = local_get_start(surface)
 			if pos == nil then return false end
 			local px =  pos.x
@@ -969,7 +1040,6 @@ local check_base_exists = function(surface)
 				end			
 				table.insert(surface.bases,	b) 
 				surface.spawn_base_cooldown = 60*60*math.random(6,reverse_value_builder(8,25,surface.iteration,max_useable_iterations))		
-				--if modmashsplinterthem.debug == true then surface.spawn_base_cooldown=60*60 end
 			else
 				return false
 			end
@@ -989,7 +1059,7 @@ local local_update_defense = function(surface)
 			local targets = surface.surface.find_entities_filtered{force="player", position=port.position, radius = surface.base_defence_radius}
 			if #targets > 0 then
 				local x = targets[math.random(1, #targets)]
-				if x.name ~= "entity-ghost" then 
+				if x.name ~= "entity-ghost" and x.type ~= "transport-belt" then 
 					if port.get_inventory(defines.inventory.roboport_robot).get_item_count("them-robot") > 0 then
 						local removed = port.get_inventory(defines.inventory.roboport_robot).remove({name ="them-robot",count=1})					
 						if removed > 0 then				
@@ -1157,21 +1227,21 @@ local local_do_steal = function(surface,port,bots)
 end
 
 
-
 local local_expand_condition = function(surface,port,bots)
+
 	if surface.flags.rebuild_required > 0 then return false end
+	if #surface.bases >= surface.max_bases then return end
+
 	if surface.flags.defend_priority == true then return false end
 	if surface.current_base_build ~= nil then return false end
 	if surface.steal_requested == true then return false end
 	if surface.spawn_base_cooldown > 0 then return false end
-	--if surface.energy < (surface.energy_required_per_item * #surface.flags.next_base) then return false end	
 	return true
 end
 
 
 local local_do_expand = function(surface,port,bots)
 	local base = surface.bases[math.random(1,#surface.bases)]
-
 	local d = math.random(4)
 	local position = nil
 	local build_position = nil
@@ -1192,6 +1262,7 @@ local local_do_expand = function(surface,port,bots)
 		build_position = {x=base.position.x+11,y=base.position.y}
 		if base.connections["right"].marked == true then return end
 	end
+
 	if position ~= nil and base_builder.can_build_base(surface,position.x,position.y,surface.flags.next_base) == true then
 		for k=1, #surface.bases do
 			if surface.bases[k].position.x == build_position.x and surface.bases[k].position.y == build_position.y then return end
@@ -1214,13 +1285,14 @@ local local_do_expand = function(surface,port,bots)
 					base.connections["right"].marked = true
 					if b.connections["left"] ~= nil then b.connections["left"].marked = true end
 				end
-			end
+			end		
 		end
 	end	
 end
 
 local local_end_game_condition = function(surface,port,bots)
---add max base, min time no rebuild
+	if (surface.max_bases-1) > #surface.bases then return end
+	if local_rebuild_count() > 0 then return false end
 	return (surface.energy + surface.end_game_saving) > end_game_energy
 end
 
@@ -1241,19 +1313,28 @@ local local_add_chance= function (chance_table,count,func)
 end
 
 local local_nth_tick_surface = function(surface,ticks)	
-	if surface.launch == nil then surface.launch = local_has_launches() end
+
 	if surface.launch == false then return end
 	surface.flags = {}
 	surface.spawn_base_cooldown = math.max(0,surface.spawn_base_cooldown - ticks)
-	surface.flags.rebuild_required = local_rebuid_count(surface)
+	surface.spawn_ghost_check = math.max(0,surface.spawn_ghost_check - ticks)
+	--todo remove
+	--surface.energy = math.max(minimal_energy*2,surface.energy)
+	--surface.spawn_base_cooldown = 0
+	--surface.max_bases = 30
+
+	--if (surface.max_bases-1) > #surface.bases then surface.energy = end_game_energy end
+	
+
+	surface.flags.rebuild_required = local_rebuild_count(surface)
 	surface.flags.rebuild_priority = false
 	surface.flags.defend_priority = local_update_defense(surface)
 	if #base_builder.bases > 0 then
 		surface.flags.next_base = base_builder.bases[math.random(1,#base_builder.bases)]
 	end
-	--surface.spawn_base_cooldown = math.min(surface.spawn_base_cooldown, 60*60)
-	--surface.energy = math.max(surface.energy,200)
+
 	if surface.current_base_build ~= nil then 
+	
 		check_current_base_build(surface)
 	end
 	
@@ -1266,14 +1347,12 @@ local local_nth_tick_surface = function(surface,ticks)
 		surface.energy = surface.energy - (surface.energy*0.02)
 	end
 	if #surface.ports == 0 then return end
-	--surface.energy = 1000
 	surface.flags.rebuild_priority = local_update_converters(surface)
-
+	
 	local chance_table = {}
 	local port = surface.ports[math.random(1,#surface.ports)]
 	if is_valid(port) ~= true then return end
 	local bots = port.get_inventory(defines.inventory.roboport_robot).get_item_count("them-robot")
-
 
 	if local_end_game_condition(surface,port,bots) then local_add_chance(chance_table,surface.end_game_chance, local_do_end_game) end
 	if local_harvest_condition(surface,port,bots) then local_add_chance(chance_table,surface.harvest_chance, local_do_harvest) end
@@ -1541,6 +1620,8 @@ local local_on_trigger_created_entity = function(event)
 		end		
 	end end
 
+
+
 local local_added = function(entity,event)	
 	if ends_with(entity.surface.name,"underground") == true then return end --dont care about undergrounds	
 	if surfaces[entity.surface.name] == nil then local_register_surface(entity.surface) end
@@ -1561,35 +1642,45 @@ local local_added = function(entity,event)
 	elseif entity.name == "them-solar-panel" then				
 		entity.force = "enemy"
 		base_builder.add_concrete(surface,entity.name, entity.position.x, entity.position.y, 0, 0)
+		local_reset_surface_ghost_check(surface)
 	elseif entity.name == "them-pole" then				
 		entity.force = "enemy"
 		base_builder.add_concrete(surface,entity.name, entity.position.x, entity.position.y, 0, 0)		
+		local_reset_surface_ghost_check(surface)
 	elseif entity.name == "them-robot" then		
 		local_on_trigger_created_entity({entity = entity})
 	elseif entity.name == "them-chest" then
 		table.insert(surface.chests,entity)
 		entity.operable = false
 		entity.force = "enemy"
-		base_builder.add_concrete(surface,entity.name, entity.position.x, entity.position.y, 0, 0)	elseif entity.name == "them-chest-energy-converter" then
+		base_builder.add_concrete(surface,entity.name, entity.position.x, entity.position.y, 0, 0)	
+		local_reset_surface_ghost_check(surface)
+	elseif entity.name == "them-chest-energy-converter" then
 		table.insert(surface.converters,entity)
 		entity.operable = false
 		entity.force = "enemy"	
 		base_builder.add_concrete(surface,entity.name, entity.position.x, entity.position.y, 0, 0)
+		local_reset_surface_ghost_check(surface)
 	elseif entity.name == "them-mini-loader-structure" then
 		entity.operable = false
 		entity.force = "enemy"
 		base_builder.add_concrete(surface,entity.name, entity.position.x, entity.position.y, 0, 0)
+		local_reset_surface_ghost_check(surface)
 	elseif entity.name == "them-underground-belt-structure" then
 		entity.force = "enemy"
 		base_builder.add_concrete(surface,entity.name, entity.position.x, entity.position.y, 0, 0)
+		local_reset_surface_ghost_check(surface)
 	elseif entity.name == "them-transport-belt" then
 		entity.force = "enemy"
 		base_builder.add_concrete(surface,entity.name, entity.position.x, entity.position.y, 0, 0)
+		local_reset_surface_ghost_check(surface)
 	end
 
 	if event ~= nil then
 		if entity.force.name == "player" and surface.surface.get_tile(entity.position.x, entity.position.y).name == "them-concrete" then
-			fail_place_entity(entity,event,{"modmashsplinter.placement-disallowed"})
+			if entity.type ~= "land-mine" then 
+				fail_place_entity(entity,event,{"modmashsplinter.placement-disallowed"})
+			end
 		else
 			if table_contains(rebuild_names, entity.name) then
 				for k=#surface.ghosts, 1, -1 do
@@ -1602,12 +1693,25 @@ local local_added = function(entity,event)
 	end
 	end
 
-local local_on_configuration_changed = function() 	
-	if local_has_launches() == false then
-		for name, surface  in pairs (global.modmashsplinterthem.surfaces) do
-			local_clear_surface(surface)
+local local_on_configuration_changed = function(event) 	
+	 local changed = event.mod_changes and event.mod_changes["modmashsplinterthem"]
+	 if changed then
+		if changed.old_version < "1.1.18" then
+			for k=1, #surface_names do
+				local surface = surfaces[surface_names[k]]
+				local iteration = surface.iteration - 1
+				local energy = surface.energy
+				local end_game_saving = surface.end_game_saving
+				local launch = surface.launch
+				local_clear_surface(surface)
+				surface = surfaces[surface_names[k]]
+				surface.iteration = iteration
+				surface.energy = energy
+				surface.end_game_saving = end_game_saving
+				surface.launch = launch
+			end
 		end
-	end
+	 end
 end
 
 --event setup section
@@ -1650,67 +1754,3 @@ end
 	script.on_event(defines.events.on_trigger_created_entity, local_on_trigger_created_entity)
 	script.on_event(defines.events.on_rocket_launched, local_on_rocket_launched)
 --end event setup section
-
---[[
-	local local_path_from = function(surface,start_pos,end_pos,max)
-	local is_left = false
-	local is_above = false
-	local movements = {4,6,2}
-	if end_pos.x < start_pos.x then -- target is to left
-		is_left = true
-		if end_pos.y < start_pos.y then -- target is above
-			is_above = true
-			movements = {0,2,6}
-		else -- target is below
-			movements = {4,2,6}
-		end
-	else --target is to right
-		if end_pos.y < start_pos.y then -- target is above
-			is_above = true
-			movements = {0,6,2}
-		else -- target is below
-			movements = {4,6,2}
-		end
-	end
-	local belts = {start_pos}
-	local base = {}
-
-	for z = 1, max do
-		local options = local_get_options(surface,movements,belts[#belts].position,end_pos.position,belts)
-		if options == nil then return nil end
-			if is_above == true and options[1].position.y > end_pos.position.y then return nil end
-			if is_above == false and options[1].position.y < end_pos.position.y then return nil end
-			if is_left == true and options[1].position.x > end_pos.position.x then return nil end
-			if is_left == false and options[1].position.x < end_pos.position.x then return nil end
-			--complete
-			if options[1].position.x == end_pos.position.x and options[1].position.y == end_pos.position.y then
-				local base = {}
-				table.insert(belts,options[1])
-			
-				if #belts == 1 then								
-					table.insert(base,{name="them-transport-belt", position=surface.steal.belts[1].position, direction = 2})
-				else
-					for k = 1, #belts-1 do 
-						local belt = belts[k]
-						local next_belt = belts[k+1]
-						if (belt.direction == 4 or belt.direction == 0) and next_belt.position.x~=belt.position.x then
-							belt.direction = next_belt.direction
-						end
-						if (belt.direction == 6 or belt.direction == 2) and next_belt.position.y~=belt.position.y then
-							belt.direction = next_belt.direction
-						end
-					end
-					belts[#belts].direction = movements[1]
-					for k = 1, #belts do 
-						local belt = belts[k]
-						table.insert(base,{name="them-transport-belt", position=belt.position, direction = belt.direction})
-					end
-				end
-				return base
-			end
-			table.insert(belts,options[1])
-		end
-	end
-	return nil
-end
-]]

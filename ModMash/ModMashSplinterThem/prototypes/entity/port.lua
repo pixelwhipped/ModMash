@@ -34,7 +34,7 @@ data:extend(
         map_color = {r=1.0, g=0.0, b=0.5},
         flags = {placeable,"placeable-enemy", "player-creation"},
         minable = minable,
-        max_health = 500,
+        max_health = 100,
         healing_per_tick = healing_per_tick,
         corpse = "roboport-remnants",
         dying_explosion = "roboport-explosion",

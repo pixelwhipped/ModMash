@@ -1,4 +1,49 @@
 ﻿------------------------------------------------------------------------------------
+Version: 1.1.19
+  Changes:
+    - weakend bases
+    - allowed mines in them concrete
+  Bug Fixes:
+    - was dependant on new worlds but not in the info.json and have removed the need
+
+------------------------------------------------------------------------------------
+Version: 1.1.18
+  Bug Fixes:
+    - launch wasn't being tested
+
+------------------------------------------------------------------------------------
+Version: 1.1.17
+  Bug Fixes:
+    - accessing nil surface
+
+------------------------------------------------------------------------------------
+Version: 1.1.16
+  Changes:
+    - added end game modifier setting
+    - re-worked innber build checks
+    - ports fixe
+  Bug Fixes:
+    - OMG cliffs again
+    - Bug where ghosts simply were not being build. Visible possible just was not happening
+
+------------------------------------------------------------------------------------
+Version: 1.1.15
+  Changes:
+    - added beam max length
+    - bots visible on map
+    - bots dont show cargo
+    - added base build interrupt test
+  Bug Fixes:
+    - added check for valid entites is base interrupts
+
+------------------------------------------------------------------------------------
+Version: 1.1.14
+  Bug Fixes:
+    - random interval issues
+  Changes:
+    - cannot initiated indgame if building of haven't reached max bases
+
+------------------------------------------------------------------------------------
 Version: 1.1.13
   Changes:
     - takes 10 time longer for end game event, need better tweaking

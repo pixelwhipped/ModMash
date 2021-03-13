@@ -29,7 +29,7 @@ data:extend(
         icon_size = 64, icon_mipmaps = 4,
         flags = {placeable,"placeable-enemy", "player-creation"},
         minable = minable,
-        max_health = 100,
+        max_health = 50,
         healing_per_tick = healing_per_tick,
         map_color = {r=1.0, g=0.0, b=0.5},
         corpse = "small-electric-pole-remnants",

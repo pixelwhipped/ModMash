@@ -1,5 +1,6 @@
 ﻿require("prototypes.scripts.defines") 
 local table_contains = modmashsplinterthem.util.table.contains
+local is_valid  = modmashsplinterthem.util.is_valid
 
 local rebuild_names = {"them-roboport","them-chest","them-chest-energy-converter","them-solar-panel","them-transport-belt","them-underground-belt-structure","them-mini-loader-structure","them-small-electric-pole"}
 --local onexone = {"them-transport-belt","them-underground-belt-structure","them-mini-loader-structure","them-small-electric-pole"}
@@ -220,6 +221,19 @@ local local_add_concrete = function(surface,name, x, y, offset_x, offset_y,water
 	end		
 	local hx = ((size.x)/2.0)
 	local hy = ((size.y)/2.0)
+
+	if surface.surface.find_entity(name,{x=nx,y=ny}) == nil then 				
+		local targets = surface.surface.find_entities_filtered{force = {"neutral","player"},area={
+			{x=nx-math.ceil(hx),y=ny-math.ceil(hy)},
+			{x=nx+math.ceil(hx),y=ny+math.ceil(hy)}
+			}}
+		for j = 1, #targets do					
+			if is_valid(targets[j]) and targets[j].to_be_deconstructed() == false then
+				targets[j].order_deconstruction("enemy")			
+			end
+		end
+	end
+	
 	for cx = (hx*-1)-0.5, hx+0.5,1 do
 		for cy = (hy*-1)-0.5, hy+0.5,1 do
 			if surface.surface.get_tile(nx+cx,ny+cy).name ~="them-concrete" then
@@ -254,6 +268,8 @@ local local_add_port = function(surface, x, y, ghost, offset_x,offset_y)
 	offset_y = offset_y or 0
 	if ghost == true then
 		local_add_concrete(surface,"them-roboport",x,y,offset_x,offset_y,true)
+		local g = surface.surface.find_entity("entity-ghost",{x=x+offset_x,y=y+offset_y})
+		if g ~= nil then g.destroy({raise_destroy=true}) end
 		surface.surface.create_entity{name = "entity-ghost", inner_name = "them-roboport", position={x=x+offset_x,y=y+offset_y}, force="enemy",create_build_effect_smoke=false,create_build_effect_smoke=false}
 	elseif surface.surface.find_entity("them-roboport",{x=x+offset_x,y=y+offset_y}) == nil then
 		local g = surface.surface.find_entity("entity-ghost",{x=x+offset_x,y=y+offset_y})
@@ -270,6 +286,8 @@ local local_add_pole = function(surface, x, y, ghost, offset_x,offset_y)
 	offset_y = offset_y or 0
 	if ghost == true then
 		local_add_concrete(surface,"them-small-electric-pole",x,y,offset_x,offset_y,true)
+		local g = surface.surface.find_entity("entity-ghost",{x=x+offset_x,y=y+offset_y})
+		if g ~= nil then g.destroy({raise_destroy=true}) end
 		surface.surface.create_entity{name = "entity-ghost", inner_name = "them-small-electric-pole", position={x=x+offset_x,y=y+offset_y}, force="enemy",create_build_effect_smoke=false}
 	elseif surface.surface.find_entity("them-small-electric-pole",{x=x+offset_x,y=y+offset_y}) == nil then
 		local g = surface.surface.find_entity("entity-ghost",{x=x+offset_x,y=y+offset_y})
@@ -286,6 +304,8 @@ local local_add_chest = function(surface, x, y, ghost, offset_x,offset_y)
 	offset_y = offset_y or 0
 	if ghost == true then
 		local_add_concrete(surface,"them-chest",x,y,offset_x,offset_y,true)
+		local g = surface.surface.find_entity("entity-ghost",{x=x+offset_x,y=y+offset_y})
+		if g ~= nil then g.destroy({raise_destroy=true}) end
 		surface.surface.create_entity{name = "entity-ghost", inner_name = "them-chest", force="enemy", position={x=x+offset_x,y=y+offset_y}}
 	elseif surface.surface.find_entity("them-chest",{x=x+offset_x,y=y+offset_y}) == nil then
 		local g = surface.surface.find_entity("entity-ghost",{x=x+offset_x,y=y+offset_y})
@@ -303,6 +323,8 @@ local local_add_converter = function(surface, x, y, ghost, offset_x,offset_y)
 	offset_y = offset_y or 0
 	if ghost == true then
 		local_add_concrete(surface,"them-chest-energy-converter",x,y,offset_x,offset_y,true)
+		local g = surface.surface.find_entity("entity-ghost",{x=x+offset_x,y=y+offset_y})
+		if g ~= nil then g.destroy({raise_destroy=true}) end
 		surface.surface.create_entity{name = "entity-ghost", inner_name = "them-chest-energy-converter", position={x=x+offset_x,y=y+offset_y}, force="enemy",create_build_effect_smoke=false}
 	elseif surface.surface.find_entity("them-chest-energy-converter",{x=x+offset_x,y=y+offset_y}) == nil then
 		local g = surface.surface.find_entity("entity-ghost",{x=x+offset_x,y=y+offset_y})
@@ -320,6 +342,8 @@ local local_add_solar = function(surface, x, y, ghost, offset_x,offset_y)
 	offset_y = offset_y or 0
 	if ghost == true then
 		local_add_concrete(surface,"them-solar-panel",x,y,offset_x,offset_y,true)
+		local g = surface.surface.find_entity("entity-ghost",{x=x+offset_x,y=y+offset_y})
+		if g ~= nil then g.destroy({raise_destroy=true}) end
 		surface.surface.create_entity{name = "entity-ghost", inner_name = "them-solar-panel", position={x=x+offset_x,y=y+offset_y}, force="enemy",create_build_effect_smoke=false}
 	elseif surface.surface.find_entity("them-solar-panel",{x=x+offset_x,y=y+offset_y}) == nil then
 		local g = surface.surface.find_entity("entity-ghost",{x=x+offset_x,y=y+offset_y})
@@ -336,6 +360,8 @@ local local_add_belt = function(surface, x, y,direction, ghost, offset_x,offset_
 	offset_y = offset_y or 0
 	if ghost == true then
 		local_add_concrete(surface,"them-transport-belt",x,y,offset_x,offset_y,true)
+		local g = surface.surface.find_entity("entity-ghost",{x=x+offset_x,y=y+offset_y})
+		if g ~= nil then g.destroy({raise_destroy=true}) end
 		surface.surface.create_entity{name = "entity-ghost", inner_name = "them-transport-belt", position={x=x+offset_x,y=y+offset_y},direction=direction, force="enemy",create_build_effect_smoke=false}
 	elseif surface.surface.find_entity("them-transport-belt",{x=x+offset_x,y=y+offset_y}) == nil then
 		local g = surface.surface.find_entity("entity-ghost",{x=x+offset_x,y=y+offset_y})
@@ -352,6 +378,8 @@ local local_add_underground = function(surface, x, y,direction,belt_to_ground_ty
 	offset_y = offset_y or 0
 	if ghost == true then
 		local_add_concrete(surface,"them-underground-belt-structure",x,y,offset_x,offset_y,true)
+		local g = surface.surface.find_entity("entity-ghost",{x=x+offset_x,y=y+offset_y})
+		if g ~= nil then g.destroy({raise_destroy=true}) end
 		surface.surface.create_entity{name = "entity-ghost", inner_name = "them-underground-belt-structure", position={x=x+offset_x,y=y+offset_y},direction=direction,belt_to_ground_type=belt_to_ground_type, force="enemy",create_build_effect_smoke=false}		
 	elseif surface.surface.find_entity("them-underground-belt-structure",{x=x+offset_x,y=y+offset_y}) == nil then
 		local g = surface.surface.find_entity("entity-ghost",{x=x+offset_x,y=y+offset_y})
@@ -369,6 +397,8 @@ local local_add_loader = function(surface, x, y,direction,loader_type, ghost, of
 	offset_y = offset_y or 0
 	if ghost == true then
 		local_add_concrete(surface,"them-mini-loader-structure",x,y,offset_x,offset_y,true)
+		local g = surface.surface.find_entity("entity-ghost",{x=x+offset_x,y=y+offset_y})
+		if g ~= nil then g.destroy({raise_destroy=true}) end
 		surface.surface.create_entity{name = "entity-ghost", inner_name = "them-mini-loader-structure", position={x=x+offset_x,y=y+offset_y},direction=direction,loader_type=loader_type, force="enemy",create_build_effect_smoke=false}
 		table.insert(surface.loader_checks,{position={x=x+offset_x,y=y+offset_y},loader_type=loader_type})
 	elseif surface.surface.find_entity("them-mini-loader-structure",{x=x+offset_x,y=y+offset_y}) == nil then
@@ -394,6 +424,11 @@ local local_build_base = function(surface, x, y, cbase, ghost)
 	local connections = {}
 	local ports = {}
 	local is_vein = true
+
+	for k = 1, #cbase do
+		if cbase[k].name ~= "them-transport-belt" then is_vein = false end
+	end
+
 	local base = {}
 	
 
@@ -402,7 +437,7 @@ local local_build_base = function(surface, x, y, cbase, ghost)
 		for k=1, #destroys do
 			if destroys[k].type ~= "character" and destroys[k].name ~= "them-roboport" and destroys[k].name ~=  "them-chest-energy-converter" and destroys[k].name ~=  "them-chest" then
 				if destroys[k].type == "cliff" then
-					destroys[k].destroy({raise_destroy=true})
+					destroys[k].order_deconstruction("enemy")--	destroys[k].destroy({raise_destroy=true})
 				else
 					destroys[k].destroy({raise_destroy=false})
 				end
