@@ -1,3 +1,7 @@
+#Gold
+Gold add variations of recipes requiring copper plates or copper cable doubling the output.
+Gold is filtered from copper and stone.
+
 #Them
 Launching a rocket alerts Them to your presence.  They come with one goal to wipe you out.
 The late game enemies build their own base, harvest resources and expand.

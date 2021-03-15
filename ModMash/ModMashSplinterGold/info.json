@@ -1,0 +1,14 @@
+{
+  "name": "modmashsplintergold",
+  "version": "1.1.03",
+  "title": "ModMash Splinter, Gold",
+  "author": "PixelWhipped",
+  "contact": "",
+  "homepage": "https://www.patreon.com/user?u=15367757",
+  "factorio_version": "1.1",
+  "description": "Mod Mash Splinter Gold, adds gold which increased production of some items",
+  "dependencies": [
+    "base >= 1.1.0",
+    "modmashsplinter >= 1.1.10"
+  ]
+}

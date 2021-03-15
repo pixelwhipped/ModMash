@@ -36,6 +36,8 @@ local resource_gain_event = 0
 
 
 --common functions section
+
+
 	local local_create_beam = function(source,target,beam_name,time)
 		if is_valid(source) and is_valid(target) then
 			if beam_name == nil then beam_name = "them-electric-beam" end
@@ -222,7 +224,7 @@ local resource_gain_event = 0
 			max_veins = value_builder(3,10,iteration,max_useable_iterations),
 
 		}
-		data.spawn_base_cooldown = 60*60*math.random(6,math.ceil(reverse_value_builder(8,25,iteration,max_useable_iterations)))		
+		data.spawn_base_cooldown = 60*60*math.random(6,math.max(math.ceil(reverse_value_builder(8,25,iteration,max_useable_iterations)),8))		
 		local_reset_surface_ghost_check(data)	
 	
 		for k=1, #rebuild_names do data.rebuild[rebuild_names[k]] = {} end
@@ -707,7 +709,9 @@ end
 
 local local_return_home = function(surface,projectile, index, projectiles)
 	if #surface.ports>=1 then
-		local t = surface.ports[math.random(1, #surface.ports)] --enhance could sort by distance
+		local m = 1
+		if #surface.ports > 1 then m = math.random(1, #surface.ports) end
+		local t = surface.ports[m]
 		t.surface.create_entity{name='them-robot-projectile', speed=0.06, position=projectile.entity.position, force="enemy", target=t.position}
 		if projectile.entity.health < projectile.entity.prototype.max_health then table.insert(surface.return_health_stack,projectile.entity.health) end
 			projectile.entity.destroy({raise_destroy = true})
@@ -867,7 +871,9 @@ local update_harvest_projectiles = function(surface,ticks)
 			projectile.time_to_live = projectile.time_to_live - ticks
 			if is_valid(projectile.entity) == true then
 				if projectile.time_to_live <=0 then
-					local t = surface.ports[math.random(1, #surface.ports)]
+					local m = 1
+					if #surface.ports > 1 then m = math.random(1, #surface.ports) end
+					local t = surface.ports[m]
 					t.surface.create_entity{name='them-robot-projectile', speed=0.06, position=projectile.entity.position, force="enemy", target=t.position}
 					if projectile.entity.health <  projectile.entity.prototype.max_health then table.insert(surface.return_health_stack,projectile.entity.health) end
 					projectile.entity.destroy({raise_destroy = true})
@@ -937,7 +943,7 @@ local check_interupt = function(surface,vein)
 				end
 				--if tagets may be something in our way check if it a belt otherwise
 				for j = 1, #targets do
-					if targets[j].to_be_deconstructed() == false then
+					if targets[j].to_be_deconstructed() == false and targets[j].type ~= "character" then
 						table.insert(mark,targets[j])
 						table.insert(redo,structure)						
 					end
@@ -982,7 +988,7 @@ local check_current_base_build = function(surface)
 		base_builder.build_base(surface,surface.current_base_build.position.x,surface.current_base_build.position.y,surface.current_base_build.base,false)
 	end
 	surface.current_base_build = nil
-	surface.spawn_base_cooldown = 60*60*math.random(6,reverse_value_builder(8,25,surface.iteration,max_useable_iterations))	
+	surface.spawn_base_cooldown = 60*60*math.random(6,math.max(math.ceil(reverse_value_builder(8,25,surface.iteration,max_useable_iterations)),8))
 end
 
 local local_round = function(x)
@@ -1012,7 +1018,7 @@ local check_base_exists = function(surface)
 	if #surface.ports == 0 then		
 		
 		for k= #surface.bases, 1, -1 do
-			if #surface.bases[k].base == 0 then
+			if surface.bases[k].base == nil or #surface.bases[k].base == 0 then
 				table.remove(surface.bases,k)
 			end
 		end
@@ -1039,7 +1045,7 @@ local check_base_exists = function(surface)
 					end
 				end			
 				table.insert(surface.bases,	b) 
-				surface.spawn_base_cooldown = 60*60*math.random(6,reverse_value_builder(8,25,surface.iteration,max_useable_iterations))		
+				surface.spawn_base_cooldown = 60*60*math.random(6,math.max(math.ceil(reverse_value_builder(8,25,surface.iteration,max_useable_iterations)),8))		
 			else
 				return false
 			end
@@ -1696,19 +1702,21 @@ local local_added = function(entity,event)
 local local_on_configuration_changed = function(event) 	
 	 local changed = event.mod_changes and event.mod_changes["modmashsplinterthem"]
 	 if changed then
-		if changed.old_version < "1.1.18" then
-			for k=1, #surface_names do
-				local surface = surfaces[surface_names[k]]
-				local iteration = surface.iteration - 1
-				local energy = surface.energy
-				local end_game_saving = surface.end_game_saving
-				local launch = surface.launch
-				local_clear_surface(surface)
-				surface = surfaces[surface_names[k]]
-				surface.iteration = iteration
-				surface.energy = energy
-				surface.end_game_saving = end_game_saving
-				surface.launch = launch
+		if changed.old_version ~= nil then
+			if changed.old_version < "1.1.18" then
+				for k=1, #surface_names do
+					local surface = surfaces[surface_names[k]]
+					local iteration = surface.iteration - 1
+					local energy = surface.energy
+					local end_game_saving = surface.end_game_saving
+					local launch = surface.launch
+					local_clear_surface(surface)
+					surface = surfaces[surface_names[k]]
+					surface.iteration = iteration
+					surface.energy = energy
+					surface.end_game_saving = end_game_saving
+					surface.launch = launch
+				end
 			end
 		end
 	 end
