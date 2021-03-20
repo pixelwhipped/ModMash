@@ -53,7 +53,9 @@ if data.raw.recipe["gold-plate"] == nil then
 			energy_required = 4.5,
 			ingredients = {{"gold-ore", 1}},
 			result = "gold-plate"
-		}
+		},
+        allow_as_intermediate = false,
+        allow_decomposition = false
     }
   })
 end
@@ -74,7 +76,9 @@ if data.raw.recipe["gold-cable"] == nil then
 			energy_required = 2.5,
 			ingredients = {{"gold-plate", 1}},
 			result = "gold-cable"
-		}
+		},
+        allow_as_intermediate = false,
+        allow_decomposition = false
     }
   })
 end

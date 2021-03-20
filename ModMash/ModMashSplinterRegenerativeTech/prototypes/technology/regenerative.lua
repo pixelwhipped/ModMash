@@ -32,6 +32,9 @@
 	}
 end
 
+local logistic_tech = "logistics-2"
+if mods["modmashsplinterlogistics"] ~= nil then logistic_tech = "logistics-5" end
+
 data:extend(
 {
 {
@@ -46,7 +49,7 @@ data:extend(
 			},
 			prerequisites =
 			{
-				"logistics-5"
+				logistic_tech
 			},
 			unit =
 			{

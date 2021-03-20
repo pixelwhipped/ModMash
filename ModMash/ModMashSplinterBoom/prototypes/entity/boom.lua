@@ -1,4 +1,5 @@
-﻿data:extend(
+﻿
+data:extend(
 {
 	{
 		type     = "sprite",
@@ -23,15 +24,15 @@ styles["landmine-icon-button"] =
 	stretch_image_to_widget_size = true,
 	default_graphical_set = base_icon_button_grahphical_set,
 	hovered_graphical_set =
-    {
+	{
 		base = {position = {34, 17}, corner_size = 2, draw_type = "outer", opacity = 0.5},
-        shadow = default_dirt,
-        glow = default_glow(default_glow_color, 0.5)
+		shadow = default_dirt,
+		glow = default_glow(default_glow_color, 0.5)
 	},
 	clicked_graphical_set =
 	{
 		base   = {position = {51, 17}, corner_size = 2, draw_type = "outer", opacity = 0.5},
-        shadow = default_dirt
+		shadow = default_dirt
 	},
 	selected_graphical_set =
 	{
@@ -51,6 +52,96 @@ styles["landmine-icon-button"] =
 	},
 	draw_shadow_under_picture = true
 }
+
+
+data:extend(
+{
+	{
+		type = "shortcut",
+		name = "boom-toggle",
+		localised_name = {"", {"Shortcuts.modmash-landmine-detonate-tooltip"}},
+		order = "a[modmashsplinter]-[boom-toggle]",
+		action = "lua",
+		style = "red",
+		icon =
+		{
+			filename = "__modmashsplinterboom__/graphics/toggle-x32.png",
+			priority = "extra-high-no-scale",
+			size = 32,
+			scale = 1,
+			flags = {"icon"}
+		},
+		small_icon =
+		{
+			filename = "__modmashsplinterboom__/graphics/toggle-x24.png",
+			priority = "extra-high-no-scale",
+			size = 24,
+			scale = 1,
+			flags = {"icon"}
+		},
+		disabled_icon =
+		{
+			filename = "__modmashsplinterboom__/graphics/toggle-x32-white.png",
+			priority = "extra-high-no-scale",
+			size = 32,
+			scale = 1,
+			flags = {"icon"}
+		},
+		disabled_small_icon =
+		{
+			filename = "__modmashsplinterboom__/graphics/toggle-x24-white.png",
+			priority = "extra-high-no-scale",
+			size = 24,
+			scale = 1,
+			flags = {"icon"}
+		},
+	}
+})
+
+
+data:extend(
+{
+	{
+		type = "shortcut",
+		name = "boom-all-toggle",
+		localised_name = {"", {"Shortcuts.modmash-landmine-detonate-all-tooltip"}},
+		order = "a[modmashsplinter]-[boom-all-toggle]",
+		action = "lua",
+		style = "red",
+		icon =
+		{
+			filename = "__modmashsplinterboom__/graphics/all-toggle-x32.png",
+			priority = "extra-high-no-scale",
+			size = 32,
+			scale = 1,
+			flags = {"icon"}
+		},
+		small_icon =
+		{
+			filename = "__modmashsplinterboom__/graphics/all-toggle-x24.png",
+			priority = "extra-high-no-scale",
+			size = 24,
+			scale = 1,
+			flags = {"icon"}
+		},
+		disabled_icon =
+		{
+			filename = "__modmashsplinterboom__/graphics/all-toggle-x32-white.png",
+			priority = "extra-high-no-scale",
+			size = 32,
+			scale = 1,
+			flags = {"icon"}
+		},
+		disabled_small_icon =
+		{
+			filename = "__modmashsplinterboom__/graphics/all-toggle-x24-white.png",
+			priority = "extra-high-no-scale",
+			size = 24,
+			scale = 1,
+			flags = {"icon"}
+		},
+	}
+})
 
 data:extend(
   {

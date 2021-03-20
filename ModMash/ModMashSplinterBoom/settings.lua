@@ -9,3 +9,14 @@
 		order = "a"
 	}
 })
+
+data:extend(
+{
+	{
+		type = "bool-setting",
+		name = "setting-shortcuts-only",
+		setting_type = "runtime-global",
+		default_value = false,
+		order = "b"
+	}
+})

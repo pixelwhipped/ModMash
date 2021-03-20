@@ -1,4 +1,10 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.04
+  Changes:
+    - added boom button to shortcuts, allows option for current or all surfaces
+    - option to use disable original boom button
+
+---------------------------------------------------------------------------------------------------
 Version: 1.1.03
   Changes:
     - added nuclear tile on explosion

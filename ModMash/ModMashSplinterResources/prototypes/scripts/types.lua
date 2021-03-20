@@ -65,7 +65,8 @@ local local_create_conversions = function()
 									amount = math.min(item.stack_size,15),
 									}			
 								},
-								allow_decomposition = false,
+								allow_as_intermediate = false,
+								allow_decomposition = false
 							},
 							{
 								type = "technology",
@@ -159,7 +160,8 @@ local local_create_ore_conversions = function()
 					amount = math.min(item.stack_size,15),
 					}			
 				},
-				allow_decomposition = false,
+				allow_as_intermediate = false,
+				allow_decomposition = false
 			},
 			{
 				type = "technology",

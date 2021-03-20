@@ -1,4 +1,10 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.05
+  Changes:
+    - allow_as_intermediate = false
+    - allow_decomposition = false
+
+---------------------------------------------------------------------------------------------------
 Version: 1.1.03
   Changes:
     - Remove dependacy on assembling and resources splinter

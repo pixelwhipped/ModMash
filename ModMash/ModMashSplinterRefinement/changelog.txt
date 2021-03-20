@@ -1,4 +1,12 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.05
+  Changes:
+    - allow_as_intermediate = false
+    - allow_decomposition = false
+    - always_show_made_in = true
+    - added menu simulation
+
+---------------------------------------------------------------------------------------------------
 Version: 1.1.04
   Changes:
     - ModPack ready

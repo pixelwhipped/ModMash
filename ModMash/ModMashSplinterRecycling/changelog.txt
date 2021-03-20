@@ -1,5 +1,11 @@
 ﻿---------------------------------------------------------------------------------------------------
-Version: 1.1.03
+Version: 1.1.05
+  Changes:
+    - removed allow intermediates
+    - ensure energy required doubled
+
+---------------------------------------------------------------------------------------------------
+Version: 1.1.04
   Bug Fixes:
     - referencing fluid splinter where it may not exist
 

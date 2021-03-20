@@ -35,13 +35,13 @@ end
 
 
 local local_add_loot_to_entity = function(entityType, entityName, probability, countMin, countMax)
-	if settings.startup["setting-alien-loot-chance"].value == 0 then return end
+	if settings.startup["setting-alien-disable-loot-chance"].value == "Disabled" then return end
     if data.raw[entityType] ~= nil then
         if data.raw[entityType][entityName] ~= nil then
             if data.raw[entityType][entityName].loot == nil then
                 data.raw[entityType][entityName].loot = {}
             end
-			local loot_probability = settings.startup["setting-alien-loot-chance"].value/100.0
+			local loot_probability = math.max(settings.startup["setting-alien-loot-chance"].value/100.0,0.1)
             table.insert(data.raw[entityType][entityName].loot, 
 			{
 				item = "alien-ore", probability = probability * loot_probability, count_min = countMin, count_max = countMax
@@ -56,7 +56,7 @@ local local_add_loot_to_entity = function(entityType, entityName, probability, c
     end end
 
 local local_create_entity_loot = function()
-	if settings.startup["setting-alien-loot-chance"].value == 0 then return end
+	if settings.startup["setting-alien-disable-loot-chance"].value == "Disabled" then return end
 	local max_health = 0
 	for i,unit in pairs(data.raw["unit"]) do
 		if unit.subgroup == "enemies" and unit.max_health then
@@ -134,4 +134,39 @@ for name,fish in pairs(data.raw["fish"]) do
 			local_create_fish_conversion(item)
 		end
 	end
+end
+
+if mods["modmashsplinterairpurifier"] == nil and data.raw.technology["sludge-treatment"] == nil then
+	data:extend({
+	  {
+		type = "technology",
+		name = "sludge-treatment",
+		icon = "__base__/graphics/technology/automation-2.png",
+		icon_size = 256,
+		icon_mipmaps = 4,
+		effects =
+		{
+		  {
+			type = "unlock-recipe",
+			recipe = "sludge-treatment"
+		  }
+		},
+		prerequisites =
+		{
+		  "oil-processing",
+		},
+		unit =
+		{
+		  count = 60,
+		  ingredients =
+		  {
+			{"automation-science-pack", 1},
+			{"logistic-science-pack", 1},
+		  },
+		  time = 60
+		},
+		upgrade = true,
+		order = "a-b-f"
+	  }
+	})
 end

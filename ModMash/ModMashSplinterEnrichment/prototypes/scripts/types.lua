@@ -93,7 +93,8 @@ local local_create_ore_conversions = function()
 					},
 					results = local_get_results(item,ores)
 				},
-				allow_decomposition = false,
+				allow_as_intermediate = false,
+				allow_decomposition = false
 			},
 			{
 				type = "technology",

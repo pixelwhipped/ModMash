@@ -83,24 +83,32 @@
 	},
 	{
 		type = "string-setting",
+		name = "heroturrets-damage-counter",
+		setting_type = "startup",
+		default_value = "Off",
+		allowed_values = {"Off", "On"},
+		order = "j"
+	},
+	{
+		type = "string-setting",
 		name = "heroturrets-allow-damage",
 		setting_type = "startup",
 		default_value = "Disabled",
 		allowed_values = {"Enabled", "Disabled"},
-		order = "j"
+		order = "k"
 	},
 	{
 		type = "bool-setting",
 		name = "heroturrets-use-csv",
 		setting_type = "startup",
 		default_value = false,
-		order = "k"
+		order = "l"
 	},
 	{
 		type = "string-setting",
 		name = "heroturrets-csv-names",
 		setting_type = "startup",
 		default_value = "Private,Corporal,Sergeant,Master sergeant,Sergeant major,Lieutenant,Captain,Major,Colonel,General",
-		order = "l"
+		order = "m"
 	},
 })

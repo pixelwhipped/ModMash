@@ -22,11 +22,13 @@ local local_update_tech = function(old_recipe,new_recipe)
 		for name, value in pairs(data.raw.technology) do			
 			if value.effects ~= nil then				
 				for k =1, #value.effects do
-					if value.effects[k].type == "unlock-recipe" and value.effects[k].recipe == old_recipe then
-						log("found "..name)
-						table.insert(data.raw["technology"][name].effects,{type = "unlock-recipe",recipe = new_recipe})
-						return
-					end					
+					if value.effects[k] ~= nil then
+						if value.effects[k].type == "unlock-recipe" and value.effects[k].recipe == old_recipe then
+							log("found "..name)
+							table.insert(data.raw["technology"][name].effects,{type = "unlock-recipe",recipe = new_recipe})
+							return
+						end		
+					end
 				end
 			end
 		end
@@ -134,10 +136,12 @@ local local_gold_recipe = function(recipe)
 		{
 	
 			from = data.raw["item"]["gold-ore"],
-			scale = 0.35,
+			scale = 0.45,
 			pin = icon_pin_bottomright		
 		}
 	})
+	recipe.allow_as_intermediate = false
+    recipe.allow_decomposition = false	
 	return recipe
 end
 

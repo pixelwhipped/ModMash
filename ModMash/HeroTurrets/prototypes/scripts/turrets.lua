@@ -179,6 +179,9 @@ local local_turret_added = function(entity,event)
 	]]
 	if settings.startup["heroturrets-kill-counter"].value == "Exact" and is_valid(event.stack) and event.stack.type == "item-with-tags" and event.stack.get_tag("kills") ~= nil then
 		entity.kills = event.stack.get_tag("kills")
+		if settings.startup["heroturrets-damage-counter"].value == "On" and event.stack.get_tag("damage_dealt") ~= nil  then
+			entity.damage_dealt = event.stack.get_tag("damage_dealt")
+		end		
 	else
 		if rank_count == nil then rank_count = #local_get_names() end
 		for k = 1, rank_count do
@@ -288,12 +291,18 @@ local local_turret_removed = function(entity,event)
 				elseif item.type == "item-with-tags" then 			
 					item.set_tag("kills", entity.kills)
 					item.custom_description = entity.kills .. " Kills"
+					if settings.startup["heroturrets-damage-counter"].value == "On" and entity.damage_dealt ~=nil then
+						item.set_tag("damage_dealt", entity.damage_dealt)
+					end					
 				end
 			else
 				for k=#event.buffer, 1, -1 do item = event.buffer[k]
 					if item.type == "item-with-tags" then 			
 						item.set_tag("kills", entity.kills)
 						item.custom_description = entity.kills .. " Kills"
+						if settings.startup["heroturrets-damage-counter"].value == "On" and entity.damage_dealt ~=nil then
+							item.set_tag("damage_dealt", entity.damage_dealt)
+						end		
 					end
 				end
 			end		

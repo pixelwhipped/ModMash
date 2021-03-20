@@ -1,4 +1,18 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.09
+  Changes:
+    - added sludge treatment if air purifier missing
+
+---------------------------------------------------------------------------------------------------
+Version: 1.1.08
+  Changes:
+    - allow_as_intermediate = false
+    - allow_decomposition = false
+    - added disable alien loot
+    - converted alien loot to a modifier, default should drop loot only disable if required
+    - added menu simulation
+
+---------------------------------------------------------------------------------------------------
 Version: 1.1.07
   Changes:
     - Resource logic check alteration,recommeded by honktown

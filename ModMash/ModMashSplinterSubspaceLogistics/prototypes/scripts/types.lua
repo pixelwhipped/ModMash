@@ -70,6 +70,8 @@ local local_create_container = function(item,x,container)
 		category = "containment",
 		subgroup = "containers",
 		hide_from_player_crafting = true,
+		allow_as_intermediate = false,
+		allow_decomposition = false,
 		ingredients =
 		{
 			{"empty-super-container", 1},
@@ -104,6 +106,8 @@ local local_create_container = function(item,x,container)
 		category = "containment",
 		subgroup = "containers",
 		hide_from_player_crafting = true,
+		allow_as_intermediate = false,
+		allow_decomposition = false,
 		ingredients =
 		{
 			{name = "super-container-for-"..item.name,amount = 1}
@@ -496,6 +500,7 @@ local local_create_super_material_conversions = function()
 					amount = m,
 					}			
 				},
+				allow_as_intermediate = false,
 				allow_decomposition = false}
 			local tech = {
 					type = "technology",

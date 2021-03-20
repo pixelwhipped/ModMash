@@ -527,24 +527,26 @@ local local_access_process = function(access,pollution,flip,upper_surface,lower_
 	teleport_cooldown = teleport_cooldown -1
 	if teleport_cooldown <= 0 and access.top_entity.name ~= underground_accessml then 
 		for i = 1, #game.players do local p = game.players[i]
-			local last_pt_name = i..""		
-			local last_pt = last_point[last_pt_name]
-			if last_pt ~= nil and distance(math.floor(p.character.position.x),math.floor(p.character.position.y),last_pt.x,last_pt.y) >= 1 then 
-				last_point[last_pt_name] = nil
-			elseif last_pt == nil then
-				if is_valid(p.character) and p.vehicle == nil and p.character.surface.name == upper_surface.name and last_pos ~= p.character.position then
-					if distance(p.character.position.x,p.character.position.y,access.top_entity.position.x,access.top_entity.position.y) < 1.5 then				
-						local_safe_teleport(p, lower_surface,p.character.position,i)
-						teleport_cooldown = 60
-						last_pos = p.character.position
-						local_bitter_follow(access.top_entity)
-					end
-				elseif is_valid(p.character) and p.vehicle == nil and p.character.surface.name == lower_surface.name and last_pos ~= p.character.position then
-					if distance(p.character.position.x,p.character.position.y,access.bottom_entity.position.x,access.bottom_entity.position.y) < 1.5 then				
-						local_safe_teleport(p, upper_surface,p.character.position,i)
-						teleport_cooldown = 60
-						last_pos = p.character.position
-						local_bitter_follow(access.bottom_entity)
+			if is_valid(p) and p.character ~= nil then
+				local last_pt_name = i..""		
+				local last_pt = last_point[last_pt_name]
+				if last_pt ~= nil and distance(math.floor(p.character.position.x),math.floor(p.character.position.y),last_pt.x,last_pt.y) >= 1 then 
+					last_point[last_pt_name] = nil
+				elseif last_pt == nil then
+					if is_valid(p.character) and p.vehicle == nil and p.character.surface.name == upper_surface.name and last_pos ~= p.character.position then
+						if distance(p.character.position.x,p.character.position.y,access.top_entity.position.x,access.top_entity.position.y) < 1.5 then				
+							local_safe_teleport(p, lower_surface,p.character.position,i)
+							teleport_cooldown = 60
+							last_pos = p.character.position
+							local_bitter_follow(access.top_entity)
+						end
+					elseif is_valid(p.character) and p.vehicle == nil and p.character.surface.name == lower_surface.name and last_pos ~= p.character.position then
+						if distance(p.character.position.x,p.character.position.y,access.bottom_entity.position.x,access.bottom_entity.position.y) < 1.5 then				
+							local_safe_teleport(p, upper_surface,p.character.position,i)
+							teleport_cooldown = 60
+							last_pos = p.character.position
+							local_bitter_follow(access.bottom_entity)
+						end
 					end
 				end
 			end

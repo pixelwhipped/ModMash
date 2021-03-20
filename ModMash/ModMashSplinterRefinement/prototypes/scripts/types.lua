@@ -122,7 +122,10 @@ local local_create_ore_refinements = function()
 									energy_required = make.energy_required * 1.2,
 									ingredients = {{ore_name, 1}},
 									results = { {name = make.results.name, amount = make.results.amount * 2 }}
-								}							
+								},
+								allow_as_intermediate = false,
+								allow_decomposition = false,
+								always_show_made_in = true
 							}
 							data:extend({item,refine_recipie,refine_result_recipie})
 						end
@@ -234,7 +237,10 @@ local local_create_ore_refinements_experimental = function()
 								energy_required = 2,
 								ingredients = {{i.name, 1}},
 								result = ore_name
-							}
+							},
+							allow_as_intermediate = false,
+							allow_decomposition = false,
+							always_show_made_in = true
 						}
 						
 
@@ -254,7 +260,10 @@ local local_create_ore_refinements_experimental = function()
 								energy_required = make.energy_required * 1.2,
 								ingredients = {{ore_name, 1}},
 								results = { {name = make.results.name, amount = make.results.amount * 2 }}
-							}							
+							},
+							allow_as_intermediate = false,
+							allow_decomposition = false,
+							always_show_made_in = true
 						}
 						data:extend({item,refine_recipie,refine_result_recipie})
 					end

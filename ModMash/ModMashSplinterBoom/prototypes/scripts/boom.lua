@@ -10,10 +10,6 @@ local local_init = function()
 	if global.modmashsplinterboom.landmines.highlights == nil then global.modmashsplinterboom.landmines.highlights = {} end
 	end
 
-local local_load = function()	
-	if global.modmashsplinterboom.landmines ~= nil then landmines = global.modmashsplinterboom.landmines end
-	end
-
 local local_create_element = function(parent,type,name,caption,tooltip)
 	if not (parent and parent.valid) then return nil end
 	local element = {}
@@ -32,7 +28,41 @@ local local_add_sprite_button = function(parent, name, sprite, tooltip, style)
 	return parent.add(element)
 	end
 
-local local_update_gui = function()
+local local_update_shortcut_gui = function()
+	local inner_update_by_surface = function(player)
+		local surface = player.surface
+
+		local any = false
+		for k=1 , #global.modmashsplinterboom.landmines do local lm = global.modmashsplinterboom.landmines[k]
+			if is_valid(lm) and lm.surface == player.surface then
+				any = true
+				break
+			end			
+		end
+		if any == true then
+			player.set_shortcut_available("boom-toggle",true)
+		else
+			player.set_shortcut_available("boom-toggle",false)
+		end
+	end
+
+	local inner_update = function(player)
+		if #global.modmashsplinterboom.landmines > 0 then
+			player.set_shortcut_available("boom-all-toggle",true)
+		else
+			player.set_shortcut_available("boom-all-toggle",false)
+		end
+	end
+	for k=1 , #game.players do
+		local player = game.players[k]
+		if is_valid(player) == true then
+			inner_update_by_surface(player)
+			inner_update(player)
+		end
+	end	
+	end
+
+local local_update_mod_gui = function()
 	local inner_update_by_surface = function(pi)
 		local player = game.players[pi]
 		local surface = game.players[pi].surface
@@ -85,16 +115,34 @@ local local_update_gui = function()
 			end
 		end
 	end
-	if settings.global["setting-surface-detination"].value == "Current" then
+	if settings.global["setting-shortcuts-only"].value == false then
 		for k=1 , #game.players do
-			inner_update_by_surface(k)
-		end	
+			local flow = mod_gui.get_button_flow(game.players[k])
+			for j = #flow.children, 1, -1 do
+				local button = flow.children[j]
+				if button and button.name == "landmine-toggle-button" then
+					button.destroy()
+					break
+				end
+			end
+		end
 	else
-		for k=1 , #game.players do
-			inner_update(k)
-		end	
+		if settings.global["setting-surface-detination"].value == "Current" then
+			for k=1 , #game.players do
+				inner_update_by_surface(k)
+			end	
+		else
+			for k=1 , #game.players do
+				inner_update(k)
+			end	
+		end
 	end
 	end
+
+local local_update_gui = function()
+	local_update_shortcut_gui()
+	local_update_mod_gui()
+end
 
 local local_landmine_added = function(entity)
 	if entity.type == "land-mine"  then		
@@ -126,18 +174,19 @@ local local_get_damage = function(landmine)
 	return {damage=250,area=1.75}
 end
 
-local local_landmine_on_gui_click = function(event)
-	if event.element.name == "landmine-toggle-button" then
-		local copy = {}
-		for k=1 , #global.modmashsplinterboom.landmines do
-			table.insert(copy,global.modmashsplinterboom.landmines[k])
-		end
-		global.modmashsplinterboom.landmines = {}
-		
-		if settings.global["setting-surface-detination"].value == "Current" then
-			local surface = game.players[event.player_index].surface
-			for k = 1, #copy do local landmine = copy[k]			
-				if is_valid(landmine) and landmine.surface == surface then
+local local_do_boom = function(player,all)
+	
+	local copy = {}
+	for k=1 , #global.modmashsplinterboom.landmines do
+		table.insert(copy,global.modmashsplinterboom.landmines[k])
+	end
+	global.modmashsplinterboom.landmines = {}
+
+	if all == false then
+		local surface = player.surface
+		for k = 1, #copy do local landmine = copy[k]	
+			if is_valid(landmine) == true then
+				if landmine.surface == surface then
 					local p = landmine.position
 					local s = landmine.surface
 					local d = local_get_damage(landmine)
@@ -146,29 +195,46 @@ local local_landmine_on_gui_click = function(event)
 					table.insert(global.modmashsplinterboom.landmines,landmine)
 				end
 			end
-		else
-
-			for k = 1, #copy do local landmine = copy[k]
+		end
+	else
+		for k = 1, #copy do local landmine = copy[k]
 			
-				if is_valid(landmine) then
-					local p = landmine.position
-					local s = landmine.surface
-					local d = local_get_damage(landmine)
-					landmine.die()
-				end
+			if is_valid(landmine) then
+				local p = landmine.position
+				local s = landmine.surface
+				local d = local_get_damage(landmine)
+				landmine.die()
 			end
 		end
-		local_update_gui()
+	end
+	local_update_gui()
+end
+
+local local_landmine_on_shortcut_gui_click = function(event)
+	local player = game.players[event.player_index]
+
+	if event.prototype_name == "boom-toggle" and player.is_shortcut_available("boom-toggle") then
+		local_do_boom(player,false)
+	elseif event.prototype_name == "boom-all-toggle" and player.is_shortcut_available("boom-all-toggle") then
+		local_do_boom(player,true)
 	end
 	end
 
-local local_on_player_changed_surface = function(event)
-	local_update_gui()
+
+local local_landmine_on_gui_click = function(event)
+	if event.element.name == "landmine-toggle-button" then
+		local player = game.players[event.player_index]
+		if settings.global["setting-surface-detination"].value == "Current" then
+			local_do_boom(player,false)
+		else
+			local_do_boom(player,true)
+		end
 	end
-local local_on_runtime_mod_setting_changed = function(event)
-	local_update_gui()
 	end
 
+local local_on_player_changed_surface = function(event)	
+	local_update_gui()
+	end
 	
 
 local local_on_entity_selected = function(event)
@@ -201,10 +267,21 @@ local local_on_entity_selected = function(event)
 end
 
 
+local local_on_runtime_mod_setting_changed = function(event)
+	local_update_gui()
+	end
+
+
+local local_on_configuration_changed = function() 	
+	local_update_gui()
+	end
+
+
 local local_land_mine_filter = { {filter = "type", type = "land-mine" }}
 script.on_init(local_init)
 script.on_load(local_load)
 
+script.on_configuration_changed(local_on_configuration_changed)
 script.on_event(defines.events.on_runtime_mod_setting_changed,local_on_runtime_mod_setting_changed)
 
 script.on_event(defines.events.on_player_changed_surface,local_on_player_changed_surface)
@@ -242,4 +319,7 @@ script.on_event(defines.events.script_raised_built,
 		if is_valid(event.created_entity) then local_landmine_added(event.entity) end 
 	end,local_land_mine_filter)
 
+script.on_event(defines.events.on_lua_shortcut, local_landmine_on_shortcut_gui_click)
+
 script.on_event(defines.events.on_gui_click, local_landmine_on_gui_click)
+

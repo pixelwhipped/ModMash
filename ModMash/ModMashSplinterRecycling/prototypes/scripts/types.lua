@@ -101,26 +101,13 @@ local local_create_recylce_item = function(r)
 		name = "craft-" .. results[1].name,
 		localised_name = "craft-" .. results[1].name,
 		localised_description = "craft-" .. results[1].name,
-		category = "recycling",
-		subgroup = "recyclable",		
-		--hidden = true,	
-		hide_from_player_crafting = true,
 		icon_size = item.icon_size,
-		energy_required = energy*2,
 		normal = {
-			enabled = "false",
-			--hidden = true,
-			hide_from_player_crafting = true,						
-            -- ingredients = {{name = results[1].name, amount = math.max(results[1].amount,1)}},-- {type="fluid",name = "steam",amount = 50}}, Dexy Edit
             ingredients = {{name = results[1].name, amount = math.max(resultAmout,1)}},-- {type="fluid",name = "steam",amount = 50}},
             results = local_get_results_from_ingredients(r.normal.ingredients)
         },
         expensive =
         {
-            enabled = "false",
-			--hidden = true,
-			hide_from_player_crafting = true,
-            -- ingredients = {{name = results[1].name, amount = math.max(results[1].amount,1)}},-- {type="fluid",name = "steam",amount = 50}}, Dexy Edit
             ingredients = {{name = results[1].name, amount = math.max(resultAmout,1)}},-- {type="fluid",name = "steam",amount = 50}},
             results = local_get_results_from_ingredients(r.expensive.ingredients)
         }
@@ -129,17 +116,9 @@ local local_create_recylce_item = function(r)
 		recipe =
 		{
 		type = "recipe",
-		name = "craft-" .. results[1].name,
-		category = "recycling",
-		subgroup = "recyclable",		
-		--hidden = true,	    
+		name = "craft-" .. results[1].name,  
 		icon_size = item.icon_size,
 		normal = {
-			enabled = "false",
-			--hidden = true,
-			hide_from_player_crafting = true,
-			energy_required = r.normal.energy_required,			
-			            -- ingredients = {{name = results[1].name, amount = math.max(results[1].amount,1)}},--, {type="fluid",name = "steam",amount = 50}}, --Dexy Edit
             ingredients = {{name = results[1].name, amount = math.max(resultAmout,1)}},--, {type="fluid",name = "steam",amount = 50}},
 			results = local_get_results_from_ingredients(r.normal.ingredients)
 		}
@@ -148,17 +127,9 @@ local local_create_recylce_item = function(r)
 		recipe =
 		{
 		type = "recipe",
-		name = "craft-" .. results[1].name,
-		category = "recycling",
-		subgroup = "recyclable",		
-		hidden = true,	    
+		name = "craft-" .. results[1].name,   
 		icon_size = item.icon_size,
 		expensive = {
-			enabled = "false",
-			--hidden = true,
-			hide_from_player_crafting = true,
-			energy_required = r.normal.energy_required,			
-			            -- ingredients = {{name = results[1].name, amount = math.max(results[1].amount,1)}},--, {type="fluid",name = "steam",amount = 50}}, --Dexy Edit
             ingredients = {{name = results[1].name, amount = math.max(resultAmout,1)}},--, {type="fluid",name = "steam",amount = 50}},
 			results = local_get_results_from_ingredients(r.expensive.ingredients)
 		}
@@ -172,14 +143,7 @@ local local_create_recylce_item = function(r)
 		{
 		type = "recipe",
 		name = "craft-" .. results[1].name,
-		category = "recycling",
-		subgroup = "recyclable",
-		enabled = "false",
-		--hidden = true,	    
-		hide_from_player_crafting = true,		
-		energy_required = r.energy_required,
-		icon_size = item.icon_size,
-		-- ingredients = {{name = results[1].name, amount = math.max(results[1].amount,1)}},--{type="fluid",name = "steam",amount = 50}}, -- results --Dexy Edit
+		icon_size = item.icon_size,		
         ingredients = {{name = results[1].name, amount = math.max(resultAmout,1)}},--{type="fluid",name = "steam",amount = 50}}, -- results
 		results = res
 		}  
@@ -191,6 +155,11 @@ local local_create_recylce_item = function(r)
 		recipe.icon = false
         recipe.icons = item.icons
 	end
+
+	recipe.category = "recycling"
+	recipe.subgroup = "recyclable"	
+	recipe.hidden = true	 
+	recipe.energy_required = energy*2
 	recipe.hide_from_stats = true
 	recipe.hide_from_player_crafting = true
 	recipe.allow_as_intermediate = false
@@ -198,8 +167,6 @@ local local_create_recylce_item = function(r)
 	recipe.hidden_from_char_screen = true
 	recipe.localised_name = get_name_for(item,"Recyle Item ")
 	recipe.localised_description = get_name_for(item,"Recyle Item ")
-	--log("Creating recycle recipe "..recipe.name)
-	--if item.subgroup ~= nil then recipe.subgroup = item.subgroup end  
 	data:extend({recipe})
 	table.insert(data.raw["technology"]["recycling-machine"].effects, {type = "unlock-recipe",recipe = "craft-" .. results[1].name})
 end

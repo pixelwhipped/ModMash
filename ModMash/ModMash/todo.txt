@@ -1,3 +1,6 @@
-﻿Move GUI buttons to shortcuts
+﻿Update boom
+
+
+Move GUI buttons to shortcuts
 Try linked chests again, just have to delete the stupid middle GUI bar	
 Gold!

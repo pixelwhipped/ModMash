@@ -471,8 +471,8 @@ local local_get_recipe = function(name)
     return nil
 end
 
-local local_create_turrets = function()
-    local turret_types = {"ammo-turret", "fluid-turret","electric-turret", "artillery-turret"} --, "artillery-wagon"}
+local local_create_turrets = function()  --personal-laser-defense-equipment  "active-defense-equipment"
+    local turret_types = {"ammo-turret", "fluid-turret","electric-turret", "artillery-turret"} --"active-defense-equipment"} --, "artillery-wagon"}
     local guns = {}
     for at = 1, #turret_types do local tt = turret_types[at]
         for name, entity in pairs(data.raw[tt]) do	
@@ -486,7 +486,23 @@ local local_create_turrets = function()
              left = (math.abs(box[1][1])*32)/2
              top = (math.abs(box[1][2])*32)/2
             end
-            if entity ~= nil and entity.name ~= nil                    
+            --[[if entity ~= nil and entity.name ~= nil and entity.type == "active-defense-equipment" and entity.name == "personal-laser-defense-equipment" then
+                local recipe = local_get_recipe(entity.name)
+                if recipe == nil then log("Missing recipie") end
+                local item = local_get_item(entity.name)       
+                if item == nil then log("Missing item") end
+                if recipe == nil and item ~= nil then recipe = data.raw["recipe"][item.name] end
+                if recipe ~= nil and item ~= nil and entity.minable.result ==  item.name then
+                    table.insert(guns,
+                    {
+                        item = item,
+                        entity = entity,
+                        recipe = recipe,
+					})
+                end
+
+            else]]
+            if entity ~= nil and entity.name ~= nil and entity.type ~= "active-defense-equipment"                   
 				    and starts_with(entity.name,"creative-mod") == false
                     and starts_with(entity.name,"vehicle-gun-turret") == false
                     and starts_with(entity.name,"vehicle-rocket-turret") == false
@@ -494,6 +510,7 @@ local local_create_turrets = function()
                     and (is_nesw(entity) or (entity.base_picture ~= nil and entity.base_picture.layers ~= nil) or (is_unkown_nesw(entity) and left ~=nil and top ~= nil)) -- or (entity.cannon_base_pictures ~= nil and entity.cannon_base_pictures.layers ~= nil and entity.cannon_base_pictures.layers[1].direction_count == 256))
                     and entity.max_health > 1 
                     and entity.minable ~= nil and entity.minable.result ~= nil then
+
                     local recipe = local_get_recipe(entity.name)
                     if recipe == nil then log("Missing recipie") end
                     local item = local_get_item(entity.name)       
@@ -502,13 +519,14 @@ local local_create_turrets = function()
                     if recipe == nil and item ~= nil then recipe = data.raw["recipe"][item.name] end
                     --if entity.name == "shotgun-ammo-turret-rampant-arsenal" then
                     if recipe ~= nil and item ~= nil and entity.minable.result ==  item.name then
-                       table.insert(guns,
+                        table.insert(guns,
                         {
                             item = item,
                             entity = entity,
                             recipe = recipe,
 					    })
                     end
+                    
             end
         end
     end

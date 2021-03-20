@@ -113,7 +113,9 @@ data:extend(
 			energy_required = 17.5,
 			ingredients = {{titanium_ore_name, 5}},
 			result = "titanium-plate"
-		}
+		},
+		allow_as_intermediate = false,
+		allow_decomposition = false
 	},
 	{
 		type = "recipe",
@@ -126,6 +128,8 @@ data:extend(
 			ingredients = {{"alien-ore", 1}},
 			result = "alien-plate"
 		},
+		allow_as_intermediate = false,
+		allow_decomposition = false
 	},
 
 	{
@@ -174,7 +178,8 @@ data:extend(
 				}
 			},
 		},
-		allow_decomposition = false,
+		allow_as_intermediate = false,
+		allow_decomposition = false
 	},
 	{
 		type = "recipe",
@@ -203,7 +208,8 @@ data:extend(
 		  secondary = {r = 0.812, g = 0.812, b = 0.0, a = 0.000},
 		  tertiary = {r = 0.960, g = 0.960, b = 0.0, a = 0.000}, 
 		},
-		allow_decomposition = false,
+		allow_as_intermediate = false,
+		allow_decomposition = false
 	},
 	{
 		type = "recipe",
@@ -225,7 +231,8 @@ data:extend(
 			amount = 75,
 			}			
 		},
-		allow_decomposition = false,
+		allow_as_intermediate = false,
+		allow_decomposition = false
 	},
 	{
 		type = "recipe",
@@ -250,7 +257,8 @@ data:extend(
 			amount = 2,
 			}
 		},
-		allow_decomposition = false,
+		allow_as_intermediate = false,
+		allow_decomposition = false
 	}
 }
 )
