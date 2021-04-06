@@ -1,4 +1,33 @@
 ﻿------------------------------------------------------------------------------------------------
+Version: 1.1.17
+  Bug Fixes:
+    -Accomodating for incomplete train code
+
+------------------------------------------------------------------------------------------------
+Version: 1.1.16
+  Changes:
+    -Lighter underground surface tiles
+    -Rock deconstruct fix
+    -Polltion transfer factor, reduce amount of pollution being transfered bewteen surfaces
+    -Transfer item fix
+
+------------------------------------------------------------------------------------------------
+Version: 1.1.15
+  Changes:
+    -Exarn optimizations
+    -added menu simulation
+
+------------------------------------------------------------------------------------------------
+Version: 1.1.14
+  Bug Fixes:
+    -Desync Fixed
+
+------------------------------------------------------------------------------------------------
+Version: 1.1.13
+  Bug Fixes:
+    -Made local's global
+
+------------------------------------------------------------------------------------------------
 Version: 1.1.12
   Bug Fixes:
     -Added check player is valid and character is not nil

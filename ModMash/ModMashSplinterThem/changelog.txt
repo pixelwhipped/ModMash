@@ -1,4 +1,36 @@
 ﻿------------------------------------------------------------------------------------
+Version: 1.1.29
+  Bug Fixes:
+    - No love for Hi Res
+
+------------------------------------------------------------------------------------
+Version: 1.1.28
+  Bug Fixes:
+    - Frame count mismatch
+
+------------------------------------------------------------------------------------
+Version: 1.1.27
+  Changes:
+    - Added blocker
+    - Allow mine as concrete(setting)
+    - Allow blueprint concrete over them
+    - Added after burners
+    - Tweaked find spawning location
+
+------------------------------------------------------------------------------------
+Version: 1.1.26
+  Changes:
+    - Resource doubling back in
+
+------------------------------------------------------------------------------------
+Version: 1.1.25
+  Changes:
+    - Added endgame explosion modifier
+    - Added domination mode
+    - optimize boom
+    - added menu sim
+
+------------------------------------------------------------------------------------
 Version: 1.1.24
   Bug Fixes:
     - not calling surface instance

@@ -74,6 +74,11 @@ local local_update_return_targets = function(target)
 	end	return false
 end
 
+local local_find_enemy_units = function(s, p, d)
+	return s.find_entities_filtered{position=p,  radius = d, force = "enemy", limit=10} 
+	--return s.find_enemy_units(p, d)
+end
+
 local local_update_target = function(k)
 		local t = targets[k] --potential nil? wait and see if re-occours
 		if t ~= nil then
@@ -82,7 +87,7 @@ local local_update_target = function(k)
 			local is_spider = t.spider ~= false and is_valid(t.spider)
 			if is_valid(r) then
 				local p = r.position
-				local enemy = r.surface.find_enemy_units(p, max_distance/5)
+				local enemy = local_find_enemy_units(r.surface,p, max_distance/5) -- r.surface.find_enemy_units(p, max_distance/5)
 				if enemy == nil or #enemy < 1 then
 					table.remove(targets,k)				
 					if is_player and is_valid(t.player.surface) and r.destroy() then
@@ -119,7 +124,8 @@ local local_find_targets = function()
 				local grid = nil
 				if player ~= nil and player.character ~= nil then grid = player.character.grid end
 				if logistic and logistic.all_construction_robots > 0 and logistic.robot_limit > 0 and grid ~= nil then
-					local enemy = player.surface.find_enemy_units(player.position, max_distance * player_spider_distance_mod() ) --player.surface.find_entities_filtered{area = {{-d, -d}, {d, d}}, force = "enemy", limit=1} --				
+					local enemy = local_find_enemy_units(player.surface,player.position, max_distance * player_spider_distance_mod()) 
+					--local enemy = player.surface.find_enemy_units(player.position, max_distance * player_spider_distance_mod() ) --player.surface.find_entities_filtered{area = {{-d, -d}, {d, d}}, force = "enemy", limit=1} --				
 					if enemy ~= nil and #enemy > 0 then 
 						if player.remove_item({name='valkyrie-robot',count=1}) > 0 then
 							local c = player.surface.create_entity({
@@ -145,7 +151,8 @@ local local_find_targets = function()
 			local x = math.random(1, #all_roboports)
 			r = all_roboports[x]
 			if is_valid(r.entity) then			
-				local enemy = r.entity.surface.find_enemy_units(r.entity.position, max_distance)		
+				--local enemy = r.entity.surface.find_enemy_units(r.entity.position, max_distance)	
+				local enemy = local_find_enemy_units(r.entity.surface,r.entity.position, max_distance)	
 				
 				if enemy ~= nil and #enemy > 0 then 							
 					local removed = r.entity.get_inventory(defines.inventory.roboport_robot).remove("valkyrie-robot")					
@@ -211,7 +218,9 @@ local local_find_targets = function()
 				local grid = nil
 				if r ~= nil then grid = r.grid end
 				if logistic and logistic.all_construction_robots > 0 and logistic.robot_limit > 0 and grid ~= nil then
-					local enemy = r.surface.find_enemy_units(r.position, max_distance * player_spider_distance_mod()) --player.surface.find_entities_filtered{area = {{-d, -d}, {d, d}}, force = "enemy", limit=1} --				
+					
+					--local enemy = r.surface.find_enemy_units(r.position, max_distance * player_spider_distance_mod()) --player.surface.find_entities_filtered{area = {{-d, -d}, {d, d}}, force = "enemy", limit=1} --				
+					local enemy = local_find_enemy_units(r.surface, r.position, max_distance * player_spider_distance_mod())
 					if enemy ~= nil and #enemy > 0 then 
 						if r.remove_item({name='valkyrie-robot',count=1}) > 0 then
 							local c = r.surface.create_entity({

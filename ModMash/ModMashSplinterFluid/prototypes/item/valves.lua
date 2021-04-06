@@ -218,7 +218,7 @@ local mini_boiler_recipe =
 	ingredients = {{type = "fluid", name = "water", amount = 100}},
 	results = 
 	{
-		{type = "fluid", name = "steam", amount = 100}
+		{type = "fluid", name = "steam", amount = 100, temperature = 90}
 	}
 }
 

@@ -1,4 +1,14 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.07(not ready,  bots wont attach anything byt spawners and units by default)
+  Changes:
+    - updated to find any enemy units account for them
+
+---------------------------------------------------------------------------------------------------
+Version: 1.1.06
+  Changes:
+    - needed after burners becase they are cool
+
+---------------------------------------------------------------------------------------------------
 Version: 1.1.05
   Changes:
     - redunant code line

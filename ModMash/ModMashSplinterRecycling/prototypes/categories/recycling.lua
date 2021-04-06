@@ -9,7 +9,7 @@
 		hidden = true,
 		name = "recycling",
 		icon = "__modmashsplinterrecycling__/graphics/item-group/recycling.png",
-		icon_size = 64,
+		icon_size = 128,
 		order = "z",
 		inventory_order = "z",
 	},

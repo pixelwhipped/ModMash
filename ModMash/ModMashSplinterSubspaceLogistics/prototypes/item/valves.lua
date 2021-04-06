@@ -144,7 +144,7 @@ local local_valves = {
 		localised_name = {"item-name.modmash-super-boiler-valve"},	
 		localised_description = {"item-description.modmash-super-boiler-valve"},
 		order = "e",
-		fixed_recipe = "valve-water-steam",
+		fixed_recipe = "super-water-steam",
 		normal = modmashsplintersubspacelogistics.util.get_item_ingredient_substitutions({"alien-plate"},{
 				{"electronic-circuit", 1},
 				{"alien-plate", 2},
@@ -169,17 +169,17 @@ local local_valves = {
 	}	
 }
 
-local mini_boiler_recipe =
+local super_boiler_recipe =
 {
 	type = "recipe",
-	name = "valve-water-steam",
+	name = "super-water-steam",
 	localised_name = "Valve fluid Water To Steam",
 	localised_description = "Valve fluid Water To Steam",
 	category = "discharge-fluids",
 	energy_required = 1.5,    
 	hide_from_player_crafting = true,
 	hidden = false,
-	order = "z[valve-water-steam]",
+	order = "z[super-water-steam]",
 	enabled = true,
 	icon = "__modmashsplinter__/graphics/icons/blankicon.png",	
 	icon_size = 64,
@@ -188,12 +188,12 @@ local mini_boiler_recipe =
 	ingredients = {{type = "fluid", name = "water", amount = 100}},
 	results = 
 	{
-		{type = "fluid", name = "steam", amount = 100}
+		{type = "fluid", name = "steam", amount = 100, temperature = 400}
 	}
 }
 
 --todo later, migrate to base as shared with fluid
-if data.raw.recipe["valve-water-steam"] == nil then	data:extend({mini_boiler_recipe}) end
+if data.raw.recipe["super-water-steam"] == nil then	data:extend({super_boiler_recipe}) end
 
 for index=1, #local_valves do local valve = local_valves[index]
 	local_create_valve(valve.name,valve.localised_name,valve.localised_description,valve.order,valve.normal,valve.expensive, valve.energy_source, valve.energy_usage, valve.fixed_recipe,valve.light)

@@ -32,28 +32,48 @@ local local_update_tech = function(old_recipe,new_recipe)
 				end
 			end
 		end
+	end
+
+local local_flatten_duplicates = function(ingredients)	
+	if ingredients == nil then return nil end
+	local map = {}
+	local flat = {}
+	for k = 1, #ingredients do local i=ingredients[k]
+		if i ~= nil then
+			if map[i.name] == nil then
+				map[i.name] = {type=i.type, name=i.name, amount=i.amount}
+			else 
+				map[i.name].amount = map[i.name].amount+i.amount
+			end
+		end
+	end
+	for name, value in pairs(map) do	
+		table.insert(flat,value)
+	end
+	return flat
 end
 
 local local_update_recipe = function(recipe)	
 	if recipe == nil then return nil end
 	if recipe.ingredients == nil then return nil end
 	if #recipe.ingredients > 3 then return nil end
-	local found = false
+	local foundplate = false
+	local foundcable = false
 	for k = 1, #recipe.ingredients do
 		local ingredient = ensure_ingredient_format(recipe.ingredients[k])
 		if ingredient ~= nil then
 			if ingredient.name == "copper-plate" then
 				ingredient.name = "gold-plate"
-				found = true
+				foundplate = true
 			elseif ingredient.name == "copper-cable" then
 				ingredient.name = "gold-cable"
-				found = true
+				foundcable = true
 			end
 		end
 		recipe.ingredients[k] = ingredient		
 	end
-	if found == false then return nil end
-	return recipe.ingredients
+	if foundcable == false and foundplate == false then return nil end
+	return local_flatten_duplicates(recipe.ingredients)
 end
 
 local local_update_result = function(recipe)
@@ -171,8 +191,8 @@ local local_add_module_limits = function()
 	for name, module in pairs(data.raw["module"]) do
 		if module ~= nil and module.limitation ~= nil then
 			if table_contains(module.limitation,"gold-ore") == false then table.insert(module.limitation,"gold-ore") end
-			if table_contains(module.limitation,"gold-plate") == false then table.insert(module.limitation,"gold-plate") end
-			if table_contains(module.limitation,"gold-cable") == false then table.insert(module.limitation,"gold-cable") end 
+			--if table_contains(module.limitation,"gold-plate") == false then table.insert(module.limitation,"gold-plate") end
+			--if table_contains(module.limitation,"gold-cable") == false then table.insert(module.limitation,"gold-cable") end 
 		end
 	end
 end

@@ -1,6 +1,20 @@
-﻿Update boom
+﻿Move GUI buttons to shortcuts
+Update valryies to attack them
+check redrew map causes many crashes wich may halp make more stable
+check possibilty of roboport area changes,  may not work blueprint issues
+trains
 
 
-Move GUI buttons to shortcuts
-Try linked chests again, just have to delete the stupid middle GUI bar	
-Gold!
+ 375.278 Error AppManagerStates.cpp:1590: Unknown custom-input name: adjust-inserter-pickup
+stack traceback:
+    [C]: in function 'on_event'
+    ...plinterfishing__/prototypes/scripts/fishing-inserter.lua:407: in main chunk
+    [C]: in function 'require'
+    __modmashsplinterfishing__/control.lua:4: in main chunk
+
+    There may not be one. One solution:
+    pcall(function()
+        script.on_event("adjust-inserter-pickup",local_inserter_adjust) -- only aplicable if there is the event defined in logistics
+    end)
+The bug is because I have Allow Inserter Adjustments disabled and the game doesn't like registering to a non-existent event
+Another solution is instead of not defining the input, don't listen for the event in the logistics mod. That way at least it's still defined (but has no noticeable impact)

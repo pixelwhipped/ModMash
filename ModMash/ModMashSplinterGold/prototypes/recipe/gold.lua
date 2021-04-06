@@ -68,7 +68,7 @@ if data.raw.recipe["gold-cable"] == nil then
         icon_size = 64,
         type = "recipe",
 		name = "gold-cable",
-		category = "smelting",
+		category = "crafting",
         energy_required = 2.5,
 		normal =
 		{
@@ -82,3 +82,31 @@ if data.raw.recipe["gold-cable"] == nil then
     }
   })
 end
+
+  data:extend({
+    {
+        icon = "__modmashsplintergold__/graphics/icons/statue.png",
+        icon_mipmaps = 4,
+        icon_size = 64,
+        type = "recipe",
+		name = "gold-statue",
+		category = "crafting",
+        energy_required = 10,
+		normal =
+		{
+			enabled = true,
+			energy_required = 10,
+			ingredients = {{"gold-plate", 5000}},
+			result = "gold-statue"
+		},
+        expensive =
+		{
+			enabled = true,
+			energy_required = 10,
+			ingredients = {{"gold-plate", 8000}},
+			result = "gold-statue"
+		},
+        allow_as_intermediate = false,
+        allow_decomposition = false
+    }
+  })

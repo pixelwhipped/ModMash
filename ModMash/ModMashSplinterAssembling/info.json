@@ -1,15 +1,15 @@
 {
   "name": "modmashsplinterassembling",
-  "version": "1.1.04",
+  "version": "1.1.07",
   "title": "ModMash Splinter, Assembling Machines",
   "author": "PixelWhipped",
   "contact": "",
   "homepage": "https://www.patreon.com/user?u=15367757",
   "factorio_version": "1.1",
-  "description": "Mod Mash Splinter for Assembling Machines, includes 2 higher tiers and one burner",
+  "description": "Mod Mash Splinter for Assembling Machines, includes 2 higher tiers and two burners",
   "dependencies": [
     "base >= 1.1.0",
-    "modmashsplinter >= 1.1.05",
+    "modmashsplinter >= 1.1.10",
     "modmashsplinterregenerative >= 1.1.02"
   ]
 }

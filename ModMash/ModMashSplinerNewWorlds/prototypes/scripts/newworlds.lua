@@ -100,6 +100,13 @@ local local_terraformer_added = function(entity)
 		for name,value in pairs(all_platforms) do
 			if is_valid(value.entity) and value.entity.surface == entity.surface then id = id + 1 end
 		end
+		while true do
+			local name = entity.surface.name.."-"..id
+			if not all_platforms[name] then
+				break
+			end
+			id = id + 1
+		end
 		id = entity.surface.name.."-"..id
 		local d = {
 			entity = entity,
@@ -536,20 +543,32 @@ local local_create_platform_frame = function(event)
 	local all_platform_list = {}
 	local selected_platform_index = 1
 	local current_select = 1
-	for n,v in pairs(all_platforms) do		
+	
+	local sort_table = {}
+	for _,v in pairs(all_platforms) do		
+		table.insert(sort_table, v)
+	end
+	table.sort(sort_table, function(v1,v2) return v1.name < v2.name end)
+
+	for n,v in pairs(sort_table) do		
+		local is_selected
 		if is_valid(v.entity) then
 			if event.entity == v.entity then 
 				platform = v
+				is_selected = true
 			end
 			if event.entity.surface.name ~= v.entity.surface.name then
-				table.insert(platform_list,n)
+				table.insert(platform_list,v.name)
 			end
-			table.insert(all_platform_list,n)
-			if v.name == n then selected_platform_index = current_select end
+			table.insert(all_platform_list,v.name)
+			if is_selected then selected_platform_index = current_select end
 			current_select = current_select+1
 		end		
 	end	
-	if platform == nil then return end
+	if platform == nil then 
+		player.print("local_create_platform_frame:platform=nil ==> ")
+		return 
+	end
 	local view_pos = event.entity.position
 	local views_surface = event.entity.surface.index
 
@@ -593,6 +612,9 @@ local local_create_platform_frame = function(event)
 	platform_frames[player.name].platform_select = local_add_list(left_flow, "platform-topics-list", platform_list,selected_index)
 	platform_frames[player.name].platform_list = platform_list
 	platform_frames[player.name].selected_index = selected_index
+	if selected_index then
+		platform_frames[player.name].platform_select.scroll_to_item(selected_index, "top-third")
+	end
 	end
 
 
@@ -669,6 +691,8 @@ local local_on_gui_selection_state_changed = function(event)
 				player_index = event.player_index,
 				entity = platform_select
 			})	
+		else
+			player.print("local_on_gui_selection_state_changed:platform not found ==> ")
 		end
 	end	
 end

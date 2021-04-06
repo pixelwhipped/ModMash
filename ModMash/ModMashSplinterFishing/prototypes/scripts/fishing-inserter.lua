@@ -404,7 +404,12 @@ script.on_event(defines.events.script_raised_built,
 
 if settings.startup["setting-fishing-inserters"].value == "Enabled" then
 	script.on_nth_tick(9, local_fishing_inserter_tick)
-    script.on_event("adjust-inserter-pickup",local_inserter_adjust) -- only aplicable if there is the event defined in logistics
+
+	local inserter_setting = settings.startup["setting-adjust-inserter-pickup"]
+    if inserter_setting and inserter_setting.value == "Enabled" then
+        script.on_event("adjust-inserter-pickup",local_inserter_adjust) -- only aplicable if there is the event defined in logistics
+    end
+
 	script.on_event(defines.events.on_player_rotated_entity,function(event) 
 		if is_valid(event.entity) then local_on_player_rotated_entity(event.entity) end 
 	end)

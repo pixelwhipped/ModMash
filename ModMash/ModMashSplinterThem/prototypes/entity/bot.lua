@@ -39,6 +39,126 @@ local construction_robot = function(volume)
   }
 end
 
+local after_burner_layers_2 = 
+	{
+		filename = "__modmashsplinterthem__/graphics/entity/bots/2-jet-flame.png",
+		priority = "medium",
+		blend_mode = "additive",
+		draw_as_glow = true,
+		width = 43,
+		height = 64,
+		frame_count = 2,
+		line_length = 2,
+		animation_speed = 0.5,
+		scale = 0.65,
+		shift = util.by_pixel(0, 8),
+		direction_count = 1
+	}
+
+local after_burner_layers_32 = 
+	{
+		filename = "__modmashsplinterthem__/graphics/entity/bots/32-jet-flame.png",
+		priority = "medium",
+		blend_mode = "additive",
+		draw_as_glow = true,
+		width = 43,
+		height = 64,
+		frame_count = 1,
+		line_length = 32,
+		animation_speed = 0.5,
+		scale = 0.65,
+		shift = util.by_pixel(0, 8),
+		direction_count = 32
+	}
+
+
+local projectile_layers = 
+{
+	after_burner_layers_32,
+	{
+		filename = "__modmashsplinterthem__/graphics/entity/bots/robot.png",
+		priority = "high",
+		line_length = 32,
+		width = 45,
+		height = 39,
+		frame_count = 1,
+		direction_count = 32,
+		shift = util.by_pixel(2.5, -1.25),
+		hr_version =
+		{
+			filename = "__modmashsplinterthem__/graphics/entity/bots/hr-robot.png",
+			priority = "high",
+			line_length = 32,
+			width = 88,
+			height = 77,
+			frame_count = 1,
+			direction_count = 32,
+			shift = util.by_pixel(2.5, -1.25),
+			scale = 0.5
+		}
+	}
+}
+
+local idle_layers = 
+{	
+	after_burner_layers_32,
+	{
+		filename = "__modmashsplinterthem__/graphics/entity/bots/robot.png",
+		priority = "high",
+		line_length = 32,
+		width = 45,
+		height = 39,
+		y = 39,
+		frame_count = 1,
+		direction_count = 32,
+		shift = util.by_pixel(2.5, -1.25),
+		hr_version =
+		{
+			filename = "__modmashsplinterthem__/graphics/entity/bots/hr-robot.png",
+			priority = "high",
+			line_length = 32,
+			width = 88,
+			height = 77,
+			y = 77,
+			frame_count = 1,
+			direction_count = 32,
+			shift = util.by_pixel(2.5, -1.25),
+			scale = 0.5
+		}
+	}
+}
+
+local working_layers = 
+{	
+	after_burner_layers_2,
+	{	
+		filename = "__modmashsplinterthem__/graphics/entity/bots/robot-working.png",
+		priority = "high",
+		line_length = 2,
+		width = 45,
+		height = 39,
+		frame_count = 2,
+		shift = {0, -0.15625},
+		direction_count = 1,
+		animation_speed = 0.3,
+		hr_version =
+		{
+			filename = "__modmashsplinterthem__/graphics/entity/bots/hr-robot-working.png",
+			priority = "high",
+			line_length = 2,
+			width = 88,
+			height = 77,
+			frame_count = 2,
+			shift = util.by_pixel(-0.25, -5),
+			direction_count = 1,
+			animation_speed = 0.3,
+			scale = 0.5
+		}
+	}
+}
+
+
+
 local resistances = modmashsplinterthem.resistances
 
 local hide_from_player_crafting = true
@@ -138,26 +258,7 @@ data:extend(
 		enable_drawing_with_mask = false,
 		animation =
 		{
-			filename = "__modmashsplinterthem__/graphics/entity/bots/robot.png",
-			priority = "high",
-			line_length = 32,
-			width = 45,
-			height = 39,
-			frame_count = 1,
-			direction_count = 32,
-			shift = util.by_pixel(2.5, -1.25),
-			hr_version =
-			{
-				filename = "__modmashsplinterthem__/graphics/entity/bots/hr-robot.png",
-				priority = "high",
-				line_length = 32,
-				width = 88,
-				height = 77,
-				frame_count = 1,
-				direction_count = 32,
-				shift = util.by_pixel(2.5, -1.25),
-				scale = 0.5
-			}
+			layers = projectile_layers
 		},
 		shadow =
 		{
@@ -214,26 +315,7 @@ data:extend(
 		enable_drawing_with_mask = false,
 		animation =
 		{
-			filename = "__modmashsplinterthem__/graphics/entity/bots/robot.png",
-			priority = "high",
-			line_length = 32,
-			width = 45,
-			height = 39,
-			frame_count = 1,
-			direction_count = 32,
-			shift = util.by_pixel(2.5, -1.25),
-			hr_version =
-			{
-				filename = "__modmashsplinterthem__/graphics/entity/bots/hr-robot.png",
-				priority = "high",
-				line_length = 32,
-				width = 88,
-				height = 77,
-				frame_count = 1,
-				direction_count = 32,
-				shift = util.by_pixel(2.5, -1.25),
-				scale = 0.5
-			}
+			layers = projectile_layers
 		},
 		shadow =
 		{
@@ -290,26 +372,7 @@ data:extend(
 		enable_drawing_with_mask = false,
 		animation =
 		{
-			filename = "__modmashsplinterthem__/graphics/entity/bots/robot.png",
-			priority = "high",
-			line_length = 32,
-			width = 45,
-			height = 39,
-			frame_count = 1,
-			direction_count = 32,
-			shift = util.by_pixel(2.5, -1.25),
-			hr_version =
-			{
-				filename = "__modmashsplinterthem__/graphics/entity/bots/hr-robot.png",
-				priority = "high",
-				line_length = 32,
-				width = 88,
-				height = 77,
-				frame_count = 1,
-				direction_count = 32,
-				shift = util.by_pixel(2.5, -1.25),
-				scale = 0.5
-			}
+			layers = projectile_layers
 		},
 		shadow =
 		{
@@ -366,26 +429,7 @@ data:extend(
 		map_color = {r=1.0, g=0.0, b=0.5},
 		animation =
 		{
-			filename = "__modmashsplinterthem__/graphics/entity/bots/robot.png",
-			priority = "high",
-			line_length = 32,
-			width = 45,
-			height = 39,
-			frame_count = 1,
-			direction_count = 32,
-			shift = util.by_pixel(2.5, -1.25),
-			hr_version =
-			{
-				filename = "__modmashsplinterthem__/graphics/entity/bots/hr-robot.png",
-				priority = "high",
-				line_length = 32,
-				width = 88,
-				height = 77,
-				frame_count = 1,
-				direction_count = 32,
-				shift = util.by_pixel(2.5, -1.25),
-				scale = 0.5
-			}
+			layers = projectile_layers
 		},
 		shadow =
 		{
@@ -443,31 +487,7 @@ data:extend(
 		max_to_charge = 0.95,
 		working_light = {intensity = 0.8, size = 3, color = {r = 0.8, g = 0.8, b = 0.8}},
 		enable_drawing_with_mask = false,
-		idle =
-		{
-			filename = "__modmashsplinterthem__/graphics/entity/bots/robot.png",
-			priority = "high",
-			line_length = 32,
-			width = 45,
-			height = 39,
-			y = 39,
-			frame_count = 1,
-			direction_count = 32,
-			shift = util.by_pixel(2.5, -1.25),
-			hr_version =
-			{
-				filename = "__modmashsplinterthem__/graphics/entity/bots/hr-robot.png",
-				priority = "high",
-				line_length = 32,
-				width = 88,
-				height = 77,
-				y = 77,
-				frame_count = 1,
-				direction_count = 32,
-				shift = util.by_pixel(2.5, -1.25),
-				scale = 0.5
-			}
-		},
+		idle = {layers = idle_layers},
 		shadow_idle =
 		{
 			filename = "__base__/graphics/entity/destroyer-robot/destroyer-robot-shadow.png",
@@ -493,29 +513,7 @@ data:extend(
 				draw_as_shadow = true
 			}
 		},
-		in_motion =
-		{
-			filename = "__modmashsplinterthem__/graphics/entity/bots/robot.png",
-			priority = "high",
-			line_length = 32,
-			width = 45,
-			height = 39,
-			frame_count = 1,
-			direction_count = 32,
-			shift = util.by_pixel(2.5, -1.25),
-			hr_version =
-			{
-				filename = "__modmashsplinterthem__/graphics/entity/bots/hr-robot.png",
-				priority = "high",
-				line_length = 32,
-				width = 88,
-				height = 77,
-				frame_count = 1,
-				direction_count = 32,
-				shift = util.by_pixel(2.5, -1.25),
-				scale = 0.5
-			}
-		},
+		in_motion = {layers = idle_layers},
 		shadow_in_motion =
 		{
 			filename = "__base__/graphics/entity/destroyer-robot/destroyer-robot-shadow.png",
@@ -541,31 +539,7 @@ data:extend(
 				draw_as_shadow = true
 			}
 		},
-		working =
-		{
-		  filename = "__modmashsplinterthem__/graphics/entity/bots/robot-working.png",
-		  priority = "high",
-		  line_length = 2,
-		  width = 45,
-		  height = 39,
-		  frame_count = 2,
-		  shift = {0, -0.15625},
-		  direction_count = 1,
-		  animation_speed = 0.3,
-		  hr_version =
-		  {
-			filename = "__modmashsplinterthem__/graphics/entity/bots/hr-robot-working.png",
-			priority = "high",
-			line_length = 2,
-			width = 88,
-			height = 77,
-			frame_count = 2,
-			shift = util.by_pixel(-0.25, -5),
-			direction_count = 1,
-			animation_speed = 0.3,
-			scale = 0.5
-		  }
-		},
+		working = {layers = working_layers},
 		shadow_working =
 		{
 		  stripes = util.multiplystripes(2,
@@ -719,31 +693,7 @@ data:extend(
 		  }
 		},
 		enable_drawing_with_mask = false,
-		idle =
-		{
-			filename = "__modmashsplinterthem__/graphics/entity/bots/robot.png",
-			priority = "high",
-			line_length = 32,
-			width = 45,
-			height = 39,
-			y = 39,
-			frame_count = 1,
-			direction_count = 32,
-			shift = util.by_pixel(2.5, -1.25),
-			hr_version =
-			{
-				filename = "__modmashsplinterthem__/graphics/entity/bots/hr-robot.png",
-				priority = "high",
-				line_length = 32,
-				width = 88,
-				height = 77,
-				y = 77,
-				frame_count = 1,
-				direction_count = 32,
-				shift = util.by_pixel(2.5, -1.25),
-				scale = 0.5
-			}
-		},
+		idle = {layers = idle_layers},
 		shadow_idle =
 		{
 			filename = "__base__/graphics/entity/destroyer-robot/destroyer-robot-shadow.png",
@@ -769,29 +719,7 @@ data:extend(
 				draw_as_shadow = true
 			}
 		},
-		in_motion =
-		{
-			filename = "__modmashsplinterthem__/graphics/entity/bots/robot.png",
-			priority = "high",
-			line_length = 32,
-			width = 45,
-			height = 39,
-			frame_count = 1,
-			direction_count = 32,
-			shift = util.by_pixel(2.5, -1.25),
-			hr_version =
-			{
-				filename = "__modmashsplinterthem__/graphics/entity/bots/hr-robot.png",
-				priority = "high",
-				line_length = 32,
-				width = 88,
-				height = 77,
-				frame_count = 1,
-				direction_count = 32,
-				shift = util.by_pixel(2.5, -1.25),
-				scale = 0.5
-			}
-		},
+		in_motion = {layers = idle_layers},
 		shadow_in_motion =
 		{
 			filename = "__base__/graphics/entity/destroyer-robot/destroyer-robot-shadow.png",
@@ -817,31 +745,7 @@ data:extend(
 				draw_as_shadow = true
 			}
 		},
-		working =
-		{
-		  filename = "__modmashsplinterthem__/graphics/entity/bots/robot-working.png",
-		  priority = "high",
-		  line_length = 2,
-		  width = 45,
-		  height = 39,
-		  frame_count = 2,
-		  shift = {0, -0.15625},
-		  direction_count = 1,
-		  animation_speed = 0.3,
-		  hr_version =
-		  {
-			filename = "__modmashsplinterthem__/graphics/entity/bots/hr-robot-working.png",
-			priority = "high",
-			line_length = 2,
-			width = 88,
-			height = 77,
-			frame_count = 2,
-			shift = util.by_pixel(-0.25, -5),
-			direction_count = 1,
-			animation_speed = 0.3,
-			scale = 0.5
-		  }
-		},
+		working = {layers = working_layers},
 		shadow_working =
 		{
 		  stripes = util.multiplystripes(2,
@@ -886,31 +790,7 @@ data:extend(
 		max_to_charge = 0.95,
 		working_light = {intensity = 0.8, size = 3, color = {r = 0.8, g = 0.8, b = 0.8}},
 		enable_drawing_with_mask = false,
-		idle =
-		{
-			filename = "__modmashsplinterthem__/graphics/entity/bots/robot.png",
-			priority = "high",
-			line_length = 32,
-			width = 45,
-			height = 39,
-			y = 39,
-			frame_count = 1,
-			direction_count = 32,
-			shift = util.by_pixel(2.5, -1.25),
-			hr_version =
-			{
-				filename = "__modmashsplinterthem__/graphics/entity/bots/hr-robot.png",
-				priority = "high",
-				line_length = 32,
-				width = 88,
-				height = 77,
-				y = 77,
-				frame_count = 1,
-				direction_count = 32,
-				shift = util.by_pixel(2.5, -1.25),
-				scale = 0.5
-			}
-		},
+		idle ={layers = idle_layers},
 		shadow_idle =
 		{
 			filename = "__base__/graphics/entity/destroyer-robot/destroyer-robot-shadow.png",
@@ -936,29 +816,7 @@ data:extend(
 				draw_as_shadow = true
 			}
 		},
-		in_motion =
-		{
-			filename = "__modmashsplinterthem__/graphics/entity/bots/robot.png",
-			priority = "high",
-			line_length = 32,
-			width = 45,
-			height = 39,
-			frame_count = 1,
-			direction_count = 32,
-			shift = util.by_pixel(2.5, -1.25),
-			hr_version =
-			{
-				filename = "__modmashsplinterthem__/graphics/entity/bots/hr-robot.png",
-				priority = "high",
-				line_length = 32,
-				width = 88,
-				height = 77,
-				frame_count = 1,
-				direction_count = 32,
-				shift = util.by_pixel(2.5, -1.25),
-				scale = 0.5
-			}
-		},
+		in_motion ={layers = idle_layers},
 		shadow_in_motion =
 		{
 			filename = "__base__/graphics/entity/destroyer-robot/destroyer-robot-shadow.png",
@@ -984,31 +842,7 @@ data:extend(
 				draw_as_shadow = true
 			}
 		},
-		working =
-		{
-		  filename = "__modmashsplinterthem__/graphics/entity/bots/robot-working.png",
-		  priority = "high",
-		  line_length = 2,
-		  width = 45,
-		  height = 39,
-		  frame_count = 2,
-		  shift = {0, -0.15625},
-		  direction_count = 1,
-		  animation_speed = 0.3,
-		  hr_version =
-		  {
-			filename = "__modmashsplinterthem__/graphics/entity/bots/hr-robot-working.png",
-			priority = "high",
-			line_length = 2,
-			width = 88,
-			height = 77,
-			frame_count = 2,
-			shift = util.by_pixel(-0.25, -5),
-			direction_count = 1,
-			animation_speed = 0.3,
-			scale = 0.5
-		  }
-		},
+		working = {layers = working_layers},
 		shadow_working =
 		{
 		  stripes = util.multiplystripes(2,
@@ -1129,31 +963,7 @@ data:extend(
 		max_to_charge = 0.95,
 		working_light = {intensity = 0.8, size = 3, color = {r = 0.8, g = 0.8, b = 0.8}},
 		enable_drawing_with_mask = false,
-		idle =
-		{
-			filename = "__modmashsplinterthem__/graphics/entity/bots/robot.png",
-			priority = "high",
-			line_length = 32,
-			width = 45,
-			height = 39,
-			y = 39,
-			frame_count = 1,
-			direction_count = 32,
-			shift = util.by_pixel(2.5, -1.25),
-			hr_version =
-			{
-				filename = "__modmashsplinterthem__/graphics/entity/bots/hr-robot.png",
-				priority = "high",
-				line_length = 32,
-				width = 88,
-				height = 77,
-				y = 77,
-				frame_count = 1,
-				direction_count = 32,
-				shift = util.by_pixel(2.5, -1.25),
-				scale = 0.5
-			}
-		},
+		idle = {layers = idle_layers},
 		shadow_idle =
 		{
 			filename = "__base__/graphics/entity/destroyer-robot/destroyer-robot-shadow.png",
@@ -1179,29 +989,7 @@ data:extend(
 				draw_as_shadow = true
 			}
 		},
-		in_motion =
-		{
-			filename = "__modmashsplinterthem__/graphics/entity/bots/robot.png",
-			priority = "high",
-			line_length = 32,
-			width = 45,
-			height = 39,
-			frame_count = 1,
-			direction_count = 32,
-			shift = util.by_pixel(2.5, -1.25),
-			hr_version =
-			{
-				filename = "__modmashsplinterthem__/graphics/entity/bots/hr-robot.png",
-				priority = "high",
-				line_length = 32,
-				width = 88,
-				height = 77,
-				frame_count = 1,
-				direction_count = 32,
-				shift = util.by_pixel(2.5, -1.25),
-				scale = 0.5
-			}
-		},
+		in_motion = {layers = idle_layers},
 		shadow_in_motion =
 		{
 			filename = "__base__/graphics/entity/destroyer-robot/destroyer-robot-shadow.png",
@@ -1227,31 +1015,7 @@ data:extend(
 				draw_as_shadow = true
 			}
 		},
-		working =
-		{
-		  filename = "__modmashsplinterthem__/graphics/entity/bots/robot-working.png",
-		  priority = "high",
-		  line_length = 2,
-		  width = 45,
-		  height = 39,
-		  frame_count = 2,
-		  shift = {0, -0.15625},
-		  direction_count = 1,
-		  animation_speed = 0.3,
-		  hr_version =
-		  {
-			filename = "__modmashsplinterthem__/graphics/entity/bots/hr-robot-working.png",
-			priority = "high",
-			line_length = 2,
-			width = 88,
-			height = 77,
-			frame_count = 2,
-			shift = util.by_pixel(-0.25, -5),
-			direction_count = 1,
-			animation_speed = 0.3,
-			scale = 0.5
-		  }
-		},
+		working = {layers = working_layers},
 		shadow_working =
 		{
 		  stripes = util.multiplystripes(2,

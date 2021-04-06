@@ -37,6 +37,121 @@
   }
 end
 
+local after_burner_layers_2 = 
+	{
+		filename = "__modmashsplintervalkyries__/graphics/entity/valkyrie/2-jet-flame.png",
+		priority = "medium",
+		blend_mode = "additive",
+		draw_as_glow = true,
+		width = 43,
+		height = 64,
+		frame_count = 2,
+		line_length = 2,
+		animation_speed = 0.5,
+		scale = 0.65,
+		shift = util.by_pixel(3, 8),
+		direction_count = 1
+	}
+
+local after_burner_layers_32 = 
+	{
+		filename = "__modmashsplintervalkyries__/graphics/entity/valkyrie/32-jet-flame.png",
+		priority = "medium",
+		blend_mode = "additive",
+		draw_as_glow = true,
+		width = 43,
+		height = 64,
+		frame_count = 1,
+		line_length = 32,
+		animation_speed = 0.5,
+		scale = 0.65,
+		shift = util.by_pixel(3, 8),
+		direction_count = 32
+	}
+
+local projectile_layers = 
+{
+	after_burner_layers_32,
+	{
+		filename = "__modmashsplintervalkyries__/graphics/entity/valkyrie/valkyrie-robot.png",
+		priority = "high",
+		line_length = 32,
+		width = 45,
+		height = 39,
+		frame_count = 1,
+		direction_count = 32,
+		shift = util.by_pixel(2.5, -1.25),
+		hr_version =
+		{
+			filename = "__modmashsplintervalkyries__/graphics/entity/valkyrie/hr-valkyrie-robot.png",
+			priority = "high",
+			line_length = 32,
+			width = 88,
+			height = 77,
+			frame_count = 1,
+			direction_count = 32,
+			shift = util.by_pixel(2.5, -1.25),
+			scale = 0.5
+		}
+	}
+}
+
+local idle_layers = 
+{	
+	after_burner_layers_32,
+	{
+		filename = "__modmashsplintervalkyries__/graphics/entity/valkyrie/valkyrie-robot.png",
+		priority = "high",
+		line_length = 32,
+		width = 45,
+		height = 39,
+		frame_count = 1,
+		direction_count = 32,
+		shift = util.by_pixel(2.5, -1.25),
+		hr_version =
+		{
+			filename = "__modmashsplintervalkyries__/graphics/entity/valkyrie/hr-valkyrie-robot.png",
+			priority = "high",
+			line_length = 32,
+			width = 88,
+			height = 77,
+			frame_count = 1,
+			direction_count = 32,
+			shift = util.by_pixel(2.5, -1.25),
+			scale = 0.5
+		}
+	}
+}
+
+local working_layers = 
+{	
+	after_burner_layers_2,
+	{
+		filename = "__modmashsplintervalkyries__/graphics/entity/valkyrie/valkyrie-robot-working.png",
+		priority = "high",
+		line_length = 2,
+		width = 45,
+		height = 39,
+		frame_count = 2,
+		shift = {0, -0.15625},
+		direction_count = 1,
+		animation_speed = 0.3,
+		hr_version =
+		{
+			filename = "__modmashsplintervalkyries__/graphics/entity/valkyrie/hr-valkyrie-robot-working.png",
+			priority = "high",
+			line_length = 2,
+			width = 88,
+			height = 77,
+			frame_count = 2,
+			shift = util.by_pixel(-0.25, -5),
+			direction_count = 1,
+			animation_speed = 0.3,
+			scale = 0.5
+		}
+	}
+}
+
 data:extend(
 {
 	--valkyrie-robot-combat  is combat-robot
@@ -155,29 +270,7 @@ data:extend(
 				draw_as_shadow = true
 			}
 		},
-		in_motion =
-		{
-			filename = "__modmashsplintervalkyries__/graphics/entity/valkyrie/valkyrie-robot.png",
-			priority = "high",
-			line_length = 32,
-			width = 45,
-			height = 39,
-			frame_count = 1,
-			direction_count = 32,
-			shift = util.by_pixel(2.5, -1.25),
-			hr_version =
-			{
-				filename = "__modmashsplintervalkyries__/graphics/entity/valkyrie/hr-valkyrie-robot.png",
-				priority = "high",
-				line_length = 32,
-				width = 88,
-				height = 77,
-				frame_count = 1,
-				direction_count = 32,
-				shift = util.by_pixel(2.5, -1.25),
-				scale = 0.5
-			}
-		},
+		in_motion = {layers = idle_layers},
 		shadow_in_motion =
 		{
 			filename = "__base__/graphics/entity/destroyer-robot/destroyer-robot-shadow.png",
@@ -291,29 +384,7 @@ data:extend(
 				draw_as_shadow = true
 			}
 		},
-		in_motion =
-		{
-			filename = "__modmashsplintervalkyries__/graphics/entity/valkyrie/valkyrie-robot.png",
-			priority = "high",
-			line_length = 32,
-			width = 45,
-			height = 39,
-			frame_count = 1,
-			direction_count = 32,
-			shift = util.by_pixel(2.5, -1.25),
-			hr_version =
-			{
-				filename = "__modmashsplintervalkyries__/graphics/entity/valkyrie/hr-valkyrie-robot.png",
-				priority = "high",
-				line_length = 32,
-				width = 88,
-				height = 77,
-				frame_count = 1,
-				direction_count = 32,
-				shift = util.by_pixel(2.5, -1.25),
-				scale = 0.5
-			}
-		},
+		in_motion = {layers = idle_layers},
 		shadow_in_motion =
 		{
 			filename = "__base__/graphics/entity/destroyer-robot/destroyer-robot-shadow.png",
@@ -339,31 +410,7 @@ data:extend(
 				draw_as_shadow = true
 			}
 		},
-		working =
-		{
-		  filename = "__modmashsplintervalkyries__/graphics/entity/valkyrie/valkyrie-robot-working.png",
-		  priority = "high",
-		  line_length = 2,
-		  width = 45,
-		  height = 39,
-		  frame_count = 2,
-		  shift = {0, -0.15625},
-		  direction_count = 1,
-		  animation_speed = 0.3,
-		  hr_version =
-		  {
-			filename = "__modmashsplintervalkyries__/graphics/entity/valkyrie/hr-valkyrie-robot-working.png",
-			priority = "high",
-			line_length = 2,
-			width = 88,
-			height = 77,
-			frame_count = 2,
-			shift = util.by_pixel(-0.25, -5),
-			direction_count = 1,
-			animation_speed = 0.3,
-			scale = 0.5
-		  }
-		},
+		working = {layers = working_layers},
 		shadow_working =
 		{
 		  stripes = util.multiplystripes(2,
@@ -486,26 +533,7 @@ data:extend(
 		enable_drawing_with_mask = false,
 		animation =
 		{
-			filename = "__modmashsplintervalkyries__/graphics/entity/valkyrie/valkyrie-robot.png",
-			priority = "high",
-			line_length = 32,
-			width = 45,
-			height = 39,
-			frame_count = 1,
-			direction_count = 32,
-			shift = util.by_pixel(2.5, -1.25),
-			hr_version =
-			{
-				filename = "__modmashsplintervalkyries__/graphics/entity/valkyrie/hr-valkyrie-robot.png",
-				priority = "high",
-				line_length = 32,
-				width = 88,
-				height = 77,
-				frame_count = 1,
-				direction_count = 32,
-				shift = util.by_pixel(2.5, -1.25),
-				scale = 0.5
-			}
+			layers = projectile_layers
 		},
 		shadow =
 		{
@@ -561,26 +589,7 @@ data:extend(
 		enable_drawing_with_mask = false,
 		animation =
 		{
-			filename = "__modmashsplintervalkyries__/graphics/entity/valkyrie/valkyrie-robot.png",
-			priority = "high",
-			line_length = 32,
-			width = 45,
-			height = 39,
-			frame_count = 1,
-			direction_count = 32,
-			shift = util.by_pixel(2.5, -1.25),
-			hr_version =
-			{
-				filename = "__modmashsplintervalkyries__/graphics/entity/valkyrie/hr-valkyrie-robot.png",
-				priority = "high",
-				line_length = 32,
-				width = 88,
-				height = 77,
-				frame_count = 1,
-				direction_count = 32,
-				shift = util.by_pixel(2.5, -1.25),
-				scale = 0.5
-			}
+			layers = projectile_layers
 		},
 		shadow =
 		{
@@ -728,29 +737,7 @@ data:extend(
 				draw_as_shadow = true
 			}
 		},
-		in_motion =
-		{
-			filename = "__modmashsplintervalkyries__/graphics/entity/valkyrie/valkyrie-robot.png",
-			priority = "high",
-			line_length = 32,
-			width = 45,
-			height = 39,
-			frame_count = 1,
-			direction_count = 32,
-			shift = util.by_pixel(2.5, -1.25),
-			hr_version =
-			{
-				filename = "__modmashsplintervalkyries__/graphics/entity/valkyrie/hr-valkyrie-robot.png",
-				priority = "high",
-				line_length = 32,
-				width = 88,
-				height = 77,
-				frame_count = 1,
-				direction_count = 32,
-				shift = util.by_pixel(2.5, -1.25),
-				scale = 0.5
-			}
-		},
+		in_motion = {layers = idle_layers},
 		shadow_in_motion =
 		{
 			filename = "__base__/graphics/entity/destroyer-robot/destroyer-robot-shadow.png",
@@ -776,31 +763,7 @@ data:extend(
 				draw_as_shadow = true
 			}
 		},
-		working =
-		{
-		  filename = "__modmashsplintervalkyries__/graphics/entity/valkyrie/valkyrie-robot-working.png",
-		  priority = "high",
-		  line_length = 2,
-		  width = 45,
-		  height = 39,
-		  frame_count = 2,
-		  shift = {0, -0.15625},
-		  direction_count = 1,
-		  animation_speed = 0.3,
-		  hr_version =
-		  {
-			filename = "__modmashsplintervalkyries__/graphics/entity/valkyrie/hr-valkyrie-robot-working.png",
-			priority = "high",
-			line_length = 2,
-			width = 88,
-			height = 77,
-			frame_count = 2,
-			shift = util.by_pixel(-0.25, -5),
-			direction_count = 1,
-			animation_speed = 0.3,
-			scale = 0.5
-		  }
-		},
+		working = {layers = working_layers},
 		shadow_working =
 		{
 		  stripes = util.multiplystripes(2,
@@ -847,26 +810,7 @@ data:extend(
 		enable_drawing_with_mask = false,
 		animation =
 		{
-			filename = "__modmashsplintervalkyries__/graphics/entity/valkyrie/valkyrie-robot.png",
-			priority = "high",
-			line_length = 32,
-			width = 45,
-			height = 39,
-			frame_count = 1,
-			direction_count = 32,
-			shift = util.by_pixel(2.5, -1.25),
-			hr_version =
-			{
-				filename = "__modmashsplintervalkyries__/graphics/entity/valkyrie/hr-valkyrie-robot.png",
-				priority = "high",
-				line_length = 32,
-				width = 88,
-				height = 77,
-				frame_count = 1,
-				direction_count = 32,
-				shift = util.by_pixel(2.5, -1.25),
-				scale = 0.5
-			}
+			layers = projectile_layers
 		},
 		shadow =
 		{

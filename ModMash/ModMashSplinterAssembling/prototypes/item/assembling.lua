@@ -3,6 +3,8 @@
     data:extend({item})    
 end
 
+
+
 local_add_item(
     {
 		type = "item",
@@ -17,6 +19,19 @@ local_add_item(
     })
 
 if settings.startup["setting-assembling-machine-burner-only"].value == "No" then
+    local_add_item(
+    {
+		type = "item",
+		name = "assembling-machine-f",
+		icon = "__modmashsplinterassembling__/graphics/icons/assembling-machine-f.png",
+		icon_size = 64,
+        icon_mipmaps = 4,   
+		subgroup = "production-machine",
+		order = "a[assembling-machine-0f]",
+		place_result = "assembling-machine-f",
+		stack_size = 50
+    })
+
     local_add_item(
         {
             type = "item",

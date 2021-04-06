@@ -99,15 +99,29 @@ local local_create_recylce_item = function(r)
 		{
 		type = "recipe",
 		name = "craft-" .. results[1].name,
+		category = "recycling",
+		subgroup = "recyclable",
 		localised_name = "craft-" .. results[1].name,
 		localised_description = "craft-" .. results[1].name,
 		icon_size = item.icon_size,
+		hide_from_player_crafting = true,
+		allow_as_intermediate = false,
+		allow_intermediates = false,
+		hidden_from_char_screen = true,
 		normal = {
+		hide_from_player_crafting = true,
+		allow_as_intermediate = false,
+		allow_intermediates = false,
+		hidden_from_char_screen = true,
             ingredients = {{name = results[1].name, amount = math.max(resultAmout,1)}},-- {type="fluid",name = "steam",amount = 50}},
             results = local_get_results_from_ingredients(r.normal.ingredients)
         },
         expensive =
         {
+		hide_from_player_crafting = true,
+		allow_as_intermediate = false,
+		allow_intermediates = false,
+		hidden_from_char_screen = true,
             ingredients = {{name = results[1].name, amount = math.max(resultAmout,1)}},-- {type="fluid",name = "steam",amount = 50}},
             results = local_get_results_from_ingredients(r.expensive.ingredients)
         }
@@ -117,8 +131,18 @@ local local_create_recylce_item = function(r)
 		{
 		type = "recipe",
 		name = "craft-" .. results[1].name,  
+		category = "recycling",
+		subgroup = "recyclable",
+				hide_from_player_crafting = true,
+		allow_as_intermediate = false,
+		allow_intermediates = false,
+		hidden_from_char_screen = true,
 		icon_size = item.icon_size,
 		normal = {
+				hide_from_player_crafting = true,
+		allow_as_intermediate = false,
+		allow_intermediates = false,
+		hidden_from_char_screen = true,
             ingredients = {{name = results[1].name, amount = math.max(resultAmout,1)}},--, {type="fluid",name = "steam",amount = 50}},
 			results = local_get_results_from_ingredients(r.normal.ingredients)
 		}
@@ -128,8 +152,18 @@ local local_create_recylce_item = function(r)
 		{
 		type = "recipe",
 		name = "craft-" .. results[1].name,   
+		category = "recycling",
+		subgroup = "recyclable",
 		icon_size = item.icon_size,
+				hide_from_player_crafting = true,
+		allow_as_intermediate = false,
+		allow_intermediates = false,
+		hidden_from_char_screen = true,
 		expensive = {
+				hide_from_player_crafting = true,
+		allow_as_intermediate = false,
+		allow_intermediates = false,
+		hidden_from_char_screen = true,
             ingredients = {{name = results[1].name, amount = math.max(resultAmout,1)}},--, {type="fluid",name = "steam",amount = 50}},
 			results = local_get_results_from_ingredients(r.expensive.ingredients)
 		}
@@ -143,6 +177,12 @@ local local_create_recylce_item = function(r)
 		{
 		type = "recipe",
 		name = "craft-" .. results[1].name,
+		category = "recycling",
+		subgroup = "recyclable",
+		hide_from_player_crafting = true,
+		allow_as_intermediate = false,
+		allow_intermediates = false,
+		hidden_from_char_screen = true,
 		icon_size = item.icon_size,		
         ingredients = {{name = results[1].name, amount = math.max(resultAmout,1)}},--{type="fluid",name = "steam",amount = 50}}, -- results
 		results = res
@@ -156,9 +196,8 @@ local local_create_recylce_item = function(r)
         recipe.icons = item.icons
 	end
 
-	recipe.category = "recycling"
-	recipe.subgroup = "recyclable"	
-	recipe.hidden = true	 
+
+	 
 	recipe.energy_required = energy*2
 	recipe.hide_from_stats = true
 	recipe.hide_from_player_crafting = true

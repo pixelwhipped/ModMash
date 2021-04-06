@@ -55,7 +55,7 @@
             },
             type = "instant"
           },
-          radius = 6.5,
+          radius = 2.5,
           type = "area"
         }
       },

@@ -1,4 +1,6 @@
 ﻿require("prototypes.scripts.defines")
+local set = settings.startup["setting-end-game-boom-mod"].value
+local mod = ((set-50)/100)*256
 
 data:extend({
   {
@@ -111,7 +113,7 @@ data:extend({
 				action =
 				{
 				  type = "area",
-				  radius = 512,
+				  radius = 512+mod,
 				  force = "all",
 				  action_delivery =
 				  {
@@ -136,12 +138,12 @@ data:extend({
 
 			{
 				explosion = "explosion",
-				radius = 512,
+				radius = 512+mod,
 				type = "destroy-cliffs"
 			},
             {
 				  apply_projection = true,
-				  radius = 512,
+				  radius = 512+mod,
 				  tile_collision_mask = {
 					"water-tile",
 				  },

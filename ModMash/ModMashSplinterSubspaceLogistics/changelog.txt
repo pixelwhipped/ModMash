@@ -1,4 +1,10 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.6
+  Changes:
+    - removed need for updates on super boilers
+    - had to jump to 1.1.6 as 1.1.05 was being seen as 1.1.05 no idea why
+
+---------------------------------------------------------------------------------------------------
 Version: 1.1.05
   Changes:
     - allow_as_intermediate = false

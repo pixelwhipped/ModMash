@@ -2,6 +2,8 @@
 if not modmashsplinterunderground.defines then modmashsplinterunderground.defines = {} end
 if not modmashsplinterunderground.defines.names then modmashsplinterunderground.defines.names = {} end
 
+modmashsplinterunderground.defines.trains = true
+
 if modmashsplinterunderground.util == nil then
 	if remote ~= nil then
 		require '__modmashsplinter__/prototypes/scripts/util'

@@ -7,7 +7,10 @@ end
 
 local concrete = table.deepcopy(data.raw["tile"]["refined-concrete"])
 concrete.name="them-concrete"
-concrete.minable = nil
+if settings.startup["setting-mineable-concrete"].value == "Off" then
+    concrete.minable = nil
+end
+
 concrete.map_color = {r=1.0, g=0.0, b=0.5}
 concrete.tint = {r=0.3, g=0.0, b=0.32}
 concrete.vehicle_friction_modifier = 0.7

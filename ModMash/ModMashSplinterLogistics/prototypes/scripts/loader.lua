@@ -133,7 +133,7 @@ local local_loader_filter = function(entity)
 end
 
 local local_loader_do_unload = function(entity,wagon)	
-	if wagon.is_empty() then return end
+	if wagon == nil or entity == nil or wagon.is_empty() then return end
 	local line = entity.get_transport_line(1)
 	local line2 = entity.get_transport_line(2)
 	local c1 = 0

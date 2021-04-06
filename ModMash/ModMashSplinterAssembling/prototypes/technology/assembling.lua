@@ -1,4 +1,5 @@
-﻿local local_add_technology_if_missing = function(technology,recipe_name)
+﻿
+local local_add_technology_if_missing = function(technology,recipe_name)
     for technology_name, tech in pairs(data.raw["technology"]) do
         if tech~= nil and tech.effects ~= nil then
             for k=1, #tech.effects do 
@@ -9,6 +10,9 @@
     end
     data:extend({technology})    
 end
+
+modmashsplinterassembling.util.tech.patch_technology("automation","assembling-machine-f")
+
 if settings.startup["setting-assembling-machine-burner-only"].value == "No" then
     local_add_technology_if_missing(
         {

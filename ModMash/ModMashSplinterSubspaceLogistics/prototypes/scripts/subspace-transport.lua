@@ -12,11 +12,12 @@ local get_entities_to  = modmashsplintersubspacelogistics.util.entity.get_entiti
 local change_fluidbox_fluid = modmashsplintersubspacelogistics.util.fluid.change_fluidbox_fluid
 local get_connected_input_fluid = modmashsplintersubspacelogistics.util.fluid.get_connected_input_fluid
 local opposite_direction = modmashsplintersubspacelogistics.util.opposite_direction
+local print = modmashsplintersubspacelogistics.util.print
 
 
 --[[unitialized globals]]
 local transports = nil
-local boilers = nil
+--local boilers = nil
 
 local transports_per_tick = 2
 local stock_transports_per_tick = 1
@@ -25,14 +26,14 @@ local stock_transports_per_tick = 1
 
 --[[ensure globals]]
 local local_init = function() 
-	if global.modmashsplintersubspacelogistics.boilers == nil then global.modmashsplintersubspacelogistics.boilers = {} end
+	--if global.modmashsplintersubspacelogistics.boilers == nil then global.modmashsplintersubspacelogistics.boilers = {} end
 	if global.modmashsplintersubspacelogistics.subspace_transports == nil then global.modmashsplintersubspacelogistics.subspace_transports = {} end
 	transports = global.modmashsplintersubspacelogistics.subspace_transports
-	boilers = global.modmashsplintersubspacelogistics.boilers
+	--boilers = global.modmashsplintersubspacelogistics.boilers
 	end
 local local_load = function() 
 	transports = global.modmashsplintersubspacelogistics.subspace_transports
-	boilers = global.modmashsplintersubspacelogistics.boilers
+	--boilers = global.modmashsplintersubspacelogistics.boilers
 	end
 
 
@@ -85,7 +86,7 @@ local local_subspace_transports_tick = function()
 end
 
 local local_tick = function()	
-	for k=1, #boilers  do
+	--[[for k=1, #boilers  do
 		local entity = boilers[k]
 		if is_valid(entity) and entity.to_be_deconstructed(entity.force) ~= true and entity.is_crafting() then							
 			local outpipe = get_connected_input_fluid(entity,2)
@@ -102,16 +103,16 @@ local local_tick = function()
 				end
 			end
 		end
-	end	
+	end	]]
 	if game.tick%30==0 then
 		local_subspace_transports_tick()
 	end
 	end
 
 local local_added = function(entity)	
-	if entity.name == "modmash-super-boiler-valve" then
-		table.insert(boilers, entity)
-	elseif entity.name == "subspace-transport" then
+	--if entity.name == "modmash-super-boiler-valve" then
+	--	table.insert(boilers, entity)
+	if entity.name == "subspace-transport" then
 		table.insert(transports, entity)
 	end
 end
@@ -126,9 +127,9 @@ local local_remove = function(tbl, element)
 end
 
 local local_removed = function(entity)	
-	if entity.name == "modmash-super-boiler-valve" then
-		local_remove(boilers, entity)
-	elseif entity.name == "subspace-transport" then
+	--if entity.name == "modmash-super-boiler-valve" then
+	--	local_remove(boilers, entity)
+	if entity.name == "subspace-transport" then
 		local_remove(transports, entity)		
 	end
 end
@@ -147,6 +148,42 @@ script.on_event(defines.events.on_entity_cloned,
 	function(event) 
 		if is_valid(event.source) then local_on_entity_cloned(event.source, nil) end 
 	end,{filter = "name", name = "subspace-transport"})]]
+
+local local_on_configuration_changed = function(event) 	
+	 local changed = event.mod_changes and event.mod_changes["modmashsplintersubspacelogistics"]
+	 if changed then
+		if changed.old_version ~= nil then
+			if changed.old_version < "1.1.6" then
+				
+				if global.modmashsplintersubspacelogistics ~= nil then
+					if global.modmashsplintersubspacelogistics.boilers ~= nil then
+						for k=1, #global.modmashsplintersubspacelogistics.boilers do
+							local b = global.modmashsplintersubspacelogistics.boilers[k]	
+							local n = b.name
+							local f = b.force
+							local s = b.surface
+							local pos = b.position 
+							local dir = b.direction
+							local fuel = b.get_inventory(defines.inventory.fuel).get_contents()
+							
+							b.destroy({raise_destroy = false})
+							local ne = s.create_entity{name=n,force=f,position =pos,direction=dir}
+							if is_valid(ne) then
+								local nef= ne.get_inventory(defines.inventory.fuel)
+								for n,v in pairs(fuel) do
+									nef.insert({name = n, count=v})
+								end
+							end
+						end
+					end
+					global.modmashsplintersubspacelogistics.boilers = nil
+				end
+			end
+		end
+	 end
+	 end
+
+script.on_configuration_changed(local_on_configuration_changed)
 
 script.on_event(defines.events.on_tick, local_tick)
 

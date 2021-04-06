@@ -77,7 +77,25 @@ local local_on_script_trigger_effect = function(event)
 				return
 			end
 		else
-			surface.set_tiles({{name="water",position={x=event.target_position.x,y=event.target_position.y}, remove_colliding_entities = true, remove_colliding_decoratives = true}})
+			local entities = surface.find_entities_filtered{area = {{event.target_position.x-0.5, event.target_position.y-0.5}, {event.target_position.x+0.5, event.target_position.y+0.5}}}
+			for k = 1, #entities do local ent = entities[k]
+				if is_valid(ent) then
+					ent.die()--({raise_destroy = true})
+				end
+			end
+			surface.set_tiles(			
+				{
+					{name="water",position={x=event.target_position.x-0.5,y=event.target_position.y-0.5}},
+					{name="water",position={x=event.target_position.x-0.5,y=event.target_position.y}},
+					{name="water",position={x=event.target_position.x-0.5,y=event.target_position.y+0.5}},
+					{name="water",position={x=event.target_position.x,y=event.target_position.y-0.5}},
+					{name="water",position={x=event.target_position.x,y=event.target_position.y}},
+					{name="water",position={x=event.target_position.x,y=event.target_position.y+0.5}},
+					{name="water",position={x=event.target_position.x+0.5,y=event.target_position.y-0.5}},
+					{name="water",position={x=event.target_position.x+0.5,y=event.target_position.y}},
+					{name="water",position={x=event.target_position.x+0.5,y=event.target_position.y+0.5}}
+				}	
+			)
 		end
 	end
 end

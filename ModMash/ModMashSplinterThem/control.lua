@@ -21,6 +21,7 @@ local ends_with  = modmashsplinterthem.util.ends_with
 local local_table_remove = modmashsplinterthem.util.table.remove
 local is_valid_and_persistant = modmashsplinterthem.util.entity.is_valid_and_persistant
 local fail_place_entity  = modmashsplinterthem.util.fail_place_entity
+local print  = modmashsplinterthem.util.print
 
 local surfaces = nil
 local surface_names = nil
@@ -129,55 +130,20 @@ local resource_gain_event = 0
 		end
 --end common functions section
 
---[[
---debug section
-	local debug_surface_sensor = function(player)
-	  if surfaces[player.surface.name] ~= nil then
-		local s = surfaces[player.surface.name]
-		return {"","Enemy progress",string.format(" = %.2f", ((s.energy + s.end_game_saving)/end_game_energy))} 
-	  end
-	  return {"","nil"}
-	end
-	local debug_cooldown_sensor = function(player)
-	  if surfaces[player.surface.name] ~= nil then
-		local s = surfaces[player.surface.name]
-		return {"","Enemy cooldown",string.format(" = %.2f", ((s.spawn_base_cooldown/60)/60))} 
-	  end
-	  return {"","nil"}
-	end
-	local debug_rebuild_sensor = function(player)
-	  if surfaces[player.surface.name] ~= nil then
-		local s = surfaces[player.surface.name]
-		return {"","Enemy build que",(" = "..local_rebuild_count(s))} 
-	  end
-	  return {"","nil"}
-	end
-	
-	local function register_sensors()
-	  if modmashsplinterthem.debug == true and script.active_mods["StatsGui"] and remote.call("StatsGui", "version") == 1 then
-		remote.call("StatsGui", "add_sensor", "modmashsplinterthem", "debug_surface_sensor")
-		remote.call("StatsGui", "add_sensor", "modmashsplinterthem", "debug_cooldown_sensor")
-		remote.call("StatsGui", "add_sensor", "modmashsplinterthem", "debug_rebuild_sensor")
-	  end
-	end
-	
-	if modmashsplinterthem.debug == true then
-		remote.add_interface("modmashsplinterthem", {
-		  debug_surface_sensor = debug_surface_sensor,
-		  debug_cooldown_sensor = debug_cooldown_sensor,
-		  debug_rebuild_sensor = debug_rebuild_sensor
-		})
-	end
---end debug section
---]]
 --init section
 	--to make initialization of new emeny dynamic harder the more times they spawn from new(not expand)
 	local local_init_surface = function(surface,launch)
 		local iteration = 1
+		local go_now = false
 		if table_contains(surface_names,surface.name) then 
 			iteration = surfaces[surface.name].iteration or 1
 			iteration = iteration + 1
 			launch = surfaces[surface.name].launch
+			go_now = true
+		end
+		
+		if settings.startup["setting-end-game-mod"].value == "On" then
+			iteration = max_useable_iterations
 		end
 		if launch == nil then launch = false end
 		local data = 
@@ -224,7 +190,18 @@ local resource_gain_event = 0
 			max_veins = value_builder(3,10,iteration,max_useable_iterations),
 
 		}
-		data.spawn_base_cooldown = 60*60*math.random(6,math.max(math.ceil(reverse_value_builder(8,25,iteration,max_useable_iterations)),8))		
+		if settings.startup["setting-end-game-mod"].value == "On" then
+			iteration = max_useable_iterations
+			if go_now then
+				data.spawn_base_cooldown = 60*60*math.random(6,math.max(math.ceil(reverse_value_builder(8,25,iteration,max_useable_iterations)),8))		
+			else
+				data.spawn_base_cooldown = (60*60*60)+(60*60*math.random(1,30))
+			end
+			data.max_bases = 100
+			data.max_veins = 20
+		else
+			data.spawn_base_cooldown = 60*60*math.random(6,math.max(math.ceil(reverse_value_builder(8,25,iteration,max_useable_iterations)),8))		
+		end
 		local_reset_surface_ghost_check(data)	
 	
 		for k=1, #rebuild_names do data.rebuild[rebuild_names[k]] = {} end
@@ -252,7 +229,7 @@ local resource_gain_event = 0
 	end
 
 	local local_register_surface = function(surface, launch)
-		if launch == nil then launch = false end
+		if launch == nil then launch = settings.startup["setting-domination-mode"].value == "On" end
 		if surfaces[surface.name] ~= nil then 
 			if launch == true then surfaces[surface.name].launch = true end
 			return 
@@ -605,6 +582,18 @@ local local_tick_surface = function(surface)
 		end
 		
 	end
+	if global.modmashsplinterthem.ore_targets ~= nil then
+		local targets = global.modmashsplinterthem.ore_targets
+		local x = math.max(#targets-100,1)
+		--print(#targets)
+		for k=#targets, x, -1 do t = targets[k]
+			t.amount = math.min(t.amount*2,4294967295)
+			table.remove(targets,k)
+		end
+		if #targets < 1 then global.modmashsplinterthem.ore_targets = nil end
+		
+	end		
+
 	local_update_steal(surface)
 end
 
@@ -965,7 +954,7 @@ local check_interupt = function(surface,vein)
 	end
 end
 
-local check_current_base_build = function(surface)
+local check_current_base_build = function(surface)	
 	--those freaking cliffs again
 	if surface.current_base_build.is_vein == false then
 
@@ -996,7 +985,8 @@ local local_round = function(x)
 end
 
 local local_get_start = function(surface)
-	local t = surface.surface.find_entities_filtered{force ="player", limit=50}
+	
+	local t = surface.surface.find_entities_filtered{force ="player", limit=150, type="assembling-machine"}
 	if #t == 0 then return nil end
 	t = t[math.random(1,#t)]
 	local x = math.random(96,192)
@@ -1023,7 +1013,7 @@ local check_base_exists = function(surface)
 			end
 		end
 		if surface.spawn_base_cooldown <= 0 then
-
+			
 			local pos = local_get_start(surface)
 			if pos == nil then return false end
 			local px =  pos.x
@@ -1297,7 +1287,8 @@ local local_do_expand = function(surface,port,bots)
 end
 
 local local_end_game_condition = function(surface,port,bots)
-	if (surface.max_bases-1) > #surface.bases then return end
+	if settings.startup["setting-domination-mode"].value == "On" then return false end
+	if (surface.max_bases-1) > #surface.bases then return false end
 	if local_rebuild_count() > 0 then return false end
 	return (surface.energy + surface.end_game_saving) > end_game_energy
 end
@@ -1321,14 +1312,18 @@ end
 local local_nth_tick_surface = function(surface,ticks)	
 
 	if surface.launch == false then return end
+	if #surface.bases == 0 and #surface.surface.find_entities_filtered{limit=4, name="them-blocker"} > 0 then
+		return
+	end
 	surface.flags = {}
 	surface.spawn_base_cooldown = math.max(0,surface.spawn_base_cooldown - ticks)
 	surface.spawn_ghost_check = math.max(0,surface.spawn_ghost_check - ticks)
 	--todo remove
 	--surface.energy = math.max(minimal_energy*2,surface.energy)
 	--surface.spawn_base_cooldown = 0
-	--surface.max_bases = 30
-
+	--surface.max_bases = 22
+	
+	--modmashsplinterthem.util.print(value_builder(15,30,1,10))
 	--if (surface.max_bases-1) > #surface.bases then surface.energy = end_game_energy end
 	
 
@@ -1547,15 +1542,13 @@ local local_on_script_trigger_effect = function(event)
 				end
 			end
 		end
-
+		local s = settings.startup["setting-end-game-boom-mod"].value
+		local m = ((s-50)/100)*256
+		--todo test
+		global.modmashsplinterthem.ore_targets = game.surfaces[event.surface_index].find_entities_filtered{position=event.source_position, radius=512+m, type={"resource"}}
+		
 		resource_gain_event = 1
-		local targets = game.surfaces[event.surface_index].find_entities_filtered{position=event.source_position, radius=128, type={"resource"}}
-		
-		for k=1, #targets do t = targets[k]
-		
-			t.amount = math.min(t.amount*2,4294967295)
-		end
-	end	
+	end
 end
 
 local local_on_trigger_created_entity = function(event)		
@@ -1628,9 +1621,13 @@ local local_on_trigger_created_entity = function(event)
 
 
 
-local local_added = function(entity,event)	
+local local_added = function(entity,event)		
 	if ends_with(entity.surface.name,"underground") == true then return end --dont care about undergrounds	
-	if surfaces[entity.surface.name] == nil then local_register_surface(entity.surface) end
+	if surfaces[entity.surface.name] == nil then 
+		local_register_surface(entity.surface) 
+	elseif surfaces[entity.surface.name].launch == false and settings.startup["setting-domination-mode"].value == "On" then
+		local_register_surface(entity.surface) 
+	end
 	local surface = surfaces[entity.surface.name]
 	if entity.name == "them-pinch-mine" then
 		table.insert(global.modmashsplinterthem.mines,entity)
@@ -1684,7 +1681,7 @@ local local_added = function(entity,event)
 
 	if event ~= nil then
 		if entity.force.name == "player" and surface.surface.get_tile(entity.position.x, entity.position.y).name == "them-concrete" then
-			if entity.type ~= "land-mine" then 
+			if not (entity.type == "land-mine" or entity.type == "tile-ghost") then 
 				fail_place_entity(entity,event,{"modmashsplinter.placement-disallowed"})
 			end
 		else

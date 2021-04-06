@@ -21,6 +21,20 @@ local local_cutscene_cancelled = function(event)
 	end
 end
 
+local local_on_configuration_changed = function(event) 	
+	if settings.startup["setting-assembling-machine-burner-only"].value == "No" then
+		local changed = event.mod_changes and event.mod_changes["modmashsplinterassembling"]
+		if changed then
+			for index, force in pairs(game.forces) do
+				if force.technologies["automation"].researched then
+				force.recipes["assembling-machine-f"].enabled = true
+				end
+			end
+		end
+	 end
+	 end
+
+script.on_configuration_changed(local_on_configuration_changed)
 
 script.on_event({defines.events.on_player_joined_game,defines.events.on_player_created},local_on_player_spawned)
 script.on_event(defines.events.on_cutscene_cancelled,local_cutscene_cancelled)

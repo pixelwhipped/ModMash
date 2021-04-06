@@ -59,9 +59,11 @@ local local_replace_turret = function(entity,recipe)
 	if i ~= nil then 
 		c = i.get_contents()		
 	end
-	if entity.can_be_destroyed() ~= true or entity.destroy({raise_destroy = true}) ~= true then return end
+	if  entity.can_be_destroyed() ~= true or 
+		entity.destroy({raise_destroy = true}) ~= true then return end
 	
 	local new_entity = s.create_entity{name=recipe.name, position=p, force = f, direction = d, orientation = o, raise_built = true}
+	if new_entity == nil then return end -- error shouldn't happen
 	if h ~= mh then new_entity.health = h end
 	new_entity.kills = k
 	new_entity.damage_dealt = dd
@@ -237,6 +239,7 @@ local local_turret_removed = function(entity,event)
 		
 		local multiplier = multipliers[event.cause.type]
 		if multiplier == nil then return end
+
 		--[[
 			local levelup_four = heroturrets.defines.turret_levelup_kills_four * multiplier
 			local levelup_three = heroturrets.defines.turret_levelup_kills_three * multiplier
@@ -247,9 +250,11 @@ local local_turret_removed = function(entity,event)
 			local levelup_damage_two = heroturrets.defines.turret_levelup_damage_two * multiplier
 			local levelup_damage_one = heroturrets.defines.turret_levelup_damage_one * multiplier
 		]]
-			if rank_count == nil then rank_count = #local_get_names() end
+			
+			if rank_count == nil then rank_count = #local_get_names() end			
 			for k = rank_count, 1, -1 do
 				if event.cause.kills >= ((local_get_kill_table()[k]*multiplier) - 1) or (settings.startup["heroturrets-allow-damage"].value == "Enabled" and event.cause.damage_dealt >= local_get_damage_table()[k]*multiplier) then		
+					
 					if starts_with(event.cause.name,"hero-turret") == true then
 						--is a hero turret
 						if starts_with(event.cause.name,"hero-turret-"..k) then
@@ -266,6 +271,7 @@ local local_turret_removed = function(entity,event)
 							end
 						end
 					else
+						
 						--find upgrade
 						local ug = find_recipes_for("hero-turret-"..k.."-for-"..event.cause.name,event.cause.force)
 						if #ug ~= 0 then

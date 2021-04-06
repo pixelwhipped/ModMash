@@ -30,7 +30,37 @@ local_add_recipe(
 			result = "assembling-machine-burner"
 		}	
 	})
+
+
 if settings.startup["setting-assembling-machine-burner-only"].value == "No" then
+	local_add_recipe(
+	{
+		type = "recipe",
+		name = "assembling-machine-f",	
+		normal =
+		{
+			enabled = false,
+			energy_required = 4,
+			ingredients =
+			{
+				{"assembling-machine-burner", 2},
+				{"pipe", 2},
+			},
+			result = "assembling-machine-f"
+		},
+		expensive =
+		{
+			enabled = true,
+			energy_required = 6,
+			ingredients =
+			{
+				{"assembling-machine-burner", 2},
+				{"pipe", 6},
+			},
+			result = "assembling-machine-f"
+		}	
+	})
+
 	local_add_recipe(
 		{
 			type = "recipe",

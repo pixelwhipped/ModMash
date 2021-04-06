@@ -13,24 +13,24 @@ local opposite_direction = modmashsplinterfluid.util.opposite_direction
 
 
 
-local boilers = nil
+--local boilers = nil
 local discharge_pumps = nil
 
 local local_init = function() 
 	if global.modmashsplinterfluid.valves == nil then global.modmashsplinterfluid.valves = {} end
-	if global.modmashsplinterfluid.valves.boilers == nil then global.modmashsplinterfluid.valves.boilers = {} end
+	--if global.modmashsplinterfluid.valves.boilers == nil then global.modmashsplinterfluid.valves.boilers = {} end
 	if global.modmashsplinterfluid.valves.discharge_pumps == nil then global.modmashsplinterfluid.valves.discharge_pumps = {} end
-	boilers = global.modmashsplinterfluid.valves.boilers
+	--boilers = global.modmashsplinterfluid.valves.boilers
 	discharge_pumps = global.modmashsplinterfluid.valves.discharge_pumps
 	end
 
 local local_load = function() 
-	boilers = global.modmashsplinterfluid.valves.boilers
+	--boilers = global.modmashsplinterfluid.valves.boilers
 	discharge_pumps = global.modmashsplinterfluid.valves.discharge_pumps
 	end
 
 local local_tick = function()	
-	for k=1, #boilers  do
+	--[[for k=1, #boilers  do
 		local entity = boilers[k]
 		if is_valid(entity) and entity.to_be_deconstructed(entity.force) ~= true and entity.is_crafting() then							
 			local outpipe = get_connected_input_fluid(entity,2)
@@ -47,7 +47,7 @@ local local_tick = function()
 				end
 			end
 		end
-	end	
+	end	--]]
 	for k=1, #discharge_pumps do 
 		local entity = discharge_pumps[k]
 		if is_valid(entity) and entity.to_be_deconstructed(entity.force) ~= true then				
@@ -67,9 +67,9 @@ local local_tick = function()
 	end
 
 local local_added = function(entity)	
-	if entity.name == "mini-boiler" then
-		table.insert(boilers, entity)
-	elseif entity.name == "mm-discharge-water-pump" then
+	--if entity.name == "mini-boiler" then
+	--	table.insert(boilers, entity)
+	if entity.name == "mm-discharge-water-pump" then
 		table.insert(discharge_pumps, entity)
 	end
 end
@@ -84,12 +84,27 @@ local local_remove = function(tbl, element)
 end
 
 local local_removed = function(entity)	
-	if entity.name == "mini-boiler" then
-		local_remove(boilers, entity)
-	elseif entity.name == "mm-discharge-water-pump" then
+	--if entity.name == "mini-boiler" then
+	--	local_remove(boilers, entity)
+	if entity.name == "mm-discharge-water-pump" then
 		local_remove(discharge_pumps, entity)		
 	end
 end
+
+local local_on_configuration_changed = function(event) 	
+	 local changed = event.mod_changes and event.mod_changes["modmashsplinterfluid"]
+	 if changed then
+		if changed.old_version ~= nil then
+			if changed.old_version < "1.1.04" then
+				if global.modmashsplinterfluid ~= nil and global.modmashsplinterfluid.valves ~= nil then
+					global.modmashsplinterfluid.valves.boilers = nil
+				end
+			end
+		end
+	 end
+	 end
+
+script.on_configuration_changed(local_on_configuration_changed)
 
 script.on_event(defines.events.on_tick, local_tick)
 

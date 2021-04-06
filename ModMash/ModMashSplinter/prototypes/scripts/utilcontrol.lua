@@ -39,6 +39,9 @@ local local_fail_place_entity = function(entity,event,message)
 	if message == nil then message = {"modmashsplinter.placement-disallowed"} end
 	if entity.name == "entity-ghost" then etype = entity.ghost_prototype.type end
 	if entity.name == "entity-ghost" then ename = entity.ghost_prototype.name end
+	if ename == "rail-planner" or ename == "straight-rail" or ename == "curved-rail" then
+		ename = "rail"
+	end
 	local stack = {name=ename, count=1}
 	if entity.type == "entity-ghost" or entity.type == "tile-ghost" then
 		--dont actually do anything entity destroyed later

@@ -58,6 +58,7 @@ local local_create_clone= function(item)
 		}
 	})
 	patch_technology("terraformer","clone-using-"..item.name)
+	if data.raw["module"]["clone"].limitation == nil then data.raw["module"]["clone"].limitation = {} end
 	table.insert(data.raw["module"]["clone"].limitation,"clone-using-"..item.name)
 end
 

@@ -3,7 +3,8 @@ Version: 1.1.05
   Changes:
     - removed allow intermediates
     - ensure energy required doubled
-
+    - item group icon size
+    - some recipies may have been missing
 ---------------------------------------------------------------------------------------------------
 Version: 1.1.04
   Bug Fixes:
