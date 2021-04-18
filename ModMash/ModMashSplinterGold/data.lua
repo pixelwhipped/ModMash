@@ -13,7 +13,16 @@ data:extend(
     amount = 20000,
     item_product = "gold-ore",
     icon_size = 128
-  }
+  },
+  {
+    type = "build-entity-achievement",
+    name = "gold-vanity",
+    order = "d[production]-z[vanity]",
+    icon = "__modmashsplintergold__/vanity.png",
+    to_build = "gold-statue",
+    limited_to_one_game = true,
+    icon_size = 128
+  },
 })
 
 

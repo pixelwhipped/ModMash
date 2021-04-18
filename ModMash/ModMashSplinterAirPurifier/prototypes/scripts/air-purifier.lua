@@ -20,12 +20,14 @@ local local_air_purifier_pump_added = function(entity,event)
 	local cbox = { { entity.position.x + aabb.left_top.x, entity.position.y + aabb.left_top.y }, { entity.position.x + aabb.right_bottom.x, entity.position.y + aabb.right_bottom.y } }
 	local tiles = entity.surface.find_tiles_filtered{area=cbox}
 	local total = 0
-	for _,tile in pairs(tiles) do
-		if tile.prototype.emissions_per_second <= 0 then
-			fail_place_entity(entity,event,{"modmashsplinterairpurifier.placement-disallowed"})
-			return
-		end		
-    end
+	if settings.startup["setting-restrict-placement"].value == "Enabled" then 
+		for _,tile in pairs(tiles) do
+			if tile.prototype.emissions_per_second <= 0 then
+				fail_place_entity(entity,event,{"modmashsplinterairpurifier.placement-disallowed"})
+				return
+			end		
+		end
+	end
 
 	--try_set_recipe(entity,air_purifier_prefix .. "hi")
 	entity.operable = false

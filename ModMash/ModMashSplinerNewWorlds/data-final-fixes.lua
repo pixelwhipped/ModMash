@@ -75,8 +75,16 @@ for name,fish in pairs(data.raw["fish"]) do
 	end
 end
 
-if modmashsplinternewworlds.util.table.contains(data.raw["lab"]["lab"].inputs,"alien-science-pack") ~= true then
-	table.insert(data.raw["lab"]["lab"].inputs,"alien-science-pack")
+if settings.startup["setting-lab-mod"].value == "Experimental" then
+	for name, value in pairs(data.raw["lab"]) do
+		if modmashsplinternewworlds.util.table.contains(data.raw["lab"][name].inputs,"alien-science-pack") ~= true then
+			table.insert(data.raw["lab"][name].inputs,"alien-science-pack")
+		end
+	end
+else
+	if modmashsplinternewworlds.util.table.contains(data.raw["lab"]["lab"].inputs,"alien-science-pack") ~= true then
+		table.insert(data.raw["lab"]["lab"].inputs,"alien-science-pack")
+	end
 end
 
 table.insert(data.raw["module"]["clone"].limitation,"explorer")

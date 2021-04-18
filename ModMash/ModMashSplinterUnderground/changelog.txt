@@ -1,36 +1,48 @@
 ﻿------------------------------------------------------------------------------------------------
+Version: 1.1.19
+  Changes:
+    - Added teleport cooldown setting
+    - Updated descriptions
+    - Fake stops now working
+
+------------------------------------------------------------------------------------------------
+Version: 1.1.18
+  Changes:
+    - Trains
+
+------------------------------------------------------------------------------------------------
 Version: 1.1.17
   Bug Fixes:
-    -Accomodating for incomplete train code
+    - Accomodating for incomplete train code
 
 ------------------------------------------------------------------------------------------------
 Version: 1.1.16
   Changes:
-    -Lighter underground surface tiles
-    -Rock deconstruct fix
-    -Polltion transfer factor, reduce amount of pollution being transfered bewteen surfaces
-    -Transfer item fix
+    - Lighter underground surface tiles
+    - Rock deconstruct fix
+    - Polltion transfer factor, reduce amount of pollution being transfered bewteen surfaces
+    - Transfer item fix
 
 ------------------------------------------------------------------------------------------------
 Version: 1.1.15
   Changes:
-    -Exarn optimizations
-    -added menu simulation
+    - Exarn optimizations
+    - added menu simulation
 
 ------------------------------------------------------------------------------------------------
 Version: 1.1.14
   Bug Fixes:
-    -Desync Fixed
+    - Desync Fixed
 
 ------------------------------------------------------------------------------------------------
 Version: 1.1.13
   Bug Fixes:
-    -Made local's global
+    - Made local's global
 
 ------------------------------------------------------------------------------------------------
 Version: 1.1.12
   Bug Fixes:
-    -Added check player is valid and character is not nil
+    - Added check player is valid and character is not nil
 
 ------------------------------------------------------------------------------------------------
 Version: 1.1.11
@@ -46,12 +58,12 @@ Version: 1.1.10
 Version: 1.1.09
   Changes:
     - Removed teleport while in vehicle
-  Bug-Fixes:
+  Bug Fixes:
     - Check for check missing resources was broken
 
 ------------------------------------------------------------------------------------------------
 Version: 1.1.08
-  Bug-Fixes:
+  Bug Fixes:
     - Check missing resources
 
 ---------------------------------------------------------------------------------------------------
@@ -66,12 +78,12 @@ Version: 1.1.06
 
 ---------------------------------------------------------------------------------------------------
 Version: 1.1.05
-  Bug-Fixes:
+  Bug Fixes:
     - extra check surface not nil
 
 ---------------------------------------------------------------------------------------------------
 Version: 1.1.04
-  Bug-Fixes:
+  Bug Fixes:
     - reference to modmashsplinterloot fixed
 
 ---------------------------------------------------------------------------------------------------
@@ -98,7 +110,7 @@ Version: 1.0.09
 
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.08
-  Bug-Fixes:
+  Bug Fixes:
     - Fix for factorissmo
     - Attack Rocks selectable
 
@@ -106,7 +118,7 @@ Version: 1.0.08
 Version: 1.0.07
   Changes:
     - Added loot stack if loot available
-  Bug-Fixes:
+  Bug Fixes:
     - Still seem to be autoplacing biter rocks and showing power on nauvis
 
 ---------------------------------------------------------------------------------------------------
@@ -133,7 +145,7 @@ Version: 1.0.03
 
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.02
-  Bug-Fixes:
+  Bug Fixes:
     - Had to update requirment modmashspliter 1.0.06 to handle missing splinter assembling
 
 ---------------------------------------------------------------------------------------------------

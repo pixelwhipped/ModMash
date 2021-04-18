@@ -107,3 +107,5 @@ local local_update_recipies = function()
 	end
 
 local_update_recipies()	
+
+require("prototypes.scripts.types") 

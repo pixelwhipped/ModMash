@@ -54,6 +54,7 @@ local local_register_surface = function(name)
 		accesses = {},
 		origins = {},
 		stops = {},
+		super_stops = {},
 		flip = true
 	}
 	global.modmashsplinterunderground.surfaces[name] = top_surface
@@ -67,6 +68,7 @@ local local_register_surface = function(name)
 		accesses = {},
 		origins = {},
 		stops = {},
+		super_stops = {},
 		flip = true
 	}
 	global.modmashsplinterunderground.surfaces[name.."-deep-underground"] = {
@@ -78,6 +80,7 @@ local local_register_surface = function(name)
 		accesses = {},
 		origins = {},
 		stops = {},
+		super_stops = {},
 		flip = true
 	}
 end
@@ -565,13 +568,13 @@ local local_do_teleport = function(i, p, access, upper_surface, lower_surface)
 	if is_valid(p.character) and p.vehicle == nil and p.character.surface.name == upper_surface.name then
 		if distance(p.character.position.x,p.character.position.y,access.top_entity.position.x,access.top_entity.position.y) < 1.5 then				
 			local_safe_teleport(p, lower_surface,p.character.position,i)
-			teleport_cooldown = 60
+			teleport_cooldown = 60*settings.global["setting-teleport-cooldown"].value
 			local_bitter_follow(access.top_entity)
 		end
 	elseif is_valid(p.character) and p.vehicle == nil and p.character.surface.name == lower_surface.name then
 		if distance(p.character.position.x,p.character.position.y,access.bottom_entity.position.x,access.bottom_entity.position.y) < 1.5 then				
 			local_safe_teleport(p, upper_surface,p.character.position,i)
-			teleport_cooldown = 60
+			teleport_cooldown = 60*settings.global["setting-teleport-cooldown"].value
 			local_bitter_follow(access.bottom_entity)
 		end
 	end
@@ -703,8 +706,8 @@ local local_shape_data = function(position,direction)
 			opposite_direction = 4,
 			rail_direction = defines.rail_direction.front,
 			clear_area = {
-				left_top = {x=position.x-8,y=position.y-6},
-				right_bottom = {x=position.x+4,y=position.y+11}
+				left_top = {x=position.x-9,y=position.y-7},
+				right_bottom = {x=position.x+5,y=position.y+12}
 			},
 			collide_area = {
 				left_top = {x=position.x-6,y=position.y-5},
@@ -716,6 +719,9 @@ local local_shape_data = function(position,direction)
 			},
 			end_track_point = {
 				x=position.x-2,y=position.y+0.25
+			},
+			end_track_place = {
+				x=position.x-2,y=position.y+6.25
 			},
 			entry_track_area = {
 				left_top = {x=position.x-3,y=position.y-1},
@@ -739,7 +745,6 @@ local local_shape_data = function(position,direction)
 			track_posistion = {x=position.x-2,y=position.y},
 			track_direction = 0,
 			speed_vector = -1,
-			seek_forward = false
 		}
 		return sd
 	elseif direction == 4 then
@@ -748,8 +753,8 @@ local local_shape_data = function(position,direction)
 			opposite_direction = 0,
 			rail_direction = defines.rail_direction.back,
 			clear_area = {
-				left_top = {x=position.x-4,y=position.y-11},
-				right_bottom = {x=position.x+8,y=position.y+6}
+				left_top = {x=position.x-5,y=position.y-12},
+				right_bottom = {x=position.x+9,y=position.y+7}
 			},
 			collide_area = {
 				left_top = {x=position.x-2,y=position.y-10},
@@ -765,6 +770,9 @@ local local_shape_data = function(position,direction)
 			},
 			end_track_point = {
 				x=position.x+2,y=position.y+0.25
+			},
+			end_track_place = {
+				x=position.x+2,y=position.y-5.75
 			},
 			exclude_zones = {
 				{
@@ -784,7 +792,6 @@ local local_shape_data = function(position,direction)
 			track_posistion = {x=position.x+2,y=position.y},
 			track_direction = 0,
 			speed_vector = 1,
-			seek_forward = true
 		}
 		return sd
 	elseif direction == 2 then
@@ -793,8 +800,8 @@ local local_shape_data = function(position,direction)
 			opposite_direction = 6,
 			rail_direction = defines.rail_direction.front,
 			clear_area = {
-				left_top = {x=position.x-11,y=position.y-7},
-				right_bottom = {x=position.x+6,y=position.y+3}
+				left_top = {x=position.x-12,y=position.y-8},
+				right_bottom = {x=position.x+7,y=position.y+4}
 			},
 			collide_area = {
 				left_top = {x=position.x-10,y=position.y-6},
@@ -810,6 +817,9 @@ local local_shape_data = function(position,direction)
 			},
 			end_track_point = {
 				x=position.x,y=position.y-2
+			},
+			end_track_place = {
+				x=position.x-6,y=position.y-2
 			},
 			exclude_zones = {
 				{
@@ -829,7 +839,6 @@ local local_shape_data = function(position,direction)
 			track_posistion = {x=position.x,y=position.y-2},
 			track_direction = 2,
 			speed_vector = -1,
-			seek_forward = false
 		}
 		return sd
 	else --6
@@ -838,8 +847,8 @@ local local_shape_data = function(position,direction)
 			opposite_direction = 2,
 			rail_direction = defines.rail_direction.back,
 			clear_area = {
-				left_top = {x=position.x-6,y=position.y-3},
-				right_bottom = {x=position.x+11,y=position.y+7}
+				left_top = {x=position.x-7,y=position.y-4},
+				right_bottom = {x=position.x+12,y=position.y+8}
 			},
 			collide_area = {
 				left_top = {x=position.x-5,y=position.y-2},
@@ -855,6 +864,9 @@ local local_shape_data = function(position,direction)
 			},
 			end_track_point = {
 				x=position.x,y=position.y+2
+			},
+			end_track_place = {
+				x=position.x+6,y=position.y+2
 			},
 			exclude_zones = {
 				{
@@ -874,71 +886,312 @@ local local_shape_data = function(position,direction)
 			track_posistion = {x=position.x,y=position.y+2},
 			track_direction = 2,
 			speed_vector = 1,
-			seek_forward = true
 		}
 		return sd
+	end
+end
+
+local local_transfer_carrrige_state = function(from,to)
+	local inventory = from.get_inventory(defines.inventory.fuel)
+	if inventory ~= nil then
+		local to_inventory = to.get_inventory(defines.inventory.fuel)
+		for name, count in pairs(inventory.get_contents()) do 
+			to_inventory.insert({name=name,count=count})
+		end
+	end
+	inventory = from.get_inventory(defines.inventory.burnt_result) --Maybe no but who know what people can do
+	if inventory ~= nil then		
+		local to_inventory = to.get_inventory(defines.inventory.burnt_result)
+		for name, count in pairs(inventory.get_contents()) do 
+			to_inventory.insert({name=name,count=count})
+		end
+	end
+	inventory = from.get_inventory(defines.inventory.cargo_wagon)
+	if inventory ~= nil then
+		local to_inventory = to.get_inventory(defines.inventory.cargo_wagon)
+		if inventory.supports_filters() then
+			for i = 1, #inventory do
+				to_inventory.set_filter(i, inventory.get_filter(i))
+			end
+		end
+		for name, count in pairs(inventory.get_contents()) do 
+			to_inventory.insert({name=name,count=count})
+		end
+		if inventory.supports_bar() then
+			to_inventory.set_bar(inventory.get_bar())
+		end		
+	end
+	inventory = from.get_inventory(defines.inventory.artillery_wagon_ammo)
+	if inventory ~= nil then
+		local to_inventory = to.get_inventory(defines.inventory.artillery_wagon_ammo)
+		for name, count in pairs(inventory.get_contents()) do 
+			to_inventory.insert({name=name,count=count})
+		end
+	end
+	local fluidbox = from.fluidbox
+    if fluidbox ~= nil and #fluidbox > 0 then
+        for i = 1, #fluidbox do
+            to.fluidbox[i] = {
+				name = from.fluidbox[i].name,
+				amount  = from.fluidbox[i].amount,
+				temperature  = from.fluidbox[i].temperature 
+			}
+        end
+    end
+
+	to.color = from.color
+	to.health = from.health
+
+	local driver = from.get_driver()
+	if driver~= nil and driver.is_player() then
+		--local opened = driver.opened		
+		local_safe_teleport(driver,to.surface,to.position, driver.index)
+		to.set_driver(driver)
+		--if is_valid(opened) then opened.visible = true end
+	end
+
+	for k = 1, #from.train.passengers do passenger = from.train.passengers[k]
+		if passenger~= nil and passenger.is_player() then	
+			--local opened = passenger.opened	
+			local_safe_teleport(passenger,to.surface,to.position, passenger.index)
+			to.set_driver(passenger)
+			--if is_valid(opened) then passenger.opened = opened end
+		end
+	end
+
+
+	if from.energy > 0 then
+        to.energy = from.energy
+        if from.burner then
+            to.burner.currently_burning = from.burner.currently_burning
+            to.burner.remaining_burning_fuel = from.burner.remaining_burning_fuel
+        end
+    end
+
+	if from.grid then
+		local position = {0,0}
+		local width, height = grid.width, grid.height
+		local processed = {}
+		for y = 0, height - 1 do
+			for x = 0, width - 1 do
+				local equipment = grid.get({x,y})
+				if equipment ~= nil then
+					from.grid.put({equipment = equipment.name, energy =equipment.energy, shield = equipment.shield})
+				end
+			end
+		end
+	end
+end
+
+
+local local_get_train_heading = function(train)
+	--0   = north  really 0.875 - 0.125
+	--0.25 = east  really 0.125 - 0.375 
+	--0.5 = south  really 0.375 - 0.625
+	--0.75 = west  really 0.625 - 0.785
+	local loco = false
+	local locos = {}
+	locos[0]=0 --north
+	locos[2]=0 --east
+	locos[4]=0 --south
+	locos[6]=0 --west
+	local wagons = {}
+	wagons[0]=0 --north
+	wagons[2]=0 --east
+	wagons[4]=0 --south
+	wagons[6]=0 --west
+	for k=1,#train.carriages do local carriage = train.carriages[k]
+		if is_valid(carriage) then
+			--print(#train.carriages .." O = " ..carriage.orientation)
+			if carriage.type == "locomotive" then
+				loco = true
+				if carriage.orientation > 0.625 and carriage.orientation <= 0.875 then
+					locos[6] = locos[6]+1								
+				elseif carriage.orientation > 0.125 and carriage.orientation <= 0.375 then --carriage.orientation < 0.5 then
+					locos[2] = locos[2]+1
+				elseif carriage.orientation > 0.375 and carriage.orientation <= 0.625 then --carriage.orientation < 0.75 then
+					locos[4] = locos[4]+1
+				else --carriage.orientation > 0.875 and carriage.orientation <= 0.125 then --.carriage.orientation < 0.25 then
+					locos[0] = locos[0]+1
+				end
+			elseif loco == false then
+				if carriage.orientation > 0.625 and carriage.orientation <= 0.875 then
+					wagons[6] = locos[6]+1
+				elseif carriage.orientation > 0.125 and carriage.orientation <= 0.375 then --carriage.orientation < 0.5 then
+					wagons[2] = wagons[2]+1
+				elseif carriage.orientation > 0.375 and carriage.orientation <= 0.625 then --carriage.orientation < 0.75 then
+					wagons[4] = wagons[4]+1
+				else --carriage.orientation > 0.875 and carriage.orientation <= 0.125
+					wagons[0] = wagons[0]+1
+				end
+			end
+		end
+	end
+	local ords = {0,2,6,4}
+	local seek = wagons
+	if loco == true then seek = locos end
+	local m = 0
+	local r = 0
+	
+	for k = 1, #ords do
+		dir=ords[k]
+		value = seek[dir]
+	--	print(dir.." "..value)
+		if value>m then
+			m=value
+			r=dir
+		end	
+	end
+	--if loco == false and #train.carriages>1 and r==2 then r = 6 end --no idea why
+	if loco == false and #train.carriages>1 and r==6 then r = 6  --no idea why
+	elseif loco == false and #train.carriages>1 and r==2 then r = 6 end --no idea why
+	if loco == false and #train.carriages>1 and r==4 then r = 0 end--no idea why
+	--elseif loco == false and #train.carriages>1 and r==0 then r = 4 end --no idea why
+	
+--	print("result "..r.." ----------------")
+	
+	return r
+end
+
+local local_set_train_heading = function(train,heading,speed)
+	--print("Requested "..heading.." ----------------")
+	local current_heading = local_get_train_heading(train)
+	
+	if current_heading == heading then 			
+		train.speed = speed 
+	else
+		train.speed = speed * -1
 	end
 end
 
 local local_train_transfers_tick = function()
 
 	if modmashsplinterunderground.defines.trains ~= true then return end
-	for t = 1, #global.modmashsplinterunderground.train_transfers do
+	if #global.modmashsplinterunderground.train_transfers == 0 then return end
+	
+	for t = #global.modmashsplinterunderground.train_transfers,1, -1 do
 		local transfer = global.modmashsplinterunderground.train_transfers[t]
-		local in_train = transfer.in_train
-		local from = transfer.from
-		local to = transfer.to
-		local tosd = local_shape_data(to.position,to.direction)
-		local fromsd = local_shape_data(from.position,from.direction)
-		local sv = tosd.speed_vector
-		if transfer.speed == nil then transfer.speed = 0 end
-		if seek_forward then
-			if is_valid(in_train) and #in_train.carriages > 0 then
-				local current_carriges = {}
-				--We need to keep a record of trains so when we alter a train we can recover the new train id
-				--or do we record the carrages and recover the train the latter makes more sense, well shit went down the wrong rabbit hole + 1 event so less ups
-				--additionaly we can store in correct order so seek_forward can go maybe
-				for k=1,#in_train.carriages do carriage = in_train.carriages[k]
-					table.insert(current_carriges.carriage) -- removing addeding alters train
+		if transfer==nil then --bad transfer
+			table.remove(global.modmashsplinterunderground.train_transfers,t) 
+			return 
+		end
+		local in_carriages = transfer.in_carriages
+		if in_carriages == nil or #in_carriages == 0 then --transfer complete
+			local out_carriages = transfer.out_carriages
+			if out_carriages ~= nil and #out_carriages>  0 then
+				for k = 1, #out_carriages do
+					if is_valid(out_carriages[k]) then
+						out_carriages[k].operable=true
+					end
 				end
-				for k=1,#in_train.carriages do carriage = in_train.carriages[k]
+				out_carriages[1].train.manual_mode = transfer.manual_mode 
+				
+			end
+			table.remove(global.modmashsplinterunderground.train_transfers,t)
+		else
+			
+			local out_carriages = transfer.out_carriages
+			local in_train = transfer.in_train
+			local from = transfer.from
+			local to = transfer.to
+			if is_valid(from) == false or is_valid(to) == false then --if station removed
+				if out_carriages ~= nil and #out_carriages>  0 then
+					for k = #out_carriages, 1, -1 do
+						if is_valid(out_carriages[k]) then
+							out_carriages[k].operable=true
+						else
+							table.remove(out_carriages,k)
+						end
+					end
+				end
+				if in_carriages ~= nil and #in_carriages>  0 then
+					for k = #in_carriages,1, -1 do
+						if is_valid(in_carriages[k]) then
+							in_carriages[k].operable=true
+						else
+							table.remove(in_carriages,k)
+						end
+					end
+				end
+				table.remove(global.modmashsplinterunderground.train_transfers,t)
+				return
+			end
+			
+			local tosd = local_shape_data(to.position,to.direction)
+			local fromsd = local_shape_data(from.position,from.direction)
+			
+			if transfer.speed == nil then transfer.speed = 0 end
+			transfer.speed = math.min(transfer.speed + 0.01,0.5)
+			--we are testing from last as it was sorted to be closeset is last however we still want 
+			--to loop over in the event a carrige became invalid and needs to be removed.  first valid will break loop
+			for k=#in_carriages,1,-1 do carriage = in_carriages[k]
+				if is_valid(carriage) == true then					
 					if distance(from.position.x,from.position.y,carriage.position.x,carriage.position.y) < 3.8 then
-						carriage.destroy({raise_destroy=false})
+						
+						
+						local e = nil
+						if carriage.type == "locomotive" or carriage.type == "artillery-wagon" then
+							e = to.surface.create_entity{name=carriage.name, direction=carriage.direction,orientation=carriage.orientation, position=tosd.end_track_place, force = carriage.force}
+						else
+							e = to.surface.create_entity{name=carriage.name, direction=carriage.direction, position=tosd.end_track_place, force = carriage.force}
+
+						end
+						if e ~= nil then 							
+							--to transfer stuff player fuel resources grid
+							e.connect_rolling_stock(defines.rail_direction.front)
+							if e.train.schedule == nil then
+								e.train.schedule = carriage.train.schedule
+								--print("Before ".. carriage.train.schedule.current .. " " .. e.train.schedule.current)
+								if #e.train.schedule.records>0 then			
+									
+									local next = carriage.train.schedule.current 
+									next = next + 1
+									--print("update ".. carriage.train.schedule.current.. " " .. next)
+									if next <= #e.train.schedule.records then
+										e.train.go_to_station(next)
+										--e.train.schedule.current = next
+									else
+										--e.train.schedule.current = 1
+										e.train.go_to_station(1)
+									end
+								end
+								--print("After ".. carriage.train.schedule.current .. " " .. e.train.schedule.current)
+							end
+							table.insert(out_carriages,1,e)
+							local_transfer_carrrige_state(carriage,e)
+							carriage.disconnect_rolling_stock(defines.rail_direction.back)
+							carriage.destroy({raise_destroy=false})
+							table.remove(in_carriages,k)
+						end
 						break
 					end
+				else
+					table.remove(in_carriages,k)
 				end
 			end
-			if is_valid(out_train) and #in_train.carriages > 0 then
-			end
-		else
-			if is_valid(in_train) and #in_train.carriages > 0 then
-				for k=#in_train.carriages,1,-1 do carriage = in_train.carriages[k]
-					if distance(from.position.x,from.position.y,carriage.position.x,carriage.position.y) < 3.8 then
-						carriage.destroy({raise_destroy=false})
-						print(is_valid(in_train))
-					end
+			transfer.in_train = nil
+			for k = #in_carriages,1,-1 do				
+				if is_valid(in_carriages[k].train) then
+					local carriage = in_carriages[k]
+					transfer.in_train = carriage.train
+					local_set_train_heading(transfer.in_train,from.direction,0.2)
+					break
+				else
+					table.remove(in_carriages.k)
 				end
 			end
-			if is_valid(out_train) and #in_train.carriages > 0 then
+			transfer.out_train = nil
+			for k = #out_carriages, 1, -1 do				
+				if is_valid(out_carriages[k]) and is_valid(out_carriages[k].train) then		
+					local carriage = out_carriages[k]
+					transfer.out_train = carriage.train
+					local_set_train_heading(transfer.out_train,from.direction,0.2)
+					break
+				else
+					table.remove(out_carriages,k)
+				end
 			end
 		end
-		if is_valid(in_train) and #in_train.carriages > 0 then
-			if sv < 0 then
-				in_train.speed = math.max(in_train.speed - 0.01,-0.5)
-			else
-				in_train.speed = math.min(in_train.speed + 0.01,0.5)
-			end
-			in_train.speed = transfer.speed
-		end
-		if is_valid(out_train) and #out_train.carriages > 0 then
-			if sv < 0 then
-				out_train.speed = math.max(out_train.speed - 0.01,-0.5)
-			else
-				out_train.speed = math.min(out_train.speed + 0.01,0.5)
-			end
-			out_train.speed = out_train.speed
-		end
-
 	end
 end
 
@@ -981,8 +1234,141 @@ local local_underground_tick = function()
 	end
 end
 
-local local_underground_removed = function(entity,event,died)	
+local local_add_rubble = function(pos,surface)
+	for k=1, math.random(8,14) do
+		local p = {x=pos.x-3 + math.random(1,6), y=pos.y-3 + math.random(1,6)}
+		if ends_with(surface.name,"-deep-underground") == true then
+			surface.create_entity({name = level_two_rock_prefix..base_rock_names[math.random(#base_rock_names)], position = p,force = force_player })
+		elseif ends_with(surface.name,"-underground") == true then
+			surface.create_entity({name = level_one_rock_prefix..base_rock_names[math.random(#base_rock_names)], position = p,force = force_player })
+		else
+			surface.create_entity({name = base_rock_names[math.random(#base_rock_names)], position = p,force = force_player })
+		end
+	end
+end
 
+local local_update_fake_stops = function(surface)
+	--to be implemented later
+	-- issue is i cannot get the train to select next station in index, try altering actual GUI if possible
+	--if true then return end
+	local surface = surfaces[surface.name]
+	if surface == nil then 
+		return 
+	end
+	
+	local all_surface_stops = {}
+	local added_surface_stops = {}
+	--do by name not surfaces[name]
+	surface_list = {surface.top_name,surface.middle_name,surface.bottom_name}
+	--reset
+	for k=1, #surface_list do surface = surfaces[surface_list[k]]				
+		if surface~=nil then
+			
+			if surface.super_stops == nil then surface.super_stops = {} end
+			
+			if surface.super_stops.fake_stops ~= nil then --kill existing an check status
+				for j =1, #surface.super_stops.fake_stops do				
+					surface.super_stops.fake_stops[j].destroy({raise_destroy=false})					
+				end
+			else
+				surface.super_stops.fake_stops = {}
+			end
+			surface.super_stops.stop = nil
+			local s = game.surfaces[surface_list[k]]
+			local r = {}
+			if is_valid(s) == true then
+				local e = s.find_entities_filtered{name = {"subway-level-one","subway-level-two"},force = force_player}
+				if #e > 0 then					
+					--this surface has a subway so it's adjacent level has access to its stops
+					e = s.find_entities_filtered{type = "train-stop",force = force_player} 					
+					for k=1, #e do local f = e[k]					
+						if is_valid(f) == true and table_contains(r,f.backer_name) == false then 
+							table.insert(r,f.backer_name)
+						end
+					end
+				end
+			end
+			all_surface_stops[surface_list[k]] = r
+			added_surface_stops[surface_list[k]] = {}
+		end		
+	end	
+	--add bottom and top to middle
+	--add middle and bottom to top
+	--add top and middle to bottom
+	surface_list = {
+		{
+			surface = surface.middle_name,
+			others = {surface.bottom_name,surface.top_name}
+		},
+		{
+			surface = surface.top_name,
+			others = {surface.bottom_name,surface.middle_name}
+		},
+		{
+			surface = surface.bottom_name,
+			others = {surface.middle_name,surface.top_name}
+		}
+	}
+	for k=1, #surface_list do 		
+		--if there are stops on this surface then add to other surfaces
+		if #all_surface_stops[surface_list[k].surface] > 0 and surfaces[surface_list[k].surface] ~= nil  then	
+			--this is where it goes wrong because the top surface has stops containing it and underground 
+			--and underground has stops containing it and dee-underground
+			local super_stop = nil
+			if ends_with(surface_list[k].surface,"-deep-underground") then
+				--the superstop must be first stop in middle_surface bottom_entity
+				local sn = surfaces[surface_list[k].surface].middle_name
+				local actual_surface = surfaces[sn]
+				if #actual_surface.stops > 0 then 
+					super_stop = actual_surface.stops[1].bottom_entity 
+				end
+			elseif ends_with(surface_list[k].surface,"-underground") then
+				--the superstop must be first stop in top_surface bottom_entity
+				local sn = surfaces[surface_list[k].surface].top_name
+				local actual_surface = surfaces[sn]
+				if #actual_surface.stops > 0 then 
+					super_stop = actual_surface.stops[1].bottom_entity
+				end
+			else
+				
+				--the superstop must be first stop in top_surface top_entity
+				local sn = surfaces[surface_list[k].surface].top_name
+				local actual_surface = surfaces[sn]				
+				if #actual_surface.stops > 0 then 
+					super_stop = actual_surface.stops[1].top_entity
+				end
+			end		
+			if is_valid(super_stop) == true then
+				if added_surface_stops[super_stop.surface.name] == nil then
+					added_surface_stops[super_stop.surface.name]  = {}
+				end
+				surfaces[surface_list[k].surface].super_stops.stop = super_stop
+				for j = 1, #surface_list[k].others do
+					for m = 1, #all_surface_stops[surface_list[k].others[j]] do
+						local surface_stops = all_surface_stops[surface_list[k].others[j]]
+						for n = 1, #surface_stops do
+							--add check name dose not exist on surface and not already added
+							--not already added need test condition for this surface
+							--destroy not working didnt
+							if table_contains(added_surface_stops[super_stop.surface.name],surface_stops[n]) == false then
+								
+								local sd = local_shape_data(super_stop.position,super_stop.direction)
+								local e = super_stop.surface.create_entity{name = "fake-stop", position = super_stop.position, direction= sd.opposite_direction, force = force_player}
+								e.backer_name = surface_stops[n]
+								table.insert(surfaces[surface_list[k].surface].super_stops.fake_stops,e)
+								table.insert(added_surface_stops[super_stop.surface.name],surface_stops[n])
+							end
+						end
+						
+					end
+				end
+			end
+		end
+	end
+
+end
+
+local local_underground_removed = function(entity,event,died)	
 	if died ~= true then died = false end
 
 	local surface = surfaces[entity.surface.name]
@@ -1167,28 +1553,49 @@ local local_underground_removed = function(entity,event,died)
 	elseif entity.name == "subway-level-one" then				
 		for index, access in pairs(stops) do
 			if access.top_entity == entity then
+				local surface = nil
 				if died == true then
-					local surface = access.bottom_entity.surface
+					surface = access.bottom_entity.surface
+					local other_surface = access.top_entity.surface
 					local pos = access.bottom_entity.position
+					local dir = access.bottom_entity.direction
 					local name = access.bottom_entity.name
 					access.bottom_entity.destroy()
-					surface.create_entity{ name = "entity-ghost", inner_name = name, position = pos, force = force_player}
+					local_add_rubble(pos,surface)
+					local_add_rubble(pos,other_surface)
+					surface.create_entity{ name = "entity-ghost", inner_name = name, direction = dir, position = pos, force = force_player}
 				else
+					local pos = access.bottom_entity.position
+					surface = access.bottom_entity.surface
+					local other_surface = access.top_entity.surface
 					access.bottom_entity.destroy()
+					local_add_rubble(pos,surface)
+					local_add_rubble(pos,other_surface)
 				end
-				table.remove(stops, index)				
+				table.remove(stops, index)	
+				local_update_fake_stops(surface)
 				return
 			elseif access.bottom_entity == entity then
 				if died == true then
-					local surface = access.top_entity.surface
+					surface = access.top_entity.surface
+					local other_surface = access.bottom_entity.surface
 					local pos = access.top_entity.position
 					local name = access.top_entity.name
+					local dir = access.top_entity.direction
 					access.top_entity.destroy()
-					surface.create_entity{ name = "entity-ghost", inner_name = name, position = pos, force = force_player}
+					local_add_rubble(pos,surface)
+					local_add_rubble(pos,other_surface)
+					surface.create_entity{ name = "entity-ghost", inner_name = name, direction=dir, position = pos, force = force_player}					
 				else
+					local pos = access.top_entity.position
+					surface = access.top_entity.surface
+					local other_surface = access.bottom_entity.surface
 					access.top_entity.destroy()
+					local_add_rubble(pos,surface)
+					local_add_rubble(pos,other_surface)
 				end
-				table.remove(stops, index)				
+				table.remove(stops, index)	
+				local_update_fake_stops(surface)
 				return
 			end
 		end
@@ -1197,24 +1604,46 @@ local local_underground_removed = function(entity,event,died)
 			if access.top_entity == entity then
 				if died == true then
 					local surface = access.bottom_entity.surface
+					local other_surface = access.top_entity.surface
 					local pos = access.bottom_entity.position
+					local dir = access.bottom_entity.direction
 					local name = access.bottom_entity.name
 					access.bottom_entity.destroy()
-					surface.create_entity{ name = "entity-ghost", inner_name = name, position = pos, force = force_player}
+					local_add_rubble(pos,surface)
+					local_add_rubble(pos,other_surface)
+					surface.create_entity{ name = "entity-ghost",direction=dir, inner_name = name, position = pos, force = force_player}
+					local_update_fake_stops(surface)
 				else
+					local pos = access.bottom_entity.position
+					local surface = access.bottom_entity.surface
+					local other_surface = access.top_entity.surface
 					access.bottom_entity.destroy()
+					local_add_rubble(pos,surface)
+					local_add_rubble(pos,other_surface)
+					local_update_fake_stops(surface)
 				end
-				table.remove(stops2, index)				
+				table.remove(stops2, index)			
 				return
 			elseif access.bottom_entity == entity then
 				if died == true then
 					local surface = access.top_entity.surface
+					local other_surface = access.bottom_entity.surface
 					local pos = access.top_entity.position
 					local name = access.top_entity.name
+					local dir = access.top_entity.direction
 					access.top_entity.destroy()
-					surface.create_entity{ name = "entity-ghost", inner_name = name, position = pos, force = force_player}
+					local_add_rubble(pos,surface)
+					local_add_rubble(pos,other_surface)
+					surface.create_entity{ name = "entity-ghost", inner_name = name,direction=dir, position = pos, force = force_player}
+					local_update_fake_stops(surface)
 				else
+					local pos = access.top_entity.position
+					local surface = access.top_entity.surface
+					local other_surface = access.bottom_entity.surface
 					access.top_entity.destroy()
+					local_add_rubble(pos,surface)
+					local_add_rubble(pos,other_surface)
+					local_update_fake_stops(surface)
 				end
 				table.remove(stops2, index)				
 				return
@@ -1263,11 +1692,19 @@ local local_test_train_surface = function(sd,surface,name)
 	for k=1, #sd.exclude_zones do local d= sd.exclude_zones[k]
 		local tracks = surface.find_entities_filtered{area = {{d.left_top.x, d.left_top.y}, {d.right_bottom.x, d.right_bottom.y}}, name = name, invert=true}			
 		for j=#tracks,1,-1 do
-			if tracks[j] == nil or tracks[j].type == "particle-source" or tracks[j].type == "corpse" or tracks[j].type == "resource" or tracks[j].type == "tree" or table_contains({level_one_attack_rock,level_two_attack_rock},tracks[j].name) or table_contains(rock_names,tracks[j].name) then
+			if tracks[j] == nil or tracks[j].type == "item-entity" or tracks[j].type == "particle-source" or tracks[j].type == "corpse" or tracks[j].type == "resource" or tracks[j].type == "tree" or table_contains({level_one_attack_rock,level_two_attack_rock},tracks[j].name) or table_contains(rock_names,tracks[j].name) then
 				table.remove(tracks,j)
+			elseif tracks[j].type == "straight-rail" then
+				if table_contains(surface.find_entities_filtered{area = {{sd.entry_track_area.left_top.x, sd.entry_track_area.left_top.y}, {sd.entry_track_area.right_bottom.x, sd.entry_track_area.right_bottom.y}}, name = "straight-rail"},tracks[j]) then
+					table.remove(tracks,j)
+				end
 			end
 		end
-		--for z=1,#tracks do print(tracks[z].type) end
+		--for j=#tracks,1,-1 do
+		--	print(d)
+		--	print(tracks[j].position)
+		--	print(tracks[j].type .. " " .. tracks[j].name)
+		--end
 		if #tracks > 0 then return false end
 	end	
 end
@@ -1316,7 +1753,7 @@ local local_on_entity_renamed = function(event)
 	if is_valid(entity) == false then return end
 	local surface = surfaces[entity.surface.name]
 	if surface == nil then return end
-	if entity.type == "train-stop" then
+	if entity.type == "train-stop" then		
 		if entity.name == "subway-level-one" then
 			if ends_with(entity.surface.name,"-underground") == true then
 				local stops = surfaces[surface.top_name].stops
@@ -1324,6 +1761,7 @@ local local_on_entity_renamed = function(event)
 					if s.bottom_entity == entity then
 						local_update_stop_name(s.bottom_entity,s.bottom_entity)
 						local_update_stop_name(s.bottom_entity,s.top_entity)
+						local_update_fake_stops(entity.surface)
 						break
 					end
 				end
@@ -1335,6 +1773,7 @@ local local_on_entity_renamed = function(event)
 					if s.top_entity == entity then	
 						local_update_stop_name(s.top_entity,s.top_entity)
 						local_update_stop_name(s.top_entity,s.bottom_entity)
+						local_update_fake_stops(entity.surface)
 						break
 					end
 				end
@@ -1346,6 +1785,7 @@ local local_on_entity_renamed = function(event)
 					if s.bottom_entity == entity then
 						local_update_stop_name(s.bottom_entity,s.bottom_entity)
 						local_update_stop_name(s.bottom_entity,s.top_entity)
+						local_update_fake_stops(entity.surface)
 						break
 					end
 				end
@@ -1355,6 +1795,7 @@ local local_on_entity_renamed = function(event)
 					if s.top_entity == entity then
 						local_update_stop_name(s.top_entity,s.top_entity)
 						local_update_stop_name(s.top_entity,s.bottom_entity)
+						local_update_fake_stops(entity.surface)
 						break
 					end
 				end
@@ -1364,7 +1805,7 @@ local local_on_entity_renamed = function(event)
 	end
 
 local local_add_stop = function(entity,next_surface)
-	--print(next_surface.name)
+	
 	local sd = local_shape_data(entity.position,entity.direction)
 	local osd = local_shape_data(sd.opposite_posistion,sd.opposite_direction)
 	if local_test_train_surface(sd,entity.surface,entity.name) == false then return false end
@@ -1396,9 +1837,12 @@ local local_add_stop = function(entity,next_surface)
 			r.destroy({raise_destroy = true}) 
 		end			
 	end	
-	
 	generate_surface_area_train(sd.opposite_posistion.x, sd.opposite_posistion.y,osd,next_surface,prefix)
-	return next_surface.can_place_entity{name=entity.name, position=sd.opposite_posistion, direction=osd.direction, force=entity.force}	
+	if entity.name=="entity-ghost" then
+		return next_surface.can_place_entity{name=entity.ghost_name, position=sd.opposite_posistion, direction=osd.direction, force=entity.force}	
+	else
+		return next_surface.can_place_entity{name=entity.name, position=sd.opposite_posistion, direction=osd.direction, force=entity.force}	
+	end
 end
 
 local local_ensure_can_place_entity_inner = function(entity,event,surface)
@@ -1414,6 +1858,7 @@ local local_ensure_can_place_entity_inner = function(entity,event,surface)
 				return local_add_stop(entity,game.surfaces[surface.middle_name])
 		
 			else
+				
 				local rocks = game.surfaces[surface.middle_name].find_entities_filtered{area = {{entity.position.x-2.5, entity.position.y-2.5}, {entity.position.x+2.5, entity.position.y+2.5}}, name = rock_names}			
 				for index=1, #rocks do local r = rocks[index]
 					if is_valid(r) then 
@@ -1454,6 +1899,7 @@ local local_ensure_can_place_entity_inner = function(entity,event,surface)
 				generate_surface_area(entity.position.x, entity.position.y,5,game.surfaces[surface.middle_name],global.modmashsplinterunderground.resource_level_one,false,level_one_rock_prefix)
 				return game.surfaces[surface.middle_name].can_place_entity{name=ename, position=entity.position, direction=entity.direction, force=entity.force}	
 			elseif ename == "subway-level-two" then
+
 				return local_add_stop(entity,game.surfaces[surface.middle_name])
 			end
 		end			
@@ -1461,6 +1907,7 @@ local local_ensure_can_place_entity_inner = function(entity,event,surface)
 	elseif entity.type == "curved-rail" or entity.type == "straight-rail" or entity.type == "rail-signal" or entity.type == "rail-chain-signal" then	
 		if modmashsplinterunderground.defines.trains == true then
 			local f = entity.surface.find_entity("subway-level-one",entity.position)
+			
 			if f == nil then f = entity.surface.find_entity("subway-level-two",entity.position) end
 
 			if f ~= nil then
@@ -1561,11 +2008,13 @@ local local_underground_added_std = function(entity,event)
 			local u = game.surfaces[surface.middle_name].create_entity{name = entity.name, position = sd.opposite_posistion, force = force_player, direction = sd.opposite_direction}				
 			local_update_stop_name(entity,u)
 			table.insert(stops,{bottom_entity = u, top_entity = entity})
+			local_update_fake_stops(entity.surface)
 		elseif surface.level == 1 then
 			local sd = local_shape_data(entity.position,entity.direction)
 			local u = game.surfaces[surface.top_name].create_entity{name = entity.name, position = sd.opposite_posistion, force = force_player, direction = sd.opposite_direction}
 			local_update_stop_name(entity,u)
 			table.insert(stops,{bottom_entity = entity, top_entity = u})
+			local_update_fake_stops(entity.surface)
 		end
 	elseif entity.name == "subway-level-two" then 	
 		local_update_stop_name(entity,entity)
@@ -1574,12 +2023,14 @@ local local_underground_added_std = function(entity,event)
 			local osd = local_shape_data(entity.position,sd.opposite_direction)
 			local u = game.surfaces[surface.bottom_name].create_entity{name=entity.name, position=sd.opposite_posistion, direction=osd.direction, force=entity.force}	
 			local_update_stop_name(entity,u)
-			table.insert(stops2,{bottom_entity = u, top_entity = entity})
+			table.insert(stops2,{bottom_entity = u, top_entity = entity, fake_bottom_entity = u})
+			local_update_fake_stops(entity.surface)
 		elseif surface.level == 2 then
 			local sd = local_shape_data(entity.position,entity.direction)
 			local u = game.surfaces[surface.middle_name].create_entity{name = entity.name, position = sd.opposite_posistion, force = force_player,direction = sd.opposite_direction}
 			local_update_stop_name(entity,u)
 			table.insert(stops2,{bottom_entity = entity, top_entity = u})
+			local_update_fake_stops(entity.surface)
 		end
 	end
 	end
@@ -1652,10 +2103,6 @@ local local_underground_added_ml = function(entity,event)
 		local u2 = game.surfaces[surface.bottom_name].create_entity{name = entity.name, position = entity.position, force = force_player}				
 		table.insert(accesses2,{bottom_entity = u2, top_entity = entity})
 
-		--print("top "..entity.surface.name)
-		--print("middle "..u.surface.name)
-		--print("bottom "..u2.surface.name)
-
 	elseif entity.surface.name == surface.bottom_name then
 		local u = game.surfaces[surface.middle_name].create_entity{name = entity.name, position = entity.position, force = force_player}				
 		table.insert(accesses2,{bottom_entity = entity, top_entity = u})
@@ -1663,13 +2110,8 @@ local local_underground_added_ml = function(entity,event)
 		local u2 = game.surfaces[surface.top_name].create_entity{name = entity.name, position = entity.position, force = force_player}
 		table.insert(accesses,{bottom_entity = u, top_entity = u2})
 
-		--print("top "..entity.surface.name)
-		--print("middle "..u.surface.name)
-		--print("bottom "..u2.surface.name)
-
 	end
 
-	--print(#accesses .. " " .. #accesses2)
 	end
 
 
@@ -1822,8 +2264,6 @@ local local_register_loot = function()
 	end
 end
 
-
-
 local local_init = function() 
 	if global.modmashsplinterunderground.surfaces == nil then
 		global.modmashsplinterunderground.surfaces = {}
@@ -1857,17 +2297,31 @@ local local_on_configuration_changed = function(event)
 
 	local changed = event.mod_changes and event.mod_changes["modmashsplinterunderground"]
 	if changed then
-		if changed.old_version == nil or changed.old_version < "1.1.16" then
+		if changed.old_version == nil or changed.old_version < "1.1.18" then			
 			for name, value in pairs(global.modmashsplinterunderground.surfaces) do
 				if global.modmashsplinterunderground.surfaces[name].stops == nil then
 					global.modmashsplinterunderground.surfaces[name].stops = {}
+				end				
+				if global.modmashsplinterunderground.surfaces[name].super_stops == nil then
+					global.modmashsplinterunderground.surfaces[name].super_stops = {}
+					
+				end				
+			end	
+			for name, value in pairs(global.modmashsplinterunderground.surfaces) do
+				if ends_with(name,"-underground") == false then
+					local_update_fake_stops(game.surfaces[name] )
+				end
+			end
+		end
+		if changed.old_version == nil or changed.old_version < "1.1.19" then			
+			for name, value in pairs(global.modmashsplinterunderground.surfaces) do
+				if ends_with(name,"-underground") == false then
+					local_update_fake_stops(game.surfaces[name] )
 				end
 			end
 		end
 	end
 	end
-
-
 
 local local_entity_damaged = function(event)
 	if event.entity.force.name == force_enemy then
@@ -1903,7 +2357,7 @@ end
 local local_draw_debug_stop = function(stop,player,ttl)
 
 		local sd = local_shape_data(stop.position,stop.direction)
-		print(sd.direction)
+		--print(stop.direction)
 		if sd.clear_area ~= nil then
 			local id = rendering.draw_rectangle
 			{
@@ -2008,31 +2462,43 @@ local local_draw_debug_stop = function(stop,player,ttl)
 	end
 
 
+
+
 local local_on_selected_entity_changed = function(event)
 
 	local player = game.players[event.player_index]
 	local selected = player.selected
 	
-	if selected ~=nil  then
-	if selected.type == "locomotive" then print(selected.train.id) end
-	if selected.type == "cargo-wagon" then print(selected.train.id) end
-	end
+	--if selected ~=nil and selected.type == "train-stop"  then
+	--	local_draw_debug_stop(selected,player,1)
+	--end
+		--[[if selected.type == "locomotive" or selected.type == "cargo-wagon" or selected.type == "fluid-wagon" or selected.type == "artillery-wagon" then 
+			if selected.train.schedule ~= nil and #selected.train.schedule.records>0 then								
+				local next = selected.train.schedule.current 
+				next = next + 1
+
+				if next > #selected.train.schedule.records then
+					selected.train.go_to_station(next)
+					--selected.train.schedule.current = next
+				else
+					--selected.train.schedule.current = 1
+					selected.train.go_to_station(1)
+				end
+				--print( carriage.train.schedule.current .. " " .. e.train.schedule.current)
+			end]]
+			--(north 0) (south 0.5)	+ always direction of train or artillery_wagon_ammo	
+			--local t = selected.train.carriages[1]
+			--print(t.orientation.." "..t.direction)
+			--selected.train.speed = 0.2 end
+			--local_set_train_heading(selected.train,6,0.2)
+		--end
+	--end
 
 
 	if selected ~= nil and selected.name ~= underground_accessml then
 
 		local surface = selected.surface
 		if surface == nil then return end
-
-		if selected.direction ~= nil then
-			--print(selected.name.. " ".. selected.position.x.. " ".. selected.position.y.. " ".. selected.direction)
-			if selected.name == "subway-level-one" then
-				
-				local_draw_debug_stop(selected,player,5)
-				
-			end
-		end
-
 		local s = surfaces[surface.name]
 		if not s then return end
 		local accesses = surfaces[s.top_name].accesses
@@ -2068,11 +2534,27 @@ local local_transport_train = function(train, from,to)
 			global.modmashsplinterunderground.train_transfers[k].out_train == train then
 			return end
 	end
-	local current_tracks = train.get_rails()
+	
+	if #train.carriages > 3 then
+		from.surface.create_entity{name="flying-text", position = from.position, text="Train too long" , color={r=1,g=0.25,b=0.0}}
+		train.manual_mode = true
+		return
+	end
+	if #train.carriages == 3 then
+		if from.name == "subway-level-one" and from.force.technologies["subway-level-one-more1"].researched ~= true then
+			from.surface.create_entity{name="flying-text", position = from.position, text="Train too long, research available" , color={r=1,g=0.25,b=0.0}}
+			train.manual_mode = true
+			return
+		elseif from.name == "subway-level-two" and from.force.technologies["subway-level-two-more1"].researched ~= true then
+			from.surface.create_entity{name="flying-text", position = from.position, text="Train too long, research available" , color={r=1,g=0.25,b=0.0}}
+			train.manual_mode = true
+			return
+		end
+	end
 	
 
 	local sd = local_shape_data(from.position,from.direction)
-	
+	local manual_mode = train.manual_mode
 	local out_track = to.connected_rail
 	if out_track == nil then 
 		from.surface.create_entity{name="flying-text", position = from.position, text="No output track" , color={r=1,g=0.25,b=0.0}}
@@ -2080,11 +2562,14 @@ local local_transport_train = function(train, from,to)
 		return
 	end
 
-	if out_track.get_rail_segment_length() <= #current_tracks * 2 then
+	--[[if out_track.get_rail_segment_length() <= #current_tracks * 2 then
+		print(out_track.get_rail_segment_entity(defines.rail_direction.back, false).name)
 		from.surface.create_entity{name="flying-text", position = from.position, text="Insufficent output space signal in way" , color={r=1,g=0.25,b=0.0}}
 		train.manual_mode = true
 		return
-	end
+	end]]
+
+	local current_tracks= train.get_rails()
 	for k=1, #current_tracks do		
 		out_track = out_track.get_connected_rail{rail_direction = sd.rail_direction, rail_connection_direction =  defines.rail_connection_direction.straight}
 		if out_track == nil then
@@ -2099,18 +2584,24 @@ local local_transport_train = function(train, from,to)
 			return
 		end
 	end
-	print(from.position)
+	local in_carriages = {}
 	for k=1,#train.carriages do
-		print(train.carriages[k].position.x .." ".. train.carriages[k].position.y .." "..distance(from.position.x,from.position.y,train.carriages[k].position.x,train.carriages[k].position.y))
+		--print(train.carriages[k].position.x .." ".. train.carriages[k].position.y .." "..distance(from.position.x,from.position.y,train.carriages[k].position.x,train.carriages[k].position.y))
 		train.carriages[k].operable=false
+		table.insert(in_carriages,train.carriages[k])
+		--need to sort  traversing in reverse  closest shoud be last as first to pop off
+		table.sort(in_carriages, function(c1,c2) return distance(c1.position.x,c1.position.y,from.position.x,from.position.y) > distance(c2.position.x,c2.position.y,from.position.x,from.position.y) end)
 	end
+	--print("---------------")
+	--for k=1,#in_carriages do
+	--	print(distance(in_carriages[k].position.x,in_carriages[k].position.y,from.position.x,from.position.y))
+	--end
 	table.insert(global.modmashsplinterunderground.train_transfers,
-		{in_train = train, from=from, to=to }
+		{in_train = train, out_train = train,in_carriages = in_carriages, out_carriages = {}, from=from, to=to, manual_mode =  manual_mode}
 	)
-	--print(" from "..from.backer_name.." to "..to.backer_name)
 end
 
-local local_on_train_changed_state = function(event)
+local local_on_train_changed_state = function(event)	
 	local train = event.train
 	local old_state = event.old_state
 
@@ -2119,8 +2610,10 @@ local local_on_train_changed_state = function(event)
 			
 			local station = train.station
 			local surface = surfaces[station.surface.name]
-			if surface == nil then return end
-			if ends_with(surface.name,"-deep-underground") == true then
+			if surface == nil then return end		
+			
+			--print(surface.top_name)
+			if ends_with(station.surface.name,"-deep-underground") == true then
 				local stops = surfaces[surface.middle_name].stops
 				for k=1, #stops do local s = stops[k]
 					if s.bottom_entity == station then
@@ -2128,11 +2621,12 @@ local local_on_train_changed_state = function(event)
 						break
 					end
 				end
-			elseif ends_with(surface.name,"-underground") == true then
+			elseif ends_with(station.surface.name,"-underground") == true then
+				
 				if train.station.name == "subway-level-one" then
 					local stops = surfaces[surface.top_name].stops
 					for k=1, #stops do local s = stops[k]
-						if s.top_entity == station then
+						if s.bottom_entity == station then
 							local_transport_train(train,s.bottom_entity,s.top_entity)
 							break
 						end
@@ -2156,6 +2650,17 @@ local local_on_train_changed_state = function(event)
 				end
 			end			
 		end
+	else
+		--[[for k = 1, #event.train.carriages do
+			local carriage = event.train.carriages[k]
+			local stop = carriage.surface.find_entities_filtered{name= "subway-level-one", position = carriage.position, limit = 1, radius = 5}
+			--check distance and do normal transport
+			--if stops == nil then stops = carriage.surface.find_entity("subway-level-two",carriage.position) end
+			--if stops ~= nil then
+			--print(#stop)
+			--end
+			--print(event.train.carriages[k].get_driver())
+		end]]
 	end
 end
 
@@ -2188,6 +2693,11 @@ script.on_event(defines.events.on_robot_mined_entity,
 		if is_valid(event.entity) then local_underground_removed(event.entity,event) end 
 	end)
 
+script.on_event(defines.events.script_raised_destroy,
+	function(event) 
+		if is_valid(event.entity) then local_underground_removed(event.entity,event) end 
+	end)
+	
 script.on_event(defines.events.on_player_mined_entity,
 	function(event) 
 		if is_valid(event.entity) then local_underground_removed(event.entity,event) end 

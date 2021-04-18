@@ -1,4 +1,9 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.04
+  Changes:
+    - had wanted to make blank circuits more usefull so basically copied gold but altered to double ingredient  
+
+---------------------------------------------------------------------------------------------------
 Version: 1.1.03
   Changes:
     - nothing yet

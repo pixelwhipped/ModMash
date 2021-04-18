@@ -8,5 +8,12 @@
 		minimum_value = 1,
 		maximum_value = 60,
 		order = "a"
-	}	
+	},{
+		type = "string-setting",
+		name = "setting-lab-mod",
+		setting_type = "startup",
+		default_value = "Original",
+		allowed_values = {"Original", "Experimental"},
+		order = "b"
+	},
 })

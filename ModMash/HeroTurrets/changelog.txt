@@ -1,4 +1,9 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.06
+  Changes:
+    - Russian local thanks to Assisstent(git)
+
+---------------------------------------------------------------------------------------------------
 Version: 1.1.05
   Bug Fixes:
     - added can place entiry check and nil check
@@ -7,6 +12,7 @@ Version: 1.1.05
 Version: 1.1.04
   Changes:
     - retention of damage dealt if Kill Counter is Exact
+
 ---------------------------------------------------------------------------------------------------
 Version: 1.1.03
   Bug Fixes:

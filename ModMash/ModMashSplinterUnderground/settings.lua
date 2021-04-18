@@ -45,5 +45,13 @@
 		minimum_value = 50,
 		maximum_value = 100,
 		order = "f"
-	}
+	},{
+		type = "int-setting",
+		name = "setting-teleport-cooldown",
+		setting_type = "runtime-global",
+		default_value = 2,
+		minimum_value = 1,
+		maximum_value = 4,
+		order = "g"
+	},
 })
