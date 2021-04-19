@@ -1,4 +1,10 @@
 ﻿------------------------------------------------------------------------------------------------
+Version: 1.1.20
+  Changes:
+    - Added mannual transfers for trains
+    - Added check train has left current destination
+
+------------------------------------------------------------------------------------------------
 Version: 1.1.19
   Changes:
     - Added teleport cooldown setting

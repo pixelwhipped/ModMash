@@ -1,4 +1,7 @@
-﻿require("prototypes.scripts.defines") 
+﻿--Trains dont like going in backwards need to fix
+--also need to fix blocking if the new output is different than next
+
+require("prototypes.scripts.defines") 
 local mod_gui = require("mod-gui")
 local distance = modmashsplinterunderground.util.distance
 local table_contains = modmashsplinterunderground.util.table.contains
@@ -1066,7 +1069,23 @@ end
 
 local local_train_transfers_tick = function()
 
-	if modmashsplinterunderground.defines.trains ~= true then return end
+	--todo check train has fully left out station before allowing back in
+	for k = #global.modmashsplinterunderground.train_transfers_clear, 1, -1 do
+		local left = true
+		local station = global.modmashsplinterunderground.train_transfers_clear[k].station
+		for j = 1, #global.modmashsplinterunderground.train_transfers_clear[k].out_carriages do
+			local c = global.modmashsplinterunderground.train_transfers_clear[k].out_carriages[j]
+			if is_valid(c) and c.surface.find_entity(station.name, c.position) == station then
+				left = false
+				break
+			end
+		end
+		if left == true then
+			table.remove(global.modmashsplinterunderground.train_transfers_clear,k)
+		end
+	end
+
+	--if modmashsplinterunderground.defines.trains ~= true then return end
 	if #global.modmashsplinterunderground.train_transfers == 0 then return end
 	
 	for t = #global.modmashsplinterunderground.train_transfers,1, -1 do
@@ -1078,15 +1097,19 @@ local local_train_transfers_tick = function()
 		local in_carriages = transfer.in_carriages
 		if in_carriages == nil or #in_carriages == 0 then --transfer complete
 			local out_carriages = transfer.out_carriages
+			local copy = {}
 			if out_carriages ~= nil and #out_carriages>  0 then
+				local carr
 				for k = 1, #out_carriages do
 					if is_valid(out_carriages[k]) then
 						out_carriages[k].operable=true
+						table.insert(copy,out_carriages[k])
 					end
 				end
 				out_carriages[1].train.manual_mode = transfer.manual_mode 
-				
+				table.insert(global.modmashsplinterunderground.train_transfers_clear,{out_carriages = copy,station = transfer.to})
 			end
+			
 			table.remove(global.modmashsplinterunderground.train_transfers,t)
 		else
 			
@@ -2271,6 +2294,7 @@ local local_init = function()
 		local_register_surface("nauvis")
 	end
 	if global.modmashsplinterunderground.train_transfers == nil then global.modmashsplinterunderground.train_transfers = {} end
+	if global.modmashsplinterunderground.train_transfers_clear == nil then global.modmashsplinterunderground.train_transfers_clear = {} end
 	surfaces = global.modmashsplinterunderground.surfaces
 	surfaces_top = global.modmashsplinterunderground.surfaces_top
 	local_register_loot()
@@ -2284,6 +2308,7 @@ local local_load = function()
 
 local local_on_configuration_changed = function(event) 
 	if global.modmashsplinterunderground.train_transfers == nil then global.modmashsplinterunderground.train_transfers = {} end
+	if global.modmashsplinterunderground.train_transfers_clear == nil then global.modmashsplinterunderground.train_transfers_clear = {} end
 	global.modmashsplinterunderground.banned_level_zero = nil 
 	global.modmashsplinterunderground.banned_level_one = nil 
 	global.modmashsplinterunderground.banned_level_two = nil 
@@ -2528,7 +2553,14 @@ end
 
 
 local local_transport_train = function(train, from,to)
-	--todo check oh please keep train equality if changed
+	--todo check train has fully left out station before allowing back in
+	for k=1, #global.modmashsplinterunderground.train_transfers_clear do
+		--whoops test any train carriage are in the train carrages cane comapre train
+		if global.modmashsplinterunderground.train_transfers_clear[k].out_carriages[1].train == train and
+			(global.modmashsplinterunderground.train_transfers_clear[k].station == to or global.modmashsplinterunderground.train_transfers_clear[k].station == from) then
+			return end -- we have not fully clear the destionation so cannot go back yet
+	end
+
 	for k=1, #global.modmashsplinterunderground.train_transfers do
 		if global.modmashsplinterunderground.train_transfers[k].in_train == train or
 			global.modmashsplinterunderground.train_transfers[k].out_train == train then
@@ -2602,17 +2634,15 @@ local local_transport_train = function(train, from,to)
 end
 
 local local_on_train_changed_state = function(event)	
+	
 	local train = event.train
 	local old_state = event.old_state
-
-	if train.state == defines.train_state.wait_station and old_state ~= defines.train_state.wait_station then
+	if train.manual_mode == false and train.state == defines.train_state.wait_station and old_state ~= defines.train_state.wait_station then
 		if train.station ~= nil and (train.station.name == "subway-level-one" or train.station.name == "subway-level-two") then	
 			
 			local station = train.station
 			local surface = surfaces[station.surface.name]
-			if surface == nil then return end		
-			
-			--print(surface.top_name)
+			if surface == nil then return end				
 			if ends_with(station.surface.name,"-deep-underground") == true then
 				local stops = surfaces[surface.middle_name].stops
 				for k=1, #stops do local s = stops[k]
@@ -2650,17 +2680,54 @@ local local_on_train_changed_state = function(event)
 				end
 			end			
 		end
-	else
-		--[[for k = 1, #event.train.carriages do
+	elseif train.manual_mode == true and train.state == defines.train_state.manual_control and train.speed == 0 then
+		for k = 1, #event.train.carriages do
 			local carriage = event.train.carriages[k]
-			local stop = carriage.surface.find_entities_filtered{name= "subway-level-one", position = carriage.position, limit = 1, radius = 5}
-			--check distance and do normal transport
-			--if stops == nil then stops = carriage.surface.find_entity("subway-level-two",carriage.position) end
-			--if stops ~= nil then
-			--print(#stop)
-			--end
-			--print(event.train.carriages[k].get_driver())
-		end]]
+			local station = carriage.surface.find_entity("subway-level-one",carriage.position)
+			if station == nil then
+				station = carriage.surface.find_entity("subway-level-two",carriage.position)
+			end
+			if station ~= nil then
+				local surface = surfaces[station.surface.name]
+				if surface == nil then return end	
+				if ends_with(station.surface.name,"-deep-underground") == true then
+					local stops = surfaces[surface.middle_name].stops
+					for k=1, #stops do local s = stops[k]
+						if s.bottom_entity == station then
+							local_transport_train(train, s.bottom_entity,s.top_entity)
+							break
+						end
+					end
+				elseif ends_with(station.surface.name,"-underground") == true then
+				
+					if station.name == "subway-level-one" then
+						local stops = surfaces[surface.top_name].stops
+						for k=1, #stops do local s = stops[k]
+							if s.bottom_entity == station then
+								local_transport_train(train,s.bottom_entity,s.top_entity)
+								break
+							end
+						end
+					else
+						local stops = surfaces[surface.middle_name].stops
+						for k=1, #stops do local s = stops[k]
+							if s.top_entity == station then
+								local_transport_train(train,s.top_entity,s.bottom_entity)
+								break
+							end
+						end
+					end									
+				else
+					local stops = surfaces[surface.top_name].stops
+					for k=1, #stops do local s = stops[k]
+						if s.top_entity == station then
+							local_transport_train(train,s.top_entity,s.bottom_entity)
+							break
+						end
+					end
+				end	
+			end
+		end
 	end
 end
 

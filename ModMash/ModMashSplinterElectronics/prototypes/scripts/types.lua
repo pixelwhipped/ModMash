@@ -191,5 +191,5 @@ local local_create_circuit_recipies = function()
 end
 
 if data ~= nil and data_final_fixes == true then
-	local_create_circuit_recipies()
+	--local_create_circuit_recipies()
 end
