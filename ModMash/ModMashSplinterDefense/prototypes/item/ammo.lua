@@ -81,5 +81,46 @@ data:extend(
     order = "a[basic-clips]-e[alien-rounds-magazine]",
     stack_size = 200
   },
+  {
+    type = "ammo",
+    name = "neural-toxin-rounds-magazine",
+    icon = "__modmashsplinterdefense__/graphics/icons/neural-toxin-rounds-magazine.png",
+    icon_size = 64,
+	icon_mipmaps = 4,
+    reload_time = 30,
+    ammo_type =
+    {
+      category = "bullet",
+      action =
+      {
+        type = "direct",
+        action_delivery =
+        {
+          type = "instant",
+          source_effects =
+          {
+            type = "create-explosion",
+            entity_name = "explosion-gunshot"
+          },
+          target_effects =
+          {
+            {
+                type = "create-entity",
+			    trigger_created_entity = true,
+                entity_name = "biter-neuro-toxin-puff",
+            },
+            {
+              type = "damage",
+              damage = { amount = 1, type = "physical"}
+            }
+          }
+        }
+      }
+    },
+    magazine_size = 10,
+    subgroup = "ammo",
+    order = "a[basic-clips]-f[neural-toxin-rounds-magazine]",
+    stack_size = 10
+  },
   }
 )

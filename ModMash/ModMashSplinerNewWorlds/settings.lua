@@ -17,3 +17,14 @@
 		order = "b"
 	},
 })
+
+data:extend(
+{
+	{
+		type = "bool-setting",
+		name = "new-worlds-setting-shortcuts-only",
+		setting_type = "runtime-global",
+		default_value = false,
+		order = "c"
+	}
+})

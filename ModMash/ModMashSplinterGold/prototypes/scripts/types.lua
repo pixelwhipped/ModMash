@@ -59,6 +59,7 @@ local local_update_recipe = function(recipe)
 	if #recipe.ingredients > 3 then return nil end
 	local foundplate = false
 	local foundcable = false
+	if ends_with(recipe.name,"-with-blank-circuit") then return nil end
 	for k = 1, #recipe.ingredients do
 		local ingredient = ensure_ingredient_format(recipe.ingredients[k])
 		if ingredient ~= nil then

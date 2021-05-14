@@ -4,17 +4,18 @@ local local_add_technology_if_missing = function(technology,recipe_name)
         if tech~= nil and tech.effects ~= nil then
             for k=1, #tech.effects do 
                 local effect = tech.effects[k]         
-                if effect ~= nil and effect.type == "unlock-recipe" and effect.recipe == recipe_name then return end
+                if effect ~= nil and effect.type == "unlock-recipe" and effect.recipe == recipe_name then return technology_name end
             end
         end
     end
     data:extend({technology})    
+    return technology.name
 end
 
 modmashsplinterassembling.util.tech.patch_technology("automation","assembling-machine-f")
 
 if settings.startup["setting-assembling-machine-burner-only"].value == "No" then
-    local_add_technology_if_missing(
+    local t = local_add_technology_if_missing(
         {
             type = "technology",
             name = "automation-4",
@@ -47,11 +48,12 @@ if settings.startup["setting-assembling-machine-burner-only"].value == "No" then
             order = "a-b-d",
         },
         "assembling-machine-4")
-
+    local t2 = "automation-5"
+    if t ~= "automation-4" then t2 = "automation-4" end
     local_add_technology_if_missing(
         {
             type = "technology",
-            name = "automation-5",
+            name = t2,
             icon = "__modmashsplinterassembling__/graphics/technology/automation-5.png",
             icon_size = 128,
             effects =
@@ -63,7 +65,7 @@ if settings.startup["setting-assembling-machine-burner-only"].value == "No" then
             },
             prerequisites =
             {
-              "automation-4",
+              t,
             },
             unit =
             {

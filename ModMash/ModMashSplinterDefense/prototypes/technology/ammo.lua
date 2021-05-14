@@ -97,4 +97,35 @@
         upgrade = true,
         order = "a-b-d",
     },
+    {
+        type = "technology",
+        name = "neural-toxin-rounds-magazine",
+        icon = "__base__/graphics/technology/military.png",
+        icon_mipmaps = 4,
+        icon_size = 256,
+        effects =
+        {
+          {
+            type = "unlock-recipe",
+            recipe = "neural-toxin-rounds-magazine"
+          }
+        },
+        prerequisites =
+        {
+          "fish-juice","ooze-juice"
+        },
+        unit =
+        {
+          count = 200,
+          ingredients =
+          {
+            {"automation-science-pack", 1},
+            {"logistic-science-pack", 1},
+            {"military-science-pack",1}
+          },
+          time = 45
+        },
+        upgrade = true,
+        order = "a-b-d",
+    },
 })

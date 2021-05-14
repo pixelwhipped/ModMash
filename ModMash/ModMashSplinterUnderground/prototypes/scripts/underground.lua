@@ -1,4 +1,26 @@
-﻿--Trains dont like going in backwards need to fix
+﻿--[[
+	/c
+local nauvis = game.surfaces.nauvis
+local nauvis2 = game.surfaces.nauvis2
+if not nauvis2 then
+    nauvis2 = game.create_surface("nauvis2")
+end
+
+local position = {0,0}
+local pole1 = nauvis.find_entity("small-electric-pole", position)
+local pole2 = nauvis2.find_entity("small-electric-pole", position)
+
+if not pole1 then
+    pole1 = nauvis.create_entity{name = "small-electric-pole", position = position, force = "player"}
+end
+if not pole2 then
+    pole2 = nauvis2.create_entity{name = "small-electric-pole", position = position, force = "player"}
+end
+
+pole1.connect_neighbour({target_entity = pole2, wire = defines.wire_type.red})
+]]
+
+--Trains dont like going in backwards need to fix
 --also need to fix blocking if the new output is different than next
 
 require("prototypes.scripts.defines") 
@@ -57,6 +79,7 @@ local local_register_surface = function(name)
 		accesses = {},
 		origins = {},
 		stops = {},
+		combinators = {},
 		super_stops = {},
 		flip = true
 	}
@@ -71,6 +94,7 @@ local local_register_surface = function(name)
 		accesses = {},
 		origins = {},
 		stops = {},
+		combinators = {},
 		super_stops = {},
 		flip = true
 	}
@@ -83,6 +107,7 @@ local local_register_surface = function(name)
 		accesses = {},
 		origins = {},
 		stops = {},
+		combinators = {},
 		super_stops = {},
 		flip = true
 	}
@@ -124,6 +149,9 @@ local local_register_resource_level_one = function(resource)
 		if global.modmashsplinterunderground.resource_level_one[k].name == resource.name then return end
 	end
 	table.insert(global.modmashsplinterunderground.resource_level_one,{name = resource.name, probability = math.min(resource.probability,1)})
+
+	--log(resource.name)
+	--log(serpent.block(global.modmashsplinterunderground.resource_level_one))
 end
 
 local local_register_resource_level_two = function(resource)
@@ -324,6 +352,7 @@ local generate_surface_area = function(x,y,r,surface, res, allow_mixed, rock_pre
 		surface.request_to_generate_chunks({x, y}, r*2)
 		surface.force_generate_chunk_requests()
 	end
+
 	local p = get_circle_lines(x,y,r)
 	local d = get_sorted_lines(p)
 	local rm = 0.25 + ((settings.global["setting-resource-mod"].value /100)*0.75)
@@ -726,6 +755,9 @@ local local_shape_data = function(position,direction)
 			end_track_place = {
 				x=position.x-2,y=position.y+6.25
 			},
+			new_end_track_place = {
+				x=position.x-2,y=position.y+2.25
+			},
 			entry_track_area = {
 				left_top = {x=position.x-3,y=position.y-1},
 				right_bottom = {x=position.x-1,y=position.y+11}
@@ -777,6 +809,9 @@ local local_shape_data = function(position,direction)
 			end_track_place = {
 				x=position.x+2,y=position.y-5.75
 			},
+			new_end_track_place = {
+				x=position.x+2,y=position.y-2.75
+			},
 			exclude_zones = {
 				{
 					left_top = {x=position.x-2,y=position.y+1.5},
@@ -824,6 +859,9 @@ local local_shape_data = function(position,direction)
 			end_track_place = {
 				x=position.x-6,y=position.y-2
 			},
+			new_end_track_place = {
+				x=position.x-1.5,y=position.y-2
+			},
 			exclude_zones = {
 				{
 					left_top = {x=position.x+1.25,y=position.y-6},
@@ -870,6 +908,9 @@ local local_shape_data = function(position,direction)
 			},
 			end_track_place = {
 				x=position.x+6,y=position.y+2
+			},
+			new_end_track_place = {
+				x=position.x+1.5,y=position.y+2
 			},
 			exclude_zones = {
 				{
@@ -970,20 +1011,26 @@ local local_transfer_carrrige_state = function(from,to)
             to.burner.remaining_burning_fuel = from.burner.remaining_burning_fuel
         end
     end
-
+	--todo check worked
 	if from.grid then
 		local position = {0,0}
-		local width, height = grid.width, grid.height
+		local width, height = from.grid.width, from.grid.height
 		local processed = {}
 		for y = 0, height - 1 do
 			for x = 0, width - 1 do
-				local equipment = grid.get({x,y})
+				local equipment = from.grid.get({x,y})
 				if equipment ~= nil then
-					from.grid.put({equipment = equipment.name, energy =equipment.energy, shield = equipment.shield})
+					to.grid.put({equipment = equipment.name, energy =equipment.energy, shield = equipment.shield})
 				end
 			end
 		end
 	end
+
+    for player_index, id in pairs(global.modmashsplinterunderground.train_ui) do
+        if  from.unit_number == id then
+            game.players[player_index].opened = to
+        end
+    end
 end
 
 
@@ -1008,6 +1055,7 @@ local local_get_train_heading = function(train)
 			--print(#train.carriages .." O = " ..carriage.orientation)
 			if carriage.type == "locomotive" then
 				loco = true
+				--print(carriage.orientation)
 				if carriage.orientation > 0.625 and carriage.orientation <= 0.875 then
 					locos[6] = locos[6]+1								
 				elseif carriage.orientation > 0.125 and carriage.orientation <= 0.375 then --carriage.orientation < 0.5 then
@@ -1051,7 +1099,7 @@ local local_get_train_heading = function(train)
 	if loco == false and #train.carriages>1 and r==4 then r = 0 end--no idea why
 	--elseif loco == false and #train.carriages>1 and r==0 then r = 4 end --no idea why
 	
---	print("result "..r.." ----------------")
+	--print("result "..r.." ----------------")
 	
 	return r
 end
@@ -1060,7 +1108,7 @@ local local_set_train_heading = function(train,heading,speed)
 	--print("Requested "..heading.." ----------------")
 	local current_heading = local_get_train_heading(train)
 	
-	if current_heading == heading then 			
+	if current_heading == heading then 		
 		train.speed = speed 
 	else
 		train.speed = speed * -1
@@ -1080,7 +1128,7 @@ local local_train_transfers_tick = function()
 				break
 			end
 		end
-		if left == true then
+		if left == true then			
 			table.remove(global.modmashsplinterunderground.train_transfers_clear,k)
 		end
 	end
@@ -1105,11 +1153,11 @@ local local_train_transfers_tick = function()
 						out_carriages[k].operable=true
 						table.insert(copy,out_carriages[k])
 					end
-				end
+				end				
+				--print(transfer.manual_mode )
 				out_carriages[1].train.manual_mode = transfer.manual_mode 
 				table.insert(global.modmashsplinterunderground.train_transfers_clear,{out_carriages = copy,station = transfer.to})
 			end
-			
 			table.remove(global.modmashsplinterunderground.train_transfers,t)
 		else
 			
@@ -1150,14 +1198,19 @@ local local_train_transfers_tick = function()
 			for k=#in_carriages,1,-1 do carriage = in_carriages[k]
 				if is_valid(carriage) == true then					
 					if distance(from.position.x,from.position.y,carriage.position.x,carriage.position.y) < 3.8 then
-						
-						
 						local e = nil
-						if carriage.type == "locomotive" or carriage.type == "artillery-wagon" then
-							e = to.surface.create_entity{name=carriage.name, direction=carriage.direction,orientation=carriage.orientation, position=tosd.end_track_place, force = carriage.force}
+						if transfer.new_mode == true then --todo remove eventually but required now to prevent breaking trains from old verion to new version
+							if carriage.type == "locomotive" or carriage.type == "artillery-wagon" then
+								e = to.surface.create_entity{name=carriage.name, direction=carriage.direction,orientation=carriage.orientation, position=tosd.new_end_track_place, force = carriage.force}
+							else
+								e = to.surface.create_entity{name=carriage.name, direction=carriage.direction, position=tosd.new_end_track_place, force = carriage.force}
+							end
 						else
-							e = to.surface.create_entity{name=carriage.name, direction=carriage.direction, position=tosd.end_track_place, force = carriage.force}
-
+							if carriage.type == "locomotive" or carriage.type == "artillery-wagon" then
+								e = to.surface.create_entity{name=carriage.name, direction=carriage.direction,orientation=carriage.orientation, position=tosd.end_track_place, force = carriage.force}
+							else
+								e = to.surface.create_entity{name=carriage.name, direction=carriage.direction, position=tosd.end_track_place, force = carriage.force}
+							end
 						end
 						if e ~= nil then 							
 							--to transfer stuff player fuel resources grid
@@ -1165,7 +1218,7 @@ local local_train_transfers_tick = function()
 							if e.train.schedule == nil then
 								e.train.schedule = carriage.train.schedule
 								--print("Before ".. carriage.train.schedule.current .. " " .. e.train.schedule.current)
-								if #e.train.schedule.records>0 then			
+								if e.train.schedule ~= nil and #e.train.schedule.records>0 then			
 									
 									local next = carriage.train.schedule.current 
 									next = next + 1
@@ -1177,6 +1230,7 @@ local local_train_transfers_tick = function()
 										--e.train.schedule.current = 1
 										e.train.go_to_station(1)
 									end
+									e.train.manual_mode = true
 								end
 								--print("After ".. carriage.train.schedule.current .. " " .. e.train.schedule.current)
 							end
@@ -1218,10 +1272,120 @@ local local_train_transfers_tick = function()
 	end
 end
 
+
+local local_merge_signal = function(top_entity,bottom_entity,top_last_signals,bottom_last_signals)
+	--ok stop for now  merged signals work simply copy each and set to 
+	local temp_top = {}
+	local temp_bottom = {}
+	top_last_signals = top_last_signals or {}
+	bottom_last_signals = bottom_last_signals or {}
+	local tecn = top_entity.get_control_behavior()
+	local tes = top_entity.get_merged_signals() or {}
+	local becn = bottom_entity.get_control_behavior()
+	local bes = bottom_entity.get_merged_signals() or {}
+
+	for k=tecn.signals_count, 1, -1 do
+		local t = tes[k]
+		if t ~=nil then temp_top[t.signal.name] = t end	
+		tecn.set_signal(k,nil)
+	end
+	for k=becn.signals_count, 1, -1 do
+		local t = bes[k]
+		if t ~=nil then temp_bottom[t.signal.name] = t end	
+		becn.set_signal(k,nil)
+	end	
+	local index = 1
+	local added_bottom = {}
+	for name, value in pairs(temp_top) do
+		if top_last_signals[name] ~=nil then
+			local t = math.max(temp_top[name].count - top_last_signals[name].count,0)
+			if t>0 then
+				local signal = {signal={type=value.signal.type, name = value.signal.name},count = t}
+				becn.set_signal(index,signal)
+				added_bottom[name] = signal
+			end
+		else
+			becn.set_signal(index,temp_top[name])	
+			added_bottom[name] = temp_top[name]
+		end
+		index = index + 1
+	end
+	index = 1
+	local added_top = {}
+	for name, value in pairs(temp_bottom) do
+		if bottom_last_signals[name] ~=nil then
+			
+			local t = math.max(temp_bottom[name].count - bottom_last_signals[name].count,0)
+			if t>0 then
+				local signal = {signal={type=value.signal.type, name = value.signal.name},count = t}
+				tecn.set_signal(index,signal)	
+				added_top[name] = signal
+			end
+		else
+			tecn.set_signal(index,temp_bottom[name])	
+			added_top[name] = temp_bottom[name]
+		end
+		index = index + 1
+	end
+
+	return {
+		top_last_signals = added_top,
+		bottom_last_signals =added_bottom
+	}
+end
+local local_stops_circuit_tick = function()	
+	for k = #global.modmashsplinterunderground.combinator_disconections, 1, -1 do
+		
+		if global.modmashsplinterunderground.combinator_disconections[k].type == "electric-pole" then
+			local entity = global.modmashsplinterunderground.combinator_disconections[k]
+			for j=1,#entity.neighbours["copper"] do
+				if is_valid(entity.neighbours["copper"][j]) and starts_with(entity.neighbours["copper"][j].name,"underground-combinator-") then
+					entity.neighbours["copper"][j].disconnect_neighbour()
+				end
+			end
+		else
+			global.modmashsplinterunderground.combinator_disconections[k].disconnect_neighbour()
+		end
+		table.remove(global.modmashsplinterunderground.combinator_disconections,k)
+
+	end
+	--[[local gsurfaces = game.surfaces
+	for name, value in pairs(surfaces_top) do
+		local ts= surfaces[name]
+		local ms= surfaces[value.middle_name]
+		local stops = ts.combinators
+		for k = 1, #stops do
+			local top_entity = stops[k].top_entity
+			local top_last_signals = stops[k].top_last_signals
+			local bottom_entity = stops[k].bottom_entity
+			local bottom_last_signals = stops[k].bottom_last_signals
+			if is_valid(top_entity) == true and is_valid(bottom_entity) == true then
+				local signals = local_merge_signal(top_entity,bottom_entity,top_last_signals,bottom_last_signals)
+				stops[k].top_last_signals = signals.top_last_signals
+				stops[k].bottom_last_signals = signals.bottom_last_signals
+			end
+		end
+		local stops = ms.combinators
+		for k = 1, #stops do
+			local top_entity = stops[k].top_entity
+			local top_last_signals = stops[k].top_last_signals
+			local bottom_entity = stops[k].bottom_entity
+			local bottom_last_signals = stops[k].bottom_last_signals
+			if is_valid(top_entity) == true and is_valid(bottom_entity) == true then
+				local signals = local_merge_signal(top_entity,bottom_entity,top_last_signals,bottom_last_signals)
+				stops[k].top_last_signals = signals.top_last_signals
+				stops[k].bottom_last_signals = signals.bottom_last_signals
+			end
+		end
+	end
+	]]
+end
+
 local local_underground_tick = function()	
 	local_train_transfers_tick()
 	local gsurfaces = game.surfaces
 	local_check_teleport()
+	local_stops_circuit_tick()
 	for name, value in pairs(surfaces_top) do
 		local p = 0
 		
@@ -1271,17 +1435,12 @@ local local_add_rubble = function(pos,surface)
 end
 
 local local_update_fake_stops = function(surface)
-	--to be implemented later
-	-- issue is i cannot get the train to select next station in index, try altering actual GUI if possible
-	--if true then return end
 	local surface = surfaces[surface.name]
 	if surface == nil then 
 		return 
-	end
-	
+	end	
 	local all_surface_stops = {}
 	local added_surface_stops = {}
-	--do by name not surfaces[name]
 	surface_list = {surface.top_name,surface.middle_name,surface.bottom_name}
 	--reset
 	for k=1, #surface_list do surface = surfaces[surface_list[k]]				
@@ -1402,7 +1561,8 @@ local local_underground_removed = function(entity,event,died)
 
 	local stops = surfaces[surface.top_name].stops
 	local stops2 = surfaces[surface.middle_name].stops
-	
+	local combinators = surfaces[surface.top_name].combinators
+	local combinators2 = surfaces[surface.middle_name].combinators
 	
 	if modmashsplinterunderground.removed_rocks == nil then modmashsplinterunderground.removed_rocks = 0 end
 
@@ -1529,6 +1689,67 @@ local local_underground_removed = function(entity,event,died)
 					access.top_entity.destroy()
 				end
 				table.remove(accesses2, index)				
+				return
+			end
+		end
+	
+	elseif entity.name == "underground-combinator-l1" then				
+		for index, access in pairs(combinators) do
+			if access.top_entity == entity then
+				if died == true then
+					local surface = access.bottom_entity.surface
+					local pos = access.bottom_entity.position
+					local name = access.bottom_entity.name
+					access.bottom_entity.destroy()
+					surface.create_entity{name = "small-remnants", position = pos, force = force_player}
+					surface.create_entity{ name = "entity-ghost", inner_name = name, position = pos, force = force_player}
+				else
+					access.bottom_entity.destroy()
+				end
+				table.remove(combinators, index)				
+				return
+			elseif access.bottom_entity == entity then
+				if died == true then
+					local surface = access.top_entity.surface
+					local pos = access.top_entity.position
+					local name = access.top_entity.name
+					access.top_entity.destroy()
+					surface.create_entity{name = "small-remnants", position = pos, force = force_player}
+					surface.create_entity{ name = "entity-ghost", inner_name = name, position = pos, force = force_player}
+				else
+					access.top_entity.destroy()
+				end
+				table.remove(combinators, index)				
+				return
+			end
+		end
+	elseif entity.name == "underground-combinator-l2" then				
+		for index, access in pairs(combinators2) do
+			if access.top_entity == entity then
+				if died == true then
+					local surface = access.bottom_entity.surface
+					local pos = access.bottom_entity.position
+					local name = access.bottom_entity.name
+					access.bottom_entity.destroy()
+					surface.create_entity{name = "small-remnants", position = pos, force = force_player}
+					surface.create_entity{ name = "entity-ghost", inner_name = name, position = pos, force = force_player}
+				else
+					access.bottom_entity.destroy()
+				end
+				table.remove(combinators2, index)				
+				return
+			elseif access.bottom_entity == entity then
+				if died == true then
+					local surface = access.top_entity.surface
+					local pos = access.top_entity.position
+					local name = access.top_entity.name
+					access.top_entity.destroy()
+					surface.create_entity{name = "small-remnants", position = pos, force = force_player}
+					surface.create_entity{ name = "entity-ghost", inner_name = name, position = pos, force = force_player}
+				else
+					access.top_entity.destroy()
+				end
+				table.remove(combinators2, index)				
 				return
 			end
 		end
@@ -1874,12 +2095,11 @@ local local_ensure_can_place_entity_inner = function(entity,event,surface)
 	if entity.type == "entity-ghost" then etype = entity.ghost_prototype.type end
 	if entity.type == "entity-ghost" then ename = entity.ghost_prototype.name end
 
-	if ename == "subway-level-one" or ename == "subway-level-two" or  ename == underground_access or ename == underground_access2 or ename == underground_accumulator then 		
+	if ename == "subway-level-one" or ename == "subway-level-two" or ename == "underground-combinator-l1" or ename == "underground-combinator-l2" or  ename == underground_access or ename == underground_access2 or ename == underground_accumulator then 		
 		if surface.level == 0 then			
-			if ename == underground_access2 or entity.name == "subway-level-two" then return false end
+			if ename == underground_access2 or entity.name == "subway-level-two" or ename == "underground-combinator-l2"  then return false end
 			if ename == "subway-level-one" then	
-				return local_add_stop(entity,game.surfaces[surface.middle_name])
-		
+				return local_add_stop(entity,game.surfaces[surface.middle_name])		
 			else
 				
 				local rocks = game.surfaces[surface.middle_name].find_entities_filtered{area = {{entity.position.x-2.5, entity.position.y-2.5}, {entity.position.x+2.5, entity.position.y+2.5}}, name = rock_names}			
@@ -1892,11 +2112,11 @@ local local_ensure_can_place_entity_inner = function(entity,event,surface)
 				return game.surfaces[surface.middle_name].can_place_entity{name=ename, position=entity.position, direction=entity.direction, force=entity.force}	
 			end
 		elseif entity.surface.name == surface.middle_name then
-			if ename == underground_access or ename == underground_accumulator then
+			if ename == underground_access or ename == underground_accumulator or ename == "underground-combinator-l1" then
 				if game.surfaces[surface.top_name].can_place_entity{name=ename, position=entity.position, direction=entity.direction, force=entity.force} then
 					return true
 				end
-			elseif ename == underground_access2 then
+			elseif ename == underground_access2 or ename == "underground-combinator-l2" then
 				local rocks = game.surfaces[surface.bottom_name].find_entities_filtered{area = {{entity.position.x-2.5, entity.position.y-2.5}, {entity.position.x+2.5, entity.position.y+2.5}}, name = rock_names}			
 				for index=1, #rocks do local r = rocks[index]
 					if is_valid(r) then 
@@ -1912,7 +2132,7 @@ local local_ensure_can_place_entity_inner = function(entity,event,surface)
 				return local_add_stop(entity,game.surfaces[surface.bottom_name])
 			end
 		elseif entity.surface.name == surface.bottom_name then			
-			if ename == underground_access2 then
+			if ename == underground_access2 or ename == "underground-combinator-l2" then
 				local rocks = game.surfaces[surface.middle_name].find_entities_filtered{area = {{entity.position.x-2.5, entity.position.y-2.5}, {entity.position.x+2.5, entity.position.y+2.5}}, name = rock_names}			
 				for index=1, #rocks do local r = rocks[index]
 					if is_valid(r) then 
@@ -1986,6 +2206,8 @@ local local_underground_added_std = function(entity,event)
 	local accesses2 = surfaces[surface.middle_name].accesses	
 	local stops = surfaces[surface.top_name].stops
 	local stops2 = surfaces[surface.middle_name].stops	
+	local combinators = surfaces[surface.top_name].combinators
+	local combinators2 = surfaces[surface.middle_name].combinators	
 
 	local_ensure_underground_environment(surface)
 	if local_ensure_can_place_entity(entity,event,surface) == false then 
@@ -2010,6 +2232,44 @@ local local_underground_added_std = function(entity,event)
 			local u = game.surfaces[surface.middle_name].create_entity{name = entity.name, position = entity.position, force = force_player}
 			table.insert(accesses2,{bottom_entity = entity, top_entity = u})
 		end
+	elseif entity.name == "underground-combinator-l1" then 	
+		--entity.force = force_neutral
+		entity.operable=false
+		if surface.level == 0 then			
+			local u = game.surfaces[surface.middle_name].create_entity{name = entity.name, position = entity.position, force = force_player}				
+			table.insert(combinators,{bottom_entity = u, top_entity = entity})
+			table.insert(global.modmashsplinterunderground.combinator_disconections,u)
+			table.insert(global.modmashsplinterunderground.combinator_disconections,entity)
+			entity.connect_neighbour(u)
+			u.operable=false
+		elseif surface.level == 1 then
+			local u = game.surfaces[surface.top_name].create_entity{name = entity.name, position = entity.position, force = force_player}
+			table.insert(combinators,{bottom_entity = entity, top_entity = u})
+			table.insert(global.modmashsplinterunderground.combinator_disconections,u)
+			table.insert(global.modmashsplinterunderground.combinator_disconections,entity)
+			entity.connect_neighbour(u)
+			u.operable=false
+		end
+	elseif entity.name == "underground-combinator-l2" then 	
+		entity.operable=false
+		--entity.force = force_neutral
+		if surface.level == 1 then
+			local u = game.surfaces[surface.bottom_name].create_entity{name = entity.name, position = entity.position, force = force_player}				
+			table.insert(combinators2,{bottom_entity = u, top_entity = entity})
+			table.insert(global.modmashsplinterunderground.combinator_disconections,u)
+			table.insert(global.modmashsplinterunderground.combinator_disconections,entity)
+			entity.connect_neighbour(u)
+			u.operable=false
+		elseif surface.level == 2 then
+			local u = game.surfaces[surface.middle_name].create_entity{name = entity.name, position = entity.position, force = force_player}
+			table.insert(combinators2,{bottom_entity = entity, top_entity = u})
+			table.insert(global.modmashsplinterunderground.combinator_disconections,u)
+			table.insert(global.modmashsplinterunderground.combinator_disconections,entity)
+			entity.connect_neighbour(u)
+			u.operable=false
+		end
+	elseif entity.type == "electric-pole" then 		
+			table.insert(global.modmashsplinterunderground.combinator_disconections,entity)
 	elseif entity.name == underground_accumulator then	
 		if surface.level == 0 then
 			local u = game.surfaces[surface.middle_name].create_entity{name = entity.name, position = entity.position, force = entity.force}
@@ -2031,12 +2291,14 @@ local local_underground_added_std = function(entity,event)
 			local u = game.surfaces[surface.middle_name].create_entity{name = entity.name, position = sd.opposite_posistion, force = force_player, direction = sd.opposite_direction}				
 			local_update_stop_name(entity,u)
 			table.insert(stops,{bottom_entity = u, top_entity = entity})
+			--entity.connect_neighbour(u)
 			local_update_fake_stops(entity.surface)
 		elseif surface.level == 1 then
 			local sd = local_shape_data(entity.position,entity.direction)
 			local u = game.surfaces[surface.top_name].create_entity{name = entity.name, position = sd.opposite_posistion, force = force_player, direction = sd.opposite_direction}
 			local_update_stop_name(entity,u)
 			table.insert(stops,{bottom_entity = entity, top_entity = u})
+			--entity.connect_neighbour(u)
 			local_update_fake_stops(entity.surface)
 		end
 	elseif entity.name == "subway-level-two" then 	
@@ -2046,13 +2308,15 @@ local local_underground_added_std = function(entity,event)
 			local osd = local_shape_data(entity.position,sd.opposite_direction)
 			local u = game.surfaces[surface.bottom_name].create_entity{name=entity.name, position=sd.opposite_posistion, direction=osd.direction, force=entity.force}	
 			local_update_stop_name(entity,u)
-			table.insert(stops2,{bottom_entity = u, top_entity = entity, fake_bottom_entity = u})
+			table.insert(stops2,{bottom_entity = u, top_entity = entity, fake_bottom_entity = u}) --todo is fake needed?
+			--entity.connect_neighbour(u)
 			local_update_fake_stops(entity.surface)
 		elseif surface.level == 2 then
 			local sd = local_shape_data(entity.position,entity.direction)
 			local u = game.surfaces[surface.middle_name].create_entity{name = entity.name, position = sd.opposite_posistion, force = force_player,direction = sd.opposite_direction}
 			local_update_stop_name(entity,u)
 			table.insert(stops2,{bottom_entity = entity, top_entity = u})
+			--entity.connect_neighbour(u)
 			local_update_fake_stops(entity.surface)
 		end
 	end
@@ -2293,8 +2557,11 @@ local local_init = function()
 		global.modmashsplinterunderground.surfaces_top = {}
 		local_register_surface("nauvis")
 	end
+	
+	if global.modmashsplinterunderground.combinator_disconections == nil then global.modmashsplinterunderground.combinator_disconections = {} end
 	if global.modmashsplinterunderground.train_transfers == nil then global.modmashsplinterunderground.train_transfers = {} end
 	if global.modmashsplinterunderground.train_transfers_clear == nil then global.modmashsplinterunderground.train_transfers_clear = {} end
+	if global.modmashsplinterunderground.train_ui == nil then global.modmashsplinterunderground.train_ui = {} end	
 	surfaces = global.modmashsplinterunderground.surfaces
 	surfaces_top = global.modmashsplinterunderground.surfaces_top
 	local_register_loot()
@@ -2304,21 +2571,38 @@ local local_init = function()
 local local_load = function() 
 	surfaces = global.modmashsplinterunderground.surfaces
 	surfaces_top = global.modmashsplinterunderground.surfaces_top
+
+	
 	end
 
 local local_on_configuration_changed = function(event) 
 	if global.modmashsplinterunderground.train_transfers == nil then global.modmashsplinterunderground.train_transfers = {} end
 	if global.modmashsplinterunderground.train_transfers_clear == nil then global.modmashsplinterunderground.train_transfers_clear = {} end
+	if global.modmashsplinterunderground.train_ui == nil then global.modmashsplinterunderground.train_ui = {} end	
 	global.modmashsplinterunderground.banned_level_zero = nil 
 	global.modmashsplinterunderground.banned_level_one = nil 
 	global.modmashsplinterunderground.banned_level_two = nil 
 
-	global.modmashsplinterunderground.resource_level_one = nil
-	global.modmashsplinterunderground.resource_level_two = nil
+	--global.modmashsplinterunderground.resource_level_one = nil
+	--global.modmashsplinterunderground.resource_level_two = nil
+	if global.modmashsplinterunderground.resource_level_one == nil then global.modmashsplinterunderground.resource_level_one = {} end
+	if global.modmashsplinterunderground.resource_level_two == nil then global.modmashsplinterunderground.resource_level_two = {} end
 	global.modmashsplinterunderground.mineable_resources = nil
+
+	for k=#global.modmashsplinterunderground.resource_level_one, 1, -1 do
+		if global.modmashsplinterunderground.resource_level_one[k] == nil or local_check_mineable(global.modmashsplinterunderground.resource_level_one[k].name) == false then
+			table.remove(global.modmashsplinterunderground.resource_level_one,k)
+		end
+	end
+	for k=#global.modmashsplinterunderground.resource_level_two, 1, -1 do
+		if global.modmashsplinterunderground.resource_level_two[k] == nil or local_check_mineable(global.modmashsplinterunderground.resource_level_two[k].name) == false then
+			table.remove(global.modmashsplinterunderground.resource_level_two,k)
+		end
+	end
 
 	local_register_loot()
 	local_register_resources()
+	
 
 	local changed = event.mod_changes and event.mod_changes["modmashsplinterunderground"]
 	if changed then
@@ -2344,6 +2628,70 @@ local local_on_configuration_changed = function(event)
 					local_update_fake_stops(game.surfaces[name] )
 				end
 			end
+		end
+		if changed.old_version == nil or changed.old_version < "1.1.22" then			
+			for name, value in pairs(global.modmashsplinterunderground.surfaces) do
+				if global.modmashsplinterunderground.surfaces[name].combinators == nil then
+					global.modmashsplinterunderground.surfaces[name].combinators = {}
+				end						
+			end	
+		end
+		if changed.old_version == nil or changed.old_version < "1.1.23" then			
+			--well shit changing the type renders the entiry invalid need to rescan for all enities and remap
+			if global.modmashsplinterunderground.combinator_disconections == nil then
+				global.modmashsplinterunderground.combinator_disconections = {}
+			end			
+			for name, value in pairs(global.modmashsplinterunderground.surfaces_top) do			
+				local ts= global.modmashsplinterunderground.surfaces[value.top_name]
+				local ms= global.modmashsplinterunderground.surfaces[value.middle_name]
+				local bs= global.modmashsplinterunderground.surfaces[value.bottom_name]
+				if is_valid(game.surfaces[value.middle_name]) then
+					local entities = game.surfaces[value.middle_name].find_entities_filtered{name={"underground-combinator-l1","underground-combinator-l2"}}
+					for k=1, #entities do local entity = entities[k]
+						if entity.name =="underground-combinator-l1" then
+							local u = game.surfaces[value.top_name].find_entity("underground-combinator-l1", entity.position)
+							if is_valid(u) then
+								table.insert(ts.combinators,{bottom_entity = entity, top_entity = u})
+								--entity.operable=true
+								--u.operable=true
+								table.insert(global.modmashsplinterunderground.combinator_disconections,u)
+								table.insert(global.modmashsplinterunderground.combinator_disconections,entity)
+								entity.connect_neighbour({target_entity = u, wire = defines.wire_type.red})
+								entity.connect_neighbour({target_entity = u, wire = defines.wire_type.green})
+								
+							end
+						elseif is_valid(game.surfaces[value.bottom_name]) then
+							local u = game.surfaces[value.bottom_name].find_entity("underground-combinator-l2", entity.position)
+							if is_valid(u) then
+								table.insert(ms.combinators,{bottom_entity = u, top_entity = entity})
+								--entity.operable=true
+								--u.operable=true
+								table.insert(global.modmashsplinterunderground.combinator_disconections,u)
+								table.insert(global.modmashsplinterunderground.combinator_disconections,entity)
+								entity.connect_neighbour({target_entity = u, wire = defines.wire_type.red})
+								entity.connect_neighbour({target_entity = u, wire = defines.wire_type.green})
+							end
+						end
+					
+					end
+				end
+				--[[for k=1,#ms.combinators do
+					local c = ms.combinators[k]
+					if is_valid(c.top_entity) and is_valid(c.bottom_entity) then
+						c.top_entity.connect_neighbour(c.bottom_entity)		
+						c.top_entity.operable=true
+						c.bottom_entity.operable=true
+					end
+				end		
+				for k=1,#bs.combinators do
+					local c = bs.combinators[k]
+					if is_valid(c.top_entity) and is_valid(c.bottom_entity) then
+						c.top_entity.connect_neighbour(c.bottom_entity)		
+						c.top_entity.operable=true
+						c.bottom_entity.operable=true
+					end
+				end]]	
+			end	
 		end
 	end
 	end
@@ -2493,32 +2841,11 @@ local local_on_selected_entity_changed = function(event)
 
 	local player = game.players[event.player_index]
 	local selected = player.selected
+	--[[if selected ~= nil and (selected.type == "locomotive" or selected.type == "cargo-wagon" or selected.type == "fluid-wagon" or selected.type == "artillery-wagon") then 
+		print(selected.orientation.." "..selected.direction)
+		selected.train.speed = 0.02
+	end]]
 	
-	--if selected ~=nil and selected.type == "train-stop"  then
-	--	local_draw_debug_stop(selected,player,1)
-	--end
-		--[[if selected.type == "locomotive" or selected.type == "cargo-wagon" or selected.type == "fluid-wagon" or selected.type == "artillery-wagon" then 
-			if selected.train.schedule ~= nil and #selected.train.schedule.records>0 then								
-				local next = selected.train.schedule.current 
-				next = next + 1
-
-				if next > #selected.train.schedule.records then
-					selected.train.go_to_station(next)
-					--selected.train.schedule.current = next
-				else
-					--selected.train.schedule.current = 1
-					selected.train.go_to_station(1)
-				end
-				--print( carriage.train.schedule.current .. " " .. e.train.schedule.current)
-			end]]
-			--(north 0) (south 0.5)	+ always direction of train or artillery_wagon_ammo	
-			--local t = selected.train.carriages[1]
-			--print(t.orientation.." "..t.direction)
-			--selected.train.speed = 0.2 end
-			--local_set_train_heading(selected.train,6,0.2)
-		--end
-	--end
-
 
 	if selected ~= nil and selected.name ~= underground_accessml then
 
@@ -2555,7 +2882,6 @@ end
 local local_transport_train = function(train, from,to)
 	--todo check train has fully left out station before allowing back in
 	for k=1, #global.modmashsplinterunderground.train_transfers_clear do
-		--whoops test any train carriage are in the train carrages cane comapre train
 		if global.modmashsplinterunderground.train_transfers_clear[k].out_carriages[1].train == train and
 			(global.modmashsplinterunderground.train_transfers_clear[k].station == to or global.modmashsplinterunderground.train_transfers_clear[k].station == from) then
 			return end -- we have not fully clear the destionation so cannot go back yet
@@ -2566,11 +2892,18 @@ local local_transport_train = function(train, from,to)
 			global.modmashsplinterunderground.train_transfers[k].out_train == train then
 			return end
 	end
-	
+	local manual_mode = train.manual_mode
+
 	if #train.carriages > 3 then
-		from.surface.create_entity{name="flying-text", position = from.position, text="Train too long" , color={r=1,g=0.25,b=0.0}}
-		train.manual_mode = true
-		return
+		if from.name == "subway-level-one" and from.force.technologies["subway-level-one-more2"].researched ~= true then
+			from.surface.create_entity{name="flying-text", position = from.position, text="Train too long, research available" , color={r=1,g=0.25,b=0.0}}
+			train.manual_mode = true
+			return
+		elseif from.name == "subway-level-two" and from.force.technologies["subway-level-two-more2"].researched ~= true then
+			from.surface.create_entity{name="flying-text", position = from.position, text="Train too long, research available" , color={r=1,g=0.25,b=0.0}}
+			train.manual_mode = true
+			return
+		end
 	end
 	if #train.carriages == 3 then
 		if from.name == "subway-level-one" and from.force.technologies["subway-level-one-more1"].researched ~= true then
@@ -2586,7 +2919,7 @@ local local_transport_train = function(train, from,to)
 	
 
 	local sd = local_shape_data(from.position,from.direction)
-	local manual_mode = train.manual_mode
+	
 	local out_track = to.connected_rail
 	if out_track == nil then 
 		from.surface.create_entity{name="flying-text", position = from.position, text="No output track" , color={r=1,g=0.25,b=0.0}}
@@ -2603,7 +2936,14 @@ local local_transport_train = function(train, from,to)
 
 	local current_tracks= train.get_rails()
 	for k=1, #current_tracks do		
-		out_track = out_track.get_connected_rail{rail_direction = sd.rail_direction, rail_connection_direction =  defines.rail_connection_direction.straight}
+		local trk = out_track.get_connected_rail{rail_direction = sd.rail_direction, rail_connection_direction =  defines.rail_connection_direction.straight}
+		--[[if trk == nil then
+			trk = out_track.get_connected_rail{rail_direction = sd.rail_direction, rail_connection_direction =  defines.rail_connection_direction.left}
+		end
+		if trk == nil then
+			trk = out_track.get_connected_rail{rail_direction = sd.rail_direction, rail_connection_direction =  defines.rail_connection_direction.right}
+		end]]
+		out_track = trk
 		if out_track == nil then
 			from.surface.create_entity{name="flying-text", position = from.position, text="Insufficent straight output space" , color={r=1,g=0.25,b=0.0}}
 			train.manual_mode = true
@@ -2624,12 +2964,13 @@ local local_transport_train = function(train, from,to)
 		--need to sort  traversing in reverse  closest shoud be last as first to pop off
 		table.sort(in_carriages, function(c1,c2) return distance(c1.position.x,c1.position.y,from.position.x,from.position.y) > distance(c2.position.x,c2.position.y,from.position.x,from.position.y) end)
 	end
+	train.manual_mode = true
 	--print("---------------")
 	--for k=1,#in_carriages do
 	--	print(distance(in_carriages[k].position.x,in_carriages[k].position.y,from.position.x,from.position.y))
 	--end
 	table.insert(global.modmashsplinterunderground.train_transfers,
-		{in_train = train, out_train = train,in_carriages = in_carriages, out_carriages = {}, from=from, to=to, manual_mode =  manual_mode}
+		{in_train = train, out_train = train,in_carriages = in_carriages, out_carriages = {}, from=from, to=to, manual_mode =  manual_mode, new_mode = true}
 	)
 end
 
@@ -2637,7 +2978,9 @@ local local_on_train_changed_state = function(event)
 	
 	local train = event.train
 	local old_state = event.old_state
-	if train.manual_mode == false and train.state == defines.train_state.wait_station and old_state ~= defines.train_state.wait_station then
+	if train.manual_mode == false and train.state == defines.train_state.arrive_signal and old_state ~= defines.train_state.arrive_signal then
+		---print(train.station.name)
+	elseif train.manual_mode == false and train.state == defines.train_state.wait_station and old_state ~= defines.train_state.wait_station then
 		if train.station ~= nil and (train.station.name == "subway-level-one" or train.station.name == "subway-level-two") then	
 			
 			local station = train.station
@@ -2744,6 +3087,23 @@ script.on_nth_tick(30, local_accumulators_tick)
 script.on_event(defines.events.on_tick, local_underground_tick)
 script.on_configuration_changed(local_on_configuration_changed)
 
+script.on_event(defines.events.on_gui_opened, function(event)
+	--if global.modmashsplinterunderground.train_ui == nil then global.modmashsplinterunderground.train_ui = {} end	
+    local entity = event.entity
+    if is_valid(entity) ~= true then return end
+    if entity.type == "locomotive" or entity.type == "cargo-wagon" or entity.type == "fluid-wagon" or entity.type == "artillery-wagon" then
+        global.modmashsplinterunderground.train_ui[event.player_index] = entity.unit_number
+    end
+end)
+
+script.on_event(defines.events.on_gui_closed, function (event)
+	--if global.modmashsplinterunderground.train_ui == nil then global.modmashsplinterunderground.train_ui = {} end	
+    local entity = event.entity
+    if is_valid(entity) ~= true or (entity.type ~= "locomotive" and entity.type ~= "cargo-wagon" and entity.type ~= "fluid-wagon" and entity.type ~= "artillery-wagon") then
+        return
+    end
+    global.modmashsplinterunderground.train_ui[event.player_index] = nil
+end)
 
 script.on_event(defines.events.on_entity_damaged,
 	function(event) 

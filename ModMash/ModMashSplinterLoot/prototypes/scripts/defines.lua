@@ -16,7 +16,7 @@ modmashsplinterloot.defines.names.loot_science_a = modmashsplinterloot.defines.n
 modmashsplinterloot.defines.names.loot_science_b = modmashsplinterloot.defines.names.loot_science_prefix .. "b"
 modmashsplinterloot.defines.names.crash_site_prefix = "crash-site-chest-"
 
-modmashsplinterloot.defines.loot_probability = 13
+modmashsplinterloot.defines.loot_probability = 16
 modmashsplinterloot.defines.loot_tech_probability = 39
 modmashsplinterloot.defines.loot_exclude_distance_from_origin = 224
 modmashsplinterloot.defines.loot_max_distance_reduction_modifier = modmashsplinterloot.defines.loot_exclude_distance_from_origin * 8

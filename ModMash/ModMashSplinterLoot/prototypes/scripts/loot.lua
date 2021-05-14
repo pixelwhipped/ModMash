@@ -65,12 +65,12 @@ local local_register_science_pack = function(science)
 			global.modmashsplinterloot.science_table[k].max_stacks = max_stacks
 			global.modmashsplinterloot.science_table[k].max_stack = max_stack
 			global.modmashsplinterloot.science_table[k].probability = probability
-			global.modmashsplinterloot.science_prabability_table = local_build_probability_table(global.modmashsplinterloot.science_table, function(i) return i .name end)
+			global.modmashsplinterloot.science_prabability_table = local_build_probability_table(global.modmashsplinterloot.science_table, function(i) return i.name end)
 			return
 		end
 	end
 	table.insert(global.modmashsplinterloot.science_table,{name = name, max_stack = max_stack, max_stacks = max_stacks, probability = probability})	
-	global.modmashsplinterloot.science_prabability_table = local_build_probability_table(global.modmashsplinterloot.science_table, function(i) return i .name end)
+	global.modmashsplinterloot.science_prabability_table = local_build_probability_table(global.modmashsplinterloot.science_table, function(i) return i.name end)
 end
 
 local local_create_science_table = function()
@@ -412,6 +412,8 @@ local local_create_loot_table = function()
 	end
 end
 
+-- 13-((13-3)*1) = 3 rnd range = 1..3
+-- 13-((13-3)*0.5) = 8 rnd range = 1..8
 local local_set_probability = function()
 	local percent = settings.startup["setting-loot-chance"].value/100
 	loot_probability = (modmashsplinterloot.defines.loot_probability)-((modmashsplinterloot.defines.loot_probability-3)*percent)
@@ -514,6 +516,7 @@ local local_add_loot = function(surface_index, area)
 			  force = force_neutral}
 		if is_valid(ent) then
 			local inv = ent.get_inventory(defines.inventory.chest)
+			--item may not exist if removed need to check on config change
 			local stacks = local_get_random_loot_stack(distance_mod)
 			if stacks ~= nil and #stacks>0 then
 				for s=1, #stacks do local stack = stacks[s]
@@ -576,6 +579,8 @@ local local_on_selected = function(event)
 			  position = position,
 			  force = force_neutral}
 	if settings.startup["setting-tech-loot"].value == "Science" then
+		if global.modmashsplinterloot.science_prabability_table == nil then local_create_science_table() end
+
 		local item = science_table[math.random(1,#global.modmashsplinterloot.science_prabability_table)]
 		if item ~= nil then
 			local stacks = math.random(1, item.max_stacks)

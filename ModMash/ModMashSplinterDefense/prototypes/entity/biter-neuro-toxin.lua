@@ -444,6 +444,65 @@ data:extend({
 			upgrade = true,
 			order = "a-b-d",
 		},
+		{
+			type = "smoke-with-trigger",
+			name = "biter-neuro-toxin-puff",
+			flags = {"not-on-map"},
+			show_when_smoke_off = true,
+			trigger_created_entity="true",
+			animation =
+			{
+			  filename = "__base__/graphics/entity/cloud/cloud-45-frames.png",
+			  flags = { "compressed" },
+			  priority = "low",
+			  width = 256,
+			  height = 256,
+			  frame_count = 45,
+			  animation_speed = 0.5,
+			  line_length = 7,
+			  scale = 0.5,
+			},
+			slow_down_factor = 0,
+			affected_by_wind = true,
+			cyclic = true,
+			duration = 1,
+			fade_away_duration = 1,
+			spread_duration = 1,
+			color = { r = 0.1, g = 0.0, b = 0.45, a = 0},
+			action =
+			{
+				{
+				  type = "direct",
+				  action_delivery =
+				  {
+					type = "instant",
+					target_effects =
+					{
+					  type = "nested-result",
+					  action =
+					  {
+						type = "area",
+						radius = 1,
+						entity_flags = {"breaths-air"},
+						force = "enemy",
+						action_delivery =
+						{
+						  type = "instant",
+						  target_effects =
+						  {
+							  {
+								type = "damage",
+								damage = { amount = 0, type = "poison"}
+							  },
+						  }
+						}
+					  }
+					}
+				  }
+				},
+			},
+			action_cooldown = 1
+		  },
   -- recipe
   {
     type = "recipe",

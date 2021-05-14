@@ -1,14 +1,4 @@
-﻿local local_update_masks = function()
-    local mask = {"object-layer", "item-layer", "floor-layer", "water-tile"}
-    for name,_ in pairs(data.raw["curved-rail"]) do
-        if not data.raw["curved-rail"][name].collision_mask then
-            data.raw["curved-rail"][name].collision_mask = mask
-        end
-        table.insert(data.raw["curved-rail"][name].collision_mask, "layer-13")
-    end
-end
-
-local local_create_rail_subway_animation= function(path)
+﻿local local_create_rail_subway_animation= function(path)
     return {
         north = {
             layers = {
@@ -188,7 +178,6 @@ local level_one_top_animations = local_create_rail_subway_animation("rail1top")
 local level_two_rail_overlay_animations = local_create_rail_subway_animation("rail2bottom")
 local level_two_top_animations = local_create_rail_subway_animation("rail2top")
 
-local_update_masks()
 
 local_create_rail_subway("subway-level-one",1000,level_one_rail_overlay_animations,level_one_top_animations,{{ "train-stop", 2 },{ "rail", 8 },{ "stone", 20 }})
 local_create_rail_subway("subway-level-two",1000,level_two_rail_overlay_animations,level_two_top_animations,{{ "subway-level-one", 1 },{ "stone", 20 }})
@@ -281,6 +270,44 @@ data:extend({
     },
     order = "a-f-d"
   },
+  {
+	type = "technology",
+    name = "subway-level-one-more2",
+    icon = "__base__/graphics/technology/automated-rail-transportation.png",
+    icon_size = 256, icon_mipmaps = 4,
+    effects = {},
+    prerequisites = {"subway-level-one-more1"},
+    unit =
+    {
+      count = 200,
+      ingredients =
+      {
+        {"automation-science-pack", 3},
+        {"logistic-science-pack", 3},	
+      },
+      time = 15
+    },
+    order = "a-f-d"
+  },
+  {
+	type = "technology",
+    name = "subway-level-two-more2",
+    icon = "__base__/graphics/technology/automated-rail-transportation.png",
+    icon_size = 256, icon_mipmaps = 4,
+    effects = {},
+    prerequisites = {"subway-level-two-more1"},
+    unit =
+    {
+      count = 200,
+      ingredients =
+      {
+        {"automation-science-pack", 3},
+        {"logistic-science-pack", 3},	
+      },
+      time = 15
+    },
+    order = "a-f-d"
+  },
 })
 
 data:extend({
@@ -318,3 +345,206 @@ data:extend({
 		type = "virtual-signal"
 	},
   })
+
+
+ local generate_signal_combinator = function(combinator,name)
+    --combinator.sprites = make_4way_animation_from_spritesheet({ layers =
+    combinator.pictures =
+    { layers =
+      {
+        {
+          filename = "__modmashsplinterunderground__/graphics/entity/combinator/combinator-"..name..".png",
+          width = 58,
+          height = 52,
+          frame_count = 1,
+          direction_count = 4,
+          shift = util.by_pixel(0, 5),
+          hr_version =
+          {
+            scale = 0.5,
+            filename = "__modmashsplinterunderground__/graphics/entity/combinator/hr-combinator-"..name..".png",
+            width = 114,
+            height = 102,
+            frame_count = 1,
+            direction_count = 4,
+            shift = util.by_pixel(0, 5)
+          }
+        },
+        {
+          filename = "__base__/graphics/entity/combinator/constant-combinator-shadow.png",
+          width = 50,
+          height = 34,
+          frame_count = 1,
+          direction_count = 4,
+          shift = util.by_pixel(9, 6),
+          draw_as_shadow = true,
+          hr_version =
+          {
+            scale = 0.5,
+            filename = "__base__/graphics/entity/combinator/hr-constant-combinator-shadow.png",
+            width = 98,
+            height = 66,
+            frame_count = 1,
+            direction_count = 4,
+            shift = util.by_pixel(8.5, 5.5),
+            draw_as_shadow = true
+          }
+        }
+      }
+    }--)
+end
+
+local wire_connection_points=
+    {
+      {
+        shadow =
+        {
+         -- copper = util.by_pixel(0.0, -82.5),
+          red = util.by_pixel(8.0, -10.0),
+          green = util.by_pixel(-8, -10.0)
+        },
+        wire =
+        {
+         -- copper = util.by_pixel(0.0, -82.5),
+          red = util.by_pixel(-8.0, -10.0),
+          green = util.by_pixel(8, -10.0)
+        }
+      },
+      { --facing right
+        shadow =
+        {
+         -- copper = util.by_pixel(1.5, -81.0),
+          red = util.by_pixel(16, -8),
+          green = util.by_pixel(16, 0)
+        },
+        wire =
+        {
+         -- copper = util.by_pixel(1.5, -81.0),
+          red = util.by_pixel(16, -8),
+          green = util.by_pixel(16, -0)
+        }
+      },
+      { -- facing down
+        shadow =
+        {
+         -- copper = util.by_pixel(1.5, -81.0),
+          red = util.by_pixel(8, 0),
+          green = util.by_pixel(-8, 0)
+        },
+        wire =
+        {
+        --  copper = util.by_pixel(2.5, -79.5),
+          red = util.by_pixel(8.0, 0),
+          green = util.by_pixel(-8.0, 0)
+        }
+      },
+      { -- facing left
+        shadow =
+        {
+         -- copper = util.by_pixel(0.5, -86.5),
+          red = util.by_pixel(-16, 0),
+          green = util.by_pixel(-16, -8)
+        },
+        wire =
+        {
+         -- copper = util.by_pixel(0.5, -86.5),
+          red = util.by_pixel(-16, 0),
+          green = util.by_pixel(-16, -8)
+        }
+      }
+    }
+
+
+local ugc1 = util.table.deepcopy(data.raw['constant-combinator']["constant-combinator"])
+ugc1.name = "underground-combinator-l1"
+ugc1.type = "electric-pole"
+generate_signal_combinator(ugc1,"l1")
+
+
+ugc1.icon = "__modmashsplinterunderground__/graphics/icons/combinator-l1.png"
+ugc1.icon_mipmaps = 4
+ugc1.icon_size = 64
+ugc1.minable.result = "underground-combinator-l1"
+ugc1.supply_area_distance = 0
+ugc1.connection_points = wire_connection_points
+ugc1.maximum_wire_distance = 9
+
+local ugc2 = util.table.deepcopy(data.raw['constant-combinator']["constant-combinator"])
+ugc2.name = "underground-combinator-l2"
+ugc2.type = "electric-pole"
+generate_signal_combinator(ugc2,"l2")
+ugc2.icon = "__modmashsplinterunderground__/graphics/icons/combinator-l2.png"
+ugc2.icon_mipmaps = 4
+ugc2.icon_size = 64
+ugc2.minable.result = "underground-combinator-l2"
+ugc2.supply_area_distance = 0
+ugc2.connection_points = wire_connection_points
+ugc2.maximum_wire_distance = 9
+
+data:extend({
+    {
+        type = "item",
+        name = "underground-combinator-l1",
+        icon = "__modmashsplinterunderground__/graphics/icons/combinator-l1.png",
+        icon_size = 64,
+        icon_mipmaps = 4,
+        flags = {},
+        subgroup = "transport",
+        order = "a[train-system]-d[underground-combinator-l1]",
+        place_result = "underground-combinator-l1",
+        stack_size = 1
+    },
+    ugc1,
+    {
+        type = "recipe",
+        name = "underground-combinator-l1",
+        enabled = false,
+        ingredients = {
+            {
+              "copper-cable",
+              8
+            },
+            {
+              "electronic-circuit",
+              4
+            }
+        },
+        energy_required = 4.5,
+        result = "underground-combinator-l1",
+        requester_paste_multiplier = 1
+    }
+})
+
+data:extend({
+    {
+        type = "item",
+        name = "underground-combinator-l2",
+        icon = "__modmashsplinterunderground__/graphics/icons/combinator-l2.png",
+        icon_size = 64,
+        icon_mipmaps = 4,
+        flags = {},
+        subgroup = "transport",
+        order = "a[train-system]-d[combinator-l2]",
+        place_result = "underground-combinator-l2",
+        stack_size = 1
+    },
+    ugc2,
+    {
+        type = "recipe",
+        name = "underground-combinator-l2",
+        enabled = false,
+        ingredients = {
+            {
+              "copper-cable",
+              8
+            },
+            {
+              "electronic-circuit",
+              4
+            }
+        },
+        energy_required = 4.5,
+        result = "underground-combinator-l2",
+        requester_paste_multiplier = 1
+    }
+})

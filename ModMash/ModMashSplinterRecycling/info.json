@@ -1,6 +1,6 @@
 {
   "name": "modmashsplinterrecycling",
-  "version": "1.1.05",
+  "version": "1.1.06",
   "title": "ModMash Splinter, Recycling",
   "author": "PixelWhipped",
   "contact": "",
@@ -9,6 +9,6 @@
   "description": "Mod Mash Splinter for Recycling, Add's the ability to recycle items.",
   "dependencies": [
     "base >= 1.1.0",
-    "modmashsplinter >= 1.1.10" 
+    "modmashsplinter >= 1.1.10"
   ]
 }

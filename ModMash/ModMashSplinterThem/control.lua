@@ -986,7 +986,19 @@ end
 
 local local_get_start = function(surface)
 	
-	local t = surface.surface.find_entities_filtered{force ="player", limit=150, type="assembling-machine"}
+	local cpos = surface.surface.get_random_chunk()
+	local t = {}
+	for k = 1, 10 do
+		cpos.x =cpos.x * 32
+		cpos.y =cpos.y * 32
+		t = surface.surface.find_entities_filtered{force ="player", limit=150, type="assembling-machine", position = cpos, radius = 192}
+		if #t > 0 then
+			break 
+			
+		else
+			cpos = surface.surface.get_random_chunk()
+		end
+	end	
 	if #t == 0 then return nil end
 	t = t[math.random(1,#t)]
 	local x = math.random(96,192)
@@ -997,7 +1009,7 @@ local local_get_start = function(surface)
 	if math.random(1,100) < 50 then
 		y = y*-1
 	end
-	local pos = {x=local_round(t.position.x+x),y=local_round(t.position.y+y)}
+	local pos = {x=local_round(cpos.x+x),y=local_round(cpos.y+y)}
 	local x = surface.surface.find_entities_filtered{type={"resource"}, position=pos, radius = (surface.raid_projectile_range*0.75)}
 	if #x < 1 then return nil end
 	return pos
@@ -1310,6 +1322,7 @@ local local_add_chance= function (chance_table,count,func)
 end
 
 local local_nth_tick_surface = function(surface,ticks)	
+	
 
 	if surface.launch == false then return end
 	if #surface.bases == 0 and #surface.surface.find_entities_filtered{limit=4, name="them-blocker"} > 0 then
@@ -1318,6 +1331,8 @@ local local_nth_tick_surface = function(surface,ticks)
 	surface.flags = {}
 	surface.spawn_base_cooldown = math.max(0,surface.spawn_base_cooldown - ticks)
 	surface.spawn_ghost_check = math.max(0,surface.spawn_ghost_check - ticks)
+	surface.energy =  surface.energy + (surface.iteration*0.5)
+	--print(surface.iteration .. " " .. surface.energy .. " "..surface.end_game_saving )
 	--todo remove
 	--surface.energy = math.max(minimal_energy*2,surface.energy)
 	--surface.spawn_base_cooldown = 0
@@ -1369,7 +1384,7 @@ local local_nth_tick_surface = function(surface,ticks)
 end
 
 local local_nth_tick = function()
-
+	
 	local tindex = global.modmashsplinterthem.surface_update_nth_index
 	if not tindex then 
 		global.modmashsplinterthem.surface_update_nth_index = 1
@@ -1436,6 +1451,7 @@ local local_removed = function(entity, destruct)
 	if destruct == nil then destruct = false end
 	if surfaces[entity.surface.name] == nil then local_register_surface(entity.surface) end
 	local surface =  surfaces[entity.surface.name]
+
 	if entity.name == "them-pinch-mine" then
 		for k=0, #global.modmashsplinterthem.mines do local landmine = global.modmashsplinterthem.mines[k]
 			if  landmine == entity then
@@ -1719,7 +1735,32 @@ local local_on_configuration_changed = function(event)
 	 end
 end
 
+local local_on_mined_tile = function(event)
+--robot :: LuaEntity: The robot.
+--tiles :: array of OldTileAndPosition: The position data.
+--surface_index :: uint: The surface the tile(s) were mined on.
+
+--player_index :: uint
+--surface_index :: uint: The surface the tile(s) were mined from.
+--tiles :: array of OldTileAndPosition: The position data.
+  local surface = game.surfaces[event.surface_index]
+  for k=1,#event.tiles do
+	local ot = event.tiles[k]
+	local t = surface.get_tile(ot.position.x, ot.position.y)
+	if t.name == "them-concrete" then
+		surface.set_tiles({{name="landfill",position={x=ot.position.x, y = ot.position.y}, remove_colliding_entities = true, remove_colliding_decoratives = true}})
+	end
+  end
+
+
+end
+
 --event setup section
+
+	script.on_event(defines.events.on_player_mined_tile, local_on_mined_tile)
+	script.on_event(defines.events.on_robot_mined_tile, local_on_mined_tile)
+	 
+
 	script.on_init(local_init)
 	script.on_load(local_load)
 	script.on_nth_tick(120, local_nth_tick)

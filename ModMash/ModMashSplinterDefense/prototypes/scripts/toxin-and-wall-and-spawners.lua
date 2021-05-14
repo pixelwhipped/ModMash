@@ -73,6 +73,28 @@ local local_toxin_added = function(event)
 				end
 			end
 		end
+	elseif entity.name == "biter-neuro-toxin-puff" then
+		local enemies = entity.surface.find_entities_filtered({
+			type = {"unit-spawner","unit","turret"},
+			position = entity.position,
+			radius = 1,
+		})
+		for _, enemy in ipairs(enemies) do
+			if enemy.prototype.subgroup.name=="enemies" then
+				if enemy.type == "unit-spawner" then local p = enemy.position
+				elseif enemy.type == "turret" then
+					--local p = enemy.position
+					--local n = enemy.name
+					--enemy.destroy()
+					--entity.surface.create_entity{name=n, position=p, force = game.forces[force_player]}
+					
+				else
+					--if math.random(1,50) > 25 then
+					enemy.force = game.forces[force_player]
+					--end
+				end
+			end
+		end
 	end
 end
 
@@ -132,6 +154,14 @@ local local_update_alert_type = function(alerts_id)
 		end
 	end
 end
+
+--[[local local_on_script_trigger_effect = function(event)
+	print("trigger")
+	if event.effect_id == "neural-toxin-round" then
+		--if event.source_entity.name == "them-roboport" then
+	end
+end]]
+
 local local_tick = function()	
 	local_update_alert_type(defines.alert_type.entity_destroyed)
 	local_update_alert_type(defines.alert_type.entity_under_attack)
@@ -140,7 +170,7 @@ local local_tick = function()
 
 script.on_init(local_init)
 script.on_load(local_load)
-
+--script.on_event(defines.events.on_script_trigger_effect, local_on_script_trigger_effect)
 script.on_event(defines.events.on_tick, local_tick)
 script.on_event(defines.events.on_trigger_created_entity, local_toxin_added)
 script.on_event(defines.events.on_post_entity_died,local_on_post_entity_died)

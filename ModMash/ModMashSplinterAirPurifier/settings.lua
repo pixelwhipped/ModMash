@@ -16,4 +16,13 @@
 		allowed_values = {"Enabled", "Disabled"},
 		order = "b"
 	}
+	,
+	{
+		type = "string-setting",
+		name = "setting-absorption-rate",
+		setting_type = "startup",
+		default_value = "High",
+		allowed_values = {"High", "Low"},
+		order = "c"
+	}
 })

@@ -27,5 +27,18 @@ data:extend(
     },
     result = "alien-rounds-magazine"
   },
+  {
+    type = "recipe",
+    name = "neural-toxin-rounds-magazine",
+    enabled = false,
+    energy_required = 10,
+    ingredients =
+    {
+      {"firearm-magazine", 1},      
+      {"fish-juice", 1},
+	  {"ooze-juice", 1},
+    },
+    result = "neural-toxin-rounds-magazine"
+  },
   }
   )

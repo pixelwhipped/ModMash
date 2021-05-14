@@ -109,3 +109,7 @@ local local_update_recipies = function()
 local_update_recipies()	
 
 require("prototypes.scripts.types") 
+
+--data.raw.recipe["blank-circuit-from-faulty-circuit"].allow_as_intermediate = false	
+--data.raw.recipe["blank-circuit-from-faulty-circuit"].allow_decomposition = false	
+--data.raw.recipe["blank-circuit-from-faulty-circuit"].hide_from_player_crafting = true	

@@ -23,6 +23,43 @@ data:extend(
 		stack_size = 50,
         hide_from_player_crafting = hide_from_player_crafting
     },
+      {
+    type = "corpse",
+    name = "them-iron-chest-remnants",
+    icon = "__base__/graphics/icons/iron-chest.png",
+    icon_size = 64, icon_mipmaps = 4,
+    flags = {"placeable-neutral", "building-direction-8-way", "not-on-map"},
+    subgroup = "storage-remnants",
+    order = "a-b-a",
+    selection_box = {{-0.5, -1.5}, {0.5, 1.5}},
+    tile_width = 1,
+    tile_height = 1,
+    selectable_in_game = false,
+    time_before_removed = 60 * 60 * 15, -- 15 minutes
+    final_render_layer = "remnants",
+    remove_on_tile_placement = false,
+    animation =
+    {
+        filename = "__modmashsplinterthem__/graphics/entity/chest/chest-remnants.png",
+        priority = "extra-high",
+        width = 34,
+        height = 76,
+        frame_count = 1,
+      direction_count = 1,
+        shift = util.by_pixel(0, -0.5),
+        hr_version =
+        {
+        filename = "__modmashsplinterthem__/graphics/entity/chest/hr-chest-remnants.png",
+        priority = "extra-high",
+        width = 66,
+        height = 152,
+        frame_count = 1,
+      direction_count = 1,
+        shift = util.by_pixel(-0.5, -0.5),
+        scale = 0.5
+        }
+    }
+  },
     {
         type = "logistic-container",
 		name = "them-chest",
@@ -36,7 +73,7 @@ data:extend(
         max_logistic_slots = 1,
         healing_per_tick = healing_per_tick,
         render_not_in_network_icon = false,
-        corpse = "iron-chest-remnants",
+        corpse = "them-iron-chest-remnants",
         dying_explosion = "iron-chest-explosion",
         open_sound = { filename = "__base__/sound/metallic-chest-open.ogg", volume=0.43 },
         close_sound = { filename = "__base__/sound/metallic-chest-close.ogg", volume = 0.43 },
@@ -101,7 +138,7 @@ data:extend(
         healing_per_tick = healing_per_tick,
         render_not_in_network_icon = false,
         logistic_mode = "passive-provider",
-        corpse = "iron-chest-remnants",
+        corpse = "them-iron-chest-remnants",
         dying_explosion = "iron-chest-explosion",
         open_sound = { filename = "__base__/sound/metallic-chest-open.ogg", volume=0.43 },
         close_sound = { filename = "__base__/sound/metallic-chest-close.ogg", volume = 0.43 },

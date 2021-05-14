@@ -224,7 +224,7 @@ else
               off_when_no_fluid_recipe = true
             },
 		    crafting_categories = {"crafting", "advanced-crafting", "crafting-with-fluid"},
-		    crafting_speed = 0.025,
+		    crafting_speed = 0.05,
 		    energy_source =
 		    {
 		      type = "burner",
@@ -399,6 +399,7 @@ else
                     module_info_icon_shift = {0, 0.5},
                     module_info_multi_row_initial_height_modifier = -0.3
                 },
+                scale_entity_info_icon = true,
                 allowed_effects = {"consumption", "speed", "productivity", "pollution"},
             })
         local_add_entity(
@@ -537,6 +538,7 @@ else
                   module_info_icon_shift = {0, 0.5},
                   module_info_multi_row_initial_height_modifier = -0.3
                 },
+               -- scale_entity_info_icon = true,
                 allowed_effects = {"consumption", "speed", "productivity", "pollution"}
             })
     end

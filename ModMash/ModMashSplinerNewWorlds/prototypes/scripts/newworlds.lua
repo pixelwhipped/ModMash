@@ -2,6 +2,8 @@
 local mod_gui = require("mod-gui")
 local distance = modmashsplinternewworlds.util.distance
 local table_contains = modmashsplinternewworlds.util.table.contains
+local table_length = modmashsplinternewworlds.util.table.length
+
 local is_valid  = modmashsplinternewworlds.util.is_valid
 local is_valid_and_persistant  = modmashsplinternewworlds.util.entity.is_valid_and_persistant
 
@@ -146,21 +148,6 @@ local local_init = function()
 	local_ban_entites()
 	end
 
-local local_on_configuration_changed = function() 	
-	if global.modmashsplinternewworlds  == nil then global.modmashsplinternewworlds = {} end
-	if global.modmashsplinternewworlds.queen_hive_generated  == nil then global.modmashsplinternewworlds.queen_hive_generated  = false end
-	if global.modmashsplinternewworlds.exploration_chance  == nil then global.modmashsplinternewworlds.exploration_chance = 0.5 end
-	if global.modmashsplinternewworlds.all_terraformers == nil then global.modmashsplinternewworlds.all_terraformers = {} end
-	if global.modmashsplinternewworlds.all_platforms == nil then global.modmashsplinternewworlds.all_platforms = {} end
-
-	if global.modmashsplinternewworlds.planets == nil then global.modmashsplinternewworlds.planets = {} end
-	if global.modmashsplinternewworlds.platform_frames == nil then global.modmashsplinternewworlds.platform_frames = {} end
-
-	all_terraformers = global.modmashsplinternewworlds.all_terraformers
-	all_platforms = global.modmashsplinternewworlds.all_platforms
-	platform_frames = global.modmashsplinternewworlds.platform_frames
-	local_ban_entites()
-	end
 
 local local_load = function()	
 	all_terraformers = global.modmashsplinternewworlds.all_terraformers	
@@ -358,6 +345,7 @@ local local_remove_planets_button = function(player)
 	end
 
 local local_add_planets_button = function()
+	if settings.global["new-worlds-setting-shortcuts-only"].value == true then return end
 	for i = 1, #game.players do local p = game.players[i]
 		local_remove_planets_button(p)
 		local button_flow =  mod_gui.get_button_flow(p)
@@ -379,7 +367,13 @@ local local_on_rocket_launched = function(event)
 				if global.modmashsplinternewworlds.planets[name] == nil then
 					global.modmashsplinternewworlds.planets[name] = {planet_id = name}
 					print("Unlocked planet "..name)
-					local_add_planets_button()
+					for k=1 , #game.players do
+						local player = game.players[k]
+						if is_valid(player) == true then
+							player.set_shortcut_available("planet-explorer",true)
+						end
+					end	
+					local_add_planets_button()					
 				end	
 			else
 				print("Explorer perished")
@@ -399,8 +393,8 @@ local local_chunk_generated = function(event)
 		if distance(0,0,area.left_top.x,area.left_top.y) < queen_hive_min_distance then return end
 		if remote.interfaces["modmashsplinterunderground"] ~= nil then
 			if remote.interfaces["modmashsplinterunderground"]["try_add_entity"] ~= nil then
-				local position = {x = area.left_top.x+12,y = area.left_top.y+12}
-				global.modmashsplinternewworlds.queen_hive_generated = remote.call("modmashsplinterunderground","try_add_entity","nauvis-deep-underground","queen-hive", position,10,force_enemy)
+				local position = {x = area.left_top.x+16,y = area.left_top.y+12}
+				global.modmashsplinternewworlds.queen_hive_generated = remote.call("modmashsplinterunderground","try_add_entity","nauvis-deep-underground","queen-hive", position,9,force_enemy)
 				if global.modmashsplinternewworlds.queen_hive_generated == true then
 					for _, force in pairs(game.forces) do
 					
@@ -852,11 +846,80 @@ local local_on_gui_opened = function(event)
 	end
 end
 
+
+local local_update_gui = function()
+	local z = 0
+	if global.modmashsplinternewworlds.planets ~= nil then z = table_length(global.modmashsplinternewworlds.planets) end
+	
+	for k=1 , #game.players do
+		local player = game.players[k]
+		if is_valid(player) == true then
+			--print(z)
+			if z > 0 then
+				player.set_shortcut_available("planet-explorer",true)
+			else
+				player.set_shortcut_available("planet-explorer",false)
+			end
+		end
+	end	
+
+	if settings.global["new-worlds-setting-shortcuts-only"].value == true then
+		for k=1 , #game.players do
+			if is_valid(game.players[k]) == true then
+				local_remove_planets_button(game.players[k])
+			end
+		end
+	else
+		if global.modmashsplinternewworlds.planets ~= nil and #global.modmashsplinternewworlds.planets > 1 then
+			local_add_planets_button()	
+		end
+	end
+end
+
+local local_on_runtime_mod_setting_changed = function(event)
+	local_update_gui()
+	end
+
+local local_on_configuration_changed = function() 	
+	if global.modmashsplinternewworlds  == nil then global.modmashsplinternewworlds = {} end
+	if global.modmashsplinternewworlds.queen_hive_generated  == nil then global.modmashsplinternewworlds.queen_hive_generated  = false end
+	if global.modmashsplinternewworlds.exploration_chance  == nil then global.modmashsplinternewworlds.exploration_chance = 0.5 end
+	if global.modmashsplinternewworlds.all_terraformers == nil then global.modmashsplinternewworlds.all_terraformers = {} end
+	if global.modmashsplinternewworlds.all_platforms == nil then global.modmashsplinternewworlds.all_platforms = {} end
+
+	if global.modmashsplinternewworlds.planets == nil then global.modmashsplinternewworlds.planets = {} end
+	if global.modmashsplinternewworlds.platform_frames == nil then global.modmashsplinternewworlds.platform_frames = {} end
+
+	all_terraformers = global.modmashsplinternewworlds.all_terraformers
+	all_platforms = global.modmashsplinternewworlds.all_platforms
+	platform_frames = global.modmashsplinternewworlds.platform_frames
+	local_ban_entites()
+	local_update_gui()
+	end
+
+local local_planet_on_shortcut_gui_click = function(event)
+	local z = 0
+	if global.modmashsplinternewworlds.planets ~= nil then z = table_length(global.modmashsplinternewworlds.planets) end
+	if z > 0 then
+		local player = game.players[event.player_index]
+		if event.prototype_name == "planet-explorer" and player.is_shortcut_available("planet-explorer") then
+			if local_remove_planets_frame(event.player_index) == false then
+				local_create_planets_frame(event)	
+			end
+		end
+	else
+		local_update_gui()
+	end
+end
+
 script.on_init(local_init)
 script.on_load(local_load)
+
+
 script.on_nth_tick(44, local_tick)
 script.on_event(defines.events.on_tick, local_platform_tick)
 script.on_configuration_changed(local_on_configuration_changed)
+script.on_event(defines.events.on_runtime_mod_setting_changed,local_on_runtime_mod_setting_changed)
 
 
 script.on_event(defines.events.on_entity_died,
@@ -901,6 +964,8 @@ script.on_event(defines.events.on_research_finished, local_terraformer_research)
 script.on_event(defines.events.on_rocket_launched, local_on_rocket_launched)
 
 script.on_event(defines.events.on_chunk_generated,local_chunk_generated)
+
+script.on_event(defines.events.on_lua_shortcut, local_planet_on_shortcut_gui_click)
 
 script.on_event(defines.events.on_gui_click, local_on_gui_click)
 

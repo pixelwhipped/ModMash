@@ -1,12 +1,22 @@
-﻿------------------------------------------------------------------------------------------------
+﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.29
+  Changes:
+    - Incorrect dependancies reference
+
+---------------------------------------------------------------------------------------------------
+Version: 1.1.28
+  Changes:
+    - Dependancies update
+
+---------------------------------------------------------------------------------------------------
 Version: 1.1.27
   Changes:
     - Dependancies update
 
-------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 Version: 1.1.26
   Bug Fixes:
-    -Accomodating for incomplete train code
+    - Accomodating for incomplete train code
 
 ---------------------------------------------------------------------------------------------------
 Version: 1.1.25
@@ -245,7 +255,7 @@ Version: 0.18.46
 ---------------------------------------------------------------------------------------------------
 Version: 0.18.45
   Bug Fixes:
-    - underground access2 referenceing wrong table add/remove
+    - underground access2 referenceing wrong table add remove
 
 ---------------------------------------------------------------------------------------------------
 Version: 0.18.44
@@ -323,7 +333,7 @@ Version: 0.18.35
     - built profiler to identify ups issues
     - biter spawner improvment before 0.012884ms,0.004200ms,0.009237ms after 0.000382,0.000250ms
     - updated biter neural toxing graphics and effects, spawners become neutral and spitters, biters player force
-    - adjusted toxin logic for spitters. Artillery still target other turret types even if force changed.	 
+    - adjusted toxin logic for spitters. Artillery still target other turret types even if force changed.
 
 ---------------------------------------------------------------------------------------------------
 Version: 0.18.34

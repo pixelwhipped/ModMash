@@ -55,6 +55,7 @@ end
 
 local local_update_recipe = function(recipe)	
 	if recipe == nil then return nil end
+
 	if recipe.ingredients == nil then return nil end
 	if #recipe.ingredients > 3 then return nil end
 	local foundcircuit = false
@@ -62,9 +63,17 @@ local local_update_recipe = function(recipe)
 		local ingredient = ensure_ingredient_format(recipe.ingredients[k])
 		if ingredient ~= nil then
 			if ingredient.name == "blank-circuit" then return nil end
+			if ingredient.name == "gold-cable" then return nil end
+			if ingredient.name == "gold-plate" then return nil end
+			if ingredient.name == "glass" then return nil end
 			if ingredient.name == "electronic-circuit" then
 				ingredient.name = "blank-circuit"
 				ingredient.amount = math.ceil((ingredient.amount * 1.75))
+				foundcircuit = true
+			end
+			if ingredient.name == "advanced-circuit" then
+				ingredient.name = "blank-circuit"
+				ingredient.amount = math.ceil((ingredient.amount * 4.5))
 				foundcircuit = true
 			end
 		end
@@ -79,12 +88,18 @@ local local_update_result = function(recipe)
 	
 	if recipe.result ~= nil then
 		name = recipe.result
-		--recipe.result_count = (recipe.result_count or 1)*2
-		return recipe.result
+		--recipe.result_count = (recipe.result_count or 1ensure_ingredient_format2
+		local n = recipe.result
+		local c = recipe.result_count or 1
+		recipe.main_product = n
+		recipe.result = nil
+		recipe.result_count = nil
+		recipe.results = {{name=n,amount=c},{name = "faulty-circuit",amount = 1, probability = 0.05}}
+		return n
 	end
 	if recipe.results ~= nil then
 		for k=1, #recipe.results do
-			local result = ensure_ingredient_format(recipe.results[k])
+			local result = ensure_ingredient_format(recipe.results[k])			
 			--[[if result ~= nil then
 				if result.type == nil or result.type ~= "fluid" then
 					result.amount = result.amount * 2
@@ -92,8 +107,16 @@ local local_update_result = function(recipe)
 			end]]
 			recipe.results[k] = result
 		end
-		if name ~= nil then return name end 
-		if #recipe.results > 0 then return recipe.results[1].name end
+		table.insert(recipe.results,{name = "faulty-circuit",amount = 1, probability = 0.05})
+		
+		if name ~= nil then 
+			recipe.main_product = name
+			return name
+		end 
+		if #recipe.results > 0 then
+			recipe.main_product = recipe.results[1].name 
+			return recipe.results[1].name 
+		end
 	end
 	return nil
 end
@@ -129,7 +152,7 @@ local local_circuit_recipe = function(recipe)
 	if name == nil then return nil end
 	local item = get_item(name)
 	if item == nil then return nil end
-	if item.stackable == false or item.name == "warptorio-armor" then
+	if item.stackable == false or item.name == "warptorio-armor" or ends_with(item.name,"beltbox") or ends_with(item.name,"transport-belt-loader") then
 		return nil
 	end
 	if item.subgroup == "raw-resource" then return nil end
@@ -147,6 +170,7 @@ local local_circuit_recipe = function(recipe)
 			if item.icons[k].icon_size ~= nil and (type(item.icons[k].icon_size) ~= "number" or item.icons[k].icon_size > 64)  then return nil end
 		end
 	end
+
 	recipe.localised_name = item.localised_name
 	recipe.localised_description = item.localised_description
 	recipe.name = recipe.name.."-with-blank-circuit"
@@ -176,6 +200,7 @@ local local_create_circuit_recipies = function()
 	for k=1, #recipies do local recipe = recipies[k];			
 	    if recipe.hidden or recipe.hide_from_player_crafting 
 			or starts_with(recipe.name,"creative-mod") 
+			or ends_with(recipe.name,"combinator") 
 			or starts_with(recipe.name,"deadlock-stack") then
 			-- do nothing
 		else
@@ -191,5 +216,5 @@ local local_create_circuit_recipies = function()
 end
 
 if data ~= nil and data_final_fixes == true then
-	--local_create_circuit_recipies()
+	local_create_circuit_recipies()
 end

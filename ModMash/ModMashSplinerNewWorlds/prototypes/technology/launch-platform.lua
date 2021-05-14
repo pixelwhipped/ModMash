@@ -44,7 +44,7 @@ local create_transport_technology = function(level,count)
 			name = "launch-platform-speed-"..level,
 			icon = "__modmashsplinternewworlds__/graphics/technology/launch-platform.png",
 			icon_size = 256, icon_mipmaps = 4,
-			localised_name = {"",{"technology-name.launch-platform-speed-1"},"",level},
+			localised_name = {"",{"technology-name.launch-platform-speed-1"}," ",level},
 			localised_description =  {"technology-description.launch-platform-speed-1"},
 			effects =
 			{

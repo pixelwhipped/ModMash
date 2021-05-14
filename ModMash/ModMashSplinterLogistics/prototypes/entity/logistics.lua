@@ -923,4 +923,43 @@ else
 			local_create_mini_loader(loader.name,loader.max_health,loader.filter_count,loader.localised_name,loader.localised_description,loader.speed,loader.belt_animation_set, loader.order,loader.ingredients,loader.ingredients_expensive, loader.healing_per_tick, loader.technology,loader.next_upgrade,loader.category)
 		end
 	end
+
+	if deadlock_stacking then
+		deadlock.add_tier({
+			transport_belt      = "high-speed-transport-belt",
+			colour              = {r=64, g=64, b=64},
+			underground_belt    = "high-speed-underground-belt-structure",
+			splitter            = "high-speed-splitter",
+			technology          = "logistics-4",
+			order               = "0",
+			loader_ingredients  = {
+				{"express-mini-loader", 1},
+				{"electronic-circuit", 2},
+				{"titanium-plate", 5}
+			},
+			beltbox_ingredients = {
+				{"fast-inserter", 4},
+				{"iron-gear-wheel", 6},
+				{"titanium-plate", 2}
+			},
+		})
+		deadlock.add_tier({
+			transport_belt      = "regenerative-transport-belt",
+			colour              = {r=255, g=0, b=196},
+			underground_belt    = "regenerative-underground-belt-structure",
+			splitter            = "regenerative-splitter",
+			technology          = "logistics-5",
+			order               = "0",
+			loader_ingredients  = {				
+				{"high-speed-mini-loader", 1},
+				{"electronic-circuit", 2},
+				{"alien-plate", 5},
+			},
+			beltbox_ingredients = {
+				{"fast-inserter", 8},
+				{"electronic-circuit", 2},
+				{"alien-plate", 5},
+			},
+		})
+	end
 end

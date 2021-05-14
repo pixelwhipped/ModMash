@@ -1,6 +1,7 @@
 ﻿require ("prototypes.scripts.defines")
 
 local starts_with  = modmashsplinterrecycling.util.starts_with
+local ends_with  = modmashsplinterrecycling.util.ends_with
 local get_item  = modmashsplinterrecycling.util.get_item
 local get_item_substitution  = modmashsplinterrecycling.util.get_item_substitution
 local get_name_for  = modmashsplinterrecycling.util.get_name_for
@@ -36,17 +37,27 @@ local local_get_results_from_ingredients = function(r)
 end
 
 local local_create_recylce_item = function(r)
+	if ends_with(r.name,"with-gold") then return end
 	local results = nil
 	if r.normal ~= nil then 		
+
 		results = r.normal.results
 		if results == nil or #results == 0 then
 			if r.normal.result_count ~= nil then
 				results = {{name = r.normal.result, amount = math.max(r.normal.result_count,1)}}
 			else
-				results = {{name = r.normal.result, amount = 1}}
+			    if r.normal.result == nil and #results == 1 then
+					results = {{name = results[1].name, amount = 1}}
+				else
+					results = {{name = r.normal.result, amount = 1}}
+				end
 			end	
 		else
-			results = {{name = r.result, amount = 1}}	
+			if results ~= nil and #results == 1 then
+				results = {{name = results[1].name, amount = 1}}	
+			else
+				results = {{name = r.result, amount = 1}}	
+			end
 		end
 	else
 		results = r.results;

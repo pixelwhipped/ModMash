@@ -1,4 +1,9 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.06
+  Changes:
+    - updated recipe logic and exclude with gold recipies default should be found
+
+---------------------------------------------------------------------------------------------------
 Version: 1.1.05
   Changes:
     - removed allow intermediates

@@ -1,22 +1,23 @@
 ﻿---------------------------------------------------------------------------------------------------
-Version: 1.1.04
+Version: 1.1.06
   Changes:
-    - had wanted to make blank circuits more usefull so basically copied gold but altered to double ingredient  
+    - Alternate circuit recipies now have and additional penalty faulty circuits 
 
 ---------------------------------------------------------------------------------------------------
-Version: 1.1.03
+Version: 1.1.05
   Changes:
-    - nothing yet
+    - Deadlock stacking support  
+
+---------------------------------------------------------------------------------------------------
+Version: 1.1.04
+  Changes:
+    - Aternate recipies with blank circuits  
 
 ---------------------------------------------------------------------------------------------------
 Version: 1.1.02
   Changes:
-    - ModPack ready
-
----------------------------------------------------------------------------------------------------
-Version: 1.1.01
-  Changes:
     - 1.1.0 ready
+    - ModPack ready
 
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.01

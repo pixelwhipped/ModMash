@@ -12,13 +12,21 @@ end
 if not modmashsplinterairpurifier.defines then modmashsplinterairpurifier.defines = {} end
 if not modmashsplinterairpurifier.defines.air_purifier then modmashsplinterairpurifier.defines.air_purifier = {} end
 modmashsplinterairpurifier.defines.air_purifier.entity_crafting_speed = 1
-modmashsplinterairpurifier.defines.air_purifier.entity_energy_source_emissions_per_minute = -6
+if settings.startup["setting-absorption-rate"].value == "High" then
+	modmashsplinterairpurifier.defines.air_purifier.entity_energy_source_emissions_per_minute = -10
+else
+	modmashsplinterairpurifier.defines.air_purifier.entity_energy_source_emissions_per_minute = -6
+end
 modmashsplinterairpurifier.defines.air_purifier.entity_energy_usage = "200kW"
 modmashsplinterairpurifier.defines.air_purifier.entity_energy_source_drain = "20kW"
 
 if not modmashsplinterairpurifier.defines.advanced_air_purifier then modmashsplinterairpurifier.defines.advanced_air_purifier = {} end
 modmashsplinterairpurifier.defines.advanced_air_purifier.entity_crafting_speed = 1.25
-modmashsplinterairpurifier.defines.advanced_air_purifier.entity_energy_source_emissions_per_minute = -10
+if settings.startup["setting-absorption-rate"].value == "High" then
+	modmashsplinterairpurifier.defines.advanced_air_purifier.entity_energy_source_emissions_per_minute = -15
+else
+	modmashsplinterairpurifier.defines.advanced_air_purifier.entity_energy_source_emissions_per_minute = -10
+end
 modmashsplinterairpurifier.defines.advanced_air_purifier.entity_energy_usage = "225kW"
 modmashsplinterairpurifier.defines.advanced_air_purifier.entity_energy_source_drain = "20kW"
 

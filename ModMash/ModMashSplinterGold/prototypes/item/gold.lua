@@ -155,3 +155,42 @@ data:extend(
 	}
   }
 })
+
+if deadlock_stacking then
+  local Items = {
+		{titanium_ore_name, "deadlock-stacking-1"},
+		{"sand", "deadlock-stacking-1"},
+		{"alien-ore", "deadlock-stacking-1"},
+		{"titanium-plate", "deadlock-stacking-1"},
+		{"alien-plate", "deadlock-stacking-1"},
+		{"glass", "deadlock-stacking-1"}
+	}
+
+	for _, item in pairs(Items) do
+		local name = item[1]
+		local tech = item[2]
+		if data.raw.item[name] then
+			if not data.raw.item["deadlock-stack-" .. name] then
+				deadlock.add_stack(name, nil, tech, 64, "item", 4)
+			end
+		end
+	end
+end
+
+if deadlock_stacking then
+  local Items = {
+		{"gold-ore", "deadlock-stacking-1"},
+		{"gold-plate", "deadlock-stacking-1"},
+		{"gold-cable", "deadlock-stacking-1"}
+	}
+
+	for _, item in pairs(Items) do
+		local name = item[1]
+		local tech = item[2]
+		if data.raw.item[name] then
+			if not data.raw.item["deadlock-stack-" .. name] then
+				deadlock.add_stack(name, nil, tech, 64, "item", 4)
+			end
+		end
+	end
+end

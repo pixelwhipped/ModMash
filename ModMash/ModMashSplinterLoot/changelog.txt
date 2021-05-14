@@ -1,4 +1,11 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.03
+  Changes:
+    - Changed base loot_probability
+  Bug Fixes:
+    - Science probability table was nil, always check now
+
+---------------------------------------------------------------------------------------------------
 Version: 1.1.02
   Changes:
     - ModPack ready

@@ -5,6 +5,15 @@ local ensure_ingredient_format = modmashsplinterrefinement.util.ensure_ingredien
 local get_standard_results = modmashsplinterrefinement.util.get_standard_results
 local get_normal_results = modmashsplinterrefinement.util.get_normal_results
 
+local create_stacked_item = function(item)
+	if deadlock_stacking then
+			if not data.raw.item["deadlock-stack-" .. item.name] then
+				deadlock.add_stack(item.name, nil, "deadlock-stacking-1", 64, "item", 4)
+			end
+	end
+end
+
+
 local local_create_ore_refinements = function()
 	for name, recipe in pairs(data.raw.recipe) do
 		if recipe ~= nil and recipe.name ~= nil and recipe.category=="smelting" then
@@ -128,6 +137,7 @@ local local_create_ore_refinements = function()
 								always_show_made_in = true
 							}
 							data:extend({item,refine_recipie,refine_result_recipie})
+							create_stacked_item(item)
 						end
 					end
 				end
@@ -266,6 +276,7 @@ local local_create_ore_refinements_experimental = function()
 							always_show_made_in = true
 						}
 						data:extend({item,refine_recipie,refine_result_recipie})
+						create_stacked_item(item)
 					end
 				end
 			end

@@ -70,5 +70,53 @@ table.insert(
       time = 15
     },
     order = "a-f-d"
+  },
+  {
+	type = "technology",
+    name = "underground-combinator-l1",
+    icon = "__base__/graphics/technology/circuit-network.png",
+    icon_size = 256, icon_mipmaps = 4,
+    effects = {
+	  {
+        type = "unlock-recipe",
+        recipe = "underground-combinator-l1"
+      }
+	},
+    prerequisites = {"underground"},
+    unit =
+    {
+      count = 100,
+      ingredients =
+      {
+        {"automation-science-pack", 3},
+        {"logistic-science-pack", 3},	
+      },
+      time = 15
+    },
+    order = "a-f-d"
+  },
+  {
+	type = "technology",
+    name = "underground-combinator-l2",
+    icon = "__base__/graphics/technology/circuit-network.png",
+    icon_size = 256, icon_mipmaps = 4,
+    effects = {
+	  {
+        type = "unlock-recipe",
+        recipe = "underground-combinator-l2"
+      }
+	},
+    prerequisites = {"underground-combinator-l1"},
+    unit =
+    {
+      count = 100,
+      ingredients =
+      {
+        {"automation-science-pack", 3},
+        {"logistic-science-pack", 3},	
+      },
+      time = 15
+    },
+    order = "a-f-d"
   }
   })
