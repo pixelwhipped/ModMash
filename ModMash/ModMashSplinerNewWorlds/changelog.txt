@@ -1,4 +1,9 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.13
+  Fixes:
+    - newworlds.lua:414: bad argument #3 of 3 to 'can_place_entity' (string expected, got nil) fix
+
+---------------------------------------------------------------------------------------------------
 Version: 1.1.12
   Fixes:
     - Tweaked queen hive placement

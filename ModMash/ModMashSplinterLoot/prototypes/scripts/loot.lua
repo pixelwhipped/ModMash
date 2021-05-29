@@ -483,7 +483,10 @@ local local_get_random_loot_stack = function(distance_mod)
 		local stacks = math.max(1,math.random(math.ceil(item.max_stacks*distance_mod),item.max_stacks))
 		for j = 1, stacks do
 			if math.random(0,1.1) < item.probability then
-				table.insert(stack, {name = item.name, count = math.random(math.ceil(item.stack_size*distance_mod),item.stack_size) })
+				--quick fix
+				if game.item_prototypes[item.name]~=nil then
+					table.insert(stack, {name = item.name, count = math.random(math.ceil(item.stack_size*distance_mod),item.stack_size) })
+				end
 			end
 		end
 	end

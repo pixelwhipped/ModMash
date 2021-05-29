@@ -1,4 +1,9 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.04
+  Bug Fixes:
+    - Check item name exists as mod could have been removed but table prebuilt or requested item added
+
+---------------------------------------------------------------------------------------------------
 Version: 1.1.03
   Changes:
     - Changed base loot_probability

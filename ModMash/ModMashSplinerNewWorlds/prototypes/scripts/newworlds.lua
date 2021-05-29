@@ -411,7 +411,7 @@ local local_chunk_generated = function(event)
 		end
 	elseif surface.name == "nauvis" and not game.active_mods["modmashsplinterunderground"] then
 		local position = {x = area.left_top.x+math.random(0, 30),y = area.left_top.y+math.random(0, 30)}
-		if surface.can_place_entity{name=name,position=position} then
+		if surface.can_place_entity{name="queen-hive",position=position} then
 		local ent = surface.create_entity{
 			  name = "queen-hive",
 			  position = position,
