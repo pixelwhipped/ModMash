@@ -144,6 +144,7 @@ end
 local local_register_resource_level_one = function(resource)
 	if global.modmashsplinterunderground.resource_level_one == nil then global.modmashsplinterunderground.resource_level_one = {} end
 	if resource == nil or type(resource.name) ~= "string" or type(resource.probability) ~= "number" then return end
+	if settings.startup["setting-exculude-se"].value == true and starts_with(resource.name,"se-") then return end
 	if local_check_mineable(resource.name) == false then return end
 	for k=1, #global.modmashsplinterunderground.resource_level_one do
 		if global.modmashsplinterunderground.resource_level_one[k].name == resource.name then return end
@@ -157,6 +158,7 @@ end
 local local_register_resource_level_two = function(resource)
 	if global.modmashsplinterunderground.resource_level_two == nil then global.modmashsplinterunderground.resource_level_two = {} end
 	if resource == nil or type(resource.name) ~= "string" or type(resource.probability) ~= "number" then return end
+	if settings.startup["setting-exculude-se"].value == true and starts_with(resource.name,"se-") then return end
 	if local_check_mineable(resource.name) == false then return end
 	for k=1, #global.modmashsplinterunderground.resource_level_two do
 		if global.modmashsplinterunderground.resource_level_two[k].name == resource.name then return end

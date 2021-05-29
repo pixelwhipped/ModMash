@@ -54,4 +54,11 @@
 		maximum_value = 4,
 		order = "g"
 	},
+	{
+		type = "bool-setting",
+		name = "setting-exculude-se",
+		setting_type = "startup",
+		default_value = true,
+		order = "h"
+	},
 })
