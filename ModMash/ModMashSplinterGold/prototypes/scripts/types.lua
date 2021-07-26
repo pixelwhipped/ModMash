@@ -101,6 +101,139 @@ local local_update_result = function(recipe)
 	return nil
 end
 
+local create_layered_icon_using32 = function(initial_icons)
+	
+	local bad_icon = {	
+		{
+				icon = "__modmashsplinter__/graphics/icons/bad-icon.png",
+				icon_mipmaps = 4,
+				icon_size = 64,
+				scale = 0.5,
+				shift = {0,0}		
+		}
+	}
+
+	local base_icon = {
+		{
+			icon = "__modmashsplinter__/graphics/icons/blankicon.png",
+			icon_mipmaps = 4,
+			icon_size = 64,
+			scale = 0.5,
+			shift = {0,0}
+		}
+	}
+	
+	if initial_icons == nil or type(initial_icons) ~= "table" or #initial_icons == 0 then 
+		--log("Expected table of items")
+		return bad_icon 
+	end
+	local icons = {}
+	for k = 1, #initial_icons do local icon = initial_icons[k]
+		if icon ~= nil then
+			if icon.from ~= nil then
+				if (icon.from.icon == false or icon.from.icon == nil)  and icon.from.icons ~= nil then
+				--	log("adding icons from prototype with icons")
+					for j = 1, #icon.from.icons do 
+						local new_icon_from = icon.from.icons[j]
+						if icon.scale ~=nil then
+							if new_icon_from.scale == nil then
+								new_icon_from.scale = icon.scale
+							else
+								new_icon_from.scale = new_icon_from.scale * icon.scale
+							end
+						end
+						table.insert(icons,new_icon_from)
+					end				
+				else
+					
+					--log("adding single icon from prototype with icon")
+					--log(serpent.block(icon.from))
+					table.insert(icons,{
+						icon = icon.from.icon,
+						icon_mipmaps = icon.from.icon_mipmaps,
+						icon_size = icon.from.icon_size,
+						scale = icon.scale,
+						pin = icon.pin
+					})
+				end
+			else
+				--log("adding single icon from given definition")
+				table.insert(icons,icon)
+			end
+		end
+	end
+
+	for k = 1, #icons do local icon = icons[k]
+		if icon ~= nil and next(icon) ~= nil then
+			local current_icon = {}
+			if icon.icon_size == nil then
+				return bad_icon
+			end
+			current_icon.icon = icon.icon
+			current_icon.icon_size = icon.icon_size
+			current_icon.icon_mipmaps = icon.icon_mipmaps
+			current_icon.tint = icon.tint
+			current_icon.icon_scale = 0.5--(icon.icon_size and icon.icon_size/128) --icon.icon_size/64
+			if icon.scale == nil then	
+				current_icon.scale = 1
+			else
+				current_icon.scale = icon.scale
+			end 
+			if icon.pin == icon_pin_topleft then
+				current_icon.shift = {((32-(32*current_icon.scale))/2)*-1,((32-(32*current_icon.scale))/2)*-1}
+			elseif icon.pin == icon_pin_top then
+				current_icon.shift = {0,((32-(32*current_icon.scale))/2)*-1}
+			elseif icon.pin == icon_pin_topright then
+				current_icon.shift = {((32-(32*current_icon.scale))/2)*-1,((32-(32*current_icon.scale))/2)}
+			elseif icon.pin == icon_pin_right then
+				current_icon.shift = {((32-(32*current_icon.scale))/2),0}
+			elseif icon.pin == icon_pin_bottomright then
+				current_icon.shift = {((32-(32*current_icon.scale))/2),((32-(32*current_icon.scale))/2)}
+			elseif icon.pin == icon_pin_bottom then
+				current_icon.shift = {0,((32-(32*current_icon.scale))/2)}
+			elseif icon.pin == icon_pin_bottomleft then
+				current_icon.shift = {((32-(32*current_icon.scale))/2)*-1,((32-(32*current_icon.scale))/2)}
+			elseif icon.pin == icon_pin_left then
+				current_icon.shift = {((32-(32*current_icon.scale))/2)*-1,0}
+			end			
+			--current_icon.scale = current_icon.scale * current_icon.icon_scale
+			current_icon.scale = (current_icon.scale and current_icon.icon_scale and current_icon.scale * current_icon.icon_scale)
+			
+			table.insert(base_icon,current_icon)
+
+		end
+	end
+	--log(serpent.block(base_icon))
+	return base_icon
+end
+
+local half_icon = function(initial_icons)
+	if initial_icons == nil or type(initial_icons) ~= "table" or #initial_icons == 0 then 
+		return initial_icons 
+	end
+	local icons = {}
+	for k = 1, #initial_icons do local icon = initial_icons[k]
+		if icon ~= nil then
+			local current_icon = {}
+			current_icon.icon = icon.icon
+			current_icon.icon_size = icon.icon_size
+			current_icon.icon_mipmaps = icon.icon_mipmaps
+			current_icon.tint = icon.tint
+			if icon.scale  ~= nil then
+				current_icon.scale  = icon.scale *0.5
+			else
+				current_icon.scale = 0.5
+			end
+			if icon.shift~= nil then
+				current_icon.shift = {icon.shift[1]*0.5, icon.shift[2]*0.5}
+			end
+
+			table.insert(icons,current_icon)
+		end
+	end
+	return icons
+end
+
 local local_gold_recipe = function(recipe)
 	if recipe == nil then return nil end
 	local name = nil
@@ -154,7 +287,7 @@ local local_gold_recipe = function(recipe)
 	recipe.localised_description = item.localised_description
 	recipe.name = recipe.name.."-with-gold"
 	recipe.icon = false
-	recipe.icons = create_layered_icon_using(
+	recipe.icons = half_icon(create_layered_icon_using(
 	{
 		{
 			from = item,
@@ -165,7 +298,7 @@ local local_gold_recipe = function(recipe)
 			scale = 0.45,
 			pin = icon_pin_bottomright		
 		}
-	})
+	}))
 	recipe.allow_as_intermediate = false
     recipe.allow_decomposition = false	
 	return recipe

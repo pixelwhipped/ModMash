@@ -1,7 +1,7 @@
 ﻿---------------------------------------------------------------------------------------------------
-Version: 1.1.07(not ready,  bots wont attach anything byt spawners and units by default)
+Version: 1.1.07
   Changes:
-    - updated to find any enemy units account for them
+    - Locale fixes thanks to Flood
 
 ---------------------------------------------------------------------------------------------------
 Version: 1.1.06

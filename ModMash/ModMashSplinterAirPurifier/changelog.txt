@@ -1,4 +1,9 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.05
+  Changes:
+    - Locale fixes thanks to Flood
+
+---------------------------------------------------------------------------------------------------
 Version: 1.1.04
   Changes:
     - Added setting for High or Low wich changes the rate of pollution absorption

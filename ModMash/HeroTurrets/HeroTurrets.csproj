@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\..\..\AppData\Roaming\Factorio\mods\heroturrets_1.1.06\</OutputPath>
+    <OutputPath>..\..\..\..\..\..\AppData\Roaming\Factorio\mods\heroturrets_1.1.11\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>

@@ -12,6 +12,12 @@ local local_on_configuration_changed = function(event)
 			  force.reset_technology_effects()
 			end
 		end
+		if (changed.old_version == nil or changed.old_version < "1.1.9") then --and changed.new_version == "1.1.4" then
+
+			for index, force in pairs(game.forces) do
+			  force.reset_technology_effects()
+			end
+		end
 	 end
 end
 

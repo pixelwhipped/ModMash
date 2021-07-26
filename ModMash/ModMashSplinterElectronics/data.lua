@@ -1,6 +1,7 @@
 ﻿require ("prototypes.scripts.defines")
 
 require ("prototypes.item.blank-circuit")
+require ("prototypes.item.ai-circuit")
 
 data:extend(
 {
@@ -45,3 +46,5 @@ data:extend(
         limited_to_one_game = false
   },
 })
+
+table.insert(data.raw["technology"]["advanced-electronics"].effects,{type = "unlock-recipe",recipe = "advanced-circuit-with-ai-circuit"})

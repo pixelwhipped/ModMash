@@ -1,29 +1,4 @@
-﻿--[[
-	/c
-local nauvis = game.surfaces.nauvis
-local nauvis2 = game.surfaces.nauvis2
-if not nauvis2 then
-    nauvis2 = game.create_surface("nauvis2")
-end
-
-local position = {0,0}
-local pole1 = nauvis.find_entity("small-electric-pole", position)
-local pole2 = nauvis2.find_entity("small-electric-pole", position)
-
-if not pole1 then
-    pole1 = nauvis.create_entity{name = "small-electric-pole", position = position, force = "player"}
-end
-if not pole2 then
-    pole2 = nauvis2.create_entity{name = "small-electric-pole", position = position, force = "player"}
-end
-
-pole1.connect_neighbour({target_entity = pole2, wire = defines.wire_type.red})
-]]
-
---Trains dont like going in backwards need to fix
---also need to fix blocking if the new output is different than next
-
-require("prototypes.scripts.defines") 
+﻿require("prototypes.scripts.defines") 
 local mod_gui = require("mod-gui")
 local distance = modmashsplinterunderground.util.distance
 local table_contains = modmashsplinterunderground.util.table.contains
@@ -348,6 +323,19 @@ local get_sorted_lines = function(circle)
 		return {ret,tkeys[1],tkeys[#tkeys],min,max}
 	end
 
+local allow_resource_by_parent = function(res,surface)
+	if game.surfaces[value.top_name] ~= nil then
+		if game.surfaces[value.top_name] == "nauvis" then return true end
+		local s = game.surfaces[value.top_name]
+		s.map_gen_settings~=nil and
+		s.map_gen_settings.property_expression_names ~=nil and
+		s.map_gen_settings.property_expression_names["tile:water:probability"] ~=nil and
+		type(s.map_gen_settings.property_expression_names["tile:water:probability"]) == "number" and
+		s.map_gen_settings.property_expression_names["tile:water:probability"] < -100 then
+	end
+	return true
+end
+
 local generate_surface_area = function(x,y,r,surface, res, allow_mixed, rock_prefix,force_first_rock)	
 	local cx, cy = math.floor(x / 32), math.floor(y / 32)
 	if surface.is_chunk_generated({cx, cy}) ~= true then
@@ -417,9 +405,15 @@ local generate_surface_area = function(x,y,r,surface, res, allow_mixed, rock_pre
 				local create = nil
 				if rnd ~= nil and  rnd <= #res_table then
 					if allow_mixed and mixed == 1 then
-						create = {name=res_table[math.random(1,#res_table)], amount=(amt*m)*2, position=pos}
+						local chk_res = res_table[math.random(1,#res_table)]
+						if allow_resource_by_parent(chk_res,surface) == true then
+							create = {name=chk_res, amount=amt*m, position=pos}
+						end
 					else
-						create = {name=res_table[rnd], amount=amt*m, position=pos}
+						local chk_res = res_table[rnd]
+						if allow_resource_by_parent(chk_res,surface) == true then
+							create = {name=chk_res, amount=amt*m, position=pos}
+						end
 					end
 				end 						
 				if create ~= nil then 
@@ -977,11 +971,13 @@ local local_transfer_carrrige_state = function(from,to)
 	local fluidbox = from.fluidbox
     if fluidbox ~= nil and #fluidbox > 0 then
         for i = 1, #fluidbox do
-            to.fluidbox[i] = {
-				name = from.fluidbox[i].name,
-				amount  = from.fluidbox[i].amount,
-				temperature  = from.fluidbox[i].temperature 
-			}
+			if fluidbox[i] ~= nil and fluidbox[i].name ~= nil then
+				to.fluidbox[i] = {
+					name = fluidbox[i].name,
+					amount  = fluidbox[i].amount,
+					temperature  = fluidbox[i].temperature 
+				}
+			end
         end
     end
 
@@ -1336,9 +1332,8 @@ local local_merge_signal = function(top_entity,bottom_entity,top_last_signals,bo
 	}
 end
 local local_stops_circuit_tick = function()	
-	for k = #global.modmashsplinterunderground.combinator_disconections, 1, -1 do
-		
-		if global.modmashsplinterunderground.combinator_disconections[k].type == "electric-pole" then
+	--[[for k = #global.modmashsplinterunderground.combinator_disconections, 1, -1 do		
+		if global.modmashsplinterunderground.combinator_disconections[k] ~= nil and global.modmashsplinterunderground.combinator_disconections[k].type == "electric-pole" then
 			local entity = global.modmashsplinterunderground.combinator_disconections[k]
 			for j=1,#entity.neighbours["copper"] do
 				if is_valid(entity.neighbours["copper"][j]) and starts_with(entity.neighbours["copper"][j].name,"underground-combinator-") then
@@ -1350,37 +1345,22 @@ local local_stops_circuit_tick = function()
 		end
 		table.remove(global.modmashsplinterunderground.combinator_disconections,k)
 
-	end
-	--[[local gsurfaces = game.surfaces
-	for name, value in pairs(surfaces_top) do
-		local ts= surfaces[name]
-		local ms= surfaces[value.middle_name]
-		local stops = ts.combinators
-		for k = 1, #stops do
-			local top_entity = stops[k].top_entity
-			local top_last_signals = stops[k].top_last_signals
-			local bottom_entity = stops[k].bottom_entity
-			local bottom_last_signals = stops[k].bottom_last_signals
-			if is_valid(top_entity) == true and is_valid(bottom_entity) == true then
-				local signals = local_merge_signal(top_entity,bottom_entity,top_last_signals,bottom_last_signals)
-				stops[k].top_last_signals = signals.top_last_signals
-				stops[k].bottom_last_signals = signals.bottom_last_signals
-			end
-		end
-		local stops = ms.combinators
-		for k = 1, #stops do
-			local top_entity = stops[k].top_entity
-			local top_last_signals = stops[k].top_last_signals
-			local bottom_entity = stops[k].bottom_entity
-			local bottom_last_signals = stops[k].bottom_last_signals
-			if is_valid(top_entity) == true and is_valid(bottom_entity) == true then
-				local signals = local_merge_signal(top_entity,bottom_entity,top_last_signals,bottom_last_signals)
-				stops[k].top_last_signals = signals.top_last_signals
-				stops[k].bottom_last_signals = signals.bottom_last_signals
-			end
-		end
-	end
-	]]
+	end]]
+	--New honk version
+	for k, entity in ipairs(global.modmashsplinterunderground.combinator_disconections) do
+        if entity.valid then
+            if entity.type == "electric-pole" then
+                for j=1,#entity.neighbours["copper"] do
+                    if is_valid(entity.neighbours["copper"][j]) and starts_with(entity.neighbours["copper"][j].name,"underground-combinator-") then
+                        entity.neighbours["copper"][j].disconnect_neighbour()
+                    end
+                end
+            else
+                entity.disconnect_neighbour()
+            end
+        end
+    end
+    global.modmashsplinterunderground.combinator_disconections = {}
 end
 
 local local_underground_tick = function()	

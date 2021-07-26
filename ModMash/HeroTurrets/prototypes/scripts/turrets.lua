@@ -234,6 +234,7 @@ local local_turret_added = function(entity,event)
 	end
 
 local local_turret_removed = function(entity,event)	
+	
 	if event ~= nil and is_valid(event.cause) == true and table_contains(turret_types,event.cause.type) and event.cause.kills ~=nil then						
 		if settings.startup["heroturrets-allow-artillery-turrets"].value == false and event.cause.type == "artillery-turret" then return end
 		
@@ -281,7 +282,8 @@ local local_turret_removed = function(entity,event)
 					end
 				end
 			end
-			
+	elseif settings.startup["heroturrets-kill-counter"].value == "Disable" then
+		--do nothing		
 	else if settings.startup["heroturrets-kill-counter"].value == "Exact" and event ~= nil and is_valid(event.entity) and is_valid(event.buffer) and table_contains(turret_types,event.entity.type) and event.entity.kills ~= nil and event.entity.kills > 0 then	
 			if #event.buffer == 1 and entity.kills==0 then
 				local item = event.buffer[1]

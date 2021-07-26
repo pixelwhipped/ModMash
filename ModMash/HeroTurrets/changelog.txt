@@ -1,4 +1,32 @@
-﻿---------------------------------------------------------------------------------------------------
+﻿------------------------------------
+Version: 1.1.11
+  Changes:
+    - Removed minimum range reduction as advised used as a safety feature
+
+---------------------------------------------------------------------------------------------------
+Version: 1.1.10
+  Changes:
+    - Update some ammo ranges to meet max dist of ranked turret
+
+---------------------------------------------------------------------------------------------------
+Version: 1.1.09
+  Bug Fixes:
+    - prevent turrets that end with shield-dome from being created
+
+---------------------------------------------------------------------------------------------------
+Version: 1.1.08
+  Bug Fixes:
+    - Test variable was set to true
+
+---------------------------------------------------------------------------------------------------
+Version: 1.1.07
+  Bug Fixes:
+    - Artillery Turret fix
+    - Local fix
+    - Exclude se meteor stuff
+    - Added disable option for kill counter
+
+---------------------------------------------------------------------------------------------------
 Version: 1.1.06
   Changes:
     - Russian local thanks to Assisstent(git)

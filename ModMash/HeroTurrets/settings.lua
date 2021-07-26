@@ -78,7 +78,7 @@
 		name = "heroturrets-kill-counter",
 		setting_type = "startup",
 		default_value = "Fuzzy",
-		allowed_values = {"Fuzzy", "Exact"},
+		allowed_values = {"Fuzzy", "Exact","Disable"},
 		order = "i"
 	},
 	{

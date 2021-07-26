@@ -14,6 +14,32 @@ local icon_pin_bottom = modmashsplinterfishing.util.defines.icon_pin_bottom
 local icon_pin_bottomleft = modmashsplinterfishing.util.defines.icon_pin_bottomleft
 local icon_pin_left = modmashsplinterfishing.util.defines.icon_pin_left
 
+local half_icon = function(initial_icons)
+	if initial_icons == nil or type(initial_icons) ~= "table" or #initial_icons == 0 then 
+		return initial_icons 
+	end
+	local icons = {}
+	for k = 1, #initial_icons do local icon = initial_icons[k]
+		if icon ~= nil then
+			local current_icon = {}
+			current_icon.icon = icon.icon
+			current_icon.icon_size = icon.icon_size
+			current_icon.icon_mipmaps = icon.icon_mipmaps
+			current_icon.tint = icon.tint
+			if icon.scale  ~= nil then
+				current_icon.scale  = icon.scale *0.5
+			else
+				current_icon.scale = 0.5
+			end
+			if icon.shift~= nil then
+				current_icon.shift = {icon.shift[1]*0.5, icon.shift[2]*0.5}
+			end
+
+			table.insert(icons,current_icon)
+		end
+	end
+	return icons
+end
 
 local create_local_create_fish_icon = function(item)
 	local icon = create_layered_icon_using(
@@ -42,7 +68,7 @@ local local_create_fish_recipes = function(item)
 			localised_name = get_name_for(item,""),
 			localised_description = get_name_for(item,""),
 			icon = false,
-			icons = create_local_create_fish_icon(item),
+			icons = half_icon(create_local_create_fish_icon(item)),
 			icon_size = 64,
 			subgroup = "fisheries",
 			order = "a[fish-harvesting]["..item.name.."]",

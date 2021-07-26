@@ -1755,6 +1755,26 @@ local local_on_mined_tile = function(event)
 
 end
 
+commands.add_command("enable_them", nil, function(command)
+	if command.player_index ~= nil then
+		for i = 1, #game.players do local p = game.players[i]
+			p.unlock_achievement("them_arrival")
+		end	
+
+		
+		local_register_surface(game.get_player(command.player_index).surface,true)
+		global.modmashsplinterthem.arrival_acheivement = true
+		if surfaces[game.get_player(command.player_index).surface.name] ~= nil then
+			game.get_player(command.player_index).print("Enabled and prepared Them on ".. game.get_player(command.player_index).surface.name)
+			surfaces[game.get_player(command.player_index).surface.name].spawn_base_cooldown = 0
+			surfaces[game.get_player(command.player_index).surface.name].energy = minimal_energy*2
+		else
+			game.get_player(command.player_index).print("Enabled Them on ".. game.get_player(command.player_index).surface.name)
+		end
+	end
+	
+end)
+
 --event setup section
 
 	script.on_event(defines.events.on_player_mined_tile, local_on_mined_tile)

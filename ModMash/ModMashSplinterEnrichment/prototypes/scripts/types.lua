@@ -24,6 +24,34 @@ local local_get_results = function(ore,ores)
 	end
 	return results
 end
+
+local half_icon = function(initial_icons)
+	if initial_icons == nil or type(initial_icons) ~= "table" or #initial_icons == 0 then 
+		return initial_icons 
+	end
+	local icons = {}
+	for k = 1, #initial_icons do local icon = initial_icons[k]
+		if icon ~= nil then
+			local current_icon = {}
+			current_icon.icon = icon.icon
+			current_icon.icon_size = icon.icon_size
+			current_icon.icon_mipmaps = icon.icon_mipmaps
+			current_icon.tint = icon.tint
+			if icon.scale  ~= nil then
+				current_icon.scale  = icon.scale *0.5
+			else
+				current_icon.scale = 0.5
+			end
+			if icon.shift~= nil then
+				current_icon.shift = {icon.shift[1]*0.5, icon.shift[2]*0.5}
+			end
+
+			table.insert(icons,current_icon)
+		end
+	end
+	return icons
+end
+
 local local_create_ore_conversions = function()
 	local ores = {}
 	local steam = data.raw["fluid"]["steam"]
@@ -54,7 +82,7 @@ local local_create_ore_conversions = function()
 				enabled = false,
 				category = "crafting-with-fluid",
 				icon = false,
-				icons = create_layered_icon_using({
+				icons = half_icon(create_layered_icon_using({
 					{
 						from = steam
 					},
@@ -63,7 +91,7 @@ local local_create_ore_conversions = function()
 						scale = 0.5,
 						pin = icon_pin_bottomright
 					}
-				}),
+				})),
 				icon_size = 64,
 				icon_mipmaps = 4,
 				subgroup = "raw-material",

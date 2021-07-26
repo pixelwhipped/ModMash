@@ -1,4 +1,24 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.31
+  Bug Fixes:
+    - replaced local_stops_circuit_tick logic thanks honktown
+
+---------------------------------------------------------------------------------------------------
+Version: 1.1.30
+  Changes:
+    - Locale fixes thanks to Flood
+
+---------------------------------------------------------------------------------------------------
+Version: 1.1.29
+  Bug Fixes:
+    - extra fluid box nil check
+
+---------------------------------------------------------------------------------------------------
+Version: 1.1.28
+  Changes:
+    - Locale updates
+
+---------------------------------------------------------------------------------------------------
 Version: 1.1.27
   Changes:
     - Added startup option to exclude or include space exploration ores from underground surfaces

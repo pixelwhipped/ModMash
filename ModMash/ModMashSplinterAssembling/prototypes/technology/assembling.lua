@@ -30,7 +30,9 @@ if settings.startup["setting-assembling-machine-burner-only"].value == "No" then
             },
             prerequisites =
             {
-              "automation-3"
+              "automation-3",
+              "production-science-pack",
+              "chemical-science-pack"
             },
             unit =
             {
@@ -66,6 +68,9 @@ if settings.startup["setting-assembling-machine-burner-only"].value == "No" then
             prerequisites =
             {
               t,
+              "utility-science-pack",
+              "production-science-pack",
+              "chemical-science-pack"
             },
             unit =
             {
@@ -75,7 +80,8 @@ if settings.startup["setting-assembling-machine-burner-only"].value == "No" then
                 {"automation-science-pack", 1},
                 {"logistic-science-pack", 1},
                 {"chemical-science-pack", 1},
-                {"production-science-pack", 1}
+                {"production-science-pack", 1},
+                {"utility-science-pack", 1}
               },
               time = 60
             },

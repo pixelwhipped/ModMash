@@ -410,15 +410,17 @@ local local_chunk_generated = function(event)
 			end
 		end
 	elseif surface.name == "nauvis" and not game.active_mods["modmashsplinterunderground"] then
+	
 		local position = {x = area.left_top.x+math.random(0, 30),y = area.left_top.y+math.random(0, 30)}
 		if surface.can_place_entity{name="queen-hive",position=position} then
-		local ent = surface.create_entity{
+			local ent = surface.create_entity{
 			  name = "queen-hive",
 			  position = position,
 			  force = force_enemy}
+			  global.modmashsplinternewworlds.queen_hive_generated = is_valid(ent)
 		end
-		global.modmashsplinternewworlds.queen_hive_generated = is_valid(ent)
-		if global.modmashsplinternewworlds.queen_hive_generated == true then
+		
+ 	if global.modmashsplinternewworlds.queen_hive_generated == true then
 			for _, force in pairs(game.forces) do					
 				force.chart(event.surface, {{area.left_top.x-12, area.left_top.y-12}, {area.right_bottom.x+12, area.right_bottom.y+12}})					
 			end				

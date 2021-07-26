@@ -1,4 +1,14 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.33
+  Changes:
+    - Added command enable_them for when acheivements have been diabled
+
+---------------------------------------------------------------------------------------------------
+Version: 1.1.32
+  Changes:
+    - Locale fixes thanks to Flood
+
+---------------------------------------------------------------------------------------------------
 Version: 1.1.31
   Changes:
     - When removing them concrete landfill is placed below if required

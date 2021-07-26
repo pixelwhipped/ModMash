@@ -61,13 +61,13 @@ local local_toxin_added = function(event)
 				if enemy.type == "unit-spawner" then local p = enemy.position
 					local n = enemy.name
 					enemy.destroy()
-					entity.surface.create_entity{name=n, position=p, force = game.forces[force_neutral]}
+					local e = entity.surface.create_entity{name=n, position=p, force = game.forces[force_neutral]}
 				elseif enemy.type == "turret" then
 					local p = enemy.position
 					local n = enemy.name
 					enemy.destroy()
-					entity.surface.create_entity{name=n, position=p, force = game.forces[force_player]}
-					
+					local e = entity.surface.create_entity{name=n, position=p, force = game.forces[force_player]}
+					--todo: record friends and add time out
 				else
 					enemy.force = game.forces[force_player]
 				end

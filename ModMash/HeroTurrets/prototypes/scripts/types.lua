@@ -1,4 +1,5 @@
-﻿log("Creating Types")
+﻿--todo check entity creation ammo_category = "cannon-shell" if so record max dist and update ammo
+log("Creating Types")
 if not heroturrets.defines then require ("prototypes.scripts.defines") end
 
 local starts_with  = heroturrets.util.starts_with
@@ -220,6 +221,8 @@ local local_create_turret_with_tags = function(turret)
     data:extend({item_with_tags})
     end
 
+
+local cannon_ammo_ranges = {}
 local local_create_turret = function(turret,rank,rank_string,mod)
         local tint = {r=1.0,g=1.0,b=1.0,a=1.0}
         local ir = rank
@@ -252,7 +255,6 @@ local local_create_turret = function(turret,rank,rank_string,mod)
         local entity_name = "hero-turret-"..rank.."-for-"..turret.entity.name
         local recipe_name = "hero-turret-"..rank.."-for-"..turret.recipe.name
         log("Creating "..entity_name)
-
         local name_with_tags = item_name.."-with-tags"        
         
         local place_name = entity_name
@@ -290,7 +292,7 @@ local local_create_turret = function(turret,rank,rank_string,mod)
             icon = false,
             icons = new_icon,
             icon_size = 64,
-            hide_from_player_crafting = true,
+            --hide_from_player_crafting = true,
             subgroup = turret.item.subgroup,
             order = (turret.item.order or "["..turret.item.name.."]").."["..rank.."].tag",
             place_result = place_name,
@@ -334,20 +336,71 @@ local local_create_turret = function(turret,rank,rank_string,mod)
             entity.turn_after_shooting_cooldown = entity.turn_after_shooting_cooldown*(1-(mod-1))
             entity.turn_after_shooting_cooldown = math.min(180,math.max(entity.turn_after_shooting_cooldown,10))
         end
-        
+        local m_range = nil
         if entity.attack_parameters ~= nil then
             if entity.attack_parameters.cooldown ~= nil then entity.attack_parameters.cooldown = entity.attack_parameters.cooldown * (1-(mod-1)) end
             if entity.attack_parameters.range ~= nil then entity.attack_parameters.range = entity.attack_parameters.range * mod end
-            if entity.attack_parameters.min_range ~= nil then entity.attack_parameters.min_range = entity.attack_parameters.min_range * (1-(mod-1)) end
+            --if entity.attack_parameters.min_range ~= nil then entity.attack_parameters.min_range = entity.attack_parameters.min_range * (1-(mod-1)) end
 			if entity.attack_parameters.ammo_type ~= nil and entity.attack_parameters.ammo_type.action ~= nil then
                 if entity.attack_parameters.ammo_type.action.action_delivery ~= nil  and entity.attack_parameters.ammo_type.action.action_delivery.max_length ~= nil then
                     entity.attack_parameters.ammo_type.action.action_delivery.max_length  = entity.attack_parameters.ammo_type.action.action_delivery.max_length  * mod
+                    m_range = entity.attack_parameters.ammo_type.action.action_delivery.max_length
+                    
+                    if entity.attack_parameters.ammo_category ~= nil then                       
+                        if cannon_ammo_ranges[entity.attack_parameters.ammo_category] == nil then
+                            cannon_ammo_ranges[entity.attack_parameters.ammo_category] = m_range
+                        elseif cannon_ammo_ranges[entity.attack_parameters.ammo_category]<m_range then
+                            cannon_ammo_ranges[entity.attack_parameters.ammo_category] = m_range
+                        end
+                    elseif entity.attack_parameters.ammo_categories ~= nil then
+                        for i=1, #entity.attack_parameters.ammo_categories do
+                            local c = entity.attack_parameters.ammo_categories[i]
+                            if cannon_ammo_ranges[c] == nil then
+                                cannon_ammo_ranges[c] = m_range
+                            elseif cannon_ammo_ranges[c]<m_range then
+                                cannon_ammo_ranges[c] = m_range
+                            end
+                        end
+                    end
                 end
                 if entity.attack_parameters.ammo_type.action.action_delivery ~= nil  and entity.attack_parameters.ammo_type.action.action_delivery.max_range ~= nil then
                     entity.attack_parameters.ammo_type.action.action_delivery.max_range  = entity.attack_parameters.ammo_type.action.action_delivery.max_range  * mod
+                    m_range = entity.attack_parameters.ammo_type.action.action_delivery.max_range
+                    if entity.attack_parameters.ammo_category ~= nil then                       
+                        if cannon_ammo_ranges[entity.attack_parameters.ammo_category] == nil then
+                            cannon_ammo_ranges[entity.attack_parameters.ammo_category] = m_range
+                        elseif cannon_ammo_ranges[entity.attack_parameters.ammo_category]<m_range then
+                            cannon_ammo_ranges[entity.attack_parameters.ammo_category] = m_range
+                        end
+                    elseif entity.attack_parameters.ammo_categories ~= nil then
+                        for i=1, #entity.attack_parameters.ammo_categories do
+                            local c = entity.attack_parameters.ammo_categories[i]
+                            if cannon_ammo_ranges[c] == nil then
+                                cannon_ammo_ranges[c] = m_range
+                            elseif cannon_ammo_ranges[c]<m_range then
+                                cannon_ammo_ranges[c] = m_range
+                            end
+                        end
+                    end
+                end
+            elseif entity.attack_parameters.ammo_category ~= nil and entity.attack_parameters.range ~= nil then
+                if cannon_ammo_ranges[entity.attack_parameters.ammo_category] == nil then
+                    cannon_ammo_ranges[entity.attack_parameters.ammo_category] = entity.attack_parameters.range
+                elseif cannon_ammo_ranges[entity.attack_parameters.ammo_category]<entity.attack_parameters.range then
+                    cannon_ammo_ranges[entity.attack_parameters.ammo_category] = entity.attack_parameters.range
+                end
+            elseif entity.attack_parameters.ammo_categories ~= nil and entity.attack_parameters.range ~= nil then
+                for i=1, #entity.attack_parameters.ammo_categories do
+                    local c = entity.attack_parameters.ammo_categories[i]
+                    if cannon_ammo_ranges[c] == nil then
+                        cannon_ammo_ranges[c] = entity.attack_parameters.range
+                    elseif cannon_ammo_ranges[c]<entity.attack_parameters.range then
+                        cannon_ammo_ranges[c] = entity.attack_parameters.range
+                    end
                 end
             end
         end
+
         if entity.gun ~= nil then
             local gun = table.deepcopy(data.raw["gun"][entity.gun])
             if gun.attack_parameters ~= nil then
@@ -415,9 +468,16 @@ local local_create_turret = function(turret,rank,rank_string,mod)
         if turret.entity.fast_replaceable_group == nil then
             turret.entity.fast_replaceable_group = turret.entity.name
             entity.fast_replaceable_group = turret.entity.name
-            if turret.entity.next_upgrade == nil then turret.entity.next_upgrade = entity_name end
+            if settings.startup["heroturrets-allow-artillery-turrets"].value == false and turret.entity.type == "artillery-turret" then
+
+            else
+                if turret.entity.next_upgrade == nil then turret.entity.next_upgrade = entity_name end
+            end
         else
-            if turret.entity.next_upgrade == nil then turret.entity.next_upgrade = entity_name end
+            if settings.startup["heroturrets-allow-artillery-turrets"].value == false and turret.entity.type == "artillery-turret" then
+            else
+                if turret.entity.next_upgrade == nil then turret.entity.next_upgrade = entity_name end
+            end
         end
         
         if entity.type == "ammo-turret" then update_ammo_turret_tech(turret.entity, entity_name, rank) end
@@ -425,6 +485,9 @@ local local_create_turret = function(turret,rank,rank_string,mod)
         if settings.startup["heroturrets-kill-counter"].value == "Exact" then   
             entity.minable.result = mine_name_with_tags
             data:extend({item_with_tags,item,recipe,entity})
+        elseif settings.startup["heroturrets-kill-counter"].value == "Disable" then
+            entity.minable.result = turret.item.name
+            data:extend({item,recipe,entity})
         else
             entity.minable.result = mine_name
             data:extend({item,recipe,entity})
@@ -504,8 +567,11 @@ local local_create_turrets = function()  --personal-laser-defense-equipment  "ac
             else]]
             if entity ~= nil and entity.name ~= nil and entity.type ~= "active-defense-equipment"                   
 				    and starts_with(entity.name,"creative-mod") == false
+                    and starts_with(entity.name,"se-meteor") == false
+                    
                     and starts_with(entity.name,"vehicle-gun-turret") == false
                     and starts_with(entity.name,"vehicle-rocket-turret") == false
+                    and ends_with(entity.name,"shield-dome") == false
 				    and entity.subgroup~="enemies" 
                     and (is_nesw(entity) or (entity.base_picture ~= nil and entity.base_picture.layers ~= nil) or (is_unkown_nesw(entity) and left ~=nil and top ~= nil)) -- or (entity.cannon_base_pictures ~= nil and entity.cannon_base_pictures.layers ~= nil and entity.cannon_base_pictures.layers[1].direction_count == 256))
                     and entity.max_health > 1 
@@ -552,6 +618,41 @@ local local_create_turrets = function()  --personal-laser-defense-equipment  "ac
 
     end
 
+local local_update_ammo_ranges = function()    
+    for k,_ in pairs(data.raw["ammo"]) do         
+        
+        if data.raw["ammo"][k].ammo_type ~= nil and data.raw["ammo"][k].ammo_type.category ~= nil and cannon_ammo_ranges[data.raw["ammo"][k].ammo_type.category] ~= nil then
+         --extra tests only looking at updating cannon ammo for now
+         --data.raw["ammo"][k].ammo_type.category == "cannon-shell" 
+            --and 
+           -- log(serpent.block(data.raw["ammo"][k]))
+            if data.raw["ammo"][k].ammo_type.action ~= nil then
+                if #data.raw["ammo"][k].ammo_type.action>0 then
+                    for j=1, #data.raw["ammo"][k].ammo_type.action do
+                        if data.raw["ammo"][k].ammo_type.action[j].action_delivery ~= nil then
+                            if data.raw["ammo"][k].ammo_type.action[j].action_delivery.max_range ~= nil 
+                            and data.raw["ammo"][k].ammo_type.action[j].action_delivery.max_range < cannon_ammo_ranges[data.raw["ammo"][k].ammo_type.category] then
+                                data.raw["ammo"][k].ammo_type.action[j].action_delivery.max_range = cannon_ammo_ranges[data.raw["ammo"][k].ammo_type.category]
+                                log("updated "..data.raw["ammo"][k].name.." range to "..cannon_ammo_ranges[data.raw["ammo"][k].ammo_type.category])
+                            end
+                        end
+                    end
+                else
+                    if data.raw["ammo"][k].ammo_type.action.action_delivery ~= nil then
+                        if data.raw["ammo"][k].ammo_type.action.action_delivery.max_range ~= nil 
+                        and data.raw["ammo"][k].ammo_type.action.action_delivery.max_range < cannon_ammo_ranges[data.raw["ammo"][k].ammo_type.category] then
+                            data.raw["ammo"][k].ammo_type.action.action_delivery.max_range = cannon_ammo_ranges[data.raw["ammo"][k].ammo_type.category]
+                            log("updated "..data.raw["ammo"][k].name.." range to "..cannon_ammo_ranges[data.raw["ammo"][k].ammo_type.category])
+                        end
+                    end
+                end
+            end
+        end
+    end
+
+end
+
 if data ~= nil and data_final_fixes == true then
    local_create_turrets()
+   local_update_ammo_ranges()
 end
