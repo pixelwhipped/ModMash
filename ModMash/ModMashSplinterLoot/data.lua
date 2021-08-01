@@ -29,7 +29,10 @@ local lab =   {
     name = "crash-site-lab-broken",
     icon = "__modmashsplinterloot__/graphics/icons/crash-site-lab-broken.png",
     icon_size = 64, icon_mipmaps = 4,
-    flags = {"not-deconstructable", "placeable-player", "player-creation", "hidden"},
+    flags = {"not-deconstructable","not-blueprintable", "placeable-player", "player-creation", "hidden"},
+    minable = {
+        mining_time = 2.2999999999999998
+    },
     map_color = {r = 0, g = 0.365, b = 0.58, a = 1},
     max_health = 150,
     corpse = "big-remnants",
@@ -131,4 +134,7 @@ local loot_science_a = table.deepcopy(lab)
 	data.raw["container"]["crash-site-chest-2"].max_health = 50
 	data.raw["container"]["crash-site-chest-1"].map_color = {r=1.0,g=0.45,b=0,a=1}
 	data.raw["container"]["crash-site-chest-2"].map_color = {r=1.0,g=0.45,b=0,a=1}
+    data.raw["container"]["crash-site-chest-1"].minable = {mining_time = 2.2999999999999998}
+	data.raw["container"]["crash-site-chest-2"].minable = {mining_time = 2.2999999999999998}
+    
 	data:extend({loot_science_a,loot_science_b})

@@ -15,7 +15,9 @@ end
 
 
 local local_create_ore_refinements = function()
+	--log("local_create_ore_refinements")
 	for name, recipe in pairs(data.raw.recipe) do
+		
 		if recipe ~= nil and recipe.name ~= nil and recipe.category=="smelting" then
 			local sr = get_standard_results(recipe)
 			local nr = get_normal_results(recipe)
@@ -81,6 +83,7 @@ local local_create_ore_refinements = function()
 								order = "z["..ore_name.."]",
 								stack_size = m
 							}
+							--log(serpent.block(i))
 							if i.pictures and #i.pictures > 0 then
 						
 								local new_pictures = {}
@@ -88,7 +91,7 @@ local local_create_ore_refinements = function()
 									table.insert(new_pictures,{
 										layers = {
 											pic,
-											{size = pic.size, filename = pic.filename,   scale = pic.scale, mipmap_count = pic.mipmap_count, shift = pic.shift, tint = {r=0.0,g=0.0,b=0.0,a=0.25}}
+											{width = pic.width, height = pic.height, size = pic.size, filename = pic.filename,   scale = pic.scale, mipmap_count = pic.mipmap_count, shift = pic.shift, tint = {r=0.0,g=0.0,b=0.0,a=0.25}}
 										}
 									})
 								end
@@ -147,6 +150,7 @@ local local_create_ore_refinements = function()
 end
 
 local local_create_ore_refinements_experimental = function()
+	log("local_create_ore_refinements_experimental")
 	for name, recipe in pairs(data.raw.recipe) do
 		if recipe ~= nil and recipe.name ~= nil and recipe.category=="smelting" then
 			local sr = get_standard_results(recipe)
@@ -157,11 +161,11 @@ local local_create_ore_refinements_experimental = function()
 			if nr~=nil and #nr==1 then n = nr[1] end
 			local make = nil
 			local i = nil
-			if s ~= nil and s.name ~= nil then				
+			if s ~= nil and s.name ~= nil then		
 				if #recipe.ingredients == 1 then
 					local ing = ensure_ingredient_format(recipe.ingredients[1])
 					i = get_item(ing.name)
-					if i ~= nil and i.subgroup == "raw-resource" then
+					if i ~= nil and (i.subgroup == "raw-resource" or i.subgroup == "bob-ores" or ends_with(i.name,"ore")) then
 						make = 
 						{
 							results = s,
@@ -173,8 +177,9 @@ local local_create_ore_refinements_experimental = function()
 			elseif n ~= nil and n.name ~= nil and (ends_with(n.name,"plate") or ends_with(n.name,"brick"))  then
 				if #recipe.normal.ingredients == 1 then	
 					local ing = ensure_ingredient_format(recipe.normal.ingredients[1])
+					
 					i = get_item(ing.name)
-					if i ~= nil and i.subgroup == "raw-resource" then
+					if i ~= nil and (i.subgroup == "raw-resource" or i.subgroup == "bob-ores"or ends_with(i.name,"ore")) then
 						make = 
 						{
 							results = n,
@@ -224,7 +229,7 @@ local local_create_ore_refinements_experimental = function()
 								table.insert(new_pictures,{
 									layers = {
 										pic,
-										{size = pic.size, filename = pic.filename,   scale = pic.scale, mipmap_count = pic.mipmap_count, shift = pic.shift, tint = {r=0.0,g=0.0,b=0.0,a=0.25}}
+										{width = pic.width, height = pic.height, size = pic.size, filename = pic.filename,   scale = pic.scale, mipmap_count = pic.mipmap_count, shift = pic.shift, tint = {r=0.0,g=0.0,b=0.0,a=0.25}}
 									}
 								})
 							end

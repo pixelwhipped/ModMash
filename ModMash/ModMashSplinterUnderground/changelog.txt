@@ -1,5 +1,8 @@
 ﻿---------------------------------------------------------------------------------------------------
 Version: 1.1.31
+  Changes:
+    - Respect parent surface autoplace controls
+    - Updated experimental resource selection code
   Bug Fixes:
     - replaced local_stops_circuit_tick logic thanks honktown
 

@@ -6,6 +6,10 @@ if modmashsplinterthem.debug == true then
 end
 
 data:extend({
+        {
+            name = "alien-fuel",
+            type = "fuel-category"
+	    },
 		{
 		type = "item",
 		name = "them-matter-cube",
@@ -14,7 +18,7 @@ data:extend({
 		subgroup = "them",		    
 		order = "them-matter-cube",
 		stack_size = 50,
-        fuel_category = "chemical",
+        fuel_category = "alien-fuel",
 		fuel_value = "8MJ",
 		fuel_acceleration_multiplier = 2.8,
 		fuel_top_speed_multiplier = 1.25,

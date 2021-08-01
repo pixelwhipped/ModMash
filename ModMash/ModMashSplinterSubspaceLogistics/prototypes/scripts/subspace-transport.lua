@@ -1,5 +1,6 @@
 ﻿require("prototypes.scripts.defines")
-	
+local mod_gui = require("mod-gui")
+
 --[[create local references]]
 --[[util]]
 local is_valid = modmashsplintersubspacelogistics.util.is_valid
@@ -182,6 +183,38 @@ local local_on_configuration_changed = function(event)
 		end
 	 end
 	 end
+--[[
+function recurse_ui(gui,indent)
+	if gui == nil then return end
+	local n = "name=" .. (gui.name or "nil")
+	local t = "type=" .. (gui.type or "nil")
+	--local e = "elem_type=" .. (gui.elem_type or "nil")
+	log(indent..n)
+	log(indent..t)
+	--log(indent..e)
+	if gui.children == nil then return end
+	for k=1, #gui.children do
+		recurse_ui(gui.children[k],indent.."  ")
+	end
+end
+local local_on_gui_opened = function(event)
+	if event.entity ~= nil and event.entity.name == "subspace-transport" and event.gui_type == 1 then
+		local player = game.players[event.player_index]
+		if player ~= nil then
+			recurse_ui(player.gui.top,"")
+			recurse_ui(player.gui.left,"")
+			recurse_ui(player.gui.center,"")
+			recurse_ui(player.gui.goal,"")
+			recurse_ui(player.gui.screen,"")
+			recurse_ui(player.gui.relative,"")
+		end
+	end
+end
+
+script.on_event(defines.events.on_gui_opened, local_on_gui_opened)
+well can hide the tech button
+]]
+
 
 script.on_configuration_changed(local_on_configuration_changed)
 

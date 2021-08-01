@@ -117,14 +117,25 @@ local local_check_mineable = function(name)
 end
 
 local local_register_resource_level_one = function(resource)
+
 	if global.modmashsplinterunderground.resource_level_one == nil then global.modmashsplinterunderground.resource_level_one = {} end
 	if resource == nil or type(resource.name) ~= "string" or type(resource.probability) ~= "number" then return end
 	if settings.startup["setting-exculude-se"].value == true and starts_with(resource.name,"se-") then return end
 	if local_check_mineable(resource.name) == false then return end
 	for k=1, #global.modmashsplinterunderground.resource_level_one do
-		if global.modmashsplinterunderground.resource_level_one[k].name == resource.name then return end
+		if global.modmashsplinterunderground.resource_level_one[k].name == resource.name then 
+			local always = resource.always
+			if always == nil then always = false end
+			if global.modmashsplinterunderground.resource_level_one[k].always == nil or global.modmashsplinterunderground.resource_level_one[k].always == false then
+				global.modmashsplinterunderground.resource_level_one[k].always = always
+			end
+			return 
+		end
 	end
-	table.insert(global.modmashsplinterunderground.resource_level_one,{name = resource.name, probability = math.min(resource.probability,1)})
+	local always = resource.always
+	if always == nil then always = false end
+
+	table.insert(global.modmashsplinterunderground.resource_level_one,{name = resource.name, probability = math.min(resource.probability,1), always = always})
 
 	--log(resource.name)
 	--log(serpent.block(global.modmashsplinterunderground.resource_level_one))
@@ -136,9 +147,18 @@ local local_register_resource_level_two = function(resource)
 	if settings.startup["setting-exculude-se"].value == true and starts_with(resource.name,"se-") then return end
 	if local_check_mineable(resource.name) == false then return end
 	for k=1, #global.modmashsplinterunderground.resource_level_two do
-		if global.modmashsplinterunderground.resource_level_two[k].name == resource.name then return end
+		if global.modmashsplinterunderground.resource_level_two[k].name == resource.name then 
+			local always = resource.always
+			if always == nil then always = false end
+			if global.modmashsplinterunderground.resource_level_two[k].always == nil or global.modmashsplinterunderground.resource_level_two[k].always == false then
+				global.modmashsplinterunderground.resource_level_two[k].always = always
+			end
+			return 
+		end
 	end
-	table.insert(global.modmashsplinterunderground.resource_level_two,{name = resource.name, probability = math.min(resource.probability,1)})
+	local always = resource.always
+	if always == nil then always = false end
+	table.insert(global.modmashsplinterunderground.resource_level_two,{name = resource.name, probability = math.min(resource.probability,1), always = always})
 end
 
 local local_register_resources = function()
@@ -171,32 +191,32 @@ local local_register_resources = function()
 		if sum > 0 then
 			local d=1/max
 			for k=1 , #list do
-				local_register_resource_level_one({name = list[k].name, probability = (sum/list[k].probability)*d})
-				local_register_resource_level_two({name = list[k].name, probability = (sum/list[k].probability)*d})
+				local_register_resource_level_one({name = list[k].name, probability = (list[k].probability/sum)*d,always = false})
+				local_register_resource_level_two({name = list[k].name, probability = (list[k].probability/sum)*d,always = false})
 			end
 		else
-			local_register_resource_level_one({name = "uranium-ore", probability = 0.15})
-			local_register_resource_level_one({name = "iron-ore", probability = 0.4})
-			local_register_resource_level_one({name = "copper-ore", probability = 0.4})
-			local_register_resource_level_one({name = "coal", probability = 0.25})
+			local_register_resource_level_one({name = "uranium-ore", probability = 0.15,always = false})
+			local_register_resource_level_one({name = "iron-ore", probability = 0.4,always = false})
+			local_register_resource_level_one({name = "copper-ore", probability = 0.4,always = false})
+			local_register_resource_level_one({name = "coal", probability = 0.25,always = false})
 
-			local_register_resource_level_two({name = "uranium-ore", probability = 0.15})
-			local_register_resource_level_two({name = "iron-ore", probability = 0.4})
-			local_register_resource_level_two({name = "copper-ore", probability = 0.4})
-			local_register_resource_level_two({name = "coal", probability = 0.3})
-			local_register_resource_level_two({name = "stone", probability = 0.25})
+			local_register_resource_level_two({name = "uranium-ore", probability = 0.15,always = false})
+			local_register_resource_level_two({name = "iron-ore", probability = 0.4,always = false})
+			local_register_resource_level_two({name = "copper-ore", probability = 0.4,always = false})
+			local_register_resource_level_two({name = "coal", probability = 0.3,always = false})
+			local_register_resource_level_two({name = "stone", probability = 0.25,always = false})
 		end
 	else
-		local_register_resource_level_one({name = "uranium-ore", probability = 0.15})
-		local_register_resource_level_one({name = "iron-ore", probability = 0.4})
-		local_register_resource_level_one({name = "copper-ore", probability = 0.4})
-		local_register_resource_level_one({name = "coal", probability = 0.25})
+		local_register_resource_level_one({name = "uranium-ore", probability = 0.15,always = false})
+		local_register_resource_level_one({name = "iron-ore", probability = 0.4,always = false})
+		local_register_resource_level_one({name = "copper-ore", probability = 0.4,always = false})
+		local_register_resource_level_one({name = "coal", probability = 0.25,always = false})
 
-		local_register_resource_level_two({name = "uranium-ore", probability = 0.15})
-		local_register_resource_level_two({name = "iron-ore", probability = 0.4})
-		local_register_resource_level_two({name = "copper-ore", probability = 0.4})
-		local_register_resource_level_two({name = "coal", probability = 0.3})
-		local_register_resource_level_two({name = "stone", probability = 0.25})
+		local_register_resource_level_two({name = "uranium-ore", probability = 0.15,always = false})
+		local_register_resource_level_two({name = "iron-ore", probability = 0.4,always = false})
+		local_register_resource_level_two({name = "copper-ore", probability = 0.4,always = false})
+		local_register_resource_level_two({name = "coal", probability = 0.3,always = false})
+		local_register_resource_level_two({name = "stone", probability = 0.25,always = false})
 	end
 end
 
@@ -323,16 +343,73 @@ local get_sorted_lines = function(circle)
 		return {ret,tkeys[1],tkeys[#tkeys],min,max}
 	end
 
-local allow_resource_by_parent = function(res,surface)
-	if game.surfaces[value.top_name] ~= nil then
-		if game.surfaces[value.top_name] == "nauvis" then return true end
-		local s = game.surfaces[value.top_name]
-		s.map_gen_settings~=nil and
-		s.map_gen_settings.property_expression_names ~=nil and
-		s.map_gen_settings.property_expression_names["tile:water:probability"] ~=nil and
-		type(s.map_gen_settings.property_expression_names["tile:water:probability"]) == "number" and
-		s.map_gen_settings.property_expression_names["tile:water:probability"] < -100 then
+local is_valid_surface_resource = function(s,r)
+	if s==nil or s.map_gen_settings == nil or s.map_gen_settings.autoplace_controls == nil then return false end	
+	for name, value in pairs(s.map_gen_settings.autoplace_controls) do
+		--log(name)
+		if name == r then
+			if value.frequency ~= nil and value.frequency > 0
+				and value.richness ~= nil and value.richness > -1
+				and value.size ~= nil and value.size > 0 then
+				return true 
+			end
+		end
 	end
+	return false
+	end		
+
+local allow_resource_by_parent = function(res,surface)
+	local value = surfaces[surface.name]
+	--log(res)
+	--log(serpent.block(value))
+	if value.level == 2 then
+		--log(serpent.block(global.modmashsplinterunderground.resource_level_two))
+		for k=1, #global.modmashsplinterunderground.resource_level_two do
+			if global.modmashsplinterunderground.resource_level_two[k].name == res then
+				res = global.modmashsplinterunderground.resource_level_two[k]
+				break
+			end
+		end
+	else
+		--log(serpent.block(global.modmashsplinterunderground.resource_level_one))
+		for k=1, #global.modmashsplinterunderground.resource_level_one do
+			if global.modmashsplinterunderground.resource_level_one[k].name == res then
+				res = global.modmashsplinterunderground.resource_level_one[k]
+				break
+			end
+		end
+	end
+	if type(res)=="string" then
+		--log(res.." not registered")
+		return false 
+	end
+	local always = "false"
+	if res.always == true then
+		always = "true"
+		--log(res.name..".always="..always.." is always allowed on "..surface.name)
+		return true 
+	end
+	
+	if value == nil then
+		--log(res.name..".always="..always.." is NOT allowed on initial surface "..surface.name.. " surface not found")
+		return false
+	end
+	if game.surfaces[value.top_name] ~= nil then
+		if game.surfaces[value.top_name] == "nauvis" then 
+			--log(res.name..".always="..always.." is always allowed on initial surface "..surface.name)
+			return true 
+		end
+
+		local s = game.surfaces[value.top_name]
+		if is_valid_surface_resource(s,res.name) then
+			--log(res.name..".always="..always.." is allowed on surface "..surface.name.." due to settings")
+			return true
+		else
+			--log(res.name..".always="..always.." is NOT allowed on surface "..surface.name.." due to settings")
+			return false
+		end
+	end
+	--log(res.name..".always="..always.." is always allowed on "..surface.name.. " due to parse map_gen_settings error")
 	return true
 end
 
@@ -347,7 +424,13 @@ local generate_surface_area = function(x,y,r,surface, res, allow_mixed, rock_pre
 	local d = get_sorted_lines(p)
 	local rm = 0.25 + ((settings.global["setting-resource-mod"].value /100)*0.75)
     local amt = math.floor(math.random(800, 3200) * rm)
-	local res_table =  local_build_probability_table(res)
+	local t_res_table =  local_build_probability_table(res)
+	local res_table = {}
+	for k = 1, #t_res_table do
+		if allow_resource_by_parent(t_res_table[k],surface) then
+			table.insert(res_table,t_res_table[k])
+		end
+	end
 	local rnd = nil
 	--[[
 		1-(0/100)=1 case restrict
@@ -401,19 +484,26 @@ local generate_surface_area = function(x,y,r,surface, res, allow_mixed, rock_pre
 			else
 			  --inside
 			  if current_tile.name == "out-of-map" then 
+				--log(serpent.block(res_table))
 			    surface.set_tiles({{ name = tile, position = pos }})
 				local create = nil
 				if rnd ~= nil and  rnd <= #res_table then
 					if allow_mixed and mixed == 1 then
-						local chk_res = res_table[math.random(1,#res_table)]
-						if allow_resource_by_parent(chk_res,surface) == true then
-							create = {name=chk_res, amount=amt*m, position=pos}
-						end
+					--	for z =1,5 do
+							local chk_res = res_table[math.random(1,#res_table)]
+					--		if allow_resource_by_parent(chk_res,surface) == true then
+								create = {name=chk_res, amount=amt*m, position=pos}
+					--			break
+					--		end
+					--	end
 					else
-						local chk_res = res_table[rnd]
-						if allow_resource_by_parent(chk_res,surface) == true then
-							create = {name=chk_res, amount=amt*m, position=pos}
-						end
+						--for z =1,5 do
+							local chk_res = res_table[rnd]
+							--if allow_resource_by_parent(chk_res,surface) == true then
+								create = {name=chk_res, amount=amt*m, position=pos}
+								--break
+							--end
+						--end
 					end
 				end 						
 				if create ~= nil then 
@@ -2565,8 +2655,6 @@ local local_on_configuration_changed = function(event)
 	global.modmashsplinterunderground.banned_level_one = nil 
 	global.modmashsplinterunderground.banned_level_two = nil 
 
-	--global.modmashsplinterunderground.resource_level_one = nil
-	--global.modmashsplinterunderground.resource_level_two = nil
 	if global.modmashsplinterunderground.resource_level_one == nil then global.modmashsplinterunderground.resource_level_one = {} end
 	if global.modmashsplinterunderground.resource_level_two == nil then global.modmashsplinterunderground.resource_level_two = {} end
 	global.modmashsplinterunderground.mineable_resources = nil
@@ -2657,22 +2745,6 @@ local local_on_configuration_changed = function(event)
 					
 					end
 				end
-				--[[for k=1,#ms.combinators do
-					local c = ms.combinators[k]
-					if is_valid(c.top_entity) and is_valid(c.bottom_entity) then
-						c.top_entity.connect_neighbour(c.bottom_entity)		
-						c.top_entity.operable=true
-						c.bottom_entity.operable=true
-					end
-				end		
-				for k=1,#bs.combinators do
-					local c = bs.combinators[k]
-					if is_valid(c.top_entity) and is_valid(c.bottom_entity) then
-						c.top_entity.connect_neighbour(c.bottom_entity)		
-						c.top_entity.operable=true
-						c.bottom_entity.operable=true
-					end
-				end]]	
 			end	
 		end
 	end

@@ -1,4 +1,10 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.08
+  Changes:
+    - Support for resources not using width height not size
+    - Imporved experimental mode
+
+---------------------------------------------------------------------------------------------------
 Version: 1.1.07
   Changes:
     - Locale fixes thanks to Flood

@@ -442,6 +442,7 @@ local local_load = function()
 	end
 
 local local_add_tech_loot = function(surface_index, area)
+	if math.random(1, 6) == 2 then return end -- just make more sparse
 	if settings.startup["setting-tech-loot"].value == "Disabled" then return end	
 	global.modmashsplinterloot.loot_tech_modifier = global.modmashsplinterloot.loot_tech_modifier + 0.2
 	local surface = game.surfaces[surface_index]
@@ -494,7 +495,7 @@ local local_get_random_loot_stack = function(distance_mod)
 end
 
 local local_add_loot = function(surface_index, area)
-	
+	if math.random(1, 6) == 2 then return end -- just make more sparse
 	if not loot_table then return end
 	if distance(0,0,area.left_top.x,area.left_top.y) < loot_exclude_distance_from_origin then return end
 	if not global.modmashsplinterloot.loot_tech_modifier then global.modmashsplinterloot.loot_tech_modifier = 0 end

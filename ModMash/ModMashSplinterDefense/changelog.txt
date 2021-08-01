@@ -1,4 +1,9 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.09
+  Changes:
+    - Added time out for toxins so biters revert back to enemy force
+
+---------------------------------------------------------------------------------------------------
 Version: 1.1.08
   Changes:
     - Locale fixes thanks to Flood

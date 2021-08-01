@@ -1325,8 +1325,13 @@ local local_nth_tick_surface = function(surface,ticks)
 	
 
 	if surface.launch == false then return end
-	if #surface.bases == 0 and #surface.surface.find_entities_filtered{limit=4, name="them-blocker"} > 0 then
-		return
+	if #surface.bases == 0 then
+		local blockers =  surface.surface.find_entities_filtered{limit=4, name="them-blocker"}
+		for k = 1, #blockers do
+			if blockers[k].energy > 0 then
+				return
+			end
+		end
 	end
 	surface.flags = {}
 	surface.spawn_base_cooldown = math.max(0,surface.spawn_base_cooldown - ticks)

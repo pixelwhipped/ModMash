@@ -26,6 +26,7 @@ local local_init = function()
 	if not global.modmashsplinterdefense.spawner_update_type_index then global.modmashsplinterdefense.spawner_update_type_index = {} end
 	if not global.modmashsplinterdefense.spawner_update_type_index[defines.alert_type.entity_destroyed] then  global.modmashsplinterdefense.spawner_update_type_index[defines.alert_type.entity_destroyed] = 1 end
 	if not global.modmashsplinterdefense.spawner_update_type_index[defines.alert_type.entity_under_attack] then  global.modmashsplinterdefense.spawner_update_type_index[defines.alert_type.entity_under_attack] = 1 end
+	if global.modmashsplinterdefense.friends_ttl == nil then  global.modmashsplinterdefense.friends_ttl = {} end
 
 	biter_nero_toxin = global.modmashsplinterdefense.biter_nero_toxin
 	remote.call("modmashsplinterregenerative","register_regenerative",{"regenerative-wall"})
@@ -47,6 +48,7 @@ local local_get_random_point = function(x, y, radius)
 local local_toxin_added = function(event)	
 	local entity = event.entity
 	if entity.name == biter_neuro_toxin_cloud then
+		local friends = global.modmashsplinterdefense.friends_ttl
 		local count = 10 * (biter_nero_toxin.research_modifier/modmashsplinterdefense.defines.defaults.biter_nero_toxin_research_modifier)
 		for i =1, count do
 			entity.surface.create_entity{name="toxin-poison-cloud",position=local_get_random_point(entity.position.x,entity.position.y,biter_nero_toxin.research_modifier)}
@@ -56,24 +58,30 @@ local local_toxin_added = function(event)
 			position = entity.position,
 			radius = biter_nero_toxin.research_modifier,
 		})
+		
+
 		for _, enemy in ipairs(enemies) do
 			if enemy.prototype.subgroup.name=="enemies" then
 				if enemy.type == "unit-spawner" then local p = enemy.position
 					local n = enemy.name
 					enemy.destroy()
 					local e = entity.surface.create_entity{name=n, position=p, force = game.forces[force_neutral]}
+					table.insert(friends,{entity = e, ttl = 18000})
 				elseif enemy.type == "turret" then
 					local p = enemy.position
 					local n = enemy.name
 					enemy.destroy()
 					local e = entity.surface.create_entity{name=n, position=p, force = game.forces[force_player]}
-					--todo: record friends and add time out
+					
 				else
 					enemy.force = game.forces[force_player]
+					--todo: record friends and add time out
+					table.insert(friends,{entity = enemy, ttl =  18000})
 				end
 			end
 		end
 	elseif entity.name == "biter-neuro-toxin-puff" then
+		local friends = global.modmashsplinterdefense.friends_ttl
 		local enemies = entity.surface.find_entities_filtered({
 			type = {"unit-spawner","unit","turret"},
 			position = entity.position,
@@ -81,7 +89,8 @@ local local_toxin_added = function(event)
 		})
 		for _, enemy in ipairs(enemies) do
 			if enemy.prototype.subgroup.name=="enemies" then
-				if enemy.type == "unit-spawner" then local p = enemy.position
+				if enemy.type == "unit-spawner" then 
+					--local p = enemy.position
 				elseif enemy.type == "turret" then
 					--local p = enemy.position
 					--local n = enemy.name
@@ -91,6 +100,7 @@ local local_toxin_added = function(event)
 				else
 					--if math.random(1,50) > 25 then
 					enemy.force = game.forces[force_player]
+					table.insert(friends,{entity = enemy, ttl =  18000})
 					--end
 				end
 			end
@@ -162,11 +172,40 @@ end
 	end
 end]]
 
+
+
+local local_on_configuration_changed = function(event) 	
+	if global.modmashsplinterdefense.friends_ttl == nil then  global.modmashsplinterdefense.friends_ttl = {} end
+end
+
+local local_nth_tick = function()
+	local nf = {}
+	local f = global.modmashsplinterdefense.friends_ttl
+	for k = 1, #f do local e = f[k]
+		if is_valid(e.entity) and (e.ttl - 120) >0 then
+			table.insert(nf,{entity = e.entity, ttl = (e.ttl-120)})
+		elseif is_valid(e.entity) then
+			if  e.entity.type == "unit-spawner" then 
+					local p = e.entity.position
+					local n = e.entity.name
+					local s = e.entity.surface
+					e.entity.destroy()
+					s.create_entity{name=n, position=p, force = game.forces[force_enemy]}
+			else
+				e.entity.force = game.forces[force_enemy]
+			end
+		end
+	end
+	global.modmashsplinterdefense.friends_ttl = nf
+end
+
 local local_tick = function()	
 	local_update_alert_type(defines.alert_type.entity_destroyed)
 	local_update_alert_type(defines.alert_type.entity_under_attack)
 	end
 
+script.on_configuration_changed(local_on_configuration_changed)
+script.on_nth_tick(120, local_nth_tick)
 
 script.on_init(local_init)
 script.on_load(local_load)
