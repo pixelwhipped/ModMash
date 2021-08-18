@@ -1,5 +1,6 @@
 ﻿data_final_fixes = true
 require("prototypes.scripts.defines")
+require("prototypes.scripts.types")
 local patch_technology = modmashsplinternewworlds.util.tech.patch_technology
 
 if mods["Krastorio2"] then
@@ -89,3 +90,62 @@ end
 
 table.insert(data.raw["module"]["clone"].limitation,"explorer")
 table.insert(data.raw["module"]["clone"].limitation,"royal-jelly")
+if mods["modmashsplintergold"] and data.raw["resource"]["gold-ore"] == nil then
+data:extend(
+{	
+	{
+		type = "resource",
+		name = "gold-ore",
+		icon = "__modmashsplintergold__/graphics/icons/gold-ore.png",
+		icon_mipmaps = 4,
+		icon_size = 64,
+		flags = {"placeable-neutral"},
+		order="a-b-z",
+		tree_removal_probability = 0.8,
+		tree_removal_max_distance = 32 * 32,
+		minable =
+		{
+		  mining_particle = "stone-particle",
+		  mining_time = 2.5,
+		  result = "gold-ore"
+		},
+		collision_box = {{ -0.1, -0.1}, {0.1, 0.1}},
+		selection_box = {{ -0.5, -0.5}, {0.5, 0.5}},
+		autoplace = 
+		{
+			create = false,
+			starting_area = false,
+			richness = 0.0,
+			size = 0.0
+		},
+		stage_counts = {15000, 9500, 5500, 2900, 1300, 400, 150, 80},
+		stages =
+		{
+		  sheet =
+		  {
+			filename = "__modmashsplinternewworlds__/graphics/entity/gold/gold.png",
+			priority = "extra-high",
+			size = 64,
+			frame_count = 8,
+			variation_count = 8,
+			hr_version =
+			{
+			  filename = "__modmashsplinternewworlds__/graphics/entity/gold/hr-gold.png",
+			  priority = "extra-high",
+			  size = 128,
+			  frame_count = 8,
+			  variation_count = 8,
+			  scale = 0.5
+			}
+		  }
+		},
+		map_color = {r=1.0, g=0.45, b=0.0},
+		mining_visualisation_tint = {
+			a = 1,
+			b = 0.0,
+			g = 0.45,
+			r = 1.0
+		}
+	}
+})
+end

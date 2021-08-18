@@ -14,7 +14,7 @@
 	  {
         type = "unlock-recipe",
         recipe = "royal-jelly"
-      }
+      },
 	},
 	prerequisites =
 	{
@@ -26,6 +26,37 @@
 		ingredients =
 		{
 			{"alien-science-pack", 1},
+		},
+		time = 45
+	},
+	upgrade = true,
+	order = "a-b-d",
+  },
+  {
+	type = "technology",
+	name = "royal-jelly-with-pureonium",
+	icon = "__modmashsplinternewworlds__/graphics/technology/alien-science-pack.png",
+	icon_size = 256, icon_mipmaps = 4,
+	effects =
+	{
+	  {
+        type = "unlock-recipe",
+        recipe = "creative-royal-jelly-with-pureonium"
+      },
+	},
+	prerequisites =
+	{
+		"alien-science-pack"
+	},
+	unit =
+	{
+		count = 200,
+		ingredients =
+		{
+			{"alien-science-pack", 1},
+			{"chemical-science-pack", 1},
+            {"utility-science-pack", 1},
+            {"space-science-pack", 1}
 		},
 		time = 45
 	},

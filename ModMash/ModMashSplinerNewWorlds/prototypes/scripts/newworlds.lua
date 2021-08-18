@@ -353,34 +353,73 @@ local local_add_planets_button = function()
 	end
 	end
 
-local local_on_rocket_launched = function(event)
-	local rocket = event.rocket
-	local rocket_silo = event.rocket_silo
-	local player_index = event.player_index
 
-	local inventory = rocket.get_inventory(defines.inventory.rocket)
-	for name, count in pairs(inventory.get_contents()) do
-		if name == "explorer" then
-			if (math.random(1,100)/100) < global.modmashsplinternewworlds.exploration_chance then
-				local name = prefix_charset[math.random(1,#prefix_charset)]..prefix_charset[math.random(1,#prefix_charset)].."-"..math.random(0,9)..math.random(0,9)..math.random(0,9)
-				if global.modmashsplinternewworlds.planets == nil then global.modmashsplinternewworlds.planets = {} end
-				if global.modmashsplinternewworlds.planets[name] == nil then
-					global.modmashsplinternewworlds.planets[name] = {planet_id = name}
-					print("Unlocked planet "..name)
-					for k=1 , #game.players do
-						local player = game.players[k]
-						if is_valid(player) == true then
-							player.set_shortcut_available("planet-explorer",true)
-						end
-					end	
-					local_add_planets_button()					
-				end	
-			else
-				print("Explorer perished")
-			end
-		end
-	end	
+
+local spawn_resource = function(surface,name,pos,amount,tiles)
+	if name == "sand" then
+		if #surface.find_tiles_filtered{collision_mask = "water-tile", position =pos,radius=64, limit = 2} == 0 then return end
 	end
+	local w_max = 256
+	local h_max = 256
+	local abs = math.abs
+
+	local biases = {[0] = {[0] = 1}}
+	local t = 1
+
+	local function grow(grid,t)
+	  local old = {}
+	  local new_count = 0
+	  for x,_  in pairs(grid) do for y,__ in pairs(_) do
+		table.insert(old,{x,y})
+		end end
+	  for _,pos in pairs(old) do
+		local x,y = pos[1],pos[2]
+		local bias = grid[x][y]
+		for dx=-1,1,1 do for dy=-1,1,1 do
+		  local a,b = x+dx, y+dy
+		  if (math.random() > 0.9) and (abs(a) < w_max) and (abs(b) < h_max) then
+			grid[a] = grid[a] or {}
+			if not grid[a][b] then
+			  grid[a][b] = 1 - (t/tiles)
+			  new_count = new_count + 1
+			  if (new_count+t) == tiles then return new_count end
+			  end
+			end
+		  end end
+		end
+	  return new_count
+	  end
+
+	repeat 
+	  t = t + grow(biases,t)
+	  until t >= tiles
+
+	local total_bias = 0
+	for x,_  in pairs(biases) do 
+		for y,bias in pairs(_) do
+			total_bias = total_bias + bias
+		end 
+	 end
+
+	for x,_  in pairs(biases) do 
+		for y,bias in pairs(_) do
+			if surface.get_tile(pos.x+x,pos.y+y).collides_with("water-tile") == false then
+				local a = amount * (bias/total_bias)
+				if a>1 then 
+					
+					surface.create_entity{
+					enable_tree_removal = false,
+					snap_to_tile_center = true,
+					spawn_decorations = true,
+					name = name,
+					amount = a,
+					force = 'neutral',
+					position = {pos.x+x,pos.y+y}}
+				end
+			end		
+		end 
+	end
+end
 
 local request_chart = nil
 local local_chunk_generated = function(event)  
@@ -426,31 +465,169 @@ local local_chunk_generated = function(event)
 			end				
 		end
 	end
+	if starts_with(surface.name,"nauvis") or ends_with(surface.name,"underground") then return end
+	if global.modmashsplinternewworlds.planets[surface.name] == nil then return end
+	if global.modmashsplinternewworlds.planets[surface.name].resources == nil then return end
+	if #global.modmashsplinternewworlds.planets[surface.name].resources == 0 then return end
+	local pos = {x=event.area.left_top.x+16,y=event.area.left_top.y+16}
+	local fm = global.modmashsplinternewworlds.planets[surface.name].dist_min
+	local fx = global.modmashsplinternewworlds.planets[surface.name].dist_max
+	local e = surface.find_entities_filtered{type = "resource", limit = 2, position=pos, radius = math.random(fm,fx)}
+	if #e > 1 then return end
+	local max = #global.modmashsplinternewworlds.planets[surface.name].resources
+	if max == 0 then return end
+	local r = global.modmashsplinternewworlds.planets[surface.name].resources[math.random(1,max)]
+	
+	local amount = math.random(r.min_amount,r.max_amount)
+	local tiles = math.random(r.tiles_min,r.tiles_max)	
+
+	spawn_resource(surface,r.name,pos,amount,tiles)
 	end
 
 local local_safe_teleport = function(player, surface, position)
 	if player and player.character then
 		if position == nil then position = player.character.position end
+		local cx, cy = math.floor(position.x / 32), math.floor(position.y / 32)
+		if surface.is_chunk_generated({cx, cy}) ~= true then
+			surface.request_to_generate_chunks({position.x, position.y}, 3)
+			surface.force_generate_chunk_requests()
+		end
+		
 		p = surface.find_non_colliding_position(player.character.name, position, 5, 0.5, false) 
 		if p == nil then 
 			p = surface.find_non_colliding_position(player.character.name, player.character.position, 5, 0.5, false)
 		end
 		if p ~= nil then position = p end
+		player.teleport(position, surface)
 	end
-	player.teleport(position, surface)
 	end
 
-local create_map_settings = function(planet)
+
+
+
+local build_resources = function(settings)
+
+	local res = {}
+	res.name_ext = ""
+	if math.random(0,50)>25 and game.entity_prototypes["alien-ore"] ~= nil then --and game.autoplace_control_prototypes["alien-ore"] then
+		table.insert(res,{name = "alien-ore", min_amount = math.random(10000,5000000), max_amount = math.random(5000001,15000000), tiles_min = math.random(1000,2000), tiles_max = math.random(2001,4000)})
+		res.name_ext = res.name_ext.."[entity=alien-ore]"
+	end
+	if math.random(0,50)>25 and game.entity_prototypes["gold-ore"] ~= nil then --and game.autoplace_control_prototypes["alien-ore"] then
+		table.insert(res,{name = "gold-ore", min_amount = math.random(10000,5000000), max_amount = math.random(5000001,15000000), tiles_min = math.random(1000,2000), tiles_max = math.random(2001,4000)})
+		res.name_ext = res.name_ext.."[entity=gold-ore]"
+	end
+
+	if math.random(0,50)>28 and game.entity_prototypes["creative-mod-pureonium"] ~= nil then --and game.autoplace_control_prototypes["alien-ore"] then
+		table.insert(res,{name = "creative-mod-pureonium", min_amount = math.random(10000,5000000), max_amount = math.random(5000001,15000000), tiles_min = math.random(1000,2000), tiles_max = math.random(2001,4000)})
+		res.name_ext = res.name_ext.."[entity=creative-mod-pureonium]"
+	end
+
+	
+	if math.random(0,50)>25 and game.entity_prototypes["titanium-ore"] ~= nil then -- and game.autoplace_control_prototypes["titanium-ore"] then
+		table.insert(res,{name = "titanium-ore", min_amount = math.random(10000,5000000), max_amount = math.random(5000001,15000000), tiles_min = math.random(1000,2000), tiles_max = math.random(2001,4000)})
+		res.name_ext = res.name_ext.."[entity=titanium-ore]"
+	end
+
+	if math.random(0,50)>15 and game.entity_prototypes["sand"] ~= nil then -- and game.autoplace_control_prototypes["sand"] then
+		table.insert(res,{name = "sand", min_amount = math.random(10000,5000000), max_amount = math.random(5000001,15000000), tiles_min = math.random(1000,2000), tiles_max = math.random(2001,4000)})
+		res.name_ext = res.name_ext.."[entity=sand]"
+	end
+
+	if math.random(0,50)>40 and game.entity_prototypes["sulfur"] ~= nil then --and game.autoplace_control_prototypes["sulfur"] then
+		table.insert(res,{name = "sulfur", min_amount = math.random(10000,5000000), max_amount = math.random(5000001,15000000), tiles_min = math.random(1000,2000), tiles_max = math.random(2001,4000)})
+		res.name_ext = res.name_ext.."[entity=sulfur]"
+	end
+
+	local freq = {"none","very-low","low","normal","high","very-high"}
+
+	if settings ~=nil and settings.autoplace_controls ~=nil then
+	
+		for name, value in pairs(settings.autoplace_controls) do
+		--log(name)
+			local rhigh = 35
+			if name=="uranium-ore" then rhigh = 45 end
+			if game.fluid_prototypes[name] == nil and math.random(0,50)>rhigh then
+				
+				res.name_ext = res.name_ext.."[entity="..name.."]"
+				table.insert(res,{name = name, min_amount = 800000, max_amount = 5000000, tiles_min = 2000, tiles_max = 4000})
+			elseif game.fluid_prototypes[name] ~= nil and math.random(0,50)>25 then
+				res.name_ext = res.name_ext.."[entity="..name.."]"	
+				settings.autoplace_controls[name] = {  richness = 1, size = 1, frequency=1}
+
+			end
+		end
+	end
+
+
+	return res
+end
+
+local create_map_settings = function()
+	local freq = {"none","very-low","low","normal","high","very-high"}
 	local parent = game.surfaces[1]
+	local cliff_settings_richness = 1
+	if math.random(0,6)>3 then cliff_settings_richness = 0 end
 	local map=
 	{
 		seed = math.random(0,4294967294),
 		width = parent.map_gen_settings.width, 
 		height = parent.map_gen_settings.height,
 		terrain_segmentation = parent.map_gen_settings.terrain_segmentation,
-		default_enable_all_autoplace_controls = true,
-	}
+		default_enable_all_autoplace_controls = true,		
+		water = freq[math.random(1,#freq)],
+		property_expression_names = {
+			cliffiness = cliff_settings_richness,
+			["moisture"] = math.random(0,100)/100,
+			["aux"] = math.random(0,100)/100,
+			["temperature "] = math.random(-20,50),
+			["control-setting:moisture:bias"] = math.random(0,100)/100,
+			["control-setting:aux:bias "] = math.random(0,100)/100
+		}
+	}	
+
+	map.autoplace_controls = {}
+	for name, value in pairs(game.autoplace_control_prototypes) do
+		if value.category == "resource" then
+			map.autoplace_controls[name] = { richness = 0, size = 0, frequency=0}
+		end
+	end
 	return map
+	end
+
+local local_on_rocket_launched = function(event)
+	local rocket = event.rocket
+	local rocket_silo = event.rocket_silo
+	local player_index = event.player_index
+
+	local inventory = rocket.get_inventory(defines.inventory.rocket)
+	for name, count in pairs(inventory.get_contents()) do
+		if name == "explorer" then
+			if (math.random(1,100)/100) < global.modmashsplinternewworlds.exploration_chance then
+				local name = prefix_charset[math.random(1,#prefix_charset)]..prefix_charset[math.random(1,#prefix_charset)].."-"..math.random(0,9)..math.random(0,9)..math.random(0,9)
+				local settings = create_map_settings()
+				local resources = build_resources(settings)
+				local oname = name
+				if resources.name_ext ~= nil then name = name..resources.name_ext end
+
+				
+				if global.modmashsplinternewworlds.planets == nil then global.modmashsplinternewworlds.planets = {} end
+				if global.modmashsplinternewworlds.planets[name] == nil then
+					global.modmashsplinternewworlds.planets[name] = {planet_id = name}
+					print("Unlocked planet "..name)
+					for k=1 , #game.players do
+						local player = game.players[k]
+						if is_valid(player) == true then
+							player.set_shortcut_available("planet-explorer",true)
+						end
+					end	
+					local_add_planets_button()					
+				end	
+			else
+				print("Explorer perished")
+			end
+		end
+	end	
 	end
 
 local local_teleport_to = function(player,name,position)
@@ -460,14 +637,28 @@ local local_teleport_to = function(player,name,position)
 	if global.modmashsplinternewworlds.planets[player.surface.name].players[player.index] == nil then global.modmashsplinternewworlds.planets[player.surface.name].players[player.index] = {} end
 	if global.modmashsplinternewworlds.planets[player.surface.name].players[player.index].last_location == nil then global.modmashsplinternewworlds.planets[player.surface.name].players[player.index].last_location = player.character.position end		
 	if global.modmashsplinternewworlds.planets[name] ~= nil then
-		if game.surfaces[name] == nil then				
-			local new_surface = game.create_surface(name, create_map_settings(global.modmashsplinternewworlds.planets[name]))
+		if game.surfaces[name] == nil then	
+			if global.modmashsplinternewworlds.planets[name] == nil then global.modmashsplinternewworlds.planets[name] = {} end
+			if global.modmashsplinternewworlds.planets[name].settings == nil then global.modmashsplinternewworlds.planets[name].settings = create_map_settings() end
+			if global.modmashsplinternewworlds.planets[name].resources == nil then global.modmashsplinternewworlds.planets[name].resources = build_resources(global.modmashsplinternewworlds.planets[name].settings) end
+			global.modmashsplinternewworlds.planets[name].dist_min = math.random(64,128)
+			global.modmashsplinternewworlds.planets[name].dist_max = math.random(global.modmashsplinternewworlds.planets[name].dist_min+1,global.modmashsplinternewworlds.planets[name].dist_min+512) 
+			
+
+			local new_surface = game.create_surface(name, global.modmashsplinternewworlds.planets[name].settings)
+			new_surface.ticks_per_day = math.random(17500,50000) 
+			new_surface.daytime = math.random(1,100)/100
+			if math.random(1,100)>80 then
+				new_surface.freeze_daytime = true
+			end
+			--log(serpent.block(player.surface.map_gen_settings))
 			if remote.interfaces["modmashsplinterunderground"]["register_surface"] ~= nil then
 			remote.call("modmashsplinterunderground","register_surface",name)
 			end
 		end
 	end
 	if global.modmashsplinternewworlds.planets[name] == nil then global.modmashsplinternewworlds.planets[name] = {} end
+
 	if global.modmashsplinternewworlds.planets[name].players == nil then global.modmashsplinternewworlds.planets[name].players = {} end
 	if global.modmashsplinternewworlds.planets[name].players[player.index] == nil then global.modmashsplinternewworlds.planets[name].players[player.index] = {} end
 	if global.modmashsplinternewworlds.planets[name].players[player.index].last_location == nil then global.modmashsplinternewworlds.planets[name].players[player.index].last_location = {x=0,y=0} end		

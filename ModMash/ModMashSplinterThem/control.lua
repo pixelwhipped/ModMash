@@ -863,10 +863,12 @@ local update_harvest_projectiles = function(surface,ticks)
 					local m = 1
 					if #surface.ports > 1 then m = math.random(1, #surface.ports) end
 					local t = surface.ports[m]
-					t.surface.create_entity{name='them-robot-projectile', speed=0.06, position=projectile.entity.position, force="enemy", target=t.position}
-					if projectile.entity.health <  projectile.entity.prototype.max_health then table.insert(surface.return_health_stack,projectile.entity.health) end
-					projectile.entity.destroy({raise_destroy = true})
-					table.remove(surface.harvest_projectiles,k)
+					if t ~= nil then 
+						t.surface.create_entity{name='them-robot-projectile', speed=0.06, position=projectile.entity.position, force="enemy", target=t.position}
+						if projectile.entity.health <  projectile.entity.prototype.max_health then table.insert(surface.return_health_stack,projectile.entity.health) end
+						projectile.entity.destroy({raise_destroy = true})
+						table.remove(surface.harvest_projectiles,k)
+					end
 				else
 					if projectile.target == nil then
 						local targets =  projectile.entity.surface.find_entities_filtered{type={"resource"}, position=projectile.entity.position, radius = 6.0}

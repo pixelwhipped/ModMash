@@ -115,6 +115,44 @@ data:extend(
 	},
 	{
 		type = "recipe",
+		name = "creative-royal-jelly-with-pureonium",
+		energy_required = 3,
+		enabled = false,
+		category = "chemistry",
+		normal =
+		{
+			enabled = false,
+			ingredients =  modmashsplinternewworlds.util.get_item_ingredient_substitutions({"alien-ore"},
+			{
+				{"creative-mod-pureonium", 15},
+				{name = "alien-ore", amount= 20}
+			}),
+			result = "royal-jelly"
+		},
+		expensive =
+		{
+			enabled = false,
+			ingredients =  modmashsplinternewworlds.util.get_item_ingredient_substitutions({"alien-ore"},
+			{
+				{"creative-mod-pureonium", 20},
+				{name = "alien-ore", amount = 25}
+			}),
+			result = "royal-jelly"
+		},
+		icon = false,
+		icon = "__modmashsplinternewworlds__/graphics/icons/royal-jelly.png",
+		icon_size = 64,
+		icon_mipmaps = 4,
+		allow_decomposition = false,
+		crafting_machine_tint =
+		{
+		  primary = {r = 0.0, g = 0.0, b = 1.0, a = 0.000},
+		  secondary = {r = 0.0, g = 0.0, b = 0.812, a = 0.000},
+		  tertiary = {r = 0.0, g = 0.0, b = 0.960, a = 0.000}, 
+		},
+	},
+	{
+		type = "recipe",
 		name = "alien-science-pack",
 		energy_required = 3,
 		enabled = false,

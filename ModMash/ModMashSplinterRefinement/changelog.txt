@@ -1,4 +1,9 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.09
+  Changes:
+    - Updated item descriptions to be more usefull
+
+---------------------------------------------------------------------------------------------------
 Version: 1.1.08
   Changes:
     - Support for resources not using width height not size

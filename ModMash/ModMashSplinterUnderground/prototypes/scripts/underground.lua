@@ -264,6 +264,7 @@ local init_surface = function(surface,parent,daytime)
 		width = parent.map_gen_settings.width,
 		height = parent.map_gen_settings.height,
 		starting_points = {},
+		show_clouds = false,
 		research_queue_from_the_start = parent.map_gen_settings.research_queue_from_the_start,
 		property_expression_names = {
 			cliffiness = 0,
@@ -724,12 +725,12 @@ local local_check_teleport = function()
 						local accesses = value.accesses
 						local accesses2 = ms.accesses
 						for index, access in ipairs(accesses) do 
-							if is_valid_and_persistant(access.bottom_entity) and is_valid_and_persistant(access.top_entity)  then
+							if is_valid_and_persistant(access.bottom_entity) and is_valid_and_persistant(access.top_entity) and access.top_entity.name ~=  underground_accessml then
 								local_do_teleport(i, p, access, tss, mss)
 							end
 						end
 						for index, access in ipairs(accesses2) do 
-							if is_valid_and_persistant(access.bottom_entity) and is_valid_and_persistant(access.top_entity)  then
+							if is_valid_and_persistant(access.bottom_entity) and is_valid_and_persistant(access.top_entity) and access.top_entity.name ~=  underground_accessml then
 								local_do_teleport(i, p, access, mss, bss)
 							end
 						end

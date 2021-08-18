@@ -1261,4 +1261,125 @@
         }
       }
     },
+    {
+		type = "item-group",
+		hidden = true,
+		name = "advanced-resources",
+		icon = "__modmashsplinter__/graphics/icons/bad-icon.png",
+		icon_size = 64,
+		order = "zz",
+		inventory_order = "zz"
+	},
+    {
+		type = "item-subgroup",
+		name = "advanced-resource",
+		group = "advanced-resources",
+		order = "zz"
+	},
+    {
+        type = "item",
+        name = "creative-mod-pureonium",
+        icon = "__modmashsplinternewworlds__/graphics/icons/pureonium.png",
+        icon_mipmaps = 4,
+        icon_size = 64,    
+        pictures = {
+            {
+              filename = "__modmashsplinternewworlds__/graphics/icons/pureonium.png",
+              mipmap_count = 4,
+              scale = 0.25,
+              size = 64
+            },
+            {
+              filename = "__modmashsplinternewworlds__/graphics/icons/pureonium-1.png",
+              mipmap_count = 4,
+              scale = 0.25,
+              size = 64
+            },
+            {
+              filename = "__modmashsplinternewworlds__/graphics/icons/pureonium-2.png",
+              mipmap_count = 4,
+              scale = 0.25,
+              size = 64
+            },
+            {
+              filename = "__modmashsplinternewworlds__/graphics/icons/pureonium-3.png",
+              mipmap_count = 4,
+              scale = 0.25,
+              size = 64
+            }
+        },
+        subgroup = "raw-resource",
+        order = "h[pureonium]",
+        stack_size = 100
+    },
+    {
+		type = "resource",
+		name = "creative-mod-pureonium",
+		icon = "__modmashsplinternewworlds__/graphics/icons/pureonium.png",
+		icon_mipmaps = 4,
+		icon_size = 64,
+		flags = {"placeable-neutral"},
+		order="a-b-z",
+		tree_removal_probability = 0.8,
+		tree_removal_max_distance = 32 * 32,
+		minable =
+		{
+		  mining_particle = "iron-ore-particle",
+		  mining_time = 2.5,
+		  result = "creative-mod-pureonium"
+		},
+		collision_box = {{ -0.1, -0.1}, {0.1, 0.1}},
+		selection_box = {{ -0.5, -0.5}, {0.5, 0.5}},
+		autoplace = 
+		{
+			create = false,
+			starting_area = false,
+			richness = 0.0,
+			size = 0.0
+		},
+		stage_counts = {15000, 9500, 5500, 2900, 1300, 400, 150, 80},
+		stages =
+		{
+		  sheet =
+		  {
+			filename = "__modmashsplinternewworlds__/graphics/entity/pureonium/pureonium.png",
+			priority = "extra-high",
+			size = 64,
+			frame_count = 8,
+			variation_count = 8,
+			hr_version =
+			{
+			  filename = "__modmashsplinternewworlds__/graphics/entity/pureonium/hr-pureonium.png",
+			  priority = "extra-high",
+			  size = 128,
+			  frame_count = 8,
+			  variation_count = 8,
+			  scale = 0.5
+			}
+		  }
+		},
+		map_color = {r=0.0, g=0.55, b=0.9},
+		mining_visualisation_tint = {
+			a = 1,
+			b = 0.9,
+			g = 0.55,
+			r = 0.0
+		}
+	}
 })
+
+if deadlock_stacking then
+  local Items = {
+		{"creative-mod-pureonium", "deadlock-stacking-1"}
+	}
+
+	for _, item in pairs(Items) do
+		local name = item[1]
+		local tech = item[2]
+		if data.raw.item[name] then
+			if not data.raw.item["deadlock-stack-" .. name] then
+				deadlock.add_stack(name, nil, tech, 64, "item", 4)
+			end
+		end
+	end
+end

@@ -1,4 +1,25 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.19
+  Changes:
+    - Altered resource orders and groups
+    - Added dold if gold splinter exists
+    - Made item description more give more explanation
+    - Added resource indication to planet names for new planets discovered
+---------------------------------------------------------------------------------------------------
+Version: 1.1.18
+  Changes:
+    - pureonimum will use refined ores if available
+
+---------------------------------------------------------------------------------------------------
+Version: 1.1.17
+  Changes:
+    - Overhauled planet generation
+    - Overhauled planet resources more unique
+    - Added Pureonium for 3x of 4x production of smeltable items depending on if refinement is added
+  Fixes:
+    - Added double check surface generated when teleporting
+
+---------------------------------------------------------------------------------------------------
 Version: 1.1.16
   Fixes:
     - Queen hive placement fix when underground not present
