@@ -1,6 +1,6 @@
 {
   "name": "modmash",
-  "version": "1.1.32",
+  "version": "1.1.33",
   "title": "ModMash",
   "author": "PixelWhipped",
   "contact": "",
@@ -10,7 +10,7 @@
   "dependencies": [
     "base >= 1.1.0",
     "modmashsplinter >= 1.1.11",
-    "modmashsplintervalkyries >= 1.1.07",
+    "modmashsplintervalkyries >= 1.1.08",
     "modmashsplinterairpurifier >= 1.1.05",
     "modmashsplinterboom >= 1.1.05",    
     "modmashsplinterresources >= 1.1.12",   
@@ -26,12 +26,12 @@
     "modmashsplinterrefinement >= 1.1.09",
     "modmashsplinterregenerative >= 1.1.04",
     "modmashsplintersubspacelogistics >= 1.1.7",
-    "modmashsplinterunderground >= 1.1.33",
+    "modmashsplinterunderground >= 1.1.35",
     "modmashsplinterdefense >= 1.1.09",  
-    "modmashsplinternewworlds >= 1.1.19",
+    "modmashsplinternewworlds >= 1.1.20",
     "modmashsplinterexplosivemining >= 1.1.04",
     "modmashsplinterthem >= 1.1.37",
-    "modmashsplintergold >= 1.1.17",
+    "modmashsplintergold >= 1.1.19",
     "? heroturrets >= 1.1.08"    
   ]
 }

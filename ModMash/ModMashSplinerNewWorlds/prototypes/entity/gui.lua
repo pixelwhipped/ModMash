@@ -66,7 +66,7 @@ styles["planets-window"] =
 {
 	type           = "frame_style",
 	width          = 240, 
-	height         = 600,
+	height         = 624,
 	top_padding    = 4,
 	bottom_padding = 4,
 	right_padding  = 8,	
@@ -94,6 +94,19 @@ styles["planets-bottom-button-flow"] =
 	vertically_stretchable   = "off",
 	horizontally_stretchable = "on",	
 	width   = 230,
+	padding = 0,
+	graphical_set = {},
+    background_graphical_set = {}
+}
+
+styles["current-planets-top-flow"] =
+{
+	type = "horizontal_flow_style",
+    horizontal_align = "left",
+	vertically_stretchable   = "off",
+	horizontally_stretchable = "off",	
+	width   = 230,
+	height = 24,
 	padding = 0,
 	graphical_set = {},
     background_graphical_set = {}

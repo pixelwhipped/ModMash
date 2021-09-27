@@ -356,8 +356,23 @@ local local_add_planets_button = function()
 
 
 local spawn_resource = function(surface,name,pos,amount,tiles)
+	--need to add condition for fluid
 	if name == "sand" then
 		if #surface.find_tiles_filtered{collision_mask = "water-tile", position =pos,radius=64, limit = 2} == 0 then return end
+	end
+	if game.fluid_prototypes[name] ~= nil then 
+		
+		local a = math.random(1,16)
+		for k = 1, a do
+			local x = math.random(6,24)
+			local y = math.random(6,24)
+			if math.random(1,10) > 5 then x = x * -1 end
+			if math.random(1,10) > 5 then y = y * -1 end
+			if surface.get_tile(pos.x+x,pos.y+y).collides_with("water-tile") == false then
+				surface.create_entity{name=name, position={pos.x+x,pos.y+y}, amount=math.random(10000,30000), force = 'neutral'}
+			end
+		end
+		return 
 	end
 	local w_max = 256
 	local h_max = 256
@@ -553,13 +568,15 @@ local build_resources = function(settings)
 				table.insert(res,{name = name, min_amount = 800000, max_amount = 5000000, tiles_min = 2000, tiles_max = 4000})
 			elseif game.fluid_prototypes[name] ~= nil and math.random(0,50)>25 then
 				res.name_ext = res.name_ext.."[entity="..name.."]"	
-				settings.autoplace_controls[name] = {  richness = 1, size = 1, frequency=1}
+				table.insert(res,{name = name, min_amount = math.random(10000,5000000), max_amount = math.random(5000001,15000000), tiles_min = math.random(1000,2000), tiles_max = math.random(2001,4000)})
+				--settings.autoplace_controls[name] = {  richness = 1, size = 1, frequency=1}
+			elseif math.random(0,50)>40 then
+				table.insert(res,{name = name, min_amount = math.random(10000,5000000), max_amount = math.random(5000001,15000000), tiles_min = math.random(1000,2000), tiles_max = math.random(2001,4000)})
+				res.name_ext = res.name_ext.."[entity="..name.."]"
 
 			end
 		end
 	end
-
-
 	return res
 end
 
@@ -574,7 +591,8 @@ local create_map_settings = function()
 		width = parent.map_gen_settings.width, 
 		height = parent.map_gen_settings.height,
 		terrain_segmentation = parent.map_gen_settings.terrain_segmentation,
-		default_enable_all_autoplace_controls = true,		
+		--default_enable_all_autoplace_controls = true,	
+		default_enable_all_autoplace_controls = false,	
 		water = freq[math.random(1,#freq)],
 		property_expression_names = {
 			cliffiness = cliff_settings_richness,
@@ -595,40 +613,22 @@ local create_map_settings = function()
 	return map
 	end
 
-local local_on_rocket_launched = function(event)
-	local rocket = event.rocket
-	local rocket_silo = event.rocket_silo
-	local player_index = event.player_index
-
-	local inventory = rocket.get_inventory(defines.inventory.rocket)
-	for name, count in pairs(inventory.get_contents()) do
-		if name == "explorer" then
-			if (math.random(1,100)/100) < global.modmashsplinternewworlds.exploration_chance then
-				local name = prefix_charset[math.random(1,#prefix_charset)]..prefix_charset[math.random(1,#prefix_charset)].."-"..math.random(0,9)..math.random(0,9)..math.random(0,9)
-				local settings = create_map_settings()
-				local resources = build_resources(settings)
-				local oname = name
-				if resources.name_ext ~= nil then name = name..resources.name_ext end
-
-				
-				if global.modmashsplinternewworlds.planets == nil then global.modmashsplinternewworlds.planets = {} end
-				if global.modmashsplinternewworlds.planets[name] == nil then
-					global.modmashsplinternewworlds.planets[name] = {planet_id = name}
-					print("Unlocked planet "..name)
-					for k=1 , #game.players do
-						local player = game.players[k]
-						if is_valid(player) == true then
-							player.set_shortcut_available("planet-explorer",true)
-						end
-					end	
-					local_add_planets_button()					
-				end	
-			else
-				print("Explorer perished")
-			end
+local local_get_planets_frame_from = function(player_gui)
+	for k = #player_gui.children, 1, -1 do
+		local ui = player_gui.children[k]
+		if ui and ui.name == "planets-main-frame" then
+			return ui
 		end
-	end	
 	end
+	return nil
+	end
+
+local local_get_planets_frame = function(player_index)
+	local ui = local_get_planets_frame_from(game.players[player_index].gui.screen)
+	if ui ~= nil then return ui end
+	return  local_get_planets_frame_from(game.players[player_index].gui.center)
+end
+
 
 local local_teleport_to = function(player,name,position)
 	--print("teleporting "..player.index.. " to " .. name)
@@ -643,7 +643,6 @@ local local_teleport_to = function(player,name,position)
 			if global.modmashsplinternewworlds.planets[name].resources == nil then global.modmashsplinternewworlds.planets[name].resources = build_resources(global.modmashsplinternewworlds.planets[name].settings) end
 			global.modmashsplinternewworlds.planets[name].dist_min = math.random(64,128)
 			global.modmashsplinternewworlds.planets[name].dist_max = math.random(global.modmashsplinternewworlds.planets[name].dist_min+1,global.modmashsplinternewworlds.planets[name].dist_min+512) 
-			
 
 			local new_surface = game.create_surface(name, global.modmashsplinternewworlds.planets[name].settings)
 			new_surface.ticks_per_day = math.random(17500,50000) 
@@ -919,21 +918,7 @@ local local_platform_tick = function()
 	end	
 end
 
-local local_get_planets_frame_from = function(player_gui)
-	for k = #player_gui.children, 1, -1 do
-		local ui = player_gui.children[k]
-		if ui and ui.name == "planets-main-frame" then
-			return ui
-		end
-	end
-	return nil
-	end
 
-local local_get_planets_frame = function(player_index)
-	local ui = local_get_planets_frame_from(game.players[player_index].gui.screen)
-	if ui ~= nil then return ui end
-	return  local_get_planets_frame_from(game.players[player_index].gui.center)
-end
 
 local local_remove_planets_frame = function(player_index)
 	global.modmashsplinternewworlds.planet_view = nil
@@ -950,10 +935,13 @@ local local_remove_planets_frame = function(player_index)
 
 local local_create_planets_frame = function(event)	
 	local player_gui_center = game.players[event.player_index].gui.screen	
-	local planets_frame = local_add_frame(player_gui_center, "planets-main-frame", {"gui.planet-explorer"},"vertical", "planets-window")
-	local planets_main_flow = local_add_flow(planets_frame, "planets-main-flow","horizontal","planets-window-flow")
-	local button_flow = local_add_flow(planets_frame, "planets-button-flow","horizontal","planets-bottom-button-flow")
 	
+	local planets_frame = local_add_frame(player_gui_center, "planets-main-frame", {"gui.planet-explorer"},"vertical", "planets-window")
+	
+	local planets_main_flow = local_add_flow(planets_frame, "planets-main-flow","horizontal","planets-window-flow")
+	
+	local button_flow = local_add_flow(planets_frame, "planets-button-flow","horizontal","planets-bottom-button-flow")
+	local current_planet_flow = local_add_flow(planets_frame, "current-planets-flow","horizontal","current-planets-top-flow")
 	local_add_text_button(button_flow,"planets-close", {"gui.planet-close"}, "button")
 
 	if global.modmashsplinternewworlds.planets[game.players[event.player_index].surface.name] ~= nil or game.players[event.player_index].surface.name == "nauvis" then
@@ -984,6 +972,8 @@ local local_create_planets_frame = function(event)
 	for n,v in pairs(global.modmashsplinternewworlds.planets) do
 		if game.players[event.player_index].surface.name ~= n then
 			table.insert(planet_list,n)
+		else
+			current_planet_flow.add{type="label", caption=n}
 		end
 	end	
 
@@ -1000,6 +990,46 @@ local local_create_planets_frame = function(event)
 	if planets_frame.location ~= nil then planets_frame.location = planets_ui.last_location end
 	end
 
+local local_on_rocket_launched = function(event)
+	local rocket = event.rocket
+	local rocket_silo = event.rocket_silo
+	local player_index = event.player_index
+
+	local inventory = rocket.get_inventory(defines.inventory.rocket)
+	for name, count in pairs(inventory.get_contents()) do
+		if name == "explorer" then
+			if (math.random(1,100)/100) < global.modmashsplinternewworlds.exploration_chance then
+				local name = prefix_charset[math.random(1,#prefix_charset)]..prefix_charset[math.random(1,#prefix_charset)].."-"..math.random(0,9)..math.random(0,9)..math.random(0,9)
+				local settings = create_map_settings()
+				local resources = build_resources(settings)
+				local oname = name
+				if resources.name_ext ~= nil then name = name..resources.name_ext end
+
+				
+				if global.modmashsplinternewworlds.planets == nil then global.modmashsplinternewworlds.planets = {} end
+				if global.modmashsplinternewworlds.planets[name] == nil then
+					global.modmashsplinternewworlds.planets[name] = {planet_id = name, setting = settings, resources = resources}
+					print("Unlocked planet "..name)
+					for k=1 , #game.players do
+						local player = game.players[k]
+						if is_valid(player) == true then
+							player.set_shortcut_available("planet-explorer",true)
+						end
+					end	
+					local_add_planets_button()					
+				end	
+			else
+				print("Explorer perished")
+			end
+		end
+	end	
+	for k=1 , #game.players do
+		if local_get_planets_frame(k) ~= nil then
+			local_remove_planets_frame(k)
+			local_create_planets_frame({player_index = k} )
+		end
+	end
+	end
 
 local local_on_gui_click = function(event)
 	if event.element.name == "planets-toggle-button" then

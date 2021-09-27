@@ -438,11 +438,13 @@ local generate_surface_area = function(x,y,r,surface, res, allow_mixed, rock_pre
 		1-(100/100)=0 case normal
 
 	]]
-	local erandmod = 1.5 + ((1-(settings.global["setting-resource-mod"].value /100))*2) --highe less likley
-	local erand = math.ceil(#res_table*erandmod)
+	local erandmod = 1.5 + ((1-(settings.global["setting-resource-mod"].value /100))*2) --high less likley
+	local erand = math.max(math.ceil(#res_table*erandmod))
 	if erand == 1 then 
 		rnd = 1 
 	else
+		--splinterunderground__/prototypes/scripts/underground.lua:446: bad argument #2 of 2 to 'random' (interval is empty)
+		--not sure how possibly another mod breaking resources of messed up settings value have endured rnd is 1+
 		rnd = math.random(1, erand)
 	end
 
@@ -466,7 +468,7 @@ local generate_surface_area = function(x,y,r,surface, res, allow_mixed, rock_pre
 		  if j>s and j<e then
 			if i == d[2] or i == d[3] then
 			  --edge
-			  if current_tile.name == "out-of-map" then 
+			  if current_tile.name == "underground-out-of-map" then 
 			    surface.set_tiles({{ name = tile, position = pos }})
 				if force_first_rock ~= nil or (attack_rocks > 0 and math.random(1,10) > 4 and #surface.find_entities_filtered{area = {{pos.x-4.5, pos.y-4.5}, {pos.x+4.5, pos.y+4.5}}, name = {level_one_attack_rock,level_two_attack_rock}} < 1) then
 					force_first_rock = nil
@@ -484,7 +486,7 @@ local generate_surface_area = function(x,y,r,surface, res, allow_mixed, rock_pre
 			  end			  			  
 			else
 			  --inside
-			  if current_tile.name == "out-of-map" then 
+			  if current_tile.name == "underground-out-of-map" then 
 				--log(serpent.block(res_table))
 			    surface.set_tiles({{ name = tile, position = pos }})
 				local create = nil
@@ -521,7 +523,7 @@ local generate_surface_area = function(x,y,r,surface, res, allow_mixed, rock_pre
 			end
 		  elseif j==s or j == e then
 		    --edge
-				if current_tile.name == "out-of-map" then 
+				if current_tile.name == "underground-out-of-map" then 
 			    surface.set_tiles({{ name = tile, position = pos }})
 				--add rock radar
 				surface.create_entity({ name = rock_prefix..base_rock_names[math.random(#base_rock_names)], position = pos })
@@ -547,7 +549,7 @@ local generate_surface_area_train = function(x,y,sd,surface, rock_prefix)
 			local tile = dirt_prefix .. "dirt-"..math.random(1, 7)
 			local current_tile = surface.get_tile(pos)	
 			
-			if current_tile.name == "out-of-map" then 
+			if current_tile.name == "underground-out-of-map" then 
 				surface.set_tiles({{ name = tile, position = pos }})
 				if j == sd.clear_area.right_bottom.x +2
 				or j == sd.clear_area.left_top.x -2
@@ -602,7 +604,7 @@ local local_chunk_generated = function(event)
   if surface_reference.level ~= 0 then
 	  for py = 0, 31, 1 do 
 		for px = 0, 31, 1 do 
-		  local tile = "out-of-map"
+		  local tile = "underground-out-of-map"
 		  y = py + area.left_top.y
 		  x = px + area.left_top.x
 		  local pos = { x = x, y = y }
@@ -1023,97 +1025,97 @@ local local_shape_data = function(position,direction)
 end
 
 local local_transfer_carrrige_state = function(from,to)
-	local inventory = from.get_inventory(defines.inventory.fuel)
-	if inventory ~= nil then
-		local to_inventory = to.get_inventory(defines.inventory.fuel)
-		for name, count in pairs(inventory.get_contents()) do 
-			to_inventory.insert({name=name,count=count})
-		end
-	end
-	inventory = from.get_inventory(defines.inventory.burnt_result) --Maybe no but who know what people can do
-	if inventory ~= nil then		
-		local to_inventory = to.get_inventory(defines.inventory.burnt_result)
-		for name, count in pairs(inventory.get_contents()) do 
-			to_inventory.insert({name=name,count=count})
-		end
-	end
-	inventory = from.get_inventory(defines.inventory.cargo_wagon)
-	if inventory ~= nil then
-		local to_inventory = to.get_inventory(defines.inventory.cargo_wagon)
-		if inventory.supports_filters() then
-			for i = 1, #inventory do
-				to_inventory.set_filter(i, inventory.get_filter(i))
-			end
-		end
-		for name, count in pairs(inventory.get_contents()) do 
-			to_inventory.insert({name=name,count=count})
-		end
-		if inventory.supports_bar() then
-			to_inventory.set_bar(inventory.get_bar())
-		end		
-	end
-	inventory = from.get_inventory(defines.inventory.artillery_wagon_ammo)
-	if inventory ~= nil then
-		local to_inventory = to.get_inventory(defines.inventory.artillery_wagon_ammo)
-		for name, count in pairs(inventory.get_contents()) do 
-			to_inventory.insert({name=name,count=count})
-		end
-	end
-	local fluidbox = from.fluidbox
+    local inventory = from.get_inventory(defines.inventory.fuel)
+    if inventory ~= nil then
+        local to_inventory = to.get_inventory(defines.inventory.fuel)
+        for index=1,#inventory do 
+            to_inventory[index].set_stack(inventory[index]);
+        end
+    end
+    inventory = from.get_inventory(defines.inventory.burnt_result) --Maybe no but who know what people can do
+    if inventory ~= nil then        
+        local to_inventory = to.get_inventory(defines.inventory.burnt_result)
+        for index=1,#inventory do 
+            to_inventory[index].set_stack(inventory[index]);
+        end
+    end
+    inventory = from.get_inventory(defines.inventory.cargo_wagon)
+    if inventory ~= nil then
+        local to_inventory = to.get_inventory(defines.inventory.cargo_wagon)
+        if inventory.supports_filters() then
+            for i = 1, #inventory do
+                to_inventory.set_filter(i, inventory.get_filter(i))
+            end
+        end
+        for index=1,#inventory do 
+            to_inventory[index].set_stack(inventory[index]);
+        end
+        if inventory.supports_bar() then
+            to_inventory.set_bar(inventory.get_bar())
+        end     
+    end
+    inventory = from.get_inventory(defines.inventory.artillery_wagon_ammo)
+    if inventory ~= nil then
+        local to_inventory = to.get_inventory(defines.inventory.artillery_wagon_ammo)
+        for index=1,#inventory do 
+            to_inventory[index].set_stack(inventory[index]);
+        end
+    end
+    local fluidbox = from.fluidbox
     if fluidbox ~= nil and #fluidbox > 0 then
         for i = 1, #fluidbox do
-			if fluidbox[i] ~= nil and fluidbox[i].name ~= nil then
-				to.fluidbox[i] = {
-					name = fluidbox[i].name,
-					amount  = fluidbox[i].amount,
-					temperature  = fluidbox[i].temperature 
-				}
-			end
+            if fluidbox[i] ~= nil and fluidbox[i].name ~= nil then
+                to.fluidbox[i] = {
+                    name = fluidbox[i].name,
+                    amount  = fluidbox[i].amount,
+                    temperature  = fluidbox[i].temperature 
+                }
+            end
         end
     end
 
-	to.color = from.color
-	to.health = from.health
+    to.color = from.color
+    to.health = from.health
 
-	local driver = from.get_driver()
-	if driver~= nil and driver.is_player() then
-		--local opened = driver.opened		
-		local_safe_teleport(driver,to.surface,to.position, driver.index)
-		to.set_driver(driver)
-		--if is_valid(opened) then opened.visible = true end
-	end
+    local driver = from.get_driver()
+    if driver~= nil and driver.is_player() then
+        --local opened = driver.opened      
+        local_safe_teleport(driver,to.surface,to.position, driver.index)
+        to.set_driver(driver)
+        --if is_valid(opened) then opened.visible = true end
+    end
 
-	for k = 1, #from.train.passengers do passenger = from.train.passengers[k]
-		if passenger~= nil and passenger.is_player() then	
-			--local opened = passenger.opened	
-			local_safe_teleport(passenger,to.surface,to.position, passenger.index)
-			to.set_driver(passenger)
-			--if is_valid(opened) then passenger.opened = opened end
-		end
-	end
+    for k = 1, #from.train.passengers do passenger = from.train.passengers[k]
+        if passenger~= nil and passenger.is_player() then   
+           -- local opened = passenger.opened    
+            local_safe_teleport(passenger,to.surface,to.position, passenger.index)
+            to.set_driver(passenger)
+            --if is_valid(opened) and opened.type == "cargo-wagon" then  end -- passenger.opened_self  = opened end
+        end
+    end
 
 
-	if from.energy > 0 then
+    if from.energy > 0 then
         to.energy = from.energy
         if from.burner then
             to.burner.currently_burning = from.burner.currently_burning
             to.burner.remaining_burning_fuel = from.burner.remaining_burning_fuel
         end
     end
-	--todo check worked
-	if from.grid then
-		local position = {0,0}
-		local width, height = from.grid.width, from.grid.height
-		local processed = {}
-		for y = 0, height - 1 do
-			for x = 0, width - 1 do
-				local equipment = from.grid.get({x,y})
-				if equipment ~= nil then
-					to.grid.put({equipment = equipment.name, energy =equipment.energy, shield = equipment.shield})
-				end
-			end
-		end
-	end
+    --todo check worked
+    if from.grid then
+        local position = {0,0}
+        local width, height = from.grid.width, from.grid.height
+        local processed = {}
+        for y = 0, height - 1 do
+            for x = 0, width - 1 do
+                local equipment = from.grid.get({x,y})
+                if equipment ~= nil then
+                    to.grid.put({equipment = equipment.name, energy =equipment.energy, shield = equipment.shield})
+                end
+            end
+        end
+    end
 
     for player_index, id in pairs(global.modmashsplinterunderground.train_ui) do
         if  from.unit_number == id then
@@ -1121,7 +1123,6 @@ local local_transfer_carrrige_state = function(from,to)
         end
     end
 end
-
 
 local local_get_train_heading = function(train)
 	--0   = north  really 0.875 - 0.125
@@ -1454,11 +1455,28 @@ local local_stops_circuit_tick = function()
     global.modmashsplinterunderground.combinator_disconections = {}
 end
 
+local local_take_nearby_pollution = function(surface, entity)
+	local x = entity.position.x
+	local y = entity.position.y
+
+	local p = 0
+	for i=-32,32,32 do
+		for j=-32,32,32 do
+			local pp = 0
+			pp = surface.get_pollution{x + i, y + j}
+			surface.pollute({x + i, y + j}, -pp)
+			p = p + pp
+		end
+	end
+	return p
+end
+
 local local_underground_tick = function()	
 	local_train_transfers_tick()
 	local gsurfaces = game.surfaces
 	local_check_teleport()
 	local_stops_circuit_tick()
+	--[[
 	for name, value in pairs(surfaces_top) do
 		local p = 0
 		
@@ -1489,6 +1507,30 @@ local local_underground_tick = function()
 		for index=1, #accesses2 do local access = accesses2[index]
 			if is_valid_and_persistant(access.bottom_entity) and is_valid_and_persistant(access.top_entity)  then
 				bs.flip = local_access_process(access,0,bs.flip,mss,bss)
+			end
+		end
+	end
+	]]
+		for name, value in pairs(surfaces_top) do
+		local ms= surfaces[value.middle_name]
+		local bs= surfaces[value.bottom_name]
+		local tss= gsurfaces[value.top_name]
+		local mss = gsurfaces[value.middle_name]
+		local bss = gsurfaces[value.bottom_name]
+		local accesses = value.accesses
+		local accesses2 = ms.accesses
+
+		for index=1, #accesses do local access = accesses[index]
+			if is_valid_and_persistant(access.bottom_entity) and is_valid_and_persistant(access.top_entity)  then
+				local p = ((game.tick%300)==0 and local_take_nearby_pollution(mss, access.bottom_entity)) or 0
+				ms.flip = local_access_process(access,p,ms.flip,tss,mss)
+			end
+		end
+
+		for index=1, #accesses2 do local access = accesses2[index]
+			if is_valid_and_persistant(access.bottom_entity) and is_valid_and_persistant(access.top_entity)  then
+				local p = ((game.tick%300)==0 and local_take_nearby_pollution(bss, access.bottom_entity)) or 0
+				bs.flip = local_access_process(access,p,bs.flip,mss,bss)
 			end
 		end
 	end
@@ -2502,7 +2544,7 @@ local basic_generate_surface_area = function(x,y,r,surface, rock_prefix)
 		  if j>s and j<e then
 			if i == d[2] or i == d[3] then
 			  --edge
-			  if current_tile.name == "out-of-map" then 
+			  if current_tile.name == "underground-out-of-map" then 
 			    surface.set_tiles({{ name = tile, position = pos }})
 				if force_first_rock ~= nil or (attack_rocks > 0 and math.random(1,10) > 4 and #surface.find_entities_filtered{area = {{pos.x-4.5, pos.y-4.5}, {pos.x+4.5, pos.y+4.5}}, name = {level_one_attack_rock,level_two_attack_rock}} < 1) then
 					force_first_rock = nil
@@ -2520,13 +2562,13 @@ local basic_generate_surface_area = function(x,y,r,surface, rock_prefix)
 			  end			  			  
 			else
 			  --inside
-			  if current_tile.name == "out-of-map" then 
+			  if current_tile.name == "underground-out-of-map" then 
 			    surface.set_tiles({{ name = tile, position = pos }})					
 			  end
 			end
 		  elseif j==s or j == e then
 		    --edge
-				if current_tile.name == "out-of-map" then 
+				if current_tile.name == "underground-out-of-map" then 
 			    surface.set_tiles({{ name = tile, position = pos }})
 				--add rock radar
 				surface.create_entity({ name = rock_prefix..base_rock_names[math.random(#base_rock_names)], position = pos })

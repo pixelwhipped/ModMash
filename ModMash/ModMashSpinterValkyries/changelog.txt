@@ -1,4 +1,11 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.08
+  Changes:
+    - Valkyries only dispatch when personal roboport toggled
+  Bug Fixes:
+    - added check targets are valid
+
+---------------------------------------------------------------------------------------------------
 Version: 1.1.07
   Changes:
     - Locale fixes thanks to Flood

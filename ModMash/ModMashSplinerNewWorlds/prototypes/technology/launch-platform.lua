@@ -34,6 +34,43 @@ data:extend(
 	upgrade = true,
 	order = "a-b-d",
   },
+  {
+	type = "technology",
+	name = "space-science-pack-from-pureonium",
+	icon = "__base__/graphics/technology/space-science-pack.png",
+	icon_size = 256, icon_mipmaps = 4,
+	effects =
+	{
+	  {
+        type = "unlock-recipe",
+        recipe = "alien-science-pack"
+      },
+	  {
+        type = "unlock-recipe",
+        recipe = "space-science-pack-from-pureonium"
+      },
+	},
+	prerequisites =
+	{
+		"launch-platform"
+	},
+	unit =
+	{
+		count = 200,
+		ingredients =
+		{
+			{"automation-science-pack", 1},
+            {"logistic-science-pack", 1},
+            {"chemical-science-pack", 1},
+            {"alien-science-pack", 1},
+            {"utility-science-pack", 1},
+			{"space-science-pack", 1},
+		},
+		time = 45
+	},
+	upgrade = true,
+	order = "a-b-d",
+  }
 })
 
 local create_transport_technology = function(level,count)

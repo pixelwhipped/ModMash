@@ -392,7 +392,7 @@ else
                     emissions_per_minute  = 2
                 },
                 energy_usage = "360kW",
-                ingredient_count = 6,
+                --ingredient_count = 6,
                 module_specification =
                 {
                     module_slots = 5,
@@ -531,7 +531,7 @@ else
                   emissions_per_minute  = 2
                 },
                 energy_usage = "480kW",
-                ingredient_count = 6,
+                --ingredient_count = 6,
                 module_specification =
                 {
                   module_slots = 6,

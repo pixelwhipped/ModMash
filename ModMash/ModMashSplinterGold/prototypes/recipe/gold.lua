@@ -75,7 +75,7 @@ if data.raw.recipe["gold-cable"] == nil then
 			enabled = true,
 			energy_required = 2.5,
 			ingredients = {{"gold-plate", 1}},
-			result = "gold-cable"
+            results = {{type="item",name="gold-cable",amount=2}}
 		},
         allow_as_intermediate = false,
         allow_decomposition = false

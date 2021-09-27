@@ -1,10 +1,23 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.21
+  Changes:
+    - Added current planet name to planet window
+  Fixes:
+    - Reworked resource spawning, splawing wrong resourses and fluid weird
+
+---------------------------------------------------------------------------------------------------
+Version: 1.1.20
+  Changes:
+    - New recipe for space science
+
+---------------------------------------------------------------------------------------------------
 Version: 1.1.19
   Changes:
     - Altered resource orders and groups
     - Added dold if gold splinter exists
     - Made item description more give more explanation
     - Added resource indication to planet names for new planets discovered
+
 ---------------------------------------------------------------------------------------------------
 Version: 1.1.18
   Changes:

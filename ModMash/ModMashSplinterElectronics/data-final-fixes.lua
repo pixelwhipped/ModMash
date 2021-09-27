@@ -1,6 +1,21 @@
 ﻿data_final_fixes = true
 require ("prototypes.scripts.defines")
 
+if mods["bzsilicon"] then
+	if data.raw.item["silicon-wafe"] == nil then
+	data:extend({
+	  {
+		type = "item",
+		name = "silicon-wafer",
+		icon = "__bzsilicon__/graphics/icons/silicon-wafer.png",
+		icon_size = 64, icon_mipmaps = 3,
+		subgroup = "intermediate-product",
+		stack_size = 100,
+		order = "s[silicon]-silicon-wafer"
+	  }})
+	end
+end
+
 local local_update_recipe = function(name, standard, normal, expensive)
 	if data.raw.recipe[name] == nil then return end
 	if standard ~= nil then

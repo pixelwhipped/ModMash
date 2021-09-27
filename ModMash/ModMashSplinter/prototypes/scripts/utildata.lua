@@ -6,12 +6,14 @@ local local_is_valid = function(entity) return type(entity)=="table" end
 local raw_items = {"item","accumulator","active-defense-equipment","ammo","ammo-turret","arithmetic-combinator","armor","artillery-turret","artillery-wagon","assembling-machine","battery-equipment","beacon","belt-immunity-equipment","boiler","capsule","car","cargo-wagon","combat-robot","constant-combinator","construction-robot","container","decider-combinator","electric-pole","electric-turret","energy-shield-equipment","fluid-wagon","furnace","gate","generator","generator-equipment","gun","heat-pipe","inserter","item","locomotive","logistic-container","logistic-robot","market","mining-drill","module","night-vision-equipment","offshore-pump","pipe","pipe-to-ground","power-switch","programmable-speaker","projectile","pump","radar","rail-chain-signal","rail-planner","rail-signal","reactor","repair-tool","resource","roboport","roboport-equipment","rocket-silo","solar-panel","solar-panel-equipment","splitter","storage-tank","straight-rail","tool","train-stop","transport-belt","underground-belt","wall"}
 local item_list = nil
 
+local local_starts_with = function(str, start) return str ~=nil and start ~=nil and str:sub(1, #start) == start end
+
 local local_get_item = function(name)
 	if item_list == nil then
 		item_list = {}
 		for r = 1, #raw_items do local raw = raw_items[r]	
 			for name,item in pairs(data.raw[raw]) do			
-				if item ~= nil and item.name ~= nil then	
+				if item ~= nil and item.name ~= nil and local_starts_with(item.name,"YARM-fake-")==false then	
 					if item_list[item.name] ~= nil then
 						if item_list[item.name].icon_size == nil and item.icon_size ~= nil and (item.place_result ~= nil or item.stack_size ~= nil) then
                             if item.place_result ~= nil then

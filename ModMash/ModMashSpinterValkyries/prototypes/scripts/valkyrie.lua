@@ -75,7 +75,15 @@ local local_update_return_targets = function(target)
 end
 
 local local_find_enemy_units = function(s, p, d)
-	return s.find_entities_filtered{position=p,  radius = d, force = "enemy", limit=10} 
+	local ret = {}
+	local e  = s.find_entities_filtered{position=p,  radius = d, force = "enemy", limit=10} 
+	for k = 1, #e do local v =e[k]
+	--	print(e)
+		if is_valid(v) and v.health ~= nil and v.health>0 then
+			table.insert(ret,v)
+		end
+	end
+	return ret
 	--return s.find_enemy_units(p, d)
 end
 
@@ -121,9 +129,10 @@ local local_find_targets = function()
 		for _, player in pairs(game.connected_players) do
 			if is_valid(player) and is_valid(player.character) and is_valid(player.character.logistic_network) then
 				local logistic = player.character.logistic_network
-				local grid = nil
+				local grid = nil				
 				if player ~= nil and player.character ~= nil then grid = player.character.grid end
-				if logistic and logistic.all_construction_robots > 0 and logistic.robot_limit > 0 and grid ~= nil then
+				
+				if logistic and logistic.all_construction_robots > 0 and logistic.robot_limit > 0 and grid ~= nil and player.character.allow_dispatching_robots then
 					local enemy = local_find_enemy_units(player.surface,player.position, max_distance * player_spider_distance_mod()) 
 					--local enemy = player.surface.find_enemy_units(player.position, max_distance * player_spider_distance_mod() ) --player.surface.find_entities_filtered{area = {{-d, -d}, {d, d}}, force = "enemy", limit=1} --				
 					if enemy ~= nil and #enemy > 0 then 

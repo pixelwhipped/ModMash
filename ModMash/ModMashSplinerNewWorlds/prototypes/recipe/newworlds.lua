@@ -1,4 +1,34 @@
 ﻿require("prototypes.scripts.defines") 
+local create_layered_icon_using =	modmashsplinternewworlds.util.create_layered_icon_using
+local icon_pin_bottomright = modmashsplinternewworlds.util.defines.icon_pin_bottomright
+local get_item = modmashsplinternewworlds.util.get_item
+
+local half_icon = function(initial_icons)
+	if initial_icons == nil or type(initial_icons) ~= "table" or #initial_icons == 0 then 
+		return initial_icons 
+	end
+	local icons = {}
+	for k = 1, #initial_icons do local icon = initial_icons[k]
+		if icon ~= nil then
+			local current_icon = {}
+			current_icon.icon = icon.icon
+			current_icon.icon_size = icon.icon_size
+			current_icon.icon_mipmaps = icon.icon_mipmaps
+			current_icon.tint = icon.tint
+			if icon.scale  ~= nil then
+				current_icon.scale  = icon.scale *0.5
+			else
+				current_icon.scale = 0.5
+			end
+			if icon.shift~= nil then
+				current_icon.shift = {icon.shift[1]*0.5, icon.shift[2]*0.5}
+			end
+
+			table.insert(icons,current_icon)
+		end
+	end
+	return icons
+end
 
 data:extend(
 {
@@ -185,6 +215,47 @@ data:extend(
 		icon = "__modmashsplinternewworlds__/graphics/icons/alien-science-pack.png",
 		icon_size = 64,
 		icon_mipmaps = 4,
+		allow_decomposition = false,
+	},
+	{
+		type = "recipe",
+		name = "space-science-pack-from-pureonium",
+		energy_required = 3,
+		enabled = false,
+		category = "crafting-with-fluid",
+		normal =
+		{
+			enabled = false,
+			ingredients =
+			{
+				{"creative-mod-pureonium", 15},
+				{"alien-science-pack", 1}
+			},
+			result = "space-science-pack"
+		},
+		expensive =
+		{
+			enabled = false,
+			ingredients =
+			{
+				{"creative-mod-pureonium", 22},
+				{"alien-science-pack", 2}
+			},
+			result = "space-science-pack"
+		},
+		icon = false,
+		icons = half_icon(create_layered_icon_using(
+		{
+			{
+				from = get_item("space-science-pack")
+			},
+			{
+	
+				from = data.raw["item"]["creative-mod-pureonium"],
+				scale = 0.45,
+				pin = icon_pin_bottomright		
+			}
+		})),
 		allow_decomposition = false,
 	},
 })

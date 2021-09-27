@@ -1,4 +1,5 @@
 ﻿local ends_with = modmashsplinterrefinement.util.ends_with
+local starts_with = modmashsplinterrefinement.util.starts_with
 local get_item = modmashsplinterrefinement.util.get_item
 local get_name_for = modmashsplinterrefinement.util.get_name_for
 local ensure_ingredient_format = modmashsplinterrefinement.util.ensure_ingredient_format
@@ -18,7 +19,7 @@ local local_create_ore_refinements = function()
 	--log("local_create_ore_refinements")
 	for name, recipe in pairs(data.raw.recipe) do
 		
-		if recipe ~= nil and recipe.name ~= nil and recipe.category=="smelting" then
+		if recipe ~= nil and recipe.name ~= nil and recipe.category=="smelting" then			
 			local sr = get_standard_results(recipe)
 			local nr = get_normal_results(recipe)
 			local s = nil
@@ -27,7 +28,7 @@ local local_create_ore_refinements = function()
 			if nr~=nil and #nr==1 then n = nr[1] end
 			local make = nil
 			local to_name = "_to_plate"						
-			if s ~= nil and s.name ~= nil and (ends_with(s.name,"plate") or ends_with(s.name,"brick")) then
+			if s ~= nil and s.name ~= nil and (ends_with(s.name,"plate") or ends_with(s.name,"brick") or (s.name == "glass" and ends_with(recipe.name,"from-sand"))) then
 				if #recipe.ingredients == 1 then
 					make = 
 					{
@@ -35,9 +36,11 @@ local local_create_ore_refinements = function()
 						energy_required  = recipe.energy_required,
 						ingredients = ensure_ingredient_format(recipe.ingredients[1])
 					}
+					make.ingredients.name = make.ingredients.name:gsub("YARM-fake-","")
 				end
 				if ends_with(s.name,"brick") then to_name = "_to_brick" end
-			elseif n ~= nil and n.name ~= nil and (ends_with(n.name,"plate") or ends_with(n.name,"brick"))  then
+				if ends_with(s.name,"glass") then to_name = "_to_glass" end
+			elseif n ~= nil and n.name ~= nil and (ends_with(n.name,"plate") or ends_with(n.name,"brick") or (n.name == "glass" and ends_with(recipe.name,"from-sand")))  then				
 				if #recipe.normal.ingredients == 1 then	
 					make = 
 					{
@@ -45,15 +48,16 @@ local local_create_ore_refinements = function()
 						energy_required  = recipe.normal.energy_required,
 						ingredients = ensure_ingredient_format(recipe.normal.ingredients[1])
 					}
+					make.ingredients.name = make.ingredients.name:gsub("YARM-fake-","")
 				end
 				if ends_with(n.name,"brick") then to_name = "_to_brick" end
+				if ends_with(n.name,"glass") then to_name = "_to_glass" end
 			end
 
 			if make ~= nil then
 				if make.ingredients ~=nil then
 					local i = get_item(make.ingredients.name)
 					if i ~= nil and (i.subgroup == "raw-resource" or ends_with(make.ingredients.name,"ore")) then
-											
 						if type(i.icon) == "string" then
 							local m = data.raw["item"][make.ingredients.name].stack_size
 							if m == nil then m = 50 end
@@ -165,7 +169,7 @@ local local_create_ore_refinements_experimental = function()
 			if s ~= nil and s.name ~= nil then		
 				if #recipe.ingredients == 1 then
 					local ing = ensure_ingredient_format(recipe.ingredients[1])
-					i = get_item(ing.name)
+					i = get_item(ing.name:gsub("YARM-fake-",""))
 					if i ~= nil and (i.subgroup == "raw-resource" or i.subgroup == "bob-ores" or ends_with(i.name,"ore")) then
 						make = 
 						{
@@ -179,7 +183,7 @@ local local_create_ore_refinements_experimental = function()
 				if #recipe.normal.ingredients == 1 then	
 					local ing = ensure_ingredient_format(recipe.normal.ingredients[1])
 					
-					i = get_item(ing.name)
+					i = get_item(ing.name:gsub("YARM-fake-",""))
 					if i ~= nil and (i.subgroup == "raw-resource" or i.subgroup == "bob-ores"or ends_with(i.name,"ore")) then
 						make = 
 						{

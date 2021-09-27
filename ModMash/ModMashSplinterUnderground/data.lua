@@ -5,6 +5,7 @@ require ("prototypes.item.underground")
 require ("prototypes.entity.underground")
 require ("prototypes.recipe.underground")
 require ("prototypes.technology.underground")
+require ("prototypes.tile.underground")
 
 require ("prototypes.entity.rocks")
 if modmashsplinterunderground.defines.trains == true then

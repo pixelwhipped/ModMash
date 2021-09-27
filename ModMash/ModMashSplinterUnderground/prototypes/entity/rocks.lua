@@ -39,18 +39,6 @@ end
 local_generate_rocks(level_one_rock_prefix, {0.8,0.8,0.8,1.0})
 local_generate_rocks(level_two_rock_prefix, {0.4,0.4,0.4,1.0})
 
-for k=1, 7 do
-	local name = dirt_prefix.."dirt-"..k
-	if data.raw["tile"][name] == nil then
-		local t = table.deepcopy(data.raw["tile"]["dirt-"..k])
-		t.name = name
-		t.pollution_absorption_per_second = 0
-		if t.autoplace ~= nil then t.autoplace.default_enabled = false end
-		t.tint = {0.35,0.35,0.35,1}
-		data:extend({t})
-	end
-end
-
 
 local local_generate_attack_rocks = function(name,tint)
 	if data.raw["simple-entity"][name] == nil then

@@ -1,4 +1,20 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.36
+  Changes:
+    - changed from honktown added.  localized polution
+
+---------------------------------------------------------------------------------------------------
+Version: 1.1.35
+  Bug Fixes:
+    - fix for cargo train content duplication thanks meifray
+    - fix potential rnd interval error
+
+---------------------------------------------------------------------------------------------------
+Version: 1.1.34
+  Bug Fixes:
+    - Appears tiles being removed that are required have moved to final fixes
+    
+---------------------------------------------------------------------------------------------------
 Version: 1.1.33
   Changes:
     - show_clouds = false

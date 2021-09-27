@@ -1,4 +1,10 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.12
+  Changes:
+    - Removed ingredient count on assemblers
+    - Removed duplicate fuel category in local
+
+---------------------------------------------------------------------------------------------------
 Version: 1.1.11
   Changes:
     - Moved research further down chain
