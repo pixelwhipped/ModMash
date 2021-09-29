@@ -1,4 +1,9 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.37
+  Bug Fixes:
+    - fix train with equipment grid and sync their burner inentory.
+
+---------------------------------------------------------------------------------------------------
 Version: 1.1.36
   Changes:
     - changed from honktown added.  localized polution

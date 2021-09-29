@@ -1103,18 +1103,34 @@ local local_transfer_carrrige_state = function(from,to)
         end
     end
     --todo check worked
+	-- ya,now it work now.
     if from.grid then
-        local position = {0,0}
-        local width, height = from.grid.width, from.grid.height
-        local processed = {}
-        for y = 0, height - 1 do
-            for x = 0, width - 1 do
-                local equipment = from.grid.get({x,y})
-                if equipment ~= nil then
-                    to.grid.put({equipment = equipment.name, energy =equipment.energy, shield = equipment.shield})
-                end
-            end
-        end
+        for _,fromEquip in pairs(from.grid.equipment) do
+			to.grid.put{name=fromEquip.name,position=fromEquip.position};
+			local toEquip=to.grid.get(fromEquip.position);
+			
+			
+			--shield
+			if(fromEquip.prototype.type=="energy-shield-equipment") then
+				toEquip.shield=fromEquip.shield;
+				game.print(toEquip.shield);
+			end
+			--energy
+			toEquip.energy=fromEquip.energy;
+			--burner
+			if(fromEquip.burner) then
+				toEquip.burner.heat=fromEquip.burner.heat;
+
+				for index=1,#fromEquip.burner.inventory do 
+					toEquip.burner.inventory[index].set_stack(fromEquip.burner.inventory[index]);
+				end
+				for index=1,#fromEquip.burner.burnt_result_inventory do 
+					toEquip.burner.burnt_result_inventory[index].set_stack(fromEquip.burner.burnt_result_inventory[index]);
+				end
+			end
+			
+			--modded thing? I got no idea.
+		end
     end
 
     for player_index, id in pairs(global.modmashsplinterunderground.train_ui) do
