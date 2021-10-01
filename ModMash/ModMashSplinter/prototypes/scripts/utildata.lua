@@ -124,6 +124,18 @@ if modmashsplinter.mod_request_item_substitutions == nil then
 			return {{name = "uranium-235", amount = math.ceil(qty * 2)}}
 			end	
 		},
+		["alien-ore"] = {
+			func = function(qty,probability)
+			--defer to titanium if it exists
+			if local_get_item("alien-ore") ~= nil or mods["modmashsplinterresources"] then
+				if probability ~= nil then
+					return {{name = "alien-ore", amount = qty, probability = probability}} 
+				end
+				return {{name = "alien-ore", amount = qty }} 
+			end
+			return {{name = "uranium-235", amount = math.ceil(qty * 1.5)}}
+			end	
+		},
 		["glass"] = {
 			func = function(qty,probability)
 			--defer to glass if it exists

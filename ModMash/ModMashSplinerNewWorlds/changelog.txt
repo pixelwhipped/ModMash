@@ -1,6 +1,11 @@
 ﻿---------------------------------------------------------------------------------------------------
 Version: 1.1.21
   Changes:
+    - Dependancy update
+
+---------------------------------------------------------------------------------------------------
+Version: 1.1.21
+  Changes:
     - Added current planet name to planet window
   Fixes:
     - Reworked resource spawning, splawing wrong resourses and fluid weird

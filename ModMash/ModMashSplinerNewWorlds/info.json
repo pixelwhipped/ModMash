@@ -1,6 +1,6 @@
 {
   "name": "modmashsplinternewworlds",
-  "version": "1.1.21",
+  "version": "1.1.22",
   "title": "ModMash Splinter, New Worlds",
   "author": "PixelWhipped",
   "contact": "",
@@ -9,7 +9,7 @@
   "description": "Mod Mash Splinter for New Worlds, Rid the Nauvis of the Queen Hive and explore New Worlds with unique resourses. Increase productivity of smeltable items with Pureonium",
   "dependencies": [
     "base >= 1.1.0",
-    "modmashsplinter >= 1.1.06",
+    "modmashsplinter >= 1.1.13",
     "? modmashsplinterresources >= 1.1.12",
     "? modmashsplintergold >= 1.1.17",
     "? modmashsplinterrefinement >= 1.1.08",
