@@ -1,7 +1,12 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.38
+  Bug Fixes:
+    - print commented out
+
+---------------------------------------------------------------------------------------------------
 Version: 1.1.37
   Bug Fixes:
-    - fix train with equipment grid and sync their burner inentory.
+    - fix train with equipment grid and sync their burner inventory.
 
 ---------------------------------------------------------------------------------------------------
 Version: 1.1.36

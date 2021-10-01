@@ -1113,7 +1113,7 @@ local local_transfer_carrrige_state = function(from,to)
 			--shield
 			if(fromEquip.prototype.type=="energy-shield-equipment") then
 				toEquip.shield=fromEquip.shield;
-				game.print(toEquip.shield);
+				--game.print(toEquip.shield);
 			end
 			--energy
 			toEquip.energy=fromEquip.energy;
