@@ -1,7 +1,33 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.42
+  Bug Fixes:
+    - setting about biter and biternest now only function in underground surface.(by Honktown)
+    - underground out of map tile now has proper transition to other tile.(by meifray)
+
+---------------------------------------------------------------------------------------------------
+Version: 1.1.41
+  Changes:
+    - another nil check
+
+---------------------------------------------------------------------------------------------------
+Version: 1.1.40
+  Changes:
+    - nil check
+
+---------------------------------------------------------------------------------------------------
+Version: 1.1.39
+  Changes:
+    - added underground biter limits as runtime setting
+
+---------------------------------------------------------------------------------------------------
+Version: 1.1.38
+  Bug Fixes:
+    - print commented out
+
+---------------------------------------------------------------------------------------------------
 Version: 1.1.37
   Bug Fixes:
-    - fix train with equipment grid and sync their burner inentory.
+    - fix train with equipment grid and sync their burner inventory.
 
 ---------------------------------------------------------------------------------------------------
 Version: 1.1.36
@@ -17,8 +43,8 @@ Version: 1.1.35
 ---------------------------------------------------------------------------------------------------
 Version: 1.1.34
   Bug Fixes:
-    - Appears tiles being removed that are required have moved to final fixes
-    
+    - appears tiles being removed that are required have moved to final fixes
+
 ---------------------------------------------------------------------------------------------------
 Version: 1.1.33
   Changes:

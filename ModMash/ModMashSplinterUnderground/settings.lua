@@ -60,5 +60,13 @@
 		setting_type = "startup",
 		default_value = true,
 		order = "h"
+	},{
+		type = "int-setting",
+		name = "setting-underground-biters",
+		setting_type = "runtime-global",
+		default_value = 100,
+		minimum_value = 0,
+		maximum_value = 500,
+		order = "i"
 	},
 })

@@ -56,7 +56,9 @@ local local_register_surface = function(name)
 		stops = {},
 		combinators = {},
 		super_stops = {},
-		flip = true
+		flip = true,
+		nests = 0,
+		biters = 0
 	}
 	global.modmashsplinterunderground.surfaces[name] = top_surface
 	global.modmashsplinterunderground.surfaces_top[name] = top_surface
@@ -71,7 +73,9 @@ local local_register_surface = function(name)
 		stops = {},
 		combinators = {},
 		super_stops = {},
-		flip = true
+		flip = true,
+		nests = 0,
+		biters = 0
 	}
 	global.modmashsplinterunderground.surfaces[name.."-deep-underground"] = {
 		level = 2,
@@ -84,7 +88,9 @@ local local_register_surface = function(name)
 		stops = {},
 		combinators = {},
 		super_stops = {},
-		flip = true
+		flip = true,
+		nests = 0,
+		biters = 0
 	}
 end
 
@@ -414,6 +420,26 @@ local allow_resource_by_parent = function(res,surface)
 	return true
 end
 
+
+
+local allow_biter = function(surface)
+	if global.modmashsplinterunderground.surfaces[surface.name]==nil then return false end
+	if settings.global["setting-underground-biters"].value == 0 then return false end
+	if global.modmashsplinterunderground.surfaces[surface.name].biters==nil then global.modmashsplinterunderground.surfaces[surface.name].biters = 0 end
+	if global.modmashsplinterunderground.surfaces[surface.name].biters >= settings.global["setting-underground-biters"].value then return false end
+	return true
+end
+
+local allow_biter_spawner = function(surface)
+	if global.modmashsplinterunderground.surfaces[surface.name]==nil then return false end
+	if settings.global["setting-underground-biters"].value == 0 then return false end
+	if global.modmashsplinterunderground.surfaces[surface.name].nests==nil then global.modmashsplinterunderground.surfaces[surface.name].nests = 0 end
+	local max_nests = math.floor(settings.global["setting-underground-biters"].value/10)
+	max_nests = math.max(max_nests,1)
+	if global.modmashsplinterunderground.surfaces[surface.name].nests >= max_nests then return false end
+	return true
+end
+
 local generate_surface_area = function(x,y,r,surface, res, allow_mixed, rock_prefix,force_first_rock)	
 	local cx, cy = math.floor(x / 32), math.floor(y / 32)
 	if surface.is_chunk_generated({cx, cy}) ~= true then
@@ -511,12 +537,18 @@ local generate_surface_area = function(x,y,r,surface, res, allow_mixed, rock_pre
 				end 						
 				if create ~= nil then 
 					surface.create_entity(create)
-					if biter < 6 and x == j and y == i then	
-						surface.create_entity({ name = "biter-spawner", position = pos })
+					if allow_biter_spawner(surface) then
+						if biter < 6 and x == j and y == i then	
+							surface.create_entity({ name = "biter-spawner", position = pos })
+							global.modmashsplinterunderground.surfaces[surface.name].nests = global.modmashsplinterunderground.surfaces[surface.name].nests+1
+						end
 					end
 				else
-					if biter < 6  and x == j and y == i then	
-						surface.create_entity({ name = "biter-spawner", position = pos })
+					if allow_biter_spawner(surface) then
+						if biter < 6  and x == j and y == i then	
+							surface.create_entity({ name = "biter-spawner", position = pos })
+							global.modmashsplinterunderground.surfaces[surface.name].nests = global.modmashsplinterunderground.surfaces[surface.name].nests+1
+						end
 					end
 				end
 			  end
@@ -798,20 +830,24 @@ local local_access_process = function(access,pollution,flip,upper_surface,lower_
 		local moved = {}
 		local enemy = lower_surface.find_enemy_units(access.bottom_entity.position,2.5)
 		for i = 1, #enemy do local e = enemy[i]
-			if is_valid(e) and upper_surface.can_place_entity{name=e.name, position=e.position, direction=e.direction, force=e.force} then
-				local ne = upper_surface.create_entity{name=e.name, position=e.position, direction=e.direction, force=e.force}
-				ne.health = e.health
-				table.insert(moved,ne)
-				e.destroy()
+			if allow_biter(upper_surface) then
+				if is_valid(e) and upper_surface.can_place_entity{name=e.name, position=e.position, direction=e.direction, force=e.force} then
+					local ne = upper_surface.create_entity{name=e.name, position=e.position, direction=e.direction, force=e.force}
+					ne.health = e.health
+					table.insert(moved,ne)
+					e.destroy()
+				end
 			end
 		end
 
 		enemy = upper_surface.find_enemy_units(access.bottom_entity.position,2.5)
 		for i = 1, #enemy do local e = enemy[i]
-			if is_valid(e) and table_contains(moved,e) == false and lower_surface.can_place_entity{name=e.name, position=e.position, direction=e.direction, force=e.force} then
-				local ne = lower_surface.create_entity{name=e.name, position=e.position, direction=e.direction, force=e.force}
-				ne.health = e.health
-				e.destroy()
+			if allow_biter(lower_surface) then
+				if is_valid(e) and table_contains(moved,e) == false and lower_surface.can_place_entity{name=e.name, position=e.position, direction=e.direction, force=e.force} then
+					local ne = lower_surface.create_entity{name=e.name, position=e.position, direction=e.direction, force=e.force}
+					ne.health = e.health
+					e.destroy()
+				end
 			end
 		end
 	end		
@@ -1113,7 +1149,7 @@ local local_transfer_carrrige_state = function(from,to)
 			--shield
 			if(fromEquip.prototype.type=="energy-shield-equipment") then
 				toEquip.shield=fromEquip.shield;
-				game.print(toEquip.shield);
+				--game.print(toEquip.shield);
 			end
 			--energy
 			toEquip.energy=fromEquip.energy;
@@ -1229,7 +1265,7 @@ local local_train_transfers_tick = function()
 		local station = global.modmashsplinterunderground.train_transfers_clear[k].station
 		for j = 1, #global.modmashsplinterunderground.train_transfers_clear[k].out_carriages do
 			local c = global.modmashsplinterunderground.train_transfers_clear[k].out_carriages[j]
-			if is_valid(c) and c.surface.find_entity(station.name, c.position) == station then
+			if is_valid(c) and is_valid(station) and c.surface.find_entity(station.name, c.position) == station then
 				left = false
 				break
 			end
@@ -2053,11 +2089,23 @@ local local_underground_removed = function(entity,event,died)
 			end
 		end	
 	end
+
 	if modmashsplinterunderground.removed_rocks > 999999 then
 		for i = 1, #game.players do local p = game.players[i]
-				p.unlock_achievement("hollow_earth")
-			end	
-		end
+			p.unlock_achievement("hollow_earth")
+		end	
+	end
+
+	if is_valid(entity) and global.modmashsplinterunderground.surfaces[entity.surface.name]==nil then return end
+	if settings.global["setting-underground-biters"].value == 0 then return end
+
+	if is_valid(entity) and entity.force=="enemy" and entity.name ~= "queen-hive" then
+		if entity.type =="unit-spawner" then
+			global.modmashsplinterunderground.surfaces[entity.surface.name].nests = math.max(global.modmashsplinterunderground.surfaces[entity.surface.name].nests-1,0)
+		elseif entity.type =="unit" and string.find(entity.name,"biter") then
+			global.modmashsplinterunderground.surfaces[entity.surface.name].biters = math.max(global.modmashsplinterunderground.surfaces[entity.surface.name].biters-1,0)
+		end					
+	end
 	end
 
 
@@ -2631,6 +2679,18 @@ local local_underground_added = function(entity,event)
 	else	
 		local_underground_added_std(entity,event)
 	end
+	if is_valid(entity) ~= true then return end	
+	if global.modmashsplinterunderground.surfaces[entity.surface.name]==nil then return end
+	if settings.global["setting-underground-biters"].value == 0 then return end
+
+	if is_valid(entity) and entity.name ~= "queen-hive" then
+		if entity.type =="unit-spawner" then
+			print("hello")
+			global.modmashsplinterunderground.surfaces[entity.surface.name].nests = global.modmashsplinterunderground.surfaces[entity.surface.name].nests+1
+		elseif entity.type =="unit" and string.find(entity.name,"biter") then
+			global.modmashsplinterunderground.surfaces[entity.surface.name].biters = global.modmashsplinterunderground.surfaces[entity.surface.name].biters+1
+		end					
+	end
 end
 --[[ todo currently not using but shoudl I?
 local local_standard_filter = {
@@ -2802,6 +2862,41 @@ local local_on_configuration_changed = function(event)
 							end
 						end
 					
+					end
+				end
+			end	
+		end
+		if changed.old_version == nil or changed.old_version < "1.1.24" then	
+			for name, value in pairs(global.modmashsplinterunderground.surfaces_top) do			
+				local ts= global.modmashsplinterunderground.surfaces[value.top_name]
+				local ms= global.modmashsplinterunderground.surfaces[value.middle_name]
+				if ms.nests == nil then ms.nests = 0 end
+				if ms.biters == nil then ms.biters = 0 end
+				local bs= global.modmashsplinterunderground.surfaces[value.bottom_name]
+				if bs.nests == nil then bs.nests = 0 end
+				if bs.biters == nil then bs.biters = 0 end
+				if is_valid(game.surfaces[value.middle_name]) then
+					local entities = game.surfaces[value.middle_name].find_entities_filtered{force="enemy"}
+					for k=1, #entities do local entity = entities[k]
+						if entity.name ~= "queen-hive" then
+							if entity.type =="unit-spawner" then
+								ms.nests = ms.nests+1
+							elseif entity.type =="unit" and string.find(entity.name,"biter") then
+								ms.biters = ms.biters+1
+							end					
+						end
+					end
+				end
+				if is_valid(game.surfaces[value.bottom_name]) then
+					local entities = game.surfaces[value.bottom_name].find_entities_filtered{force="enemy"}
+					for k=1, #entities do local entity = entities[k]
+						if entity.name ~= "queen-hive" then
+							if entity.type =="unit-spawner" then
+								bs.nests = ms.nests+1
+							elseif entity.type =="unit" and string.find(entity.name,"biter") then
+								bs.biters = ms.biters+1
+							end					
+						end
 					end
 				end
 			end	
@@ -3187,6 +3282,44 @@ local local_on_train_changed_state = function(event)
 	end
 end
 
+local local_on_entity_spawned = function(event)
+	local entity = event.entity
+	if not is_valid(entity) or entity.name ~= "queen-hive" then return end
+	local surface = entity.surface
+	local underground = global.modmashsplinterunderground.surfaces[surface.name]
+	if underground then
+		if entity.type =="unit-spawner" then
+			if allow_biter_spawner(surface) == false then
+				entity.destroy({raise_destroy=false})
+			else
+				underground.nests = underground.nests + 1
+			end
+		elseif entity.type =="unit" and string.find(entity.name,"biter") then
+			if allow_biter(surface) == false then
+				entity.destroy({raise_destroy=false})
+			else
+				underground.biters = underground.biters+1
+			end
+		end					
+	end
+end
+local local_on_biter_base_built = function(event)
+	local entity = event.entity
+	if is_valid(entity) and entity.name ~= "queen-hive" then
+		if global.modmashsplinterunderground.surfaces[entity.surface.name]~=nil then
+			if entity.type =="unit-spawner" then
+				if global.modmashsplinterunderground.surfaces[entity.surface.name].nests ==nil then global.modmashsplinterunderground.surfaces[entity.surface.name].nests = 0 end
+				global.modmashsplinterunderground.surfaces[entity.surface.name].nests = global.modmashsplinterunderground.surfaces[entity.surface.name].nests+1
+			elseif entity.type =="unit" and string.find(entity.name,"biter") then
+				if global.modmashsplinterunderground.surfaces[entity.surface.name].biters ==nil then global.modmashsplinterunderground.surfaces[entity.surface.name].biters = 0 end
+				global.modmashsplinterunderground.surfaces[entity.surface.name].biters = global.modmashsplinterunderground.surfaces[entity.surface.name].biters+1
+			end		
+		end
+	end
+end
+
+script.on_event(defines.events.on_entity_spawned,local_on_entity_spawned)
+script.on_event(defines.events.on_biter_base_built,local_on_biter_base_built)
 script.on_event(defines.events.on_entity_renamed, local_on_entity_renamed)
 
 script.on_event(defines.events.on_train_changed_state, local_on_train_changed_state)
@@ -3199,6 +3332,8 @@ script.on_event(defines.events.on_chunk_generated,local_chunk_generated)
 script.on_nth_tick(30, local_accumulators_tick)
 script.on_event(defines.events.on_tick, local_underground_tick)
 script.on_configuration_changed(local_on_configuration_changed)
+
+
 
 script.on_event(defines.events.on_gui_opened, function(event)
 	--if global.modmashsplinterunderground.train_ui == nil then global.modmashsplinterunderground.train_ui = {} end	
