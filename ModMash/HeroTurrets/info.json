@@ -1,6 +1,6 @@
 {
   "name": "heroturrets",
-  "version": "1.1.18",
+  "version": "1.1.19",
   "title": "HeroTurrets",
   "author": "PixelWhipped",
   "contact": "",
@@ -9,7 +9,6 @@
   "description": "Turrets are built using salvaged self-learning AI tech from your ship allowing them to get deadlier with practice.  Extends turrets via ranking system based on kills. Turrets generated so not limited to vanilla, identifiable by overlaid rank insignia. Rank buffs individual turrets.",
   "dependencies": [
     "base >= 1.1.0",
-    "liborio >= 1.1.01",
-	"! Obelisks-of-light"
+    "liborio >= 1.1.01"
   ]
 }

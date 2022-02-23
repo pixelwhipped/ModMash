@@ -4,12 +4,12 @@ if not heroturrets.defines then require ("prototypes.scripts.defines") end
 
 local starts_with  = heroturrets.util.starts_with
 local ends_with  = heroturrets.util.ends_with
-local ends_with  = heroturrets.util.ends_with
 local get_name_for = heroturrets.util.get_name_for
 local table_contains = heroturrets.util.table.contains
 local table_remove = heroturrets.util.table.remove
 local create_icon = heroturrets.util.create_icon
 local convert_to_string = heroturrets.util.convert_to_string
+local name_is_excluded = require("compatibility").turret_name_is_excluded
 
 local tech = data.raw["technology"]
 
@@ -569,13 +569,8 @@ local local_create_turrets = function()  --personal-laser-defense-equipment  "ac
 
             else]]
             if entity ~= nil and entity.name ~= nil and entity.type ~= "active-defense-equipment"                   
-				    and starts_with(entity.name,"creative-mod") == false
-                    and starts_with(entity.name,"se-meteor") == false
-                    
-                    and starts_with(entity.name,"vehicle-gun-turret") == false
-                    and starts_with(entity.name,"vehicle-rocket-turret") == false
-                    and ends_with(entity.name,"shield-dome") == false
-				    and entity.subgroup~="enemies" 
+					and not name_is_excluded(entity.name)
+				    and entity.subgroup~="enemies"
                     and (is_nesw(entity) or (entity.base_picture ~= nil and entity.base_picture.layers ~= nil) or (is_unkown_nesw(entity) and left ~=nil and top ~= nil)) -- or (entity.cannon_base_pictures ~= nil and entity.cannon_base_pictures.layers ~= nil and entity.cannon_base_pictures.layers[1].direction_count == 256))
                     and entity.max_health > 1 
                     and entity.minable ~= nil and entity.minable.result ~= nil then
@@ -606,12 +601,11 @@ local local_create_turrets = function()  --personal-laser-defense-equipment  "ac
             local_create_turret_with_tags(item)
         end
 
-       local names = local_get_names()
-       local inc = (0.5*percent)/#names       
-       for j = 1, #names do
-           
+        local names = local_get_names()
+        local inc = (0.5*percent)/#names       
+        for j = 1, #names do
            local_create_turret(item,j,names[j],1+(inc*j))
-       end
+        end
 
        -- local_create_turret(item,1,"Private 1st Class",1.125*percent)
        -- local_create_turret(item,2,"Corporal",1.25*percent)

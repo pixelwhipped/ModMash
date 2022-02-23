@@ -1,10 +1,16 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.19
+Date: 2022-02-23
+  Changes:
+    - Obelisks-of-light compatibility tweaks, removed conflict, doesn't have heros but no error
+    - edit last changelog entry
+---------------------------------------------------------------------------------------------------
 Version: 1.1.18
 Date: 2022-02-23
   Bug Fixes:
     - same as 1.1.17 but for hr_version
     - added animation math for 4-direction turrets
-  General:
+  Changes:
     - incompatible with Obelisks-of-light for now (Honktown, hard-stop for an error)
 ---------------------------------------------------------------------------------------------------
 Version: 1.1.17
