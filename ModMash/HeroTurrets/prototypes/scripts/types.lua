@@ -437,21 +437,18 @@ local local_create_turret = function(turret,rank,rank_string,mod)
         --else
 
         if is_nesw(entity) then
-            if left == nil then left = entity.base_picture.north.layers[1].width/2 end
-            if top == nil then top = entity.base_picture.north.layers[1].height/2 end
-            table.insert(entity.base_picture.north.layers,get_badge(rank,top,left,entity.base_picture.north.layers[1].repeat_count or 1))
+			local base_picture = entity.base_picture
+			for _, direction in pairs({"north", "east", "south", "west"}) do
+				local layer = base_picture[direction].layers[1]
+				local new_left = left or (layer.size or layer.width)/2
+				local new_top = top or (layer.size or layer.height)/2
+				local badge = get_badge(rank,new_top,new_left,1)
+				badge.repeat_count = (layer.repeat_count or 1) * (layer.frame_count or 1)
+				badge.hr_version.repeat_count = badge.repeat_count
 
-            if left == nil then left = entity.base_picture.east.layers[1].width/2 end
-            if top == nil then top = entity.base_picture.east.layers[1].height/2 end
-            table.insert(entity.base_picture.east.layers,get_badge(rank,top,left,entity.base_picture.north.layers[1].repeat_count or 1))
+				table.insert(base_picture[direction].layers, badge)
+			end
 
-            if left == nil then left = entity.base_picture.south.layers[1].width/2 end
-            if top == nil then top = entity.base_picture.south.layers[1].height/2 end
-            table.insert(entity.base_picture.south.layers,get_badge(rank,top,left,entity.base_picture.north.layers[1].repeat_count or 1))
-
-            if left == nil then left = entity.base_picture.west.layers[1].width/2 end
-            if top == nil then top = entity.base_picture.west.layers[1].height/2 end
-            table.insert(entity.base_picture.west.layers,get_badge(rank,top,left,entity.base_picture.north.layers[1].repeat_count or 1))
         elseif is_unkown_nesw(entity) and left ~=nil and top ~= nil then
             entity.base_picture = {
                 layers = {
@@ -467,8 +464,8 @@ local local_create_turret = function(turret,rank,rank_string,mod)
 			local badge = get_badge(rank,top,left,1)
 			--entity.base_picture.layers[badge_i] = get_badge(rank,top,left,entity.base_picture.layers[1].repeat_count or 1)
 			entity.base_picture.layers[badge_i] = badge
-			badge.frame_count = 1
 			badge.repeat_count = (layer_one.repeat_count or 1) * (layer_one.frame_count or 1)
+			badge.hr_version.repeat_count = badge.repeat_count
         end
 
         if turret.entity.fast_replaceable_group == nil then
