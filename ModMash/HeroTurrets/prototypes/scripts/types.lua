@@ -187,7 +187,7 @@ local update_ammo_turret_tech_old = function(entity, name, rank)
     end
     end
 
- local update_ammo_turret_tech = function(entity, name)
+ local update_ammo_turret_tech = function(entity, name,rank)
     for _, tech in pairs(tech) do
         if tech.effects then
             local effect = nil
@@ -201,7 +201,7 @@ local update_ammo_turret_tech_old = function(entity, name, rank)
                 end
             end
             if effect ~= nil then
-                table.insert(tech.effects, {type="turret-attack", turret_id = name, modifier = effect.modifier})
+                table.insert(tech.effects, {type="turret-attack", turret_id = name, modifier = effect.modifier*(1+(0.25*rank))})
             end
         end
     end
@@ -459,10 +459,16 @@ local local_create_turret = function(turret,rank,rank_string,mod)
 				}
 			}
         else
-            if left == nil then left = entity.base_picture.layers[1].width/2 end
-            if left == nil then top = entity.base_picture.layers[1].height/2 end
-            
-            table.insert(entity.base_picture.layers,get_badge(rank,top,left,entity.base_picture.layers[1].repeat_count or 1))
+			local layer_one = entity.base_picture.layers[1]
+            if left == nil then left = layer_one.width/2 end
+            if top == nil then top = layer_one.height/2 end
+
+			local badge_i = (#entity.base_picture.layers) + 1
+			local badge = get_badge(rank,top,left,1)
+			--entity.base_picture.layers[badge_i] = get_badge(rank,top,left,entity.base_picture.layers[1].repeat_count or 1)
+			entity.base_picture.layers[badge_i] = badge
+			badge.frame_count = 1
+			badge.repeat_count = (layer_one.repeat_count or 1) * (layer_one.frame_count or 1)
         end
 
         if turret.entity.fast_replaceable_group == nil then
