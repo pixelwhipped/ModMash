@@ -10,7 +10,7 @@ local turret_exclude_start = {
 	["se-meteor"] = true,
 	["vehicle-gun-turret"] = true,
 	["vehicle-rocket-turret"] = true,
-	["obelisk-"] = true, --[[ Obelisk-of-light turrets ]]
+--	["obelisk-"] = true, --[[ Obelisk-of-light turrets ]]
 }
 
 local turret_exclude_end = {
