@@ -4,12 +4,13 @@ if not heroturrets.defines then require ("prototypes.scripts.defines") end
 
 local starts_with  = heroturrets.util.starts_with
 local ends_with  = heroturrets.util.ends_with
-local ends_with  = heroturrets.util.ends_with
 local get_name_for = heroturrets.util.get_name_for
 local table_contains = heroturrets.util.table.contains
 local table_remove = heroturrets.util.table.remove
 local create_icon = heroturrets.util.create_icon
 local convert_to_string = heroturrets.util.convert_to_string
+local name_is_excluded = require("compatibility").turret_name_is_excluded
+local recipes_of = heroturrets.util.recipe.find_recipes_for
 
 local tech = data.raw["technology"]
 
@@ -255,14 +256,14 @@ local local_create_turret = function(turret,rank,rank_string,mod)
         local entity_name = "hero-turret-"..rank.."-for-"..turret.entity.name
         local recipe_name = "hero-turret-"..rank.."-for-"..turret.recipe.name
         log("Creating "..entity_name)
-        local name_with_tags = item_name.."-with-tags"        
+        local name_with_tags = item_name.."-with-tags"
         
-        local place_name = entity_name
+        local place_name = "hero-turret-"..rank.."-for-"..turret.item.place_result
         local mine_name = item_name
         local place_name_with_tags = item_name
         local mine_name_with_tags = name_with_tags
         if settings.startup["heroturrets-allow-artillery-turrets"].value == false and turret.entity.type == "artillery-turret" then
-            place_name = turret.entity.name
+            place_name = turret.item.place_result --turret.entity.name
             place_name_with_tags = turret.item.name
             mine_name = turret.item.name
             mine_name_with_tags = turret.item.name
@@ -437,21 +438,18 @@ local local_create_turret = function(turret,rank,rank_string,mod)
         --else
 
         if is_nesw(entity) then
-            if left == nil then left = entity.base_picture.north.layers[1].width/2 end
-            if top == nil then top = entity.base_picture.north.layers[1].height/2 end
-            table.insert(entity.base_picture.north.layers,get_badge(rank,top,left,entity.base_picture.north.layers[1].repeat_count or 1))
+			local base_picture = entity.base_picture
+			for _, direction in pairs({"north", "east", "south", "west"}) do
+				local layer = base_picture[direction].layers[1]
+				local new_left = left or (layer.size or layer.width)/2
+				local new_top = top or (layer.size or layer.height)/2
+				local badge = get_badge(rank,new_top,new_left,1)
+				badge.repeat_count = (layer.repeat_count or 1) * (layer.frame_count or 1)
+				badge.hr_version.repeat_count = badge.repeat_count
 
-            if left == nil then left = entity.base_picture.east.layers[1].width/2 end
-            if top == nil then top = entity.base_picture.east.layers[1].height/2 end
-            table.insert(entity.base_picture.east.layers,get_badge(rank,top,left,entity.base_picture.north.layers[1].repeat_count or 1))
+				table.insert(base_picture[direction].layers, badge)
+			end
 
-            if left == nil then left = entity.base_picture.south.layers[1].width/2 end
-            if top == nil then top = entity.base_picture.south.layers[1].height/2 end
-            table.insert(entity.base_picture.south.layers,get_badge(rank,top,left,entity.base_picture.north.layers[1].repeat_count or 1))
-
-            if left == nil then left = entity.base_picture.west.layers[1].width/2 end
-            if top == nil then top = entity.base_picture.west.layers[1].height/2 end
-            table.insert(entity.base_picture.west.layers,get_badge(rank,top,left,entity.base_picture.north.layers[1].repeat_count or 1))
         elseif is_unkown_nesw(entity) and left ~=nil and top ~= nil then
             entity.base_picture = {
                 layers = {
@@ -459,39 +457,51 @@ local local_create_turret = function(turret,rank,rank_string,mod)
 				}
 			}
         else
-            if left == nil then left = entity.base_picture.layers[1].width/2 end
-            if left == nil then top = entity.base_picture.layers[1].height/2 end
-            
-            table.insert(entity.base_picture.layers,get_badge(rank,top,left,entity.base_picture.layers[1].repeat_count or 1))
+			local layer_one = entity.base_picture.layers[1]
+            if left == nil then left = layer_one.width/2 end
+            if top == nil then top = layer_one.height/2 end
+
+			local badge_i = (#entity.base_picture.layers) + 1
+			local badge = get_badge(rank,top,left,1)
+			--entity.base_picture.layers[badge_i] = get_badge(rank,top,left,entity.base_picture.layers[1].repeat_count or 1)
+			entity.base_picture.layers[badge_i] = badge
+			badge.repeat_count = (layer_one.repeat_count or 1) * (layer_one.frame_count or 1)
+			badge.hr_version.repeat_count = badge.repeat_count
         end
 
-        if turret.entity.fast_replaceable_group == nil then
-            turret.entity.fast_replaceable_group = turret.entity.name
-            entity.fast_replaceable_group = turret.entity.name
-            if settings.startup["heroturrets-allow-artillery-turrets"].value == false and turret.entity.type == "artillery-turret" then
+		if entity_name == item.place_result then
+			if turret.entity.fast_replaceable_group == nil then
+				turret.entity.fast_replaceable_group = turret.entity.name
+				entity.fast_replaceable_group = turret.entity.name
+				if settings.startup["heroturrets-allow-artillery-turrets"].value == false and turret.entity.type == "artillery-turret" then
 
-            else
-                if turret.entity.next_upgrade == nil then turret.entity.next_upgrade = entity_name end
-            end
-        else
-            if settings.startup["heroturrets-allow-artillery-turrets"].value == false and turret.entity.type == "artillery-turret" then
-            else
-                if turret.entity.next_upgrade == nil then turret.entity.next_upgrade = entity_name end
-            end
-        end
-        
+				else
+					if turret.entity.next_upgrade == nil then turret.entity.next_upgrade = entity_name end
+				end
+			else
+				if settings.startup["heroturrets-allow-artillery-turrets"].value == false and turret.entity.type == "artillery-turret" then
+				else
+					if turret.entity.next_upgrade == nil then turret.entity.next_upgrade = entity_name end
+				end
+			end
+		else
+			turret.entity.next_upgrade = nil
+			log("mismatched entity and item place result, no next upgrade: "..entity_name)
+		end
         if entity.type == "ammo-turret" then update_ammo_turret_tech(turret.entity, entity_name, rank) end
         if entity.type == "fluid-turret" then update_fluid_turret_tech(turret.entity, entity_name, rank) end
+
+		local to_extend = {recipe,entity}
+		if not data.raw[item.type][item.name] then table.insert(to_extend, item) end
         if settings.startup["heroturrets-kill-counter"].value == "Exact" then   
             entity.minable.result = mine_name_with_tags
-            data:extend({item_with_tags,item,recipe,entity})
+			table.insert(to_extend, item_with_tags)
         elseif settings.startup["heroturrets-kill-counter"].value == "Disable" then
             entity.minable.result = turret.item.name
-            data:extend({item,recipe,entity})
         else
             entity.minable.result = mine_name
-            data:extend({item,recipe,entity})
         end
+		data:extend(to_extend)
    end
 
 local local_trim = function(s)
@@ -525,14 +535,25 @@ local local_get_names = function()
 end
 
 local local_get_recipe = function(name)
+	-- shortcut to recipe named the same, if possible
     local r = data.raw["recipe"][name]
     if r == nil then
         for name,recipe in pairs(data.raw["recipe"]) do	
-            if recipe.result == name then return recipe end
+            if (not recipe.results) and (recipe.result == name) then
+				r = recipe
+				break
+			end
         end
+
+		if not r then
+			-- REALLY try to find a recipe
+			-- recycling will cause a problem...
+			local recipes = recipes_of(name)
+			if recipes then r = recipes[1] end
+		end
     end
-    return nil
-end
+    return r
+	end
 
 local local_create_turrets = function()  --personal-laser-defense-equipment  "active-defense-equipment"
     local turret_types = {"ammo-turret", "fluid-turret","electric-turret", "artillery-turret"} --"active-defense-equipment"} --, "artillery-wagon"}
@@ -566,33 +587,50 @@ local local_create_turrets = function()  --personal-laser-defense-equipment  "ac
 
             else]]
             if entity ~= nil and entity.name ~= nil and entity.type ~= "active-defense-equipment"                   
-				    and starts_with(entity.name,"creative-mod") == false
-                    and starts_with(entity.name,"se-meteor") == false
-                    
-                    and starts_with(entity.name,"vehicle-gun-turret") == false
-                    and starts_with(entity.name,"vehicle-rocket-turret") == false
-                    and ends_with(entity.name,"shield-dome") == false
-				    and entity.subgroup~="enemies" 
-                    and (is_nesw(entity) or (entity.base_picture ~= nil and entity.base_picture.layers ~= nil) or (is_unkown_nesw(entity) and left ~=nil and top ~= nil)) -- or (entity.cannon_base_pictures ~= nil and entity.cannon_base_pictures.layers ~= nil and entity.cannon_base_pictures.layers[1].direction_count == 256))
-                    and entity.max_health > 1 
-                    and entity.minable ~= nil and entity.minable.result ~= nil then
-
-                    local recipe = local_get_recipe(entity.name)
-                    if recipe == nil then log("Missing recipie") end
-                    local item = local_get_item(entity.name)       
-                    if item == nil then log("Missing item") end
-                    if item ~= nil and entity.minable.result ~= item.name then log("Mining result mismatch") end
-                    if recipe == nil and item ~= nil then recipe = data.raw["recipe"][item.name] end
-                    --if entity.name == "shotgun-ammo-turret-rampant-arsenal" then
-                    if recipe ~= nil and item ~= nil and entity.minable.result ==  item.name then
-                        table.insert(guns,
-                        {
-                            item = item,
-                            entity = entity,
-                            recipe = recipe,
-					    })
-                    end
-                    
+					and not name_is_excluded(entity.name)
+					and entity.subgroup~="enemies"
+					and (is_nesw(entity) or (entity.base_picture ~= nil and entity.base_picture.layers ~= nil) or (is_unkown_nesw(entity) and left ~=nil and top ~= nil)) -- or (entity.cannon_base_pictures ~= nil and entity.cannon_base_pictures.layers ~= nil and entity.cannon_base_pictures.layers[1].direction_count == 256))
+					and entity.max_health > 1 
+					and entity.minable ~= nil and entity.minable.result ~= nil
+				then
+				local one_mining_result = entity.minable.result
+				local recipe = local_get_recipe(entity.name)
+				if recipe == nil then
+					log("Missing simple recipie for "..entity.name)
+					if one_mining_result then
+						recipe = local_get_recipe(one_mining_result)
+						if recipe == nil then
+							log("Missing complex recipie for "..one_mining_result)
+						end
+					end
+				end
+				local item = local_get_item(entity.name)
+				if item == nil then
+					log("Missing simple item")
+					if one_mining_result then
+						log("\n\tMining result mismatch in "..entity.name.." no item and mining result: "..one_mining_result)
+						--item = one_mining_result
+					end
+				else
+					if item.name ~= one_mining_result then
+						log("\n\tMining result mismatch in "..entity.name..": item: "..item.name.." minable.result: "..tostring(entity.minable.result))
+						--item = one_mining_result
+					end
+				end
+				local bypass = false
+				if one_mining_result == "obelisk-of-light" then
+					item = local_get_item(one_mining_result)
+					bypass = true
+				end
+				--if entity.name == "shotgun-ammo-turret-rampant-arsenal" then
+				if recipe ~= nil and item ~= nil and (bypass or entity.minable.result ==  item.name) then
+					table.insert(guns,
+					{
+						item = item,
+						entity = entity,
+						recipe = recipe,
+					})
+				end
             end
         end
     end
@@ -603,12 +641,11 @@ local local_create_turrets = function()  --personal-laser-defense-equipment  "ac
             local_create_turret_with_tags(item)
         end
 
-       local names = local_get_names()
-       local inc = (0.5*percent)/#names       
-       for j = 1, #names do
-           
+        local names = local_get_names()
+        local inc = (0.5*percent)/#names       
+        for j = 1, #names do
            local_create_turret(item,j,names[j],1+(inc*j))
-       end
+        end
 
        -- local_create_turret(item,1,"Private 1st Class",1.125*percent)
        -- local_create_turret(item,2,"Corporal",1.25*percent)

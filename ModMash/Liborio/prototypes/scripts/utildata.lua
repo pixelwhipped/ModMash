@@ -50,9 +50,95 @@ local local_find_entity = function(name)
 	return nil
     end
 
+local local_format_results_result = function(difficulty)
+	local result
+	if res.type == "item" or res.type == nil then
+		result = {
+			type = "item",
+			show_details_in_recipe_tooltip = res.show_details_in_recipe_tooltip or true,
+
+			name = res.name or res[1],
+			amount = res.amount or res[2],
+			probability = res.probability or 1,
+			amount_min = (not res.amount and res.amount_min),
+			amount_max = (not res.amount and res.amount_max),
+			catalyst_amount = res.catalyst_amount, --this does not count automatic amounts
+		}
+	else
+		result = {
+			type = "fluid",
+			show_details_in_recipe_tooltip = res.show_details_in_recipe_tooltip or true,
+
+			name = res.name or res[1],
+			amount = res.amount or res[2],
+			probability = res.probability or 1,
+			amount_min = (not res.amount and res.amount_min),
+			amount_max = (not res.amount and res.amount_max),
+			temperature = res.temperature,
+			catalyst_amount = res.catalyst_amount, --this does not count automatic amounts
+			fluidbox_index = res.fluidbox_index or 0,
+		}
+	end
+	return result
+	end
+
+local local_results_among_difficulty = function(difficulty_table)
+	if type(difficulty) == "table" then
+		local results = {}
+		if difficulty.results then
+			for k,res in pairs(difficulty.results) do
+				results[k] = local_format_results_result(res)
+			end
+		else
+			if difficulty.result then
+				results[1] = {
+					type = "item",
+					name = difficulty.result,
+					amount = difficulty.result_count,
+					--probability = 1,
+				}
+			end
+		end
+		if table_size(results) > 0 then
+			return results
+		end
+	end
+	return nil
+	end
+
+local local_format_results = function(recipe)
+	-- this function returns difficulties which are nil while the other difficulty exists
+	-- the other option is to *only* include accessible difficulties, even if a result would exist for a difficulty
+	local difficulties = {}
+	if recipe.normal or recipe.expensive then
+		local other = {["normal"] = "expensive", ["expensive"] = "normal"}
+		for _, diff in pairs({"normal", "expensive"}) do
+			local difficulty = recipe[diff]
+			if difficulty == nil then difficulty = recipe[other[diff]] end
+			difficulties[diff] = local_results_among_difficulty(difficulty)
+		end
+	else
+		difficulties[""] = local_results_among_difficulty(recipe)
+	end
+	if table_size(difficulties) > 0 then return difficulties end
+    return nil
+    end
+
 local local_find_recipes_for = function(name)
     local recipes = { }
-	for i,r in pairs(data.raw["recipe"]) do	
+	for i,r in pairs(data.raw["recipe"]) do
+		local difficulties = local_format_results(r)
+		if difficulties then
+			for which, results in pairs(difficulties) do
+				for _, result in pairs(results) do
+					if result.name == name then
+						recipes[r.name] = r
+						goto continue
+					end
+				end
+			end
+		end
+--[[
 		if recipes[r.name] == nil then
 			if r.normal ~= nil then
 				if r.normal.result ~= nil then
@@ -88,6 +174,8 @@ local local_find_recipes_for = function(name)
                 end
             end
         end
+--]]
+		::continue::
     end
 	return recipes
     end
