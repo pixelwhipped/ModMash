@@ -14,3 +14,25 @@ for k=1, 7 do
 		data:extend({t})
 	end
 end
+
+
+local function hasStr(inlist,instr)
+
+	if not(inlist) then return false; end
+	
+	for _,entry in pairs(inlist) do
+		if(entry==instr) then
+			return true;
+		end
+	end
+	return false;
+end
+for _,t in pairs(data.raw["tile"]) do
+	if (t.transitions) then
+		for _,entry in pairs(t.transitions) do
+			if(hasStr(entry.to_tiles,"out-of-map")) then
+				table.insert(entry.to_tiles,"underground-out-of-map");
+			end
+		end
+	end
+end

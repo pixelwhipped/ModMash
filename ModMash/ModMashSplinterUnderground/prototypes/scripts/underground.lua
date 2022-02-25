@@ -3284,18 +3284,21 @@ end
 
 local local_on_entity_spawned = function(event)
 	local entity = event.entity
-	if is_valid(entity) and entity.name ~= "queen-hive" then
+	if not is_valid(entity) or entity.name ~= "queen-hive" then return end
+	local surface = entity.surface
+	local underground = global.modmashsplinterunderground.surfaces[surface.name]
+	if underground then
 		if entity.type =="unit-spawner" then
-			if allow_biter_spawner(entity.surface) == false then
+			if allow_biter_spawner(surface) == false then
 				entity.destroy({raise_destroy=false})
 			else
-				global.modmashsplinterunderground.surfaces[entity.surface.name].nests = global.modmashsplinterunderground.surfaces[entity.surface.name].nests+1
+				underground.nests = underground.nests + 1
 			end
 		elseif entity.type =="unit" and string.find(entity.name,"biter") then
-			if allow_biter(entity.surface) == false then
+			if allow_biter(surface) == false then
 				entity.destroy({raise_destroy=false})
 			else
-				global.modmashsplinterunderground.surfaces[entity.surface.name].biters = global.modmashsplinterunderground.surfaces[entity.surface.name].biters+1
+				underground.biters = underground.biters+1
 			end
 		end					
 	end
