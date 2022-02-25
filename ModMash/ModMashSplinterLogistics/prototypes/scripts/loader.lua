@@ -182,17 +182,19 @@ local local_loader_tick = function()
 					local_loader_do_unload(l1,l2.get_inventory(defines.inventory.cargo_wagon),l3)
 				else
 					local wagon = l2.get_inventory(defines.inventory.cargo_wagon)
-					local transport_line = l1.get_transport_line(1)
-					if transport_line.get_item_count()>0 then
-						local name,count = next(transport_line.get_contents())
-						local wagon_count = wagon.insert({name=name,count=1})
-						if wagon_count > 0 then transport_line.remove_item({name=name,count=wagon_count}) end
-					end
-					transport_line = l1.get_transport_line(2)
-					if transport_line.get_item_count()>0 then
-						local name,count = next(transport_line.get_contents())
-						local wagon_count = wagon.insert({name=name,count=1})
-						if wagon_count > 0 then transport_line.remove_item({name=name,count=wagon_count}) end
+					if wagon ~= nil then
+						local transport_line = l1.get_transport_line(1)
+						if transport_line.get_item_count()>0 then
+							local name,count = next(transport_line.get_contents())
+							local wagon_count = wagon.insert({name=name,count=1})
+							if wagon_count > 0 then transport_line.remove_item({name=name,count=wagon_count}) end
+						end
+						transport_line = l1.get_transport_line(2)
+						if transport_line.get_item_count()>0 then
+							local name,count = next(transport_line.get_contents())
+							local wagon_count = wagon.insert({name=name,count=1})
+							if wagon_count > 0 then transport_line.remove_item({name=name,count=wagon_count}) end
+						end
 					end
 				end
 			end

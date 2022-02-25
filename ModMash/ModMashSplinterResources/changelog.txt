@@ -1,4 +1,9 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.13
+  Changes:
+    - Added setting to allow prod mod on sand glass and titanium and alien plate
+
+---------------------------------------------------------------------------------------------------
 Version: 1.1.12
   Changes:
     - Update to accommodate underground changes

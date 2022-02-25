@@ -187,7 +187,7 @@ local update_ammo_turret_tech_old = function(entity, name, rank)
     end
     end
 
- local update_ammo_turret_tech = function(entity, name)
+ local update_ammo_turret_tech = function(entity, name,rank)
     for _, tech in pairs(tech) do
         if tech.effects then
             local effect = nil
@@ -201,7 +201,7 @@ local update_ammo_turret_tech_old = function(entity, name, rank)
                 end
             end
             if effect ~= nil then
-                table.insert(tech.effects, {type="turret-attack", turret_id = name, modifier = effect.modifier})
+                table.insert(tech.effects, {type="turret-attack", turret_id = name, modifier = effect.modifier*(1+(0.25*rank))})
             end
         end
     end

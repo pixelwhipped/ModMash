@@ -1,4 +1,10 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.12
+  Bug Fixes:
+    - wagon nil check
+    - deadlock stacking conflict when missing resources mod
+
+---------------------------------------------------------------------------------------------------
 Version: 1.1.11
   Changes:
     - Locale fixes thanks to Flood

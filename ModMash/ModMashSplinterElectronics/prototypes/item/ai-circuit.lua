@@ -27,7 +27,8 @@
 					name = "ai-circuit",      
 					amount = 1
 				}
-			}
+			},
+			allow_as_intermediate = true
 		},
 		expensive =
 		{
@@ -42,8 +43,10 @@
 					name = "ai-circuit",      
 					amount = 2
 				}
-			}
-		}
+			},
+			allow_as_intermediate = true
+		},
+		allow_as_intermediate = true
 	},
 	{
 		type = "recipe",
@@ -68,7 +71,8 @@
 					name = "advanced-circuit",      
 					amount = 1
 				}
-			}
+			},
+			allow_as_intermediate = true
 		},
 		expensive =
 		{
@@ -89,8 +93,11 @@
 					name = "advanced-circuit",      
 					amount = 1
 				}
-			}
-		}
+			},
+			allow_as_intermediate = true
+
+		},
+		allow_as_intermediate = true
 	}
 })
 

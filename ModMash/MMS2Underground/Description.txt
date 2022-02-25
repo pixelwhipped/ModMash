@@ -1,0 +1,11 @@
+﻿Simplified version of original ModMash Splinter Underground + Trains Mod
+For the reasons of compatibility and simplifying code base the foolowing changes are being made
+Removing all experimantal detection mothods
+
+All top level Surfaces(Planets) must be defined in prototypes.scripts.surfaces.lua 
+or 
+added via control interface mms2underground.register_surface
+
+resources can be added to surfaces by calling the control interface mms2underground.register_resource
+
+This will not change however it should be possible for third party mods to easily add
