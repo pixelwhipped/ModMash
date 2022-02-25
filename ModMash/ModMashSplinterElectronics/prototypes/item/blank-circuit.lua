@@ -37,7 +37,8 @@
 					name = "blank-circuit",      
 					amount = 2
 				}
-			}
+			},
+			allow_as_intermediate = true
 		},
 		expensive =
 		{
@@ -52,8 +53,10 @@
 					name = "blank-circuit",      
 					amount = 2
 				}
-			}
-		}
+			},
+			allow_as_intermediate = true,
+		},
+		allow_as_intermediate = true
 	},
 	{
 		type = "recipe",
@@ -88,7 +91,8 @@
 			allow_as_intermediate = false,
 			allow_decomposition = false,
 			hide_from_player_crafting = true
-		}
+		},
+		allow_as_intermediate = false
 		
 	}
 })

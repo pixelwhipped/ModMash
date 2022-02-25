@@ -15,6 +15,7 @@ local icon_pin_bottomright = modmashsplinterresources.util.defines.icon_pin_bott
 local icon_pin_bottom = modmashsplinterresources.util.defines.icon_pin_bottom
 local icon_pin_bottomleft = modmashsplinterresources.util.defines.icon_pin_bottomleft
 local icon_pin_left = modmashsplinterresources.util.defines.icon_pin_left
+local table_contains = modmashsplinterresources.util.table.contains
 
 
 local local_create_conversions = function()
@@ -199,7 +200,22 @@ local local_create_ore_conversions = function()
 	end
 end
 
+local local_add_module_limits = function()
+	for name, module in pairs(data.raw["module"]) do
+		if module ~= nil and module.limitation ~= nil then
+			if table_contains(module.limitation,"sand-from-stone") == false then table.insert(module.limitation,"sand-from-stone") end
+			if table_contains(module.limitation,"glass-from-sand") == false then table.insert(module.limitation,"glass-from-sand") end
+			if table_contains(module.limitation,"titanium-plate") == false then table.insert(module.limitation,"titanium-plate") end 
+			if table_contains(module.limitation,"alien-plate") == false then table.insert(module.limitation,"alien-plate") end 
+ 
+		end
+	end
+end
+
 if data ~= nil and data_final_fixes == true then
 	local_create_conversions()
 	local_create_ore_conversions()
+	if settings.startup["setting-allow-production"].value == "Enabled" then
+		local_add_module_limits()
+	end
 end

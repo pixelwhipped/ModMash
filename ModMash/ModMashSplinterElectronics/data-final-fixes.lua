@@ -41,12 +41,19 @@ local local_update_recipies = function()
 	local_update_recipe("red-wire",{      
 		  {name = "copper-cable", amount= 1}
 		},nil,nil)
-	if data.raw.recipe["red-wire"] ~= nil then data.raw.recipe["red-wire"].result_count = 2 end
+	if data.raw.recipe["red-wire"] ~= nil then 
+		--data.raw.recipe["red-wire"].allow_as_intermediate = true
+		data.raw.recipe["red-wire"].result_count = 2
+	end
+
 	local_update_recipe("green-wire",
 		{      
 		  {name = "copper-cable", amount = 1}
 		},nil,nil)
-	if data.raw.recipe["green-wire"] ~= nil then data.raw.recipe["green-wire"].result_count = 2 end
+	if data.raw.recipe["green-wire"] ~= nil then 
+		--data.raw.recipe["green-wire"].allow_as_intermediate = true
+		data.raw.recipe["green-wire"].result_count = 2 
+	end
 	local_update_recipe("electronic-circuit",nil,
 		{      
 		  {name = "green-wire",  amount= 1},

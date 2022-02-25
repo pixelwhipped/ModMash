@@ -23,5 +23,12 @@
 		default_value = "Enabled",
 		allowed_values = {"Enabled", "Disabled"},
 		order = "c"
+	},{
+		type = "string-setting",
+		name = "setting-allow-production",
+		setting_type = "startup",
+		default_value = "Disabled",
+		allowed_values = {"Enabled", "Disabled"},
+		order = "d"
 	}
 })

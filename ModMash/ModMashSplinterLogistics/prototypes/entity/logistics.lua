@@ -736,7 +736,7 @@ local local_splitters = {
 	}}
 
 local local_mini_loaders = {
-	{		
+	{
 		name = "mini-loader",		
 		max_health = 170,
 		speed = 0.03125,		
@@ -855,8 +855,8 @@ local local_mini_loaders = {
 				{"alien-plate", 10},
 		}),
 		next_upgrade = nil
-	},
 	}
+}
 
 if data_final_fixes then
 	data.raw["transport-belt"]["express-transport-belt"].next_upgrade = "high-speed-transport-belt"
@@ -932,16 +932,16 @@ else
 			splitter            = "high-speed-splitter",
 			technology          = "logistics-4",
 			order               = "0",
-			loader_ingredients  = {
+			loader_ingredients  = modmashsplinterlogistics.util.get_item_ingredient_substitutions({"titanium-plate"},{
 				{"express-mini-loader", 1},
 				{"electronic-circuit", 2},
 				{"titanium-plate", 5}
-			},
-			beltbox_ingredients = {
+			}),
+			beltbox_ingredients = modmashsplinterlogistics.util.get_item_ingredient_substitutions({"titanium-plate"},{
 				{"fast-inserter", 4},
 				{"iron-gear-wheel", 6},
 				{"titanium-plate", 2}
-			},
+			}),
 		})
 		deadlock.add_tier({
 			transport_belt      = "regenerative-transport-belt",
@@ -950,16 +950,16 @@ else
 			splitter            = "regenerative-splitter",
 			technology          = "logistics-5",
 			order               = "0",
-			loader_ingredients  = {				
+			loader_ingredients  = modmashsplinterlogistics.util.get_item_ingredient_substitutions({"alien-plate"},{				
 				{"high-speed-mini-loader", 1},
 				{"electronic-circuit", 2},
 				{"alien-plate", 5},
-			},
-			beltbox_ingredients = {
+			}),
+			beltbox_ingredients = modmashsplinterlogistics.util.get_item_ingredient_substitutions({"alien-plate"},{
 				{"fast-inserter", 8},
 				{"electronic-circuit", 2},
 				{"alien-plate", 5},
-			},
+			}),
 		})
 	end
 end

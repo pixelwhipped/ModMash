@@ -1,4 +1,54 @@
-﻿------------------------------------
+﻿---------------------------------------------------------------------------------------------------
+Version: 1.1.20
+Date: 2022-02-23
+  Changes:
+    - Obelisks-of-light first heroes attempt
+---------------------------------------------------------------------------------------------------
+Version: 1.1.19
+Date: 2022-02-23
+  Changes:
+    - Obelisks-of-light compatibility tweaks, removed conflict, doesn't have heros but no error
+    - edit last changelog entry
+---------------------------------------------------------------------------------------------------
+Version: 1.1.18
+Date: 2022-02-23
+  Bug Fixes:
+    - same as 1.1.17 but for hr_version
+    - added animation math for 4-direction turrets
+  Changes:
+    - incompatible with Obelisks-of-light for now (Honktown, hard-stop for an error)
+---------------------------------------------------------------------------------------------------
+Version: 1.1.17
+Date: 2022-02-23
+  Bug Fixes:
+    - incorrect frame calculation for animated turrets (Honktown, thanks SacredAnarchy for reporting)
+---------------------------------------------------------------------------------------------------
+Version: 1.1.16
+  Changes:
+    - local update
+
+---------------------------------------------------------------------------------------------------
+Version: 1.1.15
+  Changes:
+    - Test flag turned off
+
+---------------------------------------------------------------------------------------------------
+Version: 1.1.14
+  Changes:
+    - Missing damage effect modifier
+
+---------------------------------------------------------------------------------------------------
+Version: 1.1.13
+  Bug Fixes:
+    - changelog fix
+
+---------------------------------------------------------------------------------------------------
+Version: 1.1.12
+  Changes:
+    - Updated Russian locale
+    - updated allow ranked ghost mod description
+
+---------------------------------------------------------------------------------------------------
 Version: 1.1.11
   Changes:
     - Removed minimum range reduction as advised used as a safety feature
@@ -45,13 +95,6 @@ Version: 1.1.04
 Version: 1.1.03
   Bug Fixes:
     - Exact was not working
-
----------------------------------------------------------------------------------------------------
-Version: 1.1.01
-  Changes:
-    - 1.1.0 ready
-  Not A Bug Fixes:
-    - Update to get item from honktown
 
 ---------------------------------------------------------------------------------------------------
 Version: 1.1.01

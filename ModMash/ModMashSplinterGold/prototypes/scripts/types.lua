@@ -330,8 +330,8 @@ local local_add_module_limits = function()
 	for name, module in pairs(data.raw["module"]) do
 		if module ~= nil and module.limitation ~= nil then
 			if table_contains(module.limitation,"gold-ore") == false then table.insert(module.limitation,"gold-ore") end
-			--if table_contains(module.limitation,"gold-plate") == false then table.insert(module.limitation,"gold-plate") end
-			--if table_contains(module.limitation,"gold-cable") == false then table.insert(module.limitation,"gold-cable") end 
+			if table_contains(module.limitation,"gold-plate") == false then table.insert(module.limitation,"gold-plate") end
+			if table_contains(module.limitation,"gold-cable") == false then table.insert(module.limitation,"gold-cable") end 
 		end
 	end
 end

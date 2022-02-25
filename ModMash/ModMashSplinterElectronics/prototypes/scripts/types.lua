@@ -381,7 +381,19 @@ local local_create_ai_circuit_recipies = function()
 	end	
 end
 
+local local_add_module_limits = function()
+	for name, module in pairs(data.raw["module"]) do
+		if module ~= nil and module.limitation ~= nil then
+			if table_contains(module.limitation,"ai-circuit") == false then table.insert(module.limitation,"ai-circuit") end
+			if table_contains(module.limitation,"blank-circuit") == false then table.insert(module.limitation,"blank-circuit") end
+		end
+	end
+end
+
 if data ~= nil and data_final_fixes == true then
 	local_create_circuit_recipies()
 	local_create_ai_circuit_recipies()
+	local_add_module_limits()
 end
+
+
