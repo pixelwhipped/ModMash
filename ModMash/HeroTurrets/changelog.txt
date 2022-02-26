@@ -2,7 +2,12 @@
 Version: 1.1.20
 Date: 2022-02-23
   Changes:
-    - Obelisks-of-light first heroes attempt
+    - Compatibility for SearchlightAssault mod setting Create in updates to change if turrets are created in final fixes or updates
+---------------------------------------------------------------------------------------------------
+Version: 1.1.20
+Date: 2022-02-23
+  Changes:
+    - Obelisks-of-light first heroes attempt    
 ---------------------------------------------------------------------------------------------------
 Version: 1.1.19
 Date: 2022-02-23

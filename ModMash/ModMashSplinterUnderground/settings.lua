@@ -55,4 +55,19 @@
 		maximum_value = 500,
 		order = "i"
 	},
+	{
+		type = "string-setting",
+		name = "setting-biter-rocks",
+		setting_type = "runtime-global",
+		default_value = "Enabled",
+		allowed_values = {"Enabled", "Disabled"},
+		order = "j"
+	},{
+		type = "string-setting",
+		name = "setting-biter-teleport",
+		setting_type = "runtime-global",
+		default_value = "Enabled",
+		allowed_values = {"Enabled", "Disabled"},
+		order = "k"
+	},
 })

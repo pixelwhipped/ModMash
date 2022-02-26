@@ -111,4 +111,12 @@
 		default_value = "Private,Corporal,Sergeant,Master sergeant,Sergeant major,Lieutenant,Captain,Major,Colonel,General",
 		order = "m"
 	},
+	{
+		type = "string-setting",
+		name = "heroturrets-setting-run-in-updates",
+		setting_type = "startup",
+		default_value = "False",
+		allowed_values = {"True", "False"},
+		order = "o"
+	}
 })

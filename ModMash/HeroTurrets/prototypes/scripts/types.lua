@@ -14,7 +14,7 @@ local recipes_of = heroturrets.util.recipe.find_recipes_for
 
 local tech = data.raw["technology"]
 
-local raw_items = {"item","accumulator","active-defense-equipment","ammo","ammo-turret","arithmetic-combinator","armor","artillery-turret","artillery-wagon","assembling-machine","battery-equipment","beacon","belt-immunity-equipment","boiler","capsule","car","cargo-wagon","combat-robot","constant-combinator","construction-robot","container","decider-combinator","electric-pole","electric-turret","energy-shield-equipment","fluid-wagon","furnace","gate","generator","generator-equipment","gun","heat-pipe","inserter","item","locomotive","logistic-container","logistic-robot","market","mining-drill","module","night-vision-equipment","offshore-pump","pipe","pipe-to-ground","power-switch","programmable-speaker","projectile","pump","radar","rail-chain-signal","rail-planner","rail-signal","reactor","repair-tool","resource","roboport","roboport-equipment","rocket-silo","solar-panel","solar-panel-equipment","splitter","storage-tank","straight-rail","tool","train-stop","transport-belt","underground-belt","wall"}
+--local raw_items = {"item","accumulator","active-defense-equipment","ammo","ammo-turret","arithmetic-combinator","armor","artillery-turret","artillery-wagon","assembling-machine","battery-equipment","beacon","belt-immunity-equipment","boiler","capsule","car","cargo-wagon","combat-robot","constant-combinator","construction-robot","container","decider-combinator","electric-pole","electric-turret","energy-shield-equipment","fluid-wagon","furnace","gate","generator","generator-equipment","gun","heat-pipe","inserter","item","locomotive","logistic-container","logistic-robot","market","mining-drill","module","night-vision-equipment","offshore-pump","pipe","pipe-to-ground","power-switch","programmable-speaker","projectile","pump","radar","rail-chain-signal","rail-planner","rail-signal","reactor","repair-tool","resource","roboport","roboport-equipment","rocket-silo","solar-panel","solar-panel-equipment","splitter","storage-tank","straight-rail","tool","train-stop","transport-belt","underground-belt","wall"}
 
 --honk
 local types_with_items = {}
@@ -27,29 +27,6 @@ end
 local item_list = nil
 
 local local_get_item = function(name)
-	--[[if item_list == nil then
-		item_list = {}
-		for r = 1, #raw_items do local raw = raw_items[r]	
-			for name,item in pairs(data.raw[raw]) do			
-				if item ~= nil and item.name ~= nil then	
-					if table_contains(item_list,item.name) then
-						if item_list[item.name].icon_size == nil and item.icon_size ~= nil and (item.place_result ~= nil or item.stack_size ~= nil) then
-                            if item.place_result ~= nil then
-                                item_list[item.place_result] = item
-                            else
-							    item_list[item.name] = item
-                            end
-						end
-					elseif item.place_result ~= nil then
-                        item_list[item.place_result] = item
-                    else
-                        item_list[item.name] = item
-					end
-				end
-			end
-		end
-	end]]
-    --honk
     if item_list == nil then
 		item_list = {}
 		for _, category in pairs(types_with_items) do
@@ -689,7 +666,7 @@ local local_update_ammo_ranges = function()
 
 end
 
-if data ~= nil and data_final_fixes == true then
+if data ~= nil and (data_final_fixes == true or data_updates == true) then
    local_create_turrets()
    local_update_ammo_ranges()
 end
