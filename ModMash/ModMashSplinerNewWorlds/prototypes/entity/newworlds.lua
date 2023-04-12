@@ -218,7 +218,7 @@
                 -0.0625,
                 -0.4375
               },
-              tint = 0 --[=[ ref [""].corpse["biter-spawner-corpse"].animation[1].layers[2].hr_version.tint ]=],
+              --tint = 0 --[=[ ref [""].corpse["biter-spawner-corpse"].animation[1].layers[2].hr_version.tint ]=],
               width = 140,
               y = 0
             },
@@ -307,7 +307,7 @@
                   -0.03125,
                   -0.4375
                 },
-                tint = 0 --[=[ ref [""].corpse["biter-spawner-corpse"].animation[1].layers[2].hr_version.tint ]=],
+                --tint = 0 --[=[ ref [""].corpse["biter-spawner-corpse"].animation[1].layers[2].hr_version.tint ]=],
                 width = 276,
                 y = 234
               },
@@ -316,7 +316,7 @@
                 -0.0625,
                 -0.4375
               },
-              tint = 0 --[=[ ref [""].corpse["biter-spawner-corpse"].animation[1].layers[2].hr_version.tint ]=],
+              --tint = 0 --[=[ ref [""].corpse["biter-spawner-corpse"].animation[1].layers[2].hr_version.tint ]=],
               width = 140,
               y = 118
             },
@@ -405,7 +405,7 @@
                   -0.03125,
                   -0.4375
                 },
-                tint = 0 --[=[ ref [""].corpse["biter-spawner-corpse"].animation[1].layers[2].hr_version.tint ]=],
+                --tint = 0 --[=[ ref [""].corpse["biter-spawner-corpse"].animation[1].layers[2].hr_version.tint ]=],
                 width = 276,
                 y = 468
               },
@@ -414,7 +414,7 @@
                 -0.0625,
                 -0.4375
               },
-              tint = 0 --[=[ ref [""].corpse["biter-spawner-corpse"].animation[1].layers[2].hr_version.tint ]=],
+              --tint = 0 --[=[ ref [""].corpse["biter-spawner-corpse"].animation[1].layers[2].hr_version.tint ]=],
               width = 140,
               y = 236
             },
@@ -503,7 +503,7 @@
                   -0.03125,
                   -0.4375
                 },
-                tint = 0 --[=[ ref [""].corpse["biter-spawner-corpse"].animation[1].layers[2].hr_version.tint ]=],
+                --tint = 0 --[=[ ref [""].corpse["biter-spawner-corpse"].animation[1].layers[2].hr_version.tint ]=],
                 width = 276,
                 y = 702
               },
@@ -512,7 +512,7 @@
                 -0.0625,
                 -0.4375
               },
-              tint = 0 --[=[ ref [""].corpse["biter-spawner-corpse"].animation[1].layers[2].hr_version.tint ]=],
+              --tint = 0 --[=[ ref [""].corpse["biter-spawner-corpse"].animation[1].layers[2].hr_version.tint ]=],
               width = 140,
               y = 354
             },
@@ -682,7 +682,7 @@
                   -0.03125,
                   -0.4375
                 },
-                tint = 0 --[=[ ref [""].corpse["biter-spawner-corpse"].animation[1].layers[2].hr_version.tint ]=],
+                --tint = 0 --[=[ ref [""].corpse["biter-spawner-corpse"].animation[1].layers[2].hr_version.tint ]=],
                 width = 276,
                 y = 0
               },
@@ -692,7 +692,7 @@
                 -0.0625,
                 -0.4375
               },
-              tint = 0 --[=[ ref [""].corpse["biter-spawner-corpse"].animation[1].layers[2].hr_version.tint ]=],
+              --tint = 0 --[=[ ref [""].corpse["biter-spawner-corpse"].animation[1].layers[2].hr_version.tint ]=],
               width = 140,
               y = 0
             },
@@ -788,7 +788,7 @@
                   -0.03125,
                   -0.4375
                 },
-                tint = 0 --[=[ ref [""].corpse["biter-spawner-corpse"].animation[1].layers[2].hr_version.tint ]=],
+                --tint = 0 --[=[ ref [""].corpse["biter-spawner-corpse"].animation[1].layers[2].hr_version.tint ]=],
                 width = 276,
                 y = 468
               },
@@ -798,7 +798,7 @@
                 -0.0625,
                 -0.4375
               },
-              tint = 0 --[=[ ref [""].corpse["biter-spawner-corpse"].animation[1].layers[2].hr_version.tint ]=],
+              --tint = 0 --[=[ ref [""].corpse["biter-spawner-corpse"].animation[1].layers[2].hr_version.tint ]=],
               width = 140,
               y = 236
             },
@@ -894,7 +894,7 @@
                   -0.03125,
                   -0.4375
                 },
-                tint = 0 --[=[ ref [""].corpse["biter-spawner-corpse"].animation[1].layers[2].hr_version.tint ]=],
+                --tint = 0 --[=[ ref [""].corpse["biter-spawner-corpse"].animation[1].layers[2].hr_version.tint ]=],
                 width = 276,
                 y = 936
               },
@@ -904,7 +904,7 @@
                 -0.0625,
                 -0.4375
               },
-              tint = 0 --[=[ ref [""].corpse["biter-spawner-corpse"].animation[1].layers[2].hr_version.tint ]=],
+              --tint = 0 --[=[ ref [""].corpse["biter-spawner-corpse"].animation[1].layers[2].hr_version.tint ]=],
               width = 140,
               y = 472
             },
@@ -1000,7 +1000,7 @@
                   -0.03125,
                   -0.4375
                 },
-                tint = 0 --[=[ ref [""].corpse["biter-spawner-corpse"].animation[1].layers[2].hr_version.tint ]=],
+                --tint = 0 --[=[ ref [""].corpse["biter-spawner-corpse"].animation[1].layers[2].hr_version.tint ]=],
                 width = 276,
                 y = 1404
               },
@@ -1010,7 +1010,7 @@
                 -0.0625,
                 -0.4375
               },
-              tint = 0 --[=[ ref [""].corpse["biter-spawner-corpse"].animation[1].layers[2].hr_version.tint ]=],
+              --tint = 0 --[=[ ref [""].corpse["biter-spawner-corpse"].animation[1].layers[2].hr_version.tint ]=],
               width = 140,
               y = 708
             },
