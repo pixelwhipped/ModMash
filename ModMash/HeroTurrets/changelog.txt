@@ -1,5 +1,5 @@
-﻿---------------------------------------------------------------------------------------------------
-Version: 1.1.20
+---------------------------------------------------------------------------------------------------
+Version: 1.1.21
 Date: 2022-02-23
   Changes:
     - Compatibility for SearchlightAssault mod setting Create in updates to change if turrets are created in final fixes or updates
