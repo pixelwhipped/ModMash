@@ -1,6 +1,6 @@
 {
   "name": "heroturrets",
-  "version": "1.1.21",
+  "version": "1.1.22",
   "title": "HeroTurrets",
   "author": "PixelWhipped",
   "contact": "",
@@ -10,7 +10,11 @@
   "dependencies": [
     "base >= 1.1.0",
     "liborio >= 1.1.01",
-	"(?) Obelisks-of-light",
-	"(?) Factorio-Tiberium"
+    "(?) Obelisks-of-light",
+    "(?) Factorio-Tiberium",
+    "(?) HowitzerArtPatchPD",
+    "(?) ShockArtPatchPD",
+    "(?) SniperArtPatchPD",
+    "(?) ShotgunArtPatchPD"
   ]
 }
