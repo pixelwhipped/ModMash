@@ -105,6 +105,7 @@ local local_create_fake_stop = function()
     subway.alert_when_damaged = false
     subway.create_ghost_on_death = false
     subway.selectable_in_game = false
+    subway.next_upgrade = nil
 
     data:extend({   
         subway,
@@ -146,6 +147,7 @@ local local_create_rail_subway = function(name, health,rail_overlay_animations,t
     subway.rail_overlay_animations = rail_overlay_animations
     subway.collision_mask = {"layer-13", "player-layer"}
     subway.max_health = health
+    subway.next_upgrade = nil
     data:extend({   
         subway,
         {

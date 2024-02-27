@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.1.43
+  Bug Fixes:
+    - Remove next_upgrade from train stops
+
+---------------------------------------------------------------------------------------------------
 Version: 1.1.42
   Bug Fixes:
     - setting about biter and biternest now only function in underground surface.(by Honktown)
